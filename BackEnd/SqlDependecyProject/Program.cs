@@ -18,6 +18,7 @@ namespace SqlDependecyProject
                 //para iniciar la bd si no esta creada
                 EmsysContext db = new EmsysContext();
                 var eventos = db.Evento.FirstOrDefault();
+
                 //me quedo loopeando
                 while (true)
                 {
