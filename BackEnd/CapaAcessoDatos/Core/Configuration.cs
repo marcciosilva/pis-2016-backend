@@ -20,6 +20,8 @@ namespace Emsys.DataAccesLayer.Core
             context.Evento.AddOrUpdate(new Evento { NombreGenerador = "event1", Descripcion = "blablalblba", Direccion = "direccion", FechaCreacion = new DateTime(1980, 10, 10) });
             context.Evento.AddOrUpdate(new Evento { NombreGenerador = "event2", Descripcion = "blablaasdasdlblba", Direccion = "direccion", FechaCreacion = new DateTime(1980, 11, 12) });
 
+            
+
         }
     }
 }

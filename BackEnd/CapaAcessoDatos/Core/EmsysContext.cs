@@ -10,6 +10,10 @@ namespace Emsys.DataAccesLayer.Core
     //}
     public partial class EmsysContext : IdentityDbContext
     {
+        public EmsysContext() {
+            //   Database.SetInitializer<EmsysContext>(new DropCreateDatabaseIfModelChanges<EmsysContext>());
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<EmsysContext, Configuration>());
+        }
         public DbSet<Evento> Evento { get; set; }
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
