@@ -1,17 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
-using System.Configuration;
-using System.Data;
 using TableDependency.Mappers;
 using TableDependency.SqlClient;
 using TableDependency.Enums;
 using Emsys.DataAccesLayer.Model;
-using System.Data.Entity;
 using Emsys.DataAccesLayer.Core;
+using System.Linq;
 
 namespace SqlDependecyProject
 {
@@ -20,22 +13,32 @@ namespace SqlDependecyProject
         private static bool llamo = true;
         static void Main(string[] args)
         {
-            
-            //me quedo loopeando
-            while (true)
+            try
             {
-                if (llamo)
+                //para iniciar la bd si no esta creada
+                EmsysContext db = new EmsysContext();
+                var eventos = db.Evento.FirstOrDefault();
+                //me quedo loopeando
+                while (true)
                 {
-                    Console.WriteLine("Estoy esperando por modificaciones..");
-                    Listener();
-                    llamo = false;
+                    if (llamo)
+                    {
+                        Console.WriteLine("Estoy esperando por modificaciones..");
+                        Listener();
+                        llamo = false;
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Ocurrio un error: ");
+                Console.WriteLine(e.Message);
+                throw;
             }
         }
 
         static void Listener()
         {
-            EmsysContext  db = new EmsysContext();
             var mapper = new ModelToTableMapper<Evento>();
             mapper.AddMapping(model => model.NombreGenerador, "NombreGenerador");
             _dependency = new SqlTableDependency<Evento>(_connectionString, "Evento", mapper);
@@ -45,7 +48,7 @@ namespace SqlDependecyProject
         }
 
         // private static IList<Model.Evento> _stocks;
-        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["Context"].ConnectionString;
+        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
         // "data source=DESKTOP-T27K22L\\SQLExpressLocal;initial catalog=Prototipo1;integrated security=True";
         private static SqlTableDependency<Evento> _dependency;
 

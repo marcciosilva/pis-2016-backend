@@ -16,11 +16,8 @@ namespace Emsys.DataAccesLayer.Core
 
         protected override void Seed(EmsysContext context)
         {
-
             context.Evento.AddOrUpdate(new Evento { NombreGenerador = "event1", Descripcion = "blablalblba", Direccion = "direccion", FechaCreacion = new DateTime(1980, 10, 10) });
-            context.Evento.AddOrUpdate(new Evento { NombreGenerador = "event2", Descripcion = "blablaasdasdlblba", Direccion = "direccion", FechaCreacion = new DateTime(1980, 11, 12) });
-
-            
+            context.Evento.AddOrUpdate(new Evento { NombreGenerador = "event2", Descripcion = "blablaasdasdlblba", Direccion = "direccion", FechaCreacion = new DateTime(1980, 11, 12) });            
 
         }
     }
