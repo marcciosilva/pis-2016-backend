@@ -60,6 +60,7 @@
   <ItemGroup>
     <Compile Include="FactoryNotifications.cs" />
     <Compile Include="INotifications.cs" />
+    <Compile Include="NotificationsFirebase.cs" />
     <Compile Include="NotificationsPubNub.cs" />
     <Compile Include="NotificationsRealtime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

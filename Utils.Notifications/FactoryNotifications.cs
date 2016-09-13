@@ -9,10 +9,10 @@ namespace Utils.Notifications
     public static class FactoryNotifications
     {
 
-        public enum PushNotificationsSystem { PubNub, RealtimeFramework };
+        public enum PushNotificationsSystem { PubNub, RealtimeFramework, Firebase };
 
         // Determina qué sistema se utiliza para push notifications.
-        private static PushNotificationsSystem _currentNotificationSystem = PushNotificationsSystem.RealtimeFramework;
+        private static PushNotificationsSystem _currentNotificationSystem = PushNotificationsSystem.Firebase;
 
         public static INotifications GetInstance() {
             if (_currentNotificationSystem == PushNotificationsSystem.PubNub)
@@ -22,6 +22,10 @@ namespace Utils.Notifications
             else if (_currentNotificationSystem == PushNotificationsSystem.RealtimeFramework)
             {
                 return new NotificationsRealtime();
+            }
+            else if (_currentNotificationSystem == PushNotificationsSystem.Firebase)
+            {
+                return new NotificationsFirebase();
             }
             else
             {
