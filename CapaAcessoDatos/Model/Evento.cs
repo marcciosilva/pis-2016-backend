@@ -17,5 +17,7 @@
         public string Direccion { get; set; }
 
         public DateTime FechaCreacion { get; set; }
+
+        public virtual ICollection<Zona> Zona { get; set; }
     }
 }

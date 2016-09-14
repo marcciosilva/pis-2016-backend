@@ -15,6 +15,7 @@ namespace Emsys.DataAccesLayer.Core
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<EmsysContext, Configuration>());
         }
         public DbSet<Evento> Evento { get; set; }
+        public DbSet<Zona> Zona { get; set; }
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{

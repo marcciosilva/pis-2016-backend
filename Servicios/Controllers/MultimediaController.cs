@@ -63,7 +63,7 @@ namespace Servicios.Controllers
         [HttpGet]
         public HttpResponseMessage Get(string nombreArchivo)
         {
-            var path = System.Web.HttpContext.Current.Server.MapPath("~/Multimedia/+nombreArchivo"); ;
+            var path = System.Web.HttpContext.Current.Server.MapPath("~/Multimedia/"+nombreArchivo); ;
             HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
             var stream = new FileStream(path, FileMode.Open);
             result.Content = new StreamContent(stream);

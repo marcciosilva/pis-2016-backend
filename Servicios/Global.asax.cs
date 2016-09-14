@@ -1,4 +1,4 @@
-﻿//#define CLIENT
+﻿#define CLIENT
 using Emsys.DataAccesLayer.Core;
 using Servicios.App_Start;
 using System.Data.Entity;

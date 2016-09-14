@@ -21,7 +21,6 @@ namespace PruebaSubirImagenes.Controllers
                     using (var formData = new MultipartFormDataContent())
                     {
                         formData.Add(fileContent, "file", "adelante.jpeg");
-
                         //call service
                         var response = client.PostAsync("http://localhost:2956/api/Multimedia", formData).Result;
                     }
