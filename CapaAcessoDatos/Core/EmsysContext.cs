@@ -16,6 +16,18 @@ namespace Emsys.DataAccesLayer.Core
         }
         public DbSet<Evento> Evento { get; set; }
 
+        public DbSet<Categoria> Categorias { get; set; }
+
+        public DbSet<Departamento> Departamentos { get; set; }
+
+        public DbSet<Extension_Evento> Extension_Eventos { get; set; }
+
+        public DbSet<Log> Logs { get; set; }
+
+        public DbSet<Origen_Evento> Origen_Eventos { get; set; }
+
+        public DbSet<Permiso> Permisos { get; set; }
+
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);

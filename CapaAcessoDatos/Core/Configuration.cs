@@ -16,8 +16,15 @@ namespace Emsys.DataAccesLayer.Core
 
         protected override void Seed(EmsysContext context)
         {
-            context.Evento.AddOrUpdate(new Evento { NombreGenerador = "event1", Descripcion = "blablalblba", Direccion = "direccion", FechaCreacion = new DateTime(1980, 10, 10) });
-            context.Evento.AddOrUpdate(new Evento { NombreGenerador = "event2", Descripcion = "blablaasdasdlblba", Direccion = "direccion", FechaCreacion = new DateTime(1980, 11, 12) });            
+            // Categorias de prueba
+            context.Categorias.AddOrUpdate(new Categoria { Codigo = "A123", Clave = "estoesunaprueba", Prioridad = NombrePrioridad.Alta, Activo = false });
+            context.Categorias.AddOrUpdate(new Categoria { Codigo = "B321", Clave = "estoesunaprueba2", Prioridad = NombrePrioridad.Media, Activo = false });
+            context.Categorias.AddOrUpdate(new Categoria { Codigo = "C213", Clave = "estoesunaprueba3", Prioridad = NombrePrioridad.Baja, Activo = false });
+
+            // Departamentos de prueba
+            context.Departamentos.AddOrUpdate(new Departamento { Nombre = "dep1" });
+            context.Departamentos.AddOrUpdate(new Departamento { Nombre = "dep2" });
+            context.Departamentos.AddOrUpdate(new Departamento { Nombre = "dep3" });
 
         }
     }

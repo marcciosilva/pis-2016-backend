@@ -145,6 +145,12 @@
     <Compile Include="Migrations\201609090128413__AgregoEvento.Designer.cs">
       <DependentUpon>201609090128413__AgregoEvento.cs</DependentUpon>
     </Compile>
+    <Compile Include="Model\Permiso.cs" />
+    <Compile Include="Model\Origen_Evento.cs" />
+    <Compile Include="Model\Log.cs" />
+    <Compile Include="Model\Extension_Evento.cs" />
+    <Compile Include="Model\Departamento.cs" />
+    <Compile Include="Model\Categoria.cs" />
     <Compile Include="Model\Evento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -41,7 +41,7 @@ namespace SqlDependecyProject
         static void Listener()
         {
             var mapper = new ModelToTableMapper<Evento>();
-            mapper.AddMapping(model => model.NombreGenerador, "NombreGenerador");
+            mapper.AddMapping(model => model.NombreInformante, "NombreInformante");
             _dependency = new SqlTableDependency<Evento>(_connectionString, "Evento", mapper);
             _dependency.OnChanged += _dependency_OnChanged;
             _dependency.OnError += _dependency_OnError;
@@ -64,18 +64,18 @@ namespace SqlDependecyProject
                 switch (e.ChangeType)
                 {
                     case ChangeType.Delete:
-                        Console.WriteLine("Boorrroo: " +e.Entity.NombreGenerador);
+                        Console.WriteLine("Boorrroo: " +e.Entity.NombreInformante);
                     //_stocks.Remove(_stocks.FirstOrDefault(c => c.NombreGenerador == e.Entity.NombreGenerador));
                         break;
                     case ChangeType.Insert:
-                        Console.WriteLine("Agrego: " + e.Entity.NombreGenerador);
+                        Console.WriteLine("Agrego: " + e.Entity.NombreInformante);
                     //_stocks.Add(e.Entity);
                     break;
                     case ChangeType.Update:
                         //var customerIndex = _stocks.IndexOf(
                         //        _stocks.FirstOrDefault(c => c.NombreGenerador == e.Entity.NombreGenerador));
                         //if (customerIndex >= 0) _stocks[customerIndex] = e.Entity;
-                        Console.WriteLine("Actualizo: " + e.Entity.NombreGenerador);
+                        Console.WriteLine("Actualizo: " + e.Entity.NombreInformante);
                         break;
                 }
             }
