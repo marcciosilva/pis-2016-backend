@@ -28,6 +28,12 @@ namespace Emsys.DataAccesLayer.Core
 
         public DbSet<Permiso> Permisos { get; set; }
 
+        public DbSet<Recurso> Recursos { get; set; }
+
+        public DbSet<Sector> Sectores { get; set; }
+
+        public DbSet<Usuario_UE> Usuarios_UE { get; set; }
+
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);
