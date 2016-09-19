@@ -64,21 +64,26 @@ namespace SqlDependecyProject
                 switch (e.ChangeType)
                 {
                     case ChangeType.Delete:
-                        Console.WriteLine("Boorrroo: " +e.Entity.NombreGenerador);
-                    //_stocks.Remove(_stocks.FirstOrDefault(c => c.NombreGenerador == e.Entity.NombreGenerador));
+                        Console.WriteLine("Boorrroo: " + e.Entity.NombreGenerador);
+                        //_stocks.Remove(_stocks.FirstOrDefault(c => c.NombreGenerador == e.Entity.NombreGenerador));
                         break;
                     case ChangeType.Insert:
                         Console.WriteLine("Agrego: " + e.Entity.NombreGenerador);
-                    //_stocks.Add(e.Entity);
-                    break;
+                        using (EmsysContext db = new EmsysContext())
+                        {
+                            db.Categoria.Add(new Categoria { Codigo = "501" });
+                            db.SaveChanges();
+                        }
+                //_stocks.Add(e.Entity);
+                break;
                     case ChangeType.Update:
                         //var customerIndex = _stocks.IndexOf(
                         //        _stocks.FirstOrDefault(c => c.NombreGenerador == e.Entity.NombreGenerador));
                         //if (customerIndex >= 0) _stocks[customerIndex] = e.Entity;
                         Console.WriteLine("Actualizo: " + e.Entity.NombreGenerador);
-                        break;
-                }
+                break;
             }
         }
     }
+}
 }

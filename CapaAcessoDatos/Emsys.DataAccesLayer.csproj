@@ -145,6 +145,11 @@
     <Compile Include="Migrations\201609090128413__AgregoEvento.Designer.cs">
       <DependentUpon>201609090128413__AgregoEvento.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609182156125__AgregoTablaCategoria.cs" />
+    <Compile Include="Migrations\201609182156125__AgregoTablaCategoria.Designer.cs">
+      <DependentUpon>201609182156125__AgregoTablaCategoria.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Categoria.cs" />
     <Compile Include="Model\Evento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -159,6 +164,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201609090128413__AgregoEvento.resx">
       <DependentUpon>201609090128413__AgregoEvento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609182156125__AgregoTablaCategoria.resx">
+      <DependentUpon>201609182156125__AgregoTablaCategoria.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

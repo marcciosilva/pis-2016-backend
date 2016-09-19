@@ -17,5 +17,7 @@
         public string Direccion { get; set; }
 
         public DateTime FechaCreacion { get; set; }
+
+        public virtual Categoria Categoria { get; set; }
     }
 }

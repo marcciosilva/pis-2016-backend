@@ -221,6 +221,7 @@
     <Compile Include="App_Start\Startup.OAuth.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CategoriasController.cs" />
     <Compile Include="Controllers\EventoController.cs" />
     <Compile Include="Controllers\MultimediaController.cs" />
     <Compile Include="Filtros\RequiereHttps.cs" />
