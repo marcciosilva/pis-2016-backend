@@ -50,6 +50,8 @@
         public string Descripcion { get; set; }
 
         public bool EnProceso { get; set; }
+
+        public static ICollection<Extension_Evento> ExtensionEvento { get; set; }
                 
     }
 }

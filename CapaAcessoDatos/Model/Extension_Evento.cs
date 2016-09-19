@@ -23,7 +23,7 @@
 
         public static Evento Evento { get; set; }
 
-        //public static Zona Zona { get; set; }
+        public static Zona Zona { get; set; }
 
         //public static Usuario Despachador { get; set; }
 
