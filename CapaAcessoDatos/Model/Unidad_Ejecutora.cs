@@ -7,8 +7,8 @@
     using System.Data.Entity.Spatial;
 
 
-    [Table("Zona")]
-    public partial class Zona
+    [Table("Unidad_Ejecutora")]
+    public partial class Unidad_Ejecutora
     {
         [Key]
         public int Id { get; set; }
@@ -17,9 +17,8 @@
        
         public  string Nombre { get; set; }
 
-        public static Extension_Evento Extension_Evento { get; set; }
+        public static ICollection<Zona> Zona { get; set; }
 
-        public static Unidad_Ejecutora Unidad_Ejecutora { get; set; }
 
 
                 
