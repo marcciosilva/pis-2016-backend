@@ -8,11 +8,13 @@ namespace Emsys.DataAccesLayer.Core
     //{
 
     //}
+    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public partial class EmsysContext : IdentityDbContext
     {
         public EmsysContext() {
             //   Database.SetInitializer<EmsysContext>(new DropCreateDatabaseIfModelChanges<EmsysContext>());
-            Database.SetInitializer(new MigrateDatabaseToLatestVersion<EmsysContext, Configuration>());
+            // Database.SetInitializer(new MigrateDatabaseToLatestVersion<EmsysContext, Configuration>());
+            Database.SetInitializer(new MySqlInitializer());
         }
         public DbSet<Evento> Evento { get; set; }
 
