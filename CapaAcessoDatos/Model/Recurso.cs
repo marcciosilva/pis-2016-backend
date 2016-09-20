@@ -25,10 +25,10 @@
         [Key]
         public int Id { get; set; }
 
-        public ICollection<Evento> Eventos { get; set; }
+        public virtual ICollection<Evento> Eventos { get; set; }
 
         public EstadosRecurso Estado { get; set; }
 
-        public Extension_Evento Extension_Evento { get; set; }        
+        public virtual Extension_Evento Extension_Evento { get; set; }        
     }
 }

@@ -14,11 +14,11 @@
         [Key]
         public int Id { get; set; }
 
-        //public Zona Zona {get; set; }
+        public virtual Zona Zona {get; set; }
 
-        //public Usuario Usuario { get; set; }
+        //public virtual Usuario Usuario { get; set; }
 
-        //public Unidad_Ejecutora Unidad_Ejecutora { get; set; }
+        public virtual Unidad_Ejecutora Unidad_Ejecutora { get; set; }
 
     }
 }

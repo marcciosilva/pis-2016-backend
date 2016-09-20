@@ -14,7 +14,7 @@
         [Key]
         public int Id { get; set; }
 
-        public static Evento Evento { get; set; }
+        public virtual Evento Evento { get; set; }
 
         public int IdOrigen { get; set; }
 

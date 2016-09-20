@@ -145,12 +145,15 @@
     <Compile Include="Migrations\201609090128413__AgregoEvento.Designer.cs">
       <DependentUpon>201609090128413__AgregoEvento.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609201437278__AgregaMayoriaDeTablas.cs" />
+    <Compile Include="Migrations\201609201437278__AgregaMayoriaDeTablas.Designer.cs">
+      <DependentUpon>201609201437278__AgregaMayoriaDeTablas.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\Unidad_Ejecutora.cs" />
     <Compile Include="Model\Zona.cs" />
     <Compile Include="Model\Usuario_UE.cs" />
     <Compile Include="Model\Sector.cs" />
     <Compile Include="Model\Recurso.cs" />
-    <Compile Include="Model\Permiso.cs" />
     <Compile Include="Model\Origen_Evento.cs" />
     <Compile Include="Model\Log.cs" />
     <Compile Include="Model\Extension_Evento.cs" />
@@ -170,6 +173,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201609090128413__AgregoEvento.resx">
       <DependentUpon>201609090128413__AgregoEvento.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609201437278__AgregaMayoriaDeTablas.resx">
+      <DependentUpon>201609201437278__AgregaMayoriaDeTablas.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

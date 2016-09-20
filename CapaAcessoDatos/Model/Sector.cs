@@ -14,7 +14,7 @@
         [Key]
         public int Id { get; set; }
 
-        //public Zona Zona {get; set; }
+        //public virtual Zona Zona {get; set; }
 
         [MaxLength(50)]
         public string Nombre { get; set; }

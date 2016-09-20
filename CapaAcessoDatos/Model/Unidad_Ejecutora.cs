@@ -7,7 +7,7 @@
     using System.Data.Entity.Spatial;
 
 
-    [Table("Unidad_Ejecutora")]
+    [Table("Unidades_Ejecutoras")]
     public partial class Unidad_Ejecutora
     {
         [Key]
@@ -17,10 +17,8 @@
        
         public  string Nombre { get; set; }
 
-        public static ICollection<Zona> Zona { get; set; }
+        public virtual ICollection<Zona> Zona { get; set; }
 
-
-
-                
+        
     }
 }

@@ -7,7 +7,7 @@
     using System.Data.Entity.Spatial;
 
 
-    [Table("Zona")]
+    [Table("Zonas")]
     public partial class Zona
     {
         [Key]
@@ -17,9 +17,9 @@
        
         public  string Nombre { get; set; }
 
-        public static Extension_Evento Extension_Evento { get; set; }
+        public virtual ICollection<Extension_Evento> Extensiones_Evento { get; set; }
 
-        public static Unidad_Ejecutora Unidad_Ejecutora { get; set; }
+        public virtual Unidad_Ejecutora Unidad_Ejecutora { get; set; }
 
 
                 

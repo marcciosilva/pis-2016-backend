@@ -21,11 +21,11 @@
         [Key]
         public int Id { get; set; }
 
-        public static Evento Evento { get; set; }
+        public virtual Evento Evento { get; set; }
 
-        public static Zona Zona { get; set; }
+        public virtual Zona Zona { get; set; }
 
-        //public static Usuario Despachador { get; set; }
+        //public virtual Usuario Despachador { get; set; }
 
         public string DescripcionDespachador { get; set; }
         
@@ -37,7 +37,7 @@
 
         public DateTime TimeStamp { get; set; }
 
-        public static Categoria SegundaCategoria { get; set; }
+        public virtual Categoria SegundaCategoria { get; set; }
         
     }
 }

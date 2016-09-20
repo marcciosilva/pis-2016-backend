@@ -20,19 +20,22 @@ namespace Emsys.DataAccesLayer.Core
 
         public DbSet<Departamento> Departamentos { get; set; }
 
-        public DbSet<Extension_Evento> Extension_Eventos { get; set; }
+        public DbSet<Extension_Evento> Extensiones_Evento { get; set; }
 
         public DbSet<Log> Logs { get; set; }
 
         public DbSet<Origen_Evento> Origen_Eventos { get; set; }
-
-        public DbSet<Permiso> Permisos { get; set; }
-
+        
         public DbSet<Recurso> Recursos { get; set; }
 
         public DbSet<Sector> Sectores { get; set; }
 
+        public DbSet<Unidad_Ejecutora> Unidades_Ejecutoras { get; set; }
+
         public DbSet<Usuario_UE> Usuarios_UE { get; set; }
+
+        public DbSet<Zona> Zonas { get; set; }
+
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{

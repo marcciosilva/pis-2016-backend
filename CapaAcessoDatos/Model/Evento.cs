@@ -22,13 +22,13 @@
         [MaxLength(200)]
         public string NombreInformante { get; set; }
 
-        public static Categoria Categoria { get; set; }
+        public virtual Categoria Categoria { get; set; }
 
         public EstadoEvento Estado { get; set; }
 
         public DateTime TimeStamp { get; set; }
 
-        //public static Usuario { get; set; }
+        //public virtual Usuario { get; set; }
 
         public DateTime FechaCreacion { get; set; }
 
@@ -41,7 +41,7 @@
         [MaxLength(10)]
         public string Numero { get; set; }
 
-        //public static Sector { get; set; }
+        public virtual Sector Sector { get; set; }
 
         public double Latitud { get; set; }
 
@@ -51,7 +51,7 @@
 
         public bool EnProceso { get; set; }
 
-        public static ICollection<Extension_Evento> ExtensionEvento { get; set; }
+        public virtual ICollection<Extension_Evento> ExtensionEvento { get; set; }
                 
     }
 }

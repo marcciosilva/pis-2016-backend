@@ -16,15 +16,6 @@ namespace Emsys.DataAccesLayer.Core
 
         protected override void Seed(EmsysContext context)
         {
-            // Categorias de prueba
-            context.Categorias.AddOrUpdate(new Categoria { Codigo = "A123", Clave = "estoesunaprueba", Prioridad = NombrePrioridad.Alta, Activo = false });
-            context.Categorias.AddOrUpdate(new Categoria { Codigo = "B321", Clave = "estoesunaprueba2", Prioridad = NombrePrioridad.Media, Activo = false });
-            context.Categorias.AddOrUpdate(new Categoria { Codigo = "C213", Clave = "estoesunaprueba3", Prioridad = NombrePrioridad.Baja, Activo = false });
-
-            // Departamentos de prueba
-            context.Departamentos.AddOrUpdate(new Departamento { Nombre = "dep1" });
-            context.Departamentos.AddOrUpdate(new Departamento { Nombre = "dep2" });
-            context.Departamentos.AddOrUpdate(new Departamento { Nombre = "dep3" });
 
         }
     }

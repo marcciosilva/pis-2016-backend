@@ -14,7 +14,7 @@
         [Key]
         public int Id { get; set; }
 
-        //public Usuario Usuario { get; set; }
+        //public virtual Usuario Usuario { get; set; }
 
         public DateTime TimeStamp { get; set; }
 
@@ -26,7 +26,6 @@
 
         [MaxLength(50)]
         public string Entidad { get; set; }
-
 
         public int idEntidad { get; set; }
 
