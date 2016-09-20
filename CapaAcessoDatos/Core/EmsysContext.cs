@@ -1,5 +1,6 @@
 namespace Emsys.DataAccesLayer.Core
 {
+    using System;
     using System.Data.Entity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Model;

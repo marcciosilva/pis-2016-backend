@@ -5,6 +5,7 @@ using TableDependency.Enums;
 using Emsys.DataAccesLayer.Model;
 using Emsys.DataAccesLayer.Core;
 using System.Linq;
+using System.Data.Objects;
 
 namespace SqlDependecyProject
 {
@@ -17,8 +18,31 @@ namespace SqlDependecyProject
             {
                 //para iniciar la bd si no esta creada
                 EmsysContext db = new EmsysContext();
-                var eventos = db.Evento.FirstOrDefault();
 
+                //pruebo agregar un evento
+                Evento e = new Evento
+                {
+                    Calle = "prueba",
+                    Descripcion = "prueba",
+                    EnProceso = true,
+                    Esquina = "prueba",
+                    Estado = EstadoEvento.Creado,
+                    FechaCreacion = DateTime.Now,
+                    Latitud = 12.3,
+                    Longitud = 10.5,
+                    NombreInformante = "prueba",
+                    Numero = "prueba"
+                };
+                db.Evento.Add(e);
+
+                db.SaveChanges();
+
+                //pruebo cargar un evento
+                Evento evento = db.Evento.FirstOrDefault();
+
+                //pruebo eliminar un evento
+                db.Evento.Remove(evento);
+                
                 //me quedo loopeando
                 while (true)
                 {
