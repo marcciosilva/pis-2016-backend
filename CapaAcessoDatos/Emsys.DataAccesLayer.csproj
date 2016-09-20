@@ -149,6 +149,10 @@
     <Compile Include="Migrations\201609201437278__AgregaMayoriaDeTablas.Designer.cs">
       <DependentUpon>201609201437278__AgregaMayoriaDeTablas.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609201613361__AgregadasNavegationPropertys.cs" />
+    <Compile Include="Migrations\201609201613361__AgregadasNavegationPropertys.Designer.cs">
+      <DependentUpon>201609201613361__AgregadasNavegationPropertys.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\Unidad_Ejecutora.cs" />
     <Compile Include="Model\Zona.cs" />
     <Compile Include="Model\Usuario_UE.cs" />
@@ -176,6 +180,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609201437278__AgregaMayoriaDeTablas.resx">
       <DependentUpon>201609201437278__AgregaMayoriaDeTablas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609201613361__AgregadasNavegationPropertys.resx">
+      <DependentUpon>201609201613361__AgregadasNavegationPropertys.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

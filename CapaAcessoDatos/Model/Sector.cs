@@ -14,10 +14,11 @@
         [Key]
         public int Id { get; set; }
 
-        //public virtual Zona Zona {get; set; }
+        public virtual Zona Zona {get; set; }
 
         [MaxLength(50)]
         public string Nombre { get; set; }
-
+        
+        public virtual ICollection<Evento> Eventos { get; set; }
     }
 }

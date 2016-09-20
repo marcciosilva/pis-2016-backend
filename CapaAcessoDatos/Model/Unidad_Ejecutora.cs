@@ -19,6 +19,6 @@
 
         public virtual ICollection<Zona> Zona { get; set; }
 
-        
+        public virtual ICollection<Usuario_UE> Usuarios_UE { get; set; }
     }
 }

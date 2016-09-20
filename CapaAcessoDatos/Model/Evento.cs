@@ -52,6 +52,10 @@
         public bool EnProceso { get; set; }
 
         public virtual ICollection<Extension_Evento> ExtensionEvento { get; set; }
+
+        public virtual Origen_Evento Origen_Evento { get; set; }
+
+        public virtual ICollection<Evento> Eventos { get; set; }
                 
     }
 }

@@ -16,5 +16,7 @@
 
         [MaxLength(50)]
         public string Nombre { get; set; }
+
+        public virtual ICollection<Evento> Eventos { get; set; }
     }
 }

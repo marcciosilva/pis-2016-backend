@@ -13,15 +13,13 @@
         [Key]
         public int Id { get; set; }
 
-        [MaxLength(200)]
-       
+        [MaxLength(200)]       
         public  string Nombre { get; set; }
 
         public virtual ICollection<Extension_Evento> Extensiones_Evento { get; set; }
 
         public virtual Unidad_Ejecutora Unidad_Ejecutora { get; set; }
 
-
-                
+        public virtual ICollection<Sector> Sectores { get; set; }                
     }
 }
