@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -10,6 +12,11 @@ namespace Utils.Notifications
 {
     class NotificationsFirebase : INotifications
     {
+        public const string FCM_URL = "https://fcm.googleapis.com/fcm/send";
+        public const string GOOGLE_API_KEY = "AIzaSyBqSkDDnIA_IVu2IyA6G7ywL7eiFXF5cfs";
+        public const string POST = "POST";
+        public const string DEVICE_ID = "eWWad4fhkJQ:APA91bEukKiqr1Pk4my17Qtyc-vgHUohyUx5wwsm9JiAWE-PJs0Pxo0JkW34fpe6oYIpJdoYb6pWzyFT6s1UtNeQP0LNa3AUL-2dJVTsl32Ntss82pDKR39h0fKV-ONazAIaKnDmaaPG";
+
         public void SendMessage(string channelName, string message)
         {
             sendNotification(message);
@@ -27,27 +34,35 @@ namespace Utils.Notifications
 
         private async void sendNotification(string message)
         {
-            using (var client = new HttpClient())
-            {
+            WebRequest request = WebRequest.Create(FCM_URL);
 
-                var request = new HttpRequestMessage()
-                {
-                    RequestUri = new Uri("https://fcm.googleapis.com/fcm/send"),
-                    Method = HttpMethod.Post
-                };
+            // Headers.
+            request.Method = POST;
+            request.ContentType = "application/json";
+            request.Headers.Add(string.Format("Authorization: key={0}", GOOGLE_API_KEY));
 
-                client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "key=AIzaSyBqSkDDnIA_IVu2IyA6G7ywL7eiFXF5cfs");
-                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+            string postData = "{\"data\":{\"title\":\"EMSYS Mobile\", \"text\":\"" + message + "\"},\"to\":\"" + DEVICE_ID + "\"}";
+            Console.WriteLine(postData);
 
-                var notificationJSon = "{\"notification\":{\"title\":\"Notificacion ejemplo\", \"text\":\"" 
-                    + message + "\"},\"to\":\"eWWad4fhkJQ:APA91bEukKiqr1Pk4my17Qtyc-vgHUohyUx5wwsm9JiAWE-PJs0Pxo0JkW34fpe6oYIpJdoYb6pWzyFT6s1UtNeQP0LNa3AUL-2dJVTsl32Ntss82pDKR39h0fKV-ONazAIaKnDmaaPG\"}";
+            Byte[] byteArray = Encoding.UTF8.GetBytes(postData);
+            request.ContentLength = byteArray.Length;
 
-                var content = new StringContent(notificationJSon, Encoding.UTF8, "application/json");
+            Stream dataStream = request.GetRequestStream();
+            dataStream.Write(byteArray, 0, byteArray.Length);
+            dataStream.Close();
 
-                var response = await client.SendAsync(request);
+            WebResponse tResponse = request.GetResponse();
 
-                var responseString = await response.Content.ReadAsStringAsync();
-            }
+            dataStream = tResponse.GetResponseStream();
+
+            StreamReader tReader = new StreamReader(dataStream);
+
+            String sResponseFromServer = tReader.ReadToEnd();
+            Console.WriteLine(sResponseFromServer);
+
+            tReader.Close();
+            dataStream.Close();
+            tResponse.Close();
         }
     }
 }
