@@ -11,10 +11,10 @@
     [Table("Origen_Eventos")]
     public partial class Origen_Evento
     {
-        [Key, ForeignKey("Evento")]
+        [Key/*, ForeignKey("Evento")*/]
         public int Id { get; set; }
 
-        public virtual Evento Evento { get; set; }
+        //public virtual Evento Evento { get; set; }
 
         public int IdOrigen { get; set; }
 

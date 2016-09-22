@@ -11,7 +11,7 @@ namespace Servicios.Controllers
 {
     public class EventoController : ApiController
     {
-        [HttpGet]
+        [HttpGet]        
         public async Task<IHttpActionResult> Get()
         {
             using (var context = new EmsysContext())

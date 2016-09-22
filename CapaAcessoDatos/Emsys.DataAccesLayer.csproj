@@ -141,18 +141,7 @@
     <Compile Include="Core\Initializer.cs" />
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
-    <Compile Include="Migrations\201609090128413__AgregoEvento.cs" />
-    <Compile Include="Migrations\201609090128413__AgregoEvento.Designer.cs">
-      <DependentUpon>201609090128413__AgregoEvento.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609201437278__AgregaMayoriaDeTablas.cs" />
-    <Compile Include="Migrations\201609201437278__AgregaMayoriaDeTablas.Designer.cs">
-      <DependentUpon>201609201437278__AgregaMayoriaDeTablas.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201609201613361__AgregadasNavegationPropertys.cs" />
-    <Compile Include="Migrations\201609201613361__AgregadasNavegationPropertys.Designer.cs">
-      <DependentUpon>201609201613361__AgregadasNavegationPropertys.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Metodos\Autentificacion.cs" />
     <Compile Include="Model\Unidad_Ejecutora.cs" />
     <Compile Include="Model\Zona.cs" />
     <Compile Include="Model\Usuario_UE.cs" />
@@ -170,20 +159,11 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Datos\datosprueba usuarios.sql" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201609090128413__AgregoEvento.resx">
-      <DependentUpon>201609090128413__AgregoEvento.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609201437278__AgregaMayoriaDeTablas.resx">
-      <DependentUpon>201609201437278__AgregaMayoriaDeTablas.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201609201613361__AgregadasNavegationPropertys.resx">
-      <DependentUpon>201609201613361__AgregadasNavegationPropertys.cs</DependentUpon>
-    </EmbeddedResource>
+    <Content Include="Datos\datosprueba usuarios.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
