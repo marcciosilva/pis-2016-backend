@@ -9,7 +9,7 @@ namespace Emsys.DataAccesLayer.Core
     //{
 
     //}
-    public partial class EmsysContext : IdentityDbContext
+    public partial class EmsysContext : IdentityDbContext<ApplicationUser>
     {
         public EmsysContext() {
             //   Database.SetInitializer<EmsysContext>(new DropCreateDatabaseIfModelChanges<EmsysContext>());
@@ -32,9 +32,7 @@ namespace Emsys.DataAccesLayer.Core
         public DbSet<Sector> Sectores { get; set; }
 
         public DbSet<Unidad_Ejecutora> Unidades_Ejecutoras { get; set; }
-
-        public DbSet<Usuario_UE> Usuarios_UE { get; set; }
-
+        
         public DbSet<Zona> Zonas { get; set; }
 
 

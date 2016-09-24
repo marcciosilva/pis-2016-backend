@@ -25,10 +25,13 @@
         [Key]
         public int Id { get; set; }
 
-        public virtual ICollection<Evento> Eventos { get; set; }
-
+        [MaxLength(60)]
+        public string Codigo { get; set; }
+        
         public EstadosRecurso Estado { get; set; }
 
-        public virtual Extension_Evento Extension_Evento { get; set; }        
+        public virtual ICollection<Extension_Evento> Extension_Evento { get; set; }
+        
+        public virtual ApplicationUser Usuario { get; set; }  
     }
 }

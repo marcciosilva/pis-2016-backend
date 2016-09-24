@@ -141,10 +141,10 @@
     <Compile Include="Core\Initializer.cs" />
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
-    <Compile Include="Metodos\Autentificacion.cs" />
+    <Compile Include="Model\ApplicationUser.cs" />
+    <Compile Include="Model\GrupoRecurso.cs" />
     <Compile Include="Model\Unidad_Ejecutora.cs" />
     <Compile Include="Model\Zona.cs" />
-    <Compile Include="Model\Usuario_UE.cs" />
     <Compile Include="Model\Sector.cs" />
     <Compile Include="Model\Recurso.cs" />
     <Compile Include="Model\Origen_Evento.cs" />

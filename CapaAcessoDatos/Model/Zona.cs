@@ -18,6 +18,7 @@
 
         public virtual ICollection<Extension_Evento> Extensiones_Evento { get; set; }
 
+        [Required]
         public virtual Unidad_Ejecutora Unidad_Ejecutora { get; set; }
 
         public virtual ICollection<Sector> Sectores { get; set; }                

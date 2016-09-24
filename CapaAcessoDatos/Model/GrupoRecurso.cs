@@ -7,20 +7,18 @@
     using System.Data.Entity.Spatial;
 
 
-    [Table("Unidades_Ejecutoras")]
-    public partial class Unidad_Ejecutora
+
+    [Table("Grupos_Recursos")]
+    public partial class Grupo_Recurso
     {
         [Key]
-        public int Id { get; set; }
+        public int Id { get; set; }        
 
-        [MaxLength(200)]
-       
-        public  string Nombre { get; set; }
-
-        public virtual ICollection<Zona> Zona { get; set; }
+        [MaxLength(50)]
+        public string Nombre { get; set; }
+        
+        public virtual ICollection<Recurso> Recursos { get; set; }
 
         public virtual ICollection<ApplicationUser> Usuarios { get; set; }
-
-        public virtual ICollection<Unidad_Ejecutora> Unidades_Ejecutoras { get; set; }
     }
 }

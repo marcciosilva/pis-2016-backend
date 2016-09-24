@@ -6,17 +6,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using Newtonsoft.Json;
 
 namespace Servicios.Controllers
 {
     public class EventoController : ApiController
     {
-        [HttpGet]        
-        public async Task<IHttpActionResult> Get()
+
+        [Authorize]
+        [HttpGet]
+        [Route("eventos")]
+        public string Get()
         {
             using (var context = new EmsysContext())
             {
-                return Ok(await context.Evento.ToListAsync());
+                return JsonConvert.SerializeObject(context.Evento.ToListAsync());
             }
         }
     }

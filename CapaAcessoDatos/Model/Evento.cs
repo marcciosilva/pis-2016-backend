@@ -28,7 +28,7 @@
 
         public DateTime TimeStamp { get; set; }
 
-        //public virtual Usuario { get; set; }
+        public virtual ApplicationUser Usuario { get; set; }
 
         public DateTime FechaCreacion { get; set; }
 

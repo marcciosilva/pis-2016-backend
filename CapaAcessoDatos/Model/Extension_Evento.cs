@@ -25,7 +25,7 @@
 
         public virtual Zona Zona { get; set; }
 
-        //public virtual Usuario Despachador { get; set; }
+        public virtual ApplicationUser Despachador { get; set; }
 
         public string DescripcionDespachador { get; set; }
         
