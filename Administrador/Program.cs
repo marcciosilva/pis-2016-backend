@@ -21,6 +21,9 @@ namespace Administrador
             Console.WriteLine("Opcion 5: Crear Sector");
             Console.WriteLine("Opcion 6: Crear Categoria");
             Console.WriteLine("Opcion 7: Crear Evento");
+            Console.WriteLine("Opcion 8: Crear Recurso");
+            Console.WriteLine("Opcion 9: Asignar Recurso");
+            Console.WriteLine("Opcion 10: Iniciar a usuario como recurso");
             Console.WriteLine("");
         }
 
@@ -33,7 +36,7 @@ namespace Administrador
                 try
                 {
                     opcion = Int32.Parse(Console.ReadLine());
-                    if (opcion >= 0 && opcion < 10)
+                    if (opcion >= 0 && opcion < 11)
                     {
                         valido = true;
                     }
@@ -211,6 +214,26 @@ namespace Administrador
             }
         }
 
+        static void CrearRecurso()
+        {
+            using (var context = new EmsysContext())
+            {
+                try
+                {
+                    Console.WriteLine("Codigo:");
+                    string codigo = Console.ReadLine();
+
+                    context.Recursos.Add(new Recurso() { Codigo= codigo, Estado= EstadosRecurso.NoDisponible});
+                    context.SaveChanges();
+                    Console.WriteLine("Exito!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+        }
+
         static void AsignarRecurso()
         {
             using (var context = new EmsysContext())
@@ -226,6 +249,30 @@ namespace Administrador
                     context.Recursos.FirstOrDefault(r => r.Codigo == codigo).Extension_Evento.Add(context.Extensiones_Evento.Find(extension));
                     context.SaveChanges();
                     Console.WriteLine("Exito!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+        }
+
+        static void IniciarUsuarioPorRecurso()
+        {
+            using (var context = new EmsysContext())
+            {
+                try
+                {
+                    Console.WriteLine("Nombre de usuario:");
+                    string usuario = Console.ReadLine();
+
+                    Console.WriteLine("Id del recurso:");
+                    int recurso = Int32.Parse(Console.ReadLine());
+
+                    context.Recursos.Find(recurso).Usuario = context.Users.FirstOrDefault(us => us.UserName == usuario);
+                    context.SaveChanges();
+                    Console.WriteLine("Exito!");
+                    Console.WriteLine(context.Users.FirstOrDefault(us => us.UserName == usuario).Recursos.Count);
                 }
                 catch (Exception e)
                 {
@@ -271,6 +318,15 @@ namespace Administrador
                         break;
                     case 7:
                         CrearEvento();
+                        break;
+                    case 8:
+                        CrearRecurso();
+                        break;
+                    case 9:
+                        AsignarRecurso();
+                        break;
+                    case 10:
+                        IniciarUsuarioPorRecurso();
                         break;
                 } 
 
