@@ -1,5 +1,6 @@
 ﻿namespace Emsys.DataAccesLayer.Model
 {
+    using DataTypeObject;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -21,8 +22,10 @@
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public virtual Evento Evento { get; set; }
 
+        [Required]
         public virtual Zona Zona { get; set; }
 
         public virtual ApplicationUser Despachador { get; set; }
@@ -33,15 +36,34 @@
 
         public string DescripcionSupervisor { get; set; }
 
+        [Required]
         public EstadoExtension Estado { get; set; }
 
+        [Required]
         public DateTime TimeStamp { get; set; }
 
         public virtual Categoria SegundaCategoria { get; set; }
 
         public virtual ICollection<Recurso> Recursos { get; set; }
-
-
-        
+              
+        public DtoExtension getDto()        
+        {
+            List<string> recursos = new List<string>();
+            foreach (Recurso r in Recursos)
+            {
+                recursos.Add(r.Codigo);
+            }
+            return new DtoExtension()
+            {
+                Zona = this.Zona.Nombre,
+                Despachador = this.Despachador.Nombre,
+                DescripcionDespachador = this.DescripcionDespachador,
+                DescripcionSupervisor= this.DescripcionSupervisor,
+                Estado = (DataTypeObject.EstadoExtension)Array.IndexOf(Enum.GetValues(Estado.GetType()), Estado),
+                TimeStamp = this.TimeStamp,
+                SegundaCategoria = this.SegundaCategoria.getDto(),
+                Recursos= recursos
+            };
+        }        
     }
 }

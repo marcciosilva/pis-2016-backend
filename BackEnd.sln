@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PruebaSubirImagenes", "Prue
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Administrador", "Administrador\Administrador.csproj", "{ED351DE1-1221-48A6-A00F-527318CBF94A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTypeObjetc", "DataTypeObjetc\DataTypeObjetc.csproj", "{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTypeObject", "DataTypeObjetc\DataTypeObject.csproj", "{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -11,13 +11,15 @@
     [Table("Origen_Eventos")]
     public partial class Origen_Evento
     {
-        [Key/*, ForeignKey("Evento")*/]
+        [Key]
         public int Id { get; set; }
 
-        //public virtual Evento Evento { get; set; }
+        [Required]
+        public virtual Evento Evento { get; set; }
 
         public int IdOrigen { get; set; }
 
+        [Required]
         public string TipoOrigen { get; set; }
 
         public DateTime TimeStamp { get; set; }

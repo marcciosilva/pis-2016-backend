@@ -165,6 +165,12 @@
   <ItemGroup>
     <Content Include="Datos\datosprueba usuarios.sql" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DataTypeObjetc\DataTypeObject.csproj">
+      <Project>{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}</Project>
+      <Name>DataTypeObject</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

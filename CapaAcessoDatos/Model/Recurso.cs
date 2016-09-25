@@ -25,9 +25,11 @@
         [Key]
         public int Id { get; set; }
 
+        [Required]
         [MaxLength(60)]
         public string Codigo { get; set; }
-        
+
+        [Required]
         public EstadosRecurso Estado { get; set; }
 
         public virtual ICollection<Extension_Evento> Extension_Evento { get; set; }

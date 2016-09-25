@@ -19,7 +19,8 @@
     {
         [MaxLength(20)]
         public string Nombre { get; set; }
-        
+
+        [Required]
         public Estado Estado { get; set; }    
 
         public virtual ICollection<Unidad_Ejecutora> Unidades_Ejecutoras { get; set; }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataTypeObjetc
+namespace DataTypeObject
 {
     public enum EstadoEvento
     {
@@ -18,7 +18,7 @@ namespace DataTypeObjetc
         
         public string NombreInformante { get; set; }
 
-        public virtual DtoCategoria Categoria { get; set; }
+        public DtoCategoria Categoria { get; set; }
 
         public EstadoEvento Estado { get; set; }
 

@@ -14,6 +14,7 @@
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public virtual ApplicationUser Usuario { get; set; }
 
         public DateTime TimeStamp { get; set; }

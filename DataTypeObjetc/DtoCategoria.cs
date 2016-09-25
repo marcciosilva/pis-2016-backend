@@ -1,4 +1,4 @@
-﻿namespace DataTypeObjetc
+﻿namespace DataTypeObject
 {
     public enum NombrePrioridad
     {
