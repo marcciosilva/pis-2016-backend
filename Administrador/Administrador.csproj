@@ -72,6 +72,10 @@
       <Project>{E3ED4CD6-6749-42EC-9140-F97453140BEA}</Project>
       <Name>Emsys.DataAccesLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Servicios\Emsys.ServiceLayer.csproj">
+      <Project>{D2A66EC3-41A8-4577-A446-3FF3E5804161}</Project>
+      <Name>Emsys.ServiceLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

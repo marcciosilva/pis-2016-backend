@@ -7,20 +7,21 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
 using Newtonsoft.Json;
+using Servicios.Identity;
 
 namespace Servicios.Controllers
 {
     public class EventoController : ApiController
     {
 
-        [Authorize]
+        [ClaimsAuthorization(ClaimType = "FTE", ClaimValue = "1")]
         [HttpGet]
         [Route("eventos")]
         public string Get()
         {
             using (var context = new EmsysContext())
             {
-                return JsonConvert.SerializeObject(context.Evento.ToListAsync());
+                return "hola";//JsonConvert.SerializeObject(context.Evento.ToListAsync());
             }
         }
     }

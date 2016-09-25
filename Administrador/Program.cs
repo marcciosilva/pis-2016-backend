@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace Administrador
 {
@@ -24,6 +25,7 @@ namespace Administrador
             Console.WriteLine("Opcion 8: Crear Recurso");
             Console.WriteLine("Opcion 9: Asignar Recurso");
             Console.WriteLine("Opcion 10: Iniciar a usuario como recurso");
+            Console.WriteLine("Opcion 11: Agregar Claim a usuario");
             Console.WriteLine("");
         }
 
@@ -36,7 +38,7 @@ namespace Administrador
                 try
                 {
                     opcion = Int32.Parse(Console.ReadLine());
-                    if (opcion >= 0 && opcion < 11)
+                    if (opcion >= 0 && opcion < 12)
                     {
                         valido = true;
                     }
@@ -257,6 +259,32 @@ namespace Administrador
             }
         }
 
+        static void AgregarClaim()
+        {
+            using (var context = new EmsysContext())
+            {
+                try
+                {
+                    Console.WriteLine("Nombre de usuario:");
+                    string usuario = Console.ReadLine();
+
+                    Console.WriteLine("ClaimType:");
+                    string type = Console.ReadLine();
+
+                    Console.WriteLine("ClaimValue:");
+                    string value = Console.ReadLine();
+
+                    context.Users.FirstOrDefault(u=> u.UserName== usuario).Claims.Add(new IdentityUserClaim() { ClaimType= type, ClaimValue= value});
+                    context.SaveChanges();
+                    Console.WriteLine("Exito!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+        }
+
         static void IniciarUsuarioPorRecurso()
         {
             using (var context = new EmsysContext())
@@ -327,6 +355,9 @@ namespace Administrador
                         break;
                     case 10:
                         IniciarUsuarioPorRecurso();
+                        break;
+                    case 11:
+                        AgregarClaim();
                         break;
                 } 
 

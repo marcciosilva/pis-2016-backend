@@ -222,11 +222,13 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\EventoController.cs" />
+    <Compile Include="Controllers\ListarEventosRController.cs" />
     <Compile Include="Controllers\MultimediaController.cs" />
     <Compile Include="Filtros\RequiereHttps.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Identity\ClaimsAuthorizationAttribute.cs" />
     <Compile Include="Identity\CustomJwtFormat.cs" />
     <Compile Include="Identity\CustomOAuthProvider.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
