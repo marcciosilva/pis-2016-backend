@@ -37,5 +37,6 @@
 
         public virtual ICollection<Recurso> Recurso { get; set; }
 
+        public virtual ICollection<ApplicationRole> ApplicationRoles { get; set; }
     }
 }

@@ -20,7 +20,7 @@ namespace CapaAcessoDatos
                 var user = context.Users.FirstOrDefault(u => u.UserName == userName);
 
                 // Si el usuario esta conectado como recurso.
-                if (user.Recurso != null)
+                if (user.Recurso.Count() > 0)
                 {
                     foreach (Extension_Evento ext in user.Recurso.FirstOrDefault().Extensiones_Eventos)
                     {
@@ -32,7 +32,7 @@ namespace CapaAcessoDatos
                     }
                 }
                 // Si el usuario esta conectado por zonas.
-                else if (user.Zonas != null)
+                else if (user.Zonas.Count() > 0)
                 {
                     foreach (Zona z in user.Zonas)
                     {

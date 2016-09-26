@@ -26,6 +26,10 @@ namespace Administrador
             Console.WriteLine("Opcion 9: Asignar Recurso");
             Console.WriteLine("Opcion 10: Iniciar a usuario como recurso");
             Console.WriteLine("Opcion 11: Agregar Claim a usuario");
+            Console.WriteLine("Opcion 12: Agregar Rol");
+            Console.WriteLine("Opcion 13: Agregar Permiso");
+            Console.WriteLine("Opcion 14: Asignar permiso a Rol");
+            Console.WriteLine("Opcion 15: Asignar Rol a un usuario");
             Console.WriteLine("");
         }
 
@@ -38,7 +42,7 @@ namespace Administrador
                 try
                 {
                     opcion = Int32.Parse(Console.ReadLine());
-                    if (opcion >= 0 && opcion < 12)
+                    if (opcion >= 0 && opcion < 16)
                     {
                         valido = true;
                     }
@@ -307,6 +311,95 @@ namespace Administrador
                 }
             }
         }
+        
+        static void AgregarRol()
+        {
+            using (var context = new EmsysContext())
+            {
+                try
+                {
+                    Console.WriteLine("Nombre de rol:");
+                    string rol = Console.ReadLine();
+
+                    context.ApplicationRoles.Add(new ApplicationRole() { Nombre = rol });
+                    context.SaveChanges();
+                    Console.WriteLine("Exito!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+        }
+
+        static void AgregarPermiso()
+        {
+            using (var context = new EmsysContext())
+            {
+                try
+                {
+                    Console.WriteLine("Clave del permiso:");
+                    string clave = Console.ReadLine();
+
+                    Console.WriteLine("Descripcion del permiso:");
+                    string descripcion = Console.ReadLine();
+
+                    context.Permisos.Add(new Permiso() { Clave = clave, Descripcion = descripcion });
+                    context.SaveChanges();
+                    Console.WriteLine("Exito!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+        }
+
+        static void AsignarPermiso()
+        {
+            using (var context = new EmsysContext())
+            {
+                try
+                {
+                    Console.WriteLine("Nombre del permiso:");
+                    string permiso = Console.ReadLine();
+
+                    Console.WriteLine("Nombre del rol:");
+                    string rol = Console.ReadLine();
+
+                    context.ApplicationRoles.FirstOrDefault(r=> r.Nombre == rol).Permisos.Add(context.Permisos.FirstOrDefault(per => per.Clave == permiso));
+                    context.SaveChanges();
+                    Console.WriteLine("Exito!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+        }
+
+        static void AsignarRol()
+        {
+            using (var context = new EmsysContext())
+            {
+                try
+                {
+                    Console.WriteLine("Nombre de usuario:");
+                    string usuario = Console.ReadLine();
+
+                    Console.WriteLine("Nombre del rol:");
+                    string rol = Console.ReadLine();
+
+                    context.Users.FirstOrDefault(u => u.UserName == usuario).ApplicationRoles.Add(context.ApplicationRoles.FirstOrDefault(r => r.Nombre == rol));
+                    context.SaveChanges();
+                    Console.WriteLine("Exito!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+        }
 
 
         static void Main(string[] args)
@@ -357,6 +450,18 @@ namespace Administrador
                         break;
                     case 11:
                         AgregarClaim();
+                        break;
+                    case 12:
+                        AgregarRol();
+                        break;
+                    case 13:
+                        AgregarPermiso();
+                        break;
+                    case 14:
+                        AsignarPermiso();
+                        break;
+                    case 15:
+                        AsignarRol();
                         break;
                 } 
 

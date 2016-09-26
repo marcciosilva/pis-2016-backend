@@ -35,6 +35,9 @@ namespace Emsys.DataAccesLayer.Core
         
         public DbSet<Zona> Zonas { get; set; }
 
+        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
+
+        public DbSet<Permiso> Permisos { get; set; }
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{
