@@ -248,7 +248,7 @@ namespace Administrador
                     Console.WriteLine("Id de la extension a la cual asignar el recurso:");
                     int extension = Int32.Parse(Console.ReadLine());
 
-                    context.Recursos.FirstOrDefault(r => r.Codigo == codigo).Extension_Evento.Add(context.Extensiones_Evento.Find(extension));
+                    context.Recursos.FirstOrDefault(r => r.Codigo == codigo).Extensiones_Eventos.Add(context.Extensiones_Evento.Find(extension));
                     context.SaveChanges();
                     Console.WriteLine("Exito!");
                 }
@@ -300,7 +300,6 @@ namespace Administrador
                     context.Recursos.Find(recurso).Usuario = context.Users.FirstOrDefault(us => us.UserName == usuario);
                     context.SaveChanges();
                     Console.WriteLine("Exito!");
-                    Console.WriteLine(context.Users.FirstOrDefault(us => us.UserName == usuario).Recursos.Count);
                 }
                 catch (Exception e)
                 {

@@ -27,11 +27,15 @@
 
         public virtual ICollection<Log> Logs { get; set; }
 
+        public virtual ICollection<Zona> Zonas { get; set; }
+
         public virtual ICollection<Extension_Evento> Despachando { get; set; }
 
         public virtual ICollection<Evento> EventosCreados { get; set; }
 
-        public virtual ICollection<Recurso> Recursos { get; set; }
+        public virtual ICollection<Grupo_Recurso> Grupos_Recursos { get; set; }
+
+        public virtual ICollection<Recurso> Recurso { get; set; }
 
     }
 }

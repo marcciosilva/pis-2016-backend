@@ -32,7 +32,7 @@
         [Required]
         public EstadosRecurso Estado { get; set; }
 
-        public virtual ICollection<Extension_Evento> Extension_Evento { get; set; }
+        public virtual ICollection<Extension_Evento> Extensiones_Eventos { get; set; }
         
         public virtual ApplicationUser Usuario { get; set; }  
     }

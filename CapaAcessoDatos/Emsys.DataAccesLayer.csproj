@@ -141,6 +141,8 @@
     <Compile Include="Core\Initializer.cs" />
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
+    <Compile Include="IMetodos.cs" />
+    <Compile Include="Metodos.cs" />
     <Compile Include="Model\ApplicationUser.cs" />
     <Compile Include="Model\GrupoRecurso.cs" />
     <Compile Include="Model\Unidad_Ejecutora.cs" />
@@ -170,6 +172,9 @@
       <Project>{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}</Project>
       <Name>DataTypeObject</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

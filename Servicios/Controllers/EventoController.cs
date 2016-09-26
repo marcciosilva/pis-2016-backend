@@ -12,9 +12,7 @@ using Servicios.Identity;
 namespace Servicios.Controllers
 {
     public class EventoController : ApiController
-    {
-
-        [ClaimsAuthorization(ClaimType = "FTE", ClaimValue = "1")]
+    {       
         [HttpGet]
         [Route("eventos")]
         public string Get()

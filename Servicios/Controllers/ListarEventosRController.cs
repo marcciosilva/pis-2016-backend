@@ -1,4 +1,6 @@
-﻿using Emsys.DataAccesLayer.Core;
+﻿using CapaAcessoDatos;
+using DataTypeObject;
+using Emsys.DataAccesLayer.Core;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -13,15 +15,12 @@ namespace Servicios.Controllers
     {
         [Authorize]
         [HttpGet]
-        [Route("listar_eventos_r")]
+        [Route("listarEventos")]
         public string Get()
         {
-            using (var context = new EmsysContext())
-            {
-                //List<DtEvento>
-                //return JsonConvert.SerializeObject(context.Users.FirstOrDefault(u=> u.UserName==User.Identity.Name).Recursos.ToListAsync());
-                return "";
-            }
+            IMetodos dbAL = new Metodos();
+            return JsonConvert.SerializeObject(dbAL.listarEventos(User.Identity.Name));
+            
         }
     }
 }

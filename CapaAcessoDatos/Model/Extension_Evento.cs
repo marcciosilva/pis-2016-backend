@@ -53,15 +53,22 @@
             {
                 recursos.Add(r.Codigo);
             }
+            string desp = null;
+            DtoCategoria cat = null;
+            if (this.Despachador != null)
+                desp = this.Despachador.Nombre;
+            if (this.SegundaCategoria != null)
+                cat = this.SegundaCategoria.getDto();
+
             return new DtoExtension()
             {
                 Zona = this.Zona.Nombre,
-                Despachador = this.Despachador.Nombre,
+                Despachador = desp,
                 DescripcionDespachador = this.DescripcionDespachador,
                 DescripcionSupervisor= this.DescripcionSupervisor,
                 Estado = (DataTypeObject.EstadoExtension)Array.IndexOf(Enum.GetValues(Estado.GetType()), Estado),
                 TimeStamp = this.TimeStamp,
-                SegundaCategoria = this.SegundaCategoria.getDto(),
+                SegundaCategoria = cat,
                 Recursos= recursos
             };
         }        

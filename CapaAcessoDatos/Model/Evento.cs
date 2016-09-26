@@ -65,26 +65,33 @@
 
         public virtual Origen_Evento Origen_Evento { get; set; }
 
-        public DtoEvento getEvento()
+        public DtoEvento getDto()
         {
             List<DtoExtension> extensiones = new List<DtoExtension>();
             foreach (Extension_Evento e in ExtensionesEvento)
             {
                 extensiones.Add(e.getDto());
             }
+            string dep = null;
+            string sec = null;
+            if (this.Departamento != null)
+                dep = this.Departamento.Nombre;
+            if (this.Sector != null)
+                sec = this.Sector.Nombre;
+
             return new DtoEvento()
-            {
+            {            
                 Id = this.Id,
                 NombreInformante = this.NombreInformante,
                 Categoria = this.Categoria.getDto(),
                 Estado = (DataTypeObject.EstadoEvento)Array.IndexOf(Enum.GetValues(Estado.GetType()), Estado),
                 TimeStamp = this.TimeStamp,
-                FechaCreacion = this.FechaCreacion,
-                Departamento = this.Departamento.Nombre,
+                FechaCreacion = this.FechaCreacion,                
+                Departamento = dep,
                 Calle = this.Calle,
                 Esquina = this.Esquina,
                 Numero = this.Numero,
-                Sector = this.Sector.Nombre,
+                Sector = sec,
                 Latitud = this.Latitud,
                 Longitud = this.Longitud,
                 Descripcion = this.Descripcion,
