@@ -229,7 +229,7 @@ namespace Administrador
                     Console.WriteLine("Codigo:");
                     string codigo = Console.ReadLine();
 
-                    context.Recursos.Add(new Recurso() { Codigo= codigo, Estado= EstadosRecurso.NoDisponible});
+                    context.Recursos.Add(new Recurso() { Codigo= codigo, Estado= EstadoRecurso.Disponible, EstadoAsignacion= EstadoAsignacionRecurso.Libre});
                     context.SaveChanges();
                     Console.WriteLine("Exito!");
                 }

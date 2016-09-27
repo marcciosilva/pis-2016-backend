@@ -47,7 +47,37 @@ namespace CapaAcessoDatos
                     }
                 }
                 return eventos;
+            }            
+        }
+
+        public bool loguearUsuario(string userName, ICollection<DtoRol> rol)
+        {
+            using (var context = new EmsysContext())
+            {
+                var user = context.Users.FirstOrDefault(u => u.UserName == userName);
+
+                // Quita posibles logins previos
+                user.Zonas.Clear();
+                user.Recurso.Clear();
+                
+                // Asigna el usario a las zonas o al recurso correspondiente.
+                foreach (DtoRol dtr in rol)
+                {
+                    // Si el usuario se loguea por recurso
+                    if (dtr.GetType().Equals(typeof(DtoRecurso)))
+                    {
+                        DtoRecurso rec = (DtoRecurso)dtr;
+                        user.Recurso.Add(context.Recursos.Find(rec.IdRecurso));
+                        return true;
+                    }
+                    else if (dtr.GetType().Equals(typeof(DtoZona)))
+                    {
+                        DtoZona zona = (DtoZona)dtr;
+                        user.Zonas.Add(context.Zonas.Find(zona.IdZona));
+                    }
+                }
             }
+            return true;
         }
     }
 }

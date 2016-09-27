@@ -57,6 +57,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DtoRecurso.cs" />
+    <Compile Include="DtoZona.cs" />
+    <Compile Include="DtoRol.cs" />
     <Compile Include="DtoCategoria.cs" />
     <Compile Include="DtoEvento.cs" />
     <Compile Include="DtoExtension.cs" />
