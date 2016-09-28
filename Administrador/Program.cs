@@ -31,6 +31,8 @@ namespace Administrador
             Console.WriteLine("Opcion 14: Asignar permiso a Rol");
             Console.WriteLine("Opcion 15: Asignar Rol a un usuario");
             Console.WriteLine("Opcion 16: Crear Grupo Recurso");
+            Console.WriteLine("Opcion 17: Asignar grupo recurso a un usuario");
+            Console.WriteLine("Opcion 18: Asignar unidad ejecutora a usuario");
             Console.WriteLine("");
         }
 
@@ -43,7 +45,7 @@ namespace Administrador
                 try
                 {
                     opcion = Int32.Parse(Console.ReadLine());
-                    if (opcion >= 0 && opcion < 17)
+                    if (opcion >= 0 && opcion < 19)
                     {
                         valido = true;
                     }
@@ -415,6 +417,8 @@ namespace Administrador
             }
         }
 
+
+
         static void AsignarRol()
         {
             using (var context = new EmsysContext())
@@ -428,6 +432,52 @@ namespace Administrador
                     string rol = Console.ReadLine();
 
                     context.Users.FirstOrDefault(u => u.UserName == usuario).ApplicationRoles.Add(context.ApplicationRoles.FirstOrDefault(r => r.Nombre == rol));
+                    context.SaveChanges();
+                    Console.WriteLine("Exito!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+        }
+
+        static void AsignarGR()
+        {
+            using (var context = new EmsysContext())
+            {
+                try
+                {
+                    Console.WriteLine("Nombre de usuario:");
+                    string usuario = Console.ReadLine();
+
+                    Console.WriteLine("Id del grupo recurso:");
+                    int gr = Int32.Parse(Console.ReadLine());
+
+                    context.Users.FirstOrDefault(u => u.UserName == usuario).Grupos_Recursos.Add(context.Grupos_Recursos.Find(gr));
+                    context.SaveChanges();
+                    Console.WriteLine("Exito!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+        }
+
+        static void AsignarUE()
+        {
+            using (var context = new EmsysContext())
+            {
+                try
+                {
+                    Console.WriteLine("Nombre de usuario:");
+                    string usuario = Console.ReadLine();
+
+                    Console.WriteLine("Id de la unidad ejecutora:");
+                    int ue = Int32.Parse(Console.ReadLine());
+
+                    context.Users.FirstOrDefault(u => u.UserName == usuario).Unidades_Ejecutoras.Add(context.Unidades_Ejecutoras.Find(ue));
                     context.SaveChanges();
                     Console.WriteLine("Exito!");
                 }
@@ -502,6 +552,12 @@ namespace Administrador
                         break;
                     case 16:
                         CrearGrupoRecurso();
+                        break;
+                    case 17:
+                        AsignarGR();
+                        break;
+                    case 18:
+                        AsignarUE();
                         break;
                 } 
 
