@@ -39,6 +39,8 @@ namespace Emsys.DataAccesLayer.Core
 
         public DbSet<Permiso> Permisos { get; set; }
 
+        public DbSet<Grupo_Recurso> Grupos_Recursos { get; set; }
+
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{
         //    base.OnModelCreating(modelBuilder);

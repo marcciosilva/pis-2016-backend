@@ -30,6 +30,7 @@ namespace Administrador
             Console.WriteLine("Opcion 13: Agregar Permiso");
             Console.WriteLine("Opcion 14: Asignar permiso a Rol");
             Console.WriteLine("Opcion 15: Asignar Rol a un usuario");
+            Console.WriteLine("Opcion 16: Crear Grupo Recurso");
             Console.WriteLine("");
         }
 
@@ -42,7 +43,7 @@ namespace Administrador
                 try
                 {
                     opcion = Int32.Parse(Console.ReadLine());
-                    if (opcion >= 0 && opcion < 16)
+                    if (opcion >= 0 && opcion < 17)
                     {
                         valido = true;
                     }
@@ -229,7 +230,23 @@ namespace Administrador
                     Console.WriteLine("Codigo:");
                     string codigo = Console.ReadLine();
 
-                    context.Recursos.Add(new Recurso() { Codigo= codigo, Estado= EstadoRecurso.Disponible, EstadoAsignacion= EstadoAsignacionRecurso.Libre});
+                    Recurso rec = new Recurso() { Codigo = codigo, Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre , Grupos_Recursos = new List<Grupo_Recurso>()};
+                    context.Recursos.Add(rec);
+
+                    List<int> grupos = new List<int>();
+                    bool seguir = true;
+                    while (seguir)
+                    {
+                        Console.WriteLine("Id de un grupo recurso del recurso:");
+                        grupos.Add(Int32.Parse(Console.ReadLine()));
+                        Console.WriteLine("1-> Agregar mas grupos, 0-> No agregar mas gripos");
+                        seguir = Int32.Parse(Console.ReadLine()) == 1;
+                    }     
+                    foreach (int g in grupos)
+                    {
+                        rec.Grupos_Recursos.Add(context.Grupos_Recursos.Find(g));
+                    }
+                    
                     context.SaveChanges();
                     Console.WriteLine("Exito!");
                 }
@@ -311,7 +328,27 @@ namespace Administrador
                 }
             }
         }
-        
+
+        static void CrearGrupoRecurso()
+        {
+            using (var context = new EmsysContext())
+            {
+                try
+                {
+                    Console.WriteLine("Nombre de grupo:");
+                    string nombre = Console.ReadLine();
+
+                    context.Grupos_Recursos.Add(new Grupo_Recurso() { Nombre = nombre });
+                    context.SaveChanges();
+                    Console.WriteLine("Exito!");
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
+            }
+        }
+
         static void AgregarRol()
         {
             using (var context = new EmsysContext())
@@ -462,6 +499,9 @@ namespace Administrador
                         break;
                     case 15:
                         AsignarRol();
+                        break;
+                    case 16:
+                        CrearGrupoRecurso();
                         break;
                 } 
 

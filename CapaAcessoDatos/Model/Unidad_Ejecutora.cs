@@ -17,7 +17,7 @@
         [Required]
         public string Nombre { get; set; }
 
-        public virtual ICollection<Zona> Zona { get; set; }
+        public virtual ICollection<Zona> Zonas { get; set; }
 
         public virtual ICollection<ApplicationUser> Usuarios { get; set; }
 

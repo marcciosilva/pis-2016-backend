@@ -12,7 +12,7 @@ namespace Servicios.Controllers
 {
     public class LoguearUsuarioController : ApiController
     {
-        [Authorize(Roles = "loguearUsuario")]
+        [Authorize]
         [HttpGet]
         [Route("loguearUsuario")]
         public string Get(string json)
