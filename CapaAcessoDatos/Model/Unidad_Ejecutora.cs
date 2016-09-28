@@ -21,6 +21,5 @@
 
         public virtual ICollection<ApplicationUser> Usuarios { get; set; }
 
-        public virtual ICollection<Unidad_Ejecutora> Unidades_Ejecutoras { get; set; }
     }
 }
