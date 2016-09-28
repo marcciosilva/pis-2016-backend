@@ -61,7 +61,7 @@ namespace CapaAcessoDatos
                 user.Recurso.Clear();
 
                 // Si el usuario se loguea por recurso
-                if (rol.Recursos.Count() == 1 && rol.Zonas.Count() == 0)//dtr.GetType().Equals(typeof(DtoRecurso)))
+                if (rol.Recursos.Count() == 1 && rol.Zonas.Count() == 0)
                 {
                     user.Recurso.Add(context.Recursos.Find(rol.Recursos.FirstOrDefault().IdRecurso));
                     context.SaveChanges();
