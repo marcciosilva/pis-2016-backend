@@ -1,5 +1,6 @@
 namespace Emsys.DataAccesLayer.Core
 {
+    using System;
     using System.Data.Entity;
     using Microsoft.AspNet.Identity.EntityFramework;
     using Model;
@@ -8,13 +9,35 @@ namespace Emsys.DataAccesLayer.Core
     //{
 
     //}
-    public partial class EmsysContext : IdentityDbContext
+    public partial class EmsysContext : IdentityDbContext<ApplicationUser>
     {
         public EmsysContext() {
             //   Database.SetInitializer<EmsysContext>(new DropCreateDatabaseIfModelChanges<EmsysContext>());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<EmsysContext, Configuration>());
         }
         public DbSet<Evento> Evento { get; set; }
+
+        public DbSet<Categoria> Categorias { get; set; }
+
+        public DbSet<Departamento> Departamentos { get; set; }
+
+        public DbSet<Extension_Evento> Extensiones_Evento { get; set; }
+
+        public DbSet<Log> Logs { get; set; }
+
+        public DbSet<Origen_Evento> Origen_Eventos { get; set; }
+        
+        public DbSet<Recurso> Recursos { get; set; }
+
+        public DbSet<Sector> Sectores { get; set; }
+
+        public DbSet<Unidad_Ejecutora> Unidades_Ejecutoras { get; set; }
+        
+        public DbSet<Zona> Zonas { get; set; }
+
+        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
+
+        public DbSet<Permiso> Permisos { get; set; }
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{

@@ -141,10 +141,21 @@
     <Compile Include="Core\Initializer.cs" />
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
-    <Compile Include="Migrations\201609090128413__AgregoEvento.cs" />
-    <Compile Include="Migrations\201609090128413__AgregoEvento.Designer.cs">
-      <DependentUpon>201609090128413__AgregoEvento.cs</DependentUpon>
-    </Compile>
+    <Compile Include="IMetodos.cs" />
+    <Compile Include="Metodos.cs" />
+    <Compile Include="Model\ApplicationUser.cs" />
+    <Compile Include="Model\GrupoRecurso.cs" />
+    <Compile Include="Model\ApplicationRole.cs" />
+    <Compile Include="Model\Permiso.cs" />
+    <Compile Include="Model\Unidad_Ejecutora.cs" />
+    <Compile Include="Model\Zona.cs" />
+    <Compile Include="Model\Sector.cs" />
+    <Compile Include="Model\Recurso.cs" />
+    <Compile Include="Model\Origen_Evento.cs" />
+    <Compile Include="Model\Log.cs" />
+    <Compile Include="Model\Extension_Evento.cs" />
+    <Compile Include="Model\Departamento.cs" />
+    <Compile Include="Model\Categoria.cs" />
     <Compile Include="Model\Evento.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -152,14 +163,20 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
   <ItemGroup>
     <Content Include="Datos\datosprueba usuarios.sql" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201609090128413__AgregoEvento.resx">
-      <DependentUpon>201609090128413__AgregoEvento.cs</DependentUpon>
-    </EmbeddedResource>
+    <ProjectReference Include="..\DataTypeObjetc\DataTypeObject.csproj">
+      <Project>{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}</Project>
+      <Name>DataTypeObject</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

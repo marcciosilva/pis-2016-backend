@@ -222,6 +222,7 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\EventoController.cs" />
+    <Compile Include="Controllers\ListarEventosController.cs" />
     <Compile Include="Controllers\MultimediaController.cs" />
     <Compile Include="Filtros\RequiereHttps.cs" />
     <Compile Include="Global.asax.cs">
@@ -251,6 +252,10 @@
     <ProjectReference Include="..\CapaAcessoDatos\Emsys.DataAccesLayer.csproj">
       <Project>{e3ed4cd6-6749-42ec-9140-f97453140bea}</Project>
       <Name>Emsys.DataAccesLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataTypeObjetc\DataTypeObject.csproj">
+      <Project>{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}</Project>
+      <Name>DataTypeObject</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
