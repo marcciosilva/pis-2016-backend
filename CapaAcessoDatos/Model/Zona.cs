@@ -1,5 +1,6 @@
 ﻿namespace Emsys.DataAccesLayer.Model
 {
+    using DataTypeObject;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -22,6 +23,19 @@
 
         public virtual ICollection<Extension_Evento> Extensiones_Evento { get; set; }
 
-        public virtual ICollection<Sector> Sectores { get; set; }                
+        public virtual ICollection<Sector> Sectores { get; set; }
+
+        public DtoZona getDto()
+        {
+            
+            string ue = null;
+            if (Unidad_Ejecutora != null)
+            {
+                ue = Unidad_Ejecutora.Nombre;
+            }
+            
+            return new DtoZona() { IdZona = Id, NombreZona = Nombre, NombreUE = ue};
+            
+        }          
     }
 }

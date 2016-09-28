@@ -14,14 +14,12 @@
         public int Id { get; set; }
 
         [MaxLength(200)]
-
         [Required]
-        public  string Nombre { get; set; }
+        public string Nombre { get; set; }
 
-        public virtual ICollection<Zona> Zona { get; set; }
+        public virtual ICollection<Zona> Zonas { get; set; }
 
         public virtual ICollection<ApplicationUser> Usuarios { get; set; }
 
-        public virtual ICollection<Unidad_Ejecutora> Unidades_Ejecutoras { get; set; }
     }
 }
