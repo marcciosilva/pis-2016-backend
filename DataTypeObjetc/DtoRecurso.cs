@@ -1,6 +1,6 @@
 ﻿namespace DataTypeObject
 {
-    public class DtoRecurso : DtoRol
+    public class DtoRecurso
     {
         public int IdRecurso { get; set; }
 

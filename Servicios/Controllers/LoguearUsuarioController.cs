@@ -17,9 +17,9 @@ namespace Servicios.Controllers
         [Route("loguearUsuario")]
         public string Get(string json)
         {
-            ICollection<DtoRol> roles = JsonConvert.DeserializeObject<ICollection<DtoRol>>(json);
+            DtoRol rol = JsonConvert.DeserializeObject<DtoRol>(json);
             IMetodos dbAL = new Metodos();
-            return JsonConvert.SerializeObject(dbAL.loguearUsuario(User.Identity.Name, roles));
+            return JsonConvert.SerializeObject(dbAL.loguearUsuario(User.Identity.Name, rol));
         }
     }
 }

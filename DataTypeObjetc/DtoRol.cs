@@ -1,7 +1,12 @@
-﻿namespace DataTypeObject
+﻿using System.Collections.Generic;
+
+namespace DataTypeObject
 {
-    public abstract class DtoRol
+    public class DtoRol
     {
+        public ICollection<DtoZona> Zonas { get; set; }
+
+        public ICollection<DtoRecurso> Recursos { get; set; }
 
     }
 }

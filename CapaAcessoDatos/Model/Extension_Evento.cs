@@ -55,19 +55,19 @@
             }
             string desp = null;
             DtoCategoria cat = null;
-            if (this.Despachador != null)
-                desp = this.Despachador.Nombre;
+            if (Despachador != null)
+                desp = Despachador.Nombre;
             if (this.SegundaCategoria != null)
-                cat = this.SegundaCategoria.getDto();
+                cat = SegundaCategoria.getDto();
 
             return new DtoExtension()
             {
-                Zona = this.Zona.Nombre,
+                Zona = Zona.Nombre,
                 Despachador = desp,
-                DescripcionDespachador = this.DescripcionDespachador,
-                DescripcionSupervisor= this.DescripcionSupervisor,
+                DescripcionDespachador = DescripcionDespachador,
+                DescripcionSupervisor= DescripcionSupervisor,
                 Estado = (DataTypeObject.EstadoExtension)Array.IndexOf(Enum.GetValues(Estado.GetType()), Estado),
-                TimeStamp = this.TimeStamp,
+                TimeStamp = TimeStamp,
                 SegundaCategoria = cat,
                 Recursos= recursos
             };

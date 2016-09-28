@@ -1,6 +1,6 @@
 ﻿namespace DataTypeObject
 {
-    public class DtoZona : DtoRol
+    public class DtoZona
     {
         public int IdZona { get; set; }
 

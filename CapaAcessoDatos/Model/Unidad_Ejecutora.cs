@@ -14,9 +14,8 @@
         public int Id { get; set; }
 
         [MaxLength(200)]
-
         [Required]
-        public  string Nombre { get; set; }
+        public string Nombre { get; set; }
 
         public virtual ICollection<Zona> Zona { get; set; }
 

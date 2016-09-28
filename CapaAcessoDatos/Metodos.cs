@@ -50,7 +50,7 @@ namespace CapaAcessoDatos
             }            
         }
 
-        public bool loguearUsuario(string userName, ICollection<DtoRol> rol)
+        public bool loguearUsuario(string userName, DtoRol rol)
         {
             using (var context = new EmsysContext())
             {
@@ -59,25 +59,31 @@ namespace CapaAcessoDatos
                 // Quita posibles logins previos
                 user.Zonas.Clear();
                 user.Recurso.Clear();
-                
-                // Asigna el usario a las zonas o al recurso correspondiente.
-                foreach (DtoRol dtr in rol)
+
+                // Si el usuario se loguea por recurso
+                if (rol.Recursos.Count() == 1 && rol.Zonas.Count() == 0)//dtr.GetType().Equals(typeof(DtoRecurso)))
                 {
-                    // Si el usuario se loguea por recurso
-                    if (dtr.GetType().Equals(typeof(DtoRecurso)))
+                    user.Recurso.Add(context.Recursos.Find(rol.Recursos.FirstOrDefault().IdRecurso));
+                    context.SaveChanges();
+                    return true;
+                }
+                // Si el usuario se loguea por zonas.
+                else if (rol.Recursos.Count() == 0 && rol.Zonas.Count() > 0)
+                {
+                    foreach (DtoZona z in rol.Zonas)
                     {
-                        DtoRecurso rec = (DtoRecurso)dtr;
-                        user.Recurso.Add(context.Recursos.Find(rec.IdRecurso));
-                        return true;
+                        user.Zonas.Add(context.Zonas.Find(z.IdZona));
                     }
-                    else if (dtr.GetType().Equals(typeof(DtoZona)))
-                    {
-                        DtoZona zona = (DtoZona)dtr;
-                        user.Zonas.Add(context.Zonas.Find(zona.IdZona));
-                    }
+                    context.SaveChanges();
+                    return true;
+                }
+                // Si el usuario se loguea como visitante.
+                else if (rol.Recursos.Count() == 0 && rol.Zonas.Count() == 0)
+                {
+                    return true;
                 }
             }
-            return true;
+            return false;
         }
     }
 }
