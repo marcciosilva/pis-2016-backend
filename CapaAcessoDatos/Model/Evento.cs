@@ -31,8 +31,7 @@
 
         [Required]
         public DateTime TimeStamp { get; set; }
-
-        [Required]
+        
         public virtual ApplicationUser Usuario { get; set; }
 
         [Required]

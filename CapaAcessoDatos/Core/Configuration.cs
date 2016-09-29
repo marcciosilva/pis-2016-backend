@@ -1,6 +1,7 @@
 namespace Emsys.DataAccesLayer.Core
 {
     using Microsoft.AspNet.Identity;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using Model;
     using System;
     using System.Collections.Generic;
@@ -80,16 +81,32 @@ namespace Emsys.DataAccesLayer.Core
             // Asignar permisos a roles.
             rol1.Permisos.Add(permiso1);
 
-            
             // Agregar usuarios.
-            var manager = new EmsysUserManager();
-            ApplicationUser user1 = new ApplicationUser() { UserName = "usuario1", Nombre = "Usuario1" };
+            var userStore = new UserStore<ApplicationUser>(context);
+            var manager = new UserManager<ApplicationUser>(userStore);
+            var user1 = new ApplicationUser() { UserName = "usuario1", Nombre = "Usuario1" , ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>()};
             manager.Create(user1, "usuario1");
-            ApplicationUser user2 = new ApplicationUser() { UserName = "usuario2", Nombre = "Usuario2" };
+            var user2 = new ApplicationUser() { UserName = "usuario2", Nombre = "Usuario2", ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
             manager.Create(user2, "usuario2");
-            ApplicationUser user3 = new ApplicationUser() { UserName = "usuario3", Nombre = "Usuario3" };
+            var user3 = new ApplicationUser() { UserName = "usuario3", Nombre = "Usuario3", ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
             manager.Create(user3, "usuario3");
 
+            // Asignar rol a usuarios.
+            user1.ApplicationRoles.Add(rol1);
+            user2.ApplicationRoles.Add(rol1);
+            user3.ApplicationRoles.Add(rol1);
+
+            // Agregar usuarios a unidades ejecutoras y grupos recursos.
+            user1.Grupos_Recursos.Add(gr1);
+            user1.Unidades_Ejecutoras.Add(ue1);
+            user1.Grupos_Recursos.Add(gr2);
+            user1.Unidades_Ejecutoras.Add(ue2);
+            user1.Unidades_Ejecutoras.Add(ue3);
+            user2.Grupos_Recursos.Add(gr2);
+            user2.Unidades_Ejecutoras.Add(ue2);
+            user3.Grupos_Recursos.Add(gr1);
+            user3.Unidades_Ejecutoras.Add(ue1);
+            
             // Agregar eventos.
             Evento evento1 = new Evento()
             {
@@ -102,8 +119,9 @@ namespace Emsys.DataAccesLayer.Core
                 FechaCreacion = DateTime.Now
             };
             context.Evento.Add(evento1);
-            context.Extensiones_Evento.Add(new Extension_Evento() { Evento = evento1, Zona = zona1, Estado = EstadoExtension.FaltaDespachar, TimeStamp = DateTime.Now });
-
+            Extension_Evento ext1 = new Extension_Evento() { Evento = evento1, Zona = zona1, Estado = EstadoExtension.FaltaDespachar, TimeStamp = DateTime.Now };
+            context.Extensiones_Evento.Add(ext1);
+            
             Evento evento2 = new Evento()
             {
                 Categoria = cat2,
@@ -131,7 +149,6 @@ namespace Emsys.DataAccesLayer.Core
             context.Evento.Add(evento1);
             context.Extensiones_Evento.Add(new Extension_Evento() { Evento = evento3, Zona = zona4, Estado = EstadoExtension.FaltaDespachar, TimeStamp = DateTime.Now });
             */
-
         }
     }
 }
