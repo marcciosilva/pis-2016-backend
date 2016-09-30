@@ -15,7 +15,7 @@
         public int Id { get; set; }
 
         [Required]
-        public virtual ApplicationUser Usuario { get; set; }
+        public virtual string Usuario { get; set; }
 
         public DateTime TimeStamp { get; set; }
 
@@ -32,6 +32,10 @@
 
         [MaxLength(50)]
         public string Accion { get; set; }
+
+        public int Codigo { get; set; }
+
+        public bool EsError { get; set; }
 
         public string Detalles { get; set; }
     }
