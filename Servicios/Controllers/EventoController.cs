@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Http;
 using Newtonsoft.Json;
 using Servicios.Identity;
+using DataTypeObject;
+using Emsys.DataAccesLayer.Model;
 
 namespace Servicios.Controllers
 {
@@ -19,7 +21,17 @@ namespace Servicios.Controllers
         {
             using (var context = new EmsysContext())
             {
-                return "hola";//JsonConvert.SerializeObject(context.Evento.ToListAsync());
+                /*
+                ICollection<DtoZona> zonas = new List<DtoZona>();
+                foreach (Zona z in context.Zonas)
+                {
+                    zonas.Add(z.getDto());
+                }
+                ICollection<DtoRecurso> recursos = new List<DtoRecurso>();
+
+                DtoRol rol = new DtoRol() { Zonas = zonas, Recursos = recursos };
+                return JsonConvert.SerializeObject(rol);*/
+                return context.Users.FirstOrDefault().Zonas.Count().ToString();
             }
         }
     }

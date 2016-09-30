@@ -10,5 +10,7 @@ namespace CapaAcessoDatos
     public interface IMetodos
     {
         ICollection<DtoEvento> listarEventos(string userName);
+
+        bool loguearUsuario(string userName, DtoRol rol);
     }
 }

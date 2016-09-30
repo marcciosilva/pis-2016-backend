@@ -1,5 +1,6 @@
 ﻿namespace Emsys.DataAccesLayer.Model
 {
+    using DataTypeObject;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
@@ -8,14 +9,20 @@
 
 
 
-    public enum EstadosRecurso
+    public enum EstadoRecurso
     {
-        // Si se encuentra con el maximo de eventos asignados
-        Operativo,
-        // Si ha sido tomado por un usuario y es posible asignarle mas eventos
-        Disponible,
         // Si no ha sido tomado por ningun usuario
+        Disponible,
+        // Si ha sido tomado por ningun usuario
         NoDisponible
+    }
+
+    public enum EstadoAsignacionRecurso
+    {
+        // Si es posible asignarlo a un evento
+        Libre,
+        // Si ha sido asignado al maximo de eventos posible
+        Operativo
     }
 
 
@@ -30,10 +37,20 @@
         public string Codigo { get; set; }
 
         [Required]
-        public EstadosRecurso Estado { get; set; }
+        public EstadoRecurso Estado { get; set; }
+
+        [Required]
+        public EstadoAsignacionRecurso EstadoAsignacion { get; set; }
 
         public virtual ICollection<Extension_Evento> Extensiones_Eventos { get; set; }
-        
-        public virtual ApplicationUser Usuario { get; set; }  
+
+        public virtual ICollection<Grupo_Recurso> Grupos_Recursos { get; set; }
+
+        public virtual ApplicationUser Usuario { get; set; }
+
+        public DtoRecurso getDto()
+        {
+            return new DtoRecurso() { IdRecurso = Id, CodigoRecurso = Codigo };
+        }
     }
 }
