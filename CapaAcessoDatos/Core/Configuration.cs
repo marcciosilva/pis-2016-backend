@@ -63,12 +63,16 @@ namespace Emsys.DataAccesLayer.Core
             context.Categorias.Add(cat3);
 
             // Agregar recusos.
-            Recurso rec1 = new Recurso() { Codigo = "recurso1", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Grupos_Recursos = new List<Grupo_Recurso>() };
-            Recurso rec2 = new Recurso() { Codigo = "recurso2", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Grupos_Recursos = new List<Grupo_Recurso>() };
-            Recurso rec3 = new Recurso() { Codigo = "recurso3", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Grupos_Recursos = new List<Grupo_Recurso>() };
+            Recurso rec1 = new Recurso() { Codigo = "recurso1", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Grupos_Recursos = new List<Grupo_Recurso>(), Extensiones_Eventos = new List<Extension_Evento>()};
+            Recurso rec2 = new Recurso() { Codigo = "recurso2", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Grupos_Recursos = new List<Grupo_Recurso>(), Extensiones_Eventos = new List<Extension_Evento>()};
+            Recurso rec3 = new Recurso() { Codigo = "recurso3", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Grupos_Recursos = new List<Grupo_Recurso>(), Extensiones_Eventos = new List<Extension_Evento>()};
             context.Recursos.Add(rec1);
             context.Recursos.Add(rec2);
             context.Recursos.Add(rec3);
+
+            // Agregar recursos a grupos recursos.
+            rec1.Grupos_Recursos.Add(gr1);
+            rec2.Grupos_Recursos.Add(gr2);
 
             // Agregar rol.
             ApplicationRole rol1 = new ApplicationRole() { Nombre = "Admin", Permisos = new List<Permiso>()};
@@ -148,6 +152,9 @@ namespace Emsys.DataAccesLayer.Core
             };
             context.Evento.Add(evento1);
             context.Extensiones_Evento.Add(new Extension_Evento() { Evento = evento3, Zona = zona4, Estado = EstadoExtension.FaltaDespachar, TimeStamp = DateTime.Now });
+
+            // Asignar recursos a extensiones.
+            rec1.Extensiones_Eventos.Add(ext1);
             */
         }
     }
