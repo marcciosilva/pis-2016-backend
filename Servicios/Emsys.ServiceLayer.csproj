@@ -224,6 +224,7 @@
     <Compile Include="Controllers\EventoController.cs" />
     <Compile Include="Controllers\ListarEventosController.cs" />
     <Compile Include="Controllers\MultimediaController.cs" />
+    <Compile Include="Filtros\LogFilter.cs" />
     <Compile Include="Filtros\RequiereHttps.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -256,6 +257,10 @@
     <ProjectReference Include="..\DataTypeObjetc\DataTypeObject.csproj">
       <Project>{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}</Project>
       <Name>DataTypeObject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Emsys.Logs\Emsys.Logs.csproj">
+      <Project>{0e187470-df7b-447c-aad3-91d6f6590b1e}</Project>
+      <Name>Emsys.Logs</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
