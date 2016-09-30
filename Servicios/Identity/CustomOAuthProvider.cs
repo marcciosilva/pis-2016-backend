@@ -41,18 +41,21 @@ namespace Servicios.Identity
             return Task.FromResult<object>(null);
         }
 
-        private static ClaimsIdentity SetClaimsIdentity(OAuthGrantResourceOwnerCredentialsContext context, IdentityUser user)
+        private static ClaimsIdentity SetClaimsIdentity(OAuthGrantResourceOwnerCredentialsContext context, ApplicationUser user)
         {
             var identity = new ClaimsIdentity("JWT");
             identity.AddClaim(new Claim(ClaimTypes.Name, context.UserName));
             identity.AddClaim(new Claim("sub", context.UserName));
-
-            var userRoles = context.OwinContext.Get<EmsysUserManager>().GetRoles(user.Id);
-            foreach (var role in userRoles)
+            
+            // Por cada permiso asociado a los ApplicationRole del usuario, agrega un "Rol" con la clave del permiso.
+            foreach (ApplicationRole ar in user.ApplicationRoles)
             {
-                identity.AddClaim(new Claim(ClaimTypes.Role, role));
+                foreach (Permiso p in ar.Permisos)
+                {
+                    identity.AddClaim(new Claim(ClaimTypes.Role, p.Clave));
+                }
             }
-
+            
             return identity;
         }
     }
