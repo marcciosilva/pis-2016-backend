@@ -25,14 +25,15 @@ namespace Emsys.ServiceLayer.Filtros
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             string requestBody = await request.Content.ReadAsStringAsync();
-            Trace.WriteLine(requestBody);
+            var user = HttpContext.Current.User.Identity.GetUserId();
+            Emsys.Logs.Log.AgregarLog(user, GetClientIp(request), "Modulo", "Entidad", 0, "accion", "Request body: "+requestBody.ToString(), Emsys.Logs.Constantes.LogAcciones);
             // let other handlers process the request
             var result = await base.SendAsync(request, cancellationToken);
             if (result.Content != null)
             {
                 var responseBody = await result.Content.ReadAsStringAsync();
-                var user = HttpContext.Current.User.Identity.GetUserId();
-                Emsys.Logs.Log.AgregarLog(user, GetClientIp(request), "Modulo","Entidad",0,"accion", responseBody.ToString(), Emsys.Logs.Constantes.LogAcciones);                
+               
+                Emsys.Logs.Log.AgregarLog(user, GetClientIp(request), "Modulo","Entidad",0,"accion", "Response body: "+ responseBody.ToString(), Emsys.Logs.Constantes.LogAcciones);                
             }
 
             return result;

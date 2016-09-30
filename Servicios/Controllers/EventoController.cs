@@ -15,23 +15,33 @@ namespace Servicios.Controllers
 {
     public class EventoController : ApiController
     {       
+        //[HttpGet]
+        //[Route("eventos")]
+        //public string Get()
+        //{
+        //    using (var context = new EmsysContext())
+        //    {
+        //        /*
+        //        ICollection<DtoZona> zonas = new List<DtoZona>();
+        //        foreach (Zona z in context.Zonas)
+        //        {
+        //            zonas.Add(z.getDto());
+        //        }
+        //        ICollection<DtoRecurso> recursos = new List<DtoRecurso>();
+
+        //        DtoRol rol = new DtoRol() { Zonas = zonas, Recursos = recursos };
+        //        return JsonConvert.SerializeObject(rol);*/
+        //        return context.Users.FirstOrDefault().Zonas.Count().ToString();
+        //    }
+        //}
+
         [HttpGet]
         [Route("eventos")]
-        public string Get()
+        public async Task<IHttpActionResult> Get()
         {
             using (var context = new EmsysContext())
             {
-                /*
-                ICollection<DtoZona> zonas = new List<DtoZona>();
-                foreach (Zona z in context.Zonas)
-                {
-                    zonas.Add(z.getDto());
-                }
-                ICollection<DtoRecurso> recursos = new List<DtoRecurso>();
-
-                DtoRol rol = new DtoRol() { Zonas = zonas, Recursos = recursos };
-                return JsonConvert.SerializeObject(rol);*/
-                return context.Users.FirstOrDefault().Zonas.Count().ToString();
+                return Ok(await context.Evento.ToListAsync());
             }
         }
     }
