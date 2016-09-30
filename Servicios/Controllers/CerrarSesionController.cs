@@ -21,6 +21,10 @@ namespace Servicios.Controllers
             using (var context = new EmsysUserManager())
             {
                 IMetodos dbAL = new Metodos();
+                if (Request.GetOwinContext() != null)
+                {
+                    Request.GetOwinContext().Authentication.SignOut();
+                }
                 return JsonConvert.SerializeObject(dbAL.cerrarSesion(User.Identity.Name));
             }            
         }
