@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTypeObject", "DataTypeO
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emsys.Logs", "Emsys.Logs\Emsys.Logs.csproj", "{0E187470-DF7B-447C-AAD3-91D6F6590B1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.UnitTesting", "Test.UnitTesting\Test.UnitTesting.csproj", "{56F195D5-C21B-49D2-8524-C0E7C33751FF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -63,6 +65,10 @@ Global
 		{0E187470-DF7B-447C-AAD3-91D6F6590B1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0E187470-DF7B-447C-AAD3-91D6F6590B1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0E187470-DF7B-447C-AAD3-91D6F6590B1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56F195D5-C21B-49D2-8524-C0E7C33751FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56F195D5-C21B-49D2-8524-C0E7C33751FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56F195D5-C21B-49D2-8524-C0E7C33751FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56F195D5-C21B-49D2-8524-C0E7C33751FF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
