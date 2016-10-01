@@ -23,8 +23,8 @@ namespace Servicios.Controllers
                 DtoRespuesta resp;
                 try
                 {
-                    var user = context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-                    DtoRol rol = user.getRol();
+                    IMetodos dbAL = new Metodos();
+                    DtoRol rol = dbAL.getRolUsuario(User.Identity.Name);
                     resp = new DtoRespuesta() { Cod = 0, Response = rol };
                 }
                 catch (Exception e)

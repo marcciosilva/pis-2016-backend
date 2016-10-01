@@ -16,16 +16,26 @@ namespace Servicios.Controllers
         [Authorize]
         [HttpGet]
         [Route("cerrarSesion")]
-        public string Get()
+        public DtoRespuesta Get()
         {
             using (var context = new EmsysUserManager())
             {
-                IMetodos dbAL = new Metodos();
-                if (Request.GetOwinContext() != null)
+                DtoRespuesta resp;
+                try
                 {
-                    Request.GetOwinContext().Authentication.SignOut();
+                    IMetodos dbAL = new Metodos();
+                    dbAL.cerrarSesion(User.Identity.Name);
+                    resp = new DtoRespuesta() { Cod = 0, Response = null };
+                    if (Request.GetOwinContext() != null)
+                    {
+                        Request.GetOwinContext().Authentication.SignOut();
+                    }
                 }
-                return JsonConvert.SerializeObject(dbAL.cerrarSesion(User.Identity.Name));
+                catch (Exception e)
+                {
+                    resp = new DtoRespuesta() { Cod = 1, Response = null };
+                }
+                return resp;
             }            
         }
     }

@@ -40,28 +40,5 @@
 
         public virtual ICollection<ApplicationRole> ApplicationRoles { get; set; }
 
-        public DtoRol getRol()
-        {
-            // Agrega las zonas disponibles para el usuario mediante sus unidades ejecutoras.
-            ICollection<DtoZona> zonas = new List<DtoZona>();
-            foreach (Unidad_Ejecutora ue in Unidades_Ejecutoras)
-            {
-                foreach (Zona z in ue.Zonas)
-                {
-                    zonas.Add(z.getDto());
-                }
-            }
-            // Agrega los recursos disponibles para el usuario mediante sus grupos_recursos.
-            ICollection<DtoRecurso> recursos = new List<DtoRecurso>();
-            foreach (Grupo_Recurso gr in Grupos_Recursos)
-            {
-                foreach (Recurso r in gr.Recursos)
-                {
-                    recursos.Add(r.getDto());
-                }
-            }
-            DtoRol rol = new DtoRol() { Zonas = zonas, Recursos = recursos };
-            return rol;
-        }
     }
 }

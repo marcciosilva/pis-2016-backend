@@ -221,7 +221,6 @@
     <Compile Include="App_Start\Startup.OAuth.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\EventoController.cs" />
     <Compile Include="Controllers\CerrarSesionController.cs" />
     <Compile Include="Controllers\ListarEventosController.cs" />
     <Compile Include="Controllers\GetRolUsuarioController.cs" />

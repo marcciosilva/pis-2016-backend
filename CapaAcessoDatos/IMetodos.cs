@@ -11,8 +11,10 @@ namespace CapaAcessoDatos
     {
         ICollection<DtoEvento> listarEventos(string userName);
 
-        bool loguearUsuario(string userName, DtoRol rol);
+        DtoRol getRolUsuario(string userName);
 
-        bool cerrarSesion(string userName);
+        void loguearUsuario(string userName, DtoRol rol);
+
+        void cerrarSesion(string userName);
     }
 }
