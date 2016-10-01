@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Utils.Login;
 
 namespace Servicios.Controllers
 {
@@ -22,7 +23,7 @@ namespace Servicios.Controllers
             {
                 IMetodos dbAL = new Metodos();
                 DtoRol rol = JsonConvert.DeserializeObject<DtoRol>(json);
-                dbAL.loguearUsuario(User.Identity.Name, rol);
+                dbAL.loguearUsuario(ObtenerUsuario.ObtenerNombreUsuario(Request), rol);
                 resp = new DtoRespuesta() { cod = 0, response = null };
             }
             catch (Exception e)

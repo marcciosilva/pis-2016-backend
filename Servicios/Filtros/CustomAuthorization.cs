@@ -25,11 +25,14 @@ namespace Servicios.Filtros
         {
             bool autorizado = false;
             //voy a obtener el usuario del token
-            IEnumerable<string> token;
-            actionContext.Request.Headers.TryGetValues("auth", out token);
+            IEnumerable<string> salida;
+            actionContext.Request.Headers.TryGetValues("auth", out salida);
+            var token = salida.FirstOrDefault();
+            token = token.Replace("Bearer ", "");
+            token = token.Replace("Bearer", "");
             using (Emsys.DataAccesLayer.Core.EmsysContext db=new Emsys.DataAccesLayer.Core.EmsysContext()) {
-                var usuario = db.Users.Where(x=>x.Token==token.FirstOrDefault()).FirstOrDefault();
-                if (usuario != null) {
+                var usuario = db.Users.Where(x=>x.Token== token).FirstOrDefault();
+                if (usuario != null) {                    
                     foreach (var item in PermisosEtiqueta)
                     {
                         foreach (ApplicationRole ar in usuario.ApplicationRoles)

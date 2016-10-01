@@ -25,7 +25,7 @@
 
         public string  Token { get; set; }
 
-        public DateTime FechaInicioSesion { get; set; }
+        public DateTime? FechaInicioSesion { get; set; }
 
         [MaxLength(20)]
         public string Nombre { get; set; }

@@ -10,8 +10,11 @@ namespace Emsys.Logs
     {
         #region Multimedia-Controller
         public const int ErrorObtenerArchivoMultimedia = 1000;
-        public const int ErrorIniciarSesion = 1001;
         #endregion
+
+        public const int ErrorIniciarSesion = 1001;
+
+        public const int ErrorCerrarSesion = 2001;
 
         public const int LogAcciones = 9999;
 
@@ -25,6 +28,8 @@ namespace Emsys.Logs
                     return "Se logueo una accion.";
                 case ErrorIniciarSesion:
                     return "Error al iniciar sesion.";
+                case ErrorCerrarSesion:
+                    return "Error al cerrar sesion.";
                 default:
                     return "Error interno, cancele la operacion y vuelva a intentarlo. ";
 

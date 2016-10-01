@@ -2,6 +2,7 @@
 using DataTypeObject;
 using Emsys.DataAccesLayer.Core;
 using Newtonsoft.Json;
+using Servicios.Filtros;
 using Servicios.Identity;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,13 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using Utils.Login;
 
 namespace Servicios.Controllers
 {
     public class ListarEventosController : ApiController
     {
-        [Authorize(Roles = "listarEventos")]
+        [CustomAuthorizeAttribute("listarEventos")]
         [HttpGet]
         [Route("listarEventos")]
         public DtoRespuesta Get()
@@ -23,7 +25,7 @@ namespace Servicios.Controllers
             try
             {
                 IMetodos dbAL = new Metodos();
-                ICollection<DtoEvento> eventos = dbAL.listarEventos(User.Identity.Name);
+                ICollection<DtoEvento> eventos = dbAL.listarEventos(ObtenerUsuario.ObtenerNombreUsuario(Request));
                 resp = new DtoRespuesta() { cod = 0, response = eventos };
             }
             catch (Exception e)

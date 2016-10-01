@@ -8,7 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-
+using Utils.Login;
 namespace Servicios.Controllers
 {
     public class GetRolUsuarioController : ApiController
@@ -22,13 +22,15 @@ namespace Servicios.Controllers
             {
                 DtoRespuesta resp;
                 try
-                {
+                {                   
+
                     IMetodos dbAL = new Metodos();
-                    DtoRol rol = dbAL.getRolUsuario(User.Identity.Name);
+                    DtoRol rol = dbAL.getRolUsuario(ObtenerUsuario.ObtenerNombreUsuario(Request));
                     resp = new DtoRespuesta() { cod = 0, response = rol };
                 }
                 catch (Exception e)
                 {
+
                     resp = new DtoRespuesta() { cod = 2, response = null };
                 }                
                 return resp;

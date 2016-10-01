@@ -12,7 +12,9 @@ namespace DataTypeObjetc
         public const string Correcto = "Correcto";
         public const string UsuarioContraseñaInvalidos = "Usuario/Password inválido.";
         public const string UsuarioLogueado = "Usuario ya autenticado.";
-
+        public const string UsuarioNoAutenticado = "Usuario no autenticado.";
+        public const string UsuarioTieneOperacionesNoFinalizadas = "El usuario tiene una operación no finalizada.";
+        public const string ErrorCerraSesion = "Ocurrio un error en el servidor al cerrar la sesion";
         public static int GetCodMenssage(string constante)
         {
             switch (constante)
@@ -23,7 +25,13 @@ namespace DataTypeObjetc
                     return 1;               
                 case UsuarioLogueado:
                     return 6;
-                default:
+                case UsuarioNoAutenticado:
+                    return 2;
+                case UsuarioTieneOperacionesNoFinalizadas:
+                    return 5;
+                case ErrorCerraSesion:
+                    return 500
+                default: 
                     return 9999999;
             }
         }
