@@ -44,6 +44,7 @@
         {
             return new DtoCategoria()
             {
+                id = Id,
                 codigo = this.Codigo,
                 clave = this.Clave,
                 prioridad = (DataTypeObject.NombrePrioridad)Array.IndexOf(Enum.GetValues(Prioridad.GetType()), Prioridad),

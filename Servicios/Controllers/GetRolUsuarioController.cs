@@ -15,7 +15,7 @@ namespace Servicios.Controllers
     {
         [Authorize]
         [HttpGet]
-        [Route("getRolUsuario")]
+        [Route("users/getroles")]
         public DtoRespuesta Get()
         {
             using (var context = new EmsysUserManager())

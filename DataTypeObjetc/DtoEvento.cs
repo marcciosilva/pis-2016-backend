@@ -6,21 +6,17 @@ using System.Threading.Tasks;
 
 namespace DataTypeObject
 {
-    public enum EstadoEvento
-    {
-        Creado,
-        Enviado
-    }
-
     public class DtoEvento
     {
         public int id { get; set; }
         
-        public string nombre_informante { get; set; }
+        public string informante { get; set; }
+
+        public string telefono { get; set; }
 
         public DtoCategoria categoria { get; set; }
 
-        public EstadoEvento estado { get; set; }
+        public string estado { get; set; }
 
         public DateTime time_stamp { get; set; }
         
@@ -44,7 +40,7 @@ namespace DataTypeObject
 
         public bool en_proceso { get; set; }
 
-        public ICollection<DtoExtension> extensiones_evento { get; set; }
+        public ICollection<DtoExtension> extensiones { get; set; }
                 
     }
 }

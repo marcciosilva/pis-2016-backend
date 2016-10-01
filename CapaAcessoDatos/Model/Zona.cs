@@ -27,15 +27,7 @@
 
         public DtoZona getDto()
         {
-            /*
-            string ue = null;
-            if (Unidad_Ejecutora != null)
-            {
-                ue = Unidad_Ejecutora.Nombre;
-            }
-            */
-            return new DtoZona() { id = Id, nombre = Nombre, nombre_ue = Unidad_Ejecutora.Nombre};
-            
+            return new DtoZona() { id = Id, nombre = Nombre, nombre_ue = Unidad_Ejecutora.Nombre};            
         }          
     }
 }

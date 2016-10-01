@@ -23,6 +23,8 @@
         [MaxLength(200)]
         public string NombreInformante { get; set; }
 
+        public string TelefonoEvento { get; set; }
+
         [Required]
         public virtual Categoria Categoria { get; set; }
 
@@ -81,9 +83,10 @@
             return new DtoEvento()
             {            
                 id = this.Id,
-                nombre_informante = this.NombreInformante,
+                informante = this.NombreInformante,
+                telefono = TelefonoEvento,
                 categoria = this.Categoria.getDto(),
-                estado = (DataTypeObject.EstadoEvento)Array.IndexOf(Enum.GetValues(Estado.GetType()), Estado),
+                estado = Estado.ToString().ToLower(),
                 time_stamp = this.TimeStamp,
                 fecha_creacion = this.FechaCreacion,                
                 departamento = dep,
@@ -95,7 +98,7 @@
                 longitud = this.Longitud,
                 descripcion = this.Descripcion,
                 en_proceso = this.EnProceso,
-                extensiones_evento = extensiones
+                extensiones = extensiones
             };
         }                        
     }
