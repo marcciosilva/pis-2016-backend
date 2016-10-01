@@ -4,9 +4,9 @@ namespace DataTypeObject
 {
     public class DtoRol
     {
-        public ICollection<DtoZona> Zonas { get; set; }
+        public ICollection<DtoZona> zonas { get; set; }
 
-        public ICollection<DtoRecurso> Recursos { get; set; }
+        public ICollection<DtoRecurso> recursos { get; set; }
 
     }
 }

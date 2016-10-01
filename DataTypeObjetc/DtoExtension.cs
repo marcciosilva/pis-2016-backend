@@ -15,21 +15,21 @@ namespace DataTypeObject
 
     public class DtoExtension
     {        
-        public DtoZona Zona { get; set; }
+        public DtoZona zona { get; set; }
 
-        public string Despachador { get; set; }
+        public string despachador { get; set; }
 
-        public string DescripcionDespachador { get; set; }
+        public string descripcion_despachador { get; set; }
 
-        public string DescripcionSupervisor { get; set; }
+        public string descripcion_supervisor { get; set; }
 
-        public EstadoExtension Estado { get; set; }
+        public EstadoExtension estado { get; set; }
 
-        public DateTime TimeStamp { get; set; }
+        public DateTime time_stamp { get; set; }
 
-        public DtoCategoria SegundaCategoria { get; set; }
+        public DtoCategoria segunda_categoria { get; set; }
 
-        public ICollection<string> Recursos { get; set; }
+        public ICollection<string> recursos { get; set; }
 
     }
 }

@@ -80,22 +80,22 @@
 
             return new DtoEvento()
             {            
-                Id = this.Id,
-                NombreInformante = this.NombreInformante,
-                Categoria = this.Categoria.getDto(),
-                Estado = (DataTypeObject.EstadoEvento)Array.IndexOf(Enum.GetValues(Estado.GetType()), Estado),
-                TimeStamp = this.TimeStamp,
-                FechaCreacion = this.FechaCreacion,                
-                Departamento = dep,
-                Calle = this.Calle,
-                Esquina = this.Esquina,
-                Numero = this.Numero,
-                Sector = sec,
-                Latitud = this.Latitud,
-                Longitud = this.Longitud,
-                Descripcion = this.Descripcion,
-                EnProceso = this.EnProceso,
-                ExtensionesEvento = extensiones
+                id = this.Id,
+                nombre_informante = this.NombreInformante,
+                categoria = this.Categoria.getDto(),
+                estado = (DataTypeObject.EstadoEvento)Array.IndexOf(Enum.GetValues(Estado.GetType()), Estado),
+                time_stamp = this.TimeStamp,
+                fecha_creacion = this.FechaCreacion,                
+                departamento = dep,
+                calle = this.Calle,
+                esquina = this.Esquina,
+                numero = this.Numero,
+                sector = sec,
+                latitud = this.Latitud,
+                longitud = this.Longitud,
+                descripcion = this.Descripcion,
+                en_proceso = this.EnProceso,
+                extensiones_evento = extensiones
             };
         }                        
     }

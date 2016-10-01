@@ -2,9 +2,9 @@
 {
     public class DtoRecurso
     {
-        public int IdRecurso { get; set; }
+        public int id { get; set; }
 
-        public string CodigoRecurso { get; set; }
+        public string codigo { get; set; }
         
     }
 }

@@ -14,37 +14,37 @@ namespace DataTypeObject
 
     public class DtoEvento
     {
-        public int Id { get; set; }
+        public int id { get; set; }
         
-        public string NombreInformante { get; set; }
+        public string nombre_informante { get; set; }
 
-        public DtoCategoria Categoria { get; set; }
+        public DtoCategoria categoria { get; set; }
 
-        public EstadoEvento Estado { get; set; }
+        public EstadoEvento estado { get; set; }
 
-        public DateTime TimeStamp { get; set; }
+        public DateTime time_stamp { get; set; }
         
-        public DateTime FechaCreacion { get; set; }
+        public DateTime fecha_creacion { get; set; }
         
-        public string Departamento { get; set; }
+        public string departamento { get; set; }
 
-        public string Calle { get; set; }
+        public string calle { get; set; }
         
-        public string Esquina { get; set; }
+        public string esquina { get; set; }
         
-        public string Numero { get; set; }
+        public string numero { get; set; }
 
-        public string Sector { get; set; }
+        public string sector { get; set; }
 
-        public double Latitud { get; set; }
+        public double latitud { get; set; }
 
-        public double Longitud { get; set; }
+        public double longitud { get; set; }
 
-        public string Descripcion { get; set; }
+        public string descripcion { get; set; }
 
-        public bool EnProceso { get; set; }
+        public bool en_proceso { get; set; }
 
-        public ICollection<DtoExtension> ExtensionesEvento { get; set; }
+        public ICollection<DtoExtension> extensiones_evento { get; set; }
                 
     }
 }

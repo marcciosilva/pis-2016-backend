@@ -50,7 +50,7 @@
 
         public DtoRecurso getDto()
         {
-            return new DtoRecurso() { IdRecurso = Id, CodigoRecurso = Codigo };
+            return new DtoRecurso() { id = Id, codigo = Codigo };
         }
     }
 }

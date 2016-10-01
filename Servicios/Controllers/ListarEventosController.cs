@@ -24,11 +24,11 @@ namespace Servicios.Controllers
             {
                 IMetodos dbAL = new Metodos();
                 ICollection<DtoEvento> eventos = dbAL.listarEventos(User.Identity.Name);
-                resp = new DtoRespuesta() { Cod = 0, Response = eventos };
+                resp = new DtoRespuesta() { cod = 0, response = eventos };
             }
             catch (Exception e)
             {
-                resp = new DtoRespuesta() { Cod = 2, Response = null };
+                resp = new DtoRespuesta() { cod = 2, response = null };
             }
             Console.WriteLine(JsonConvert.SerializeObject(resp));
             return resp;            

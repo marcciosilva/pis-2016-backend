@@ -84,7 +84,7 @@ namespace CapaAcessoDatos
                             recursos.Add(r.getDto());
                     }
                 }
-                DtoRol rol = new DtoRol() { Zonas = zonas, Recursos = recursos };
+                DtoRol rol = new DtoRol() { zonas = zonas, recursos = recursos };
                 return rol;
             }
         }
@@ -106,23 +106,23 @@ namespace CapaAcessoDatos
                 context.SaveChanges();
 
                 // Si el usuario se loguea por recurso
-                if (rol.Recursos.Count() == 1 && rol.Zonas.Count() == 0)
+                if (rol.recursos.Count() == 1 && rol.zonas.Count() == 0)
                 {
                     bool okRecurso = false;
                     // Verifica que el recurso seleccionado sea seleccionable por el usuario.
                     foreach(Grupo_Recurso gr in user.Grupos_Recursos)
                     {
-                        if (gr.Recursos.FirstOrDefault(r => r.Id == rol.Recursos.FirstOrDefault().IdRecurso) != null)
+                        if (gr.Recursos.FirstOrDefault(r => r.Id == rol.recursos.FirstOrDefault().id) != null)
                         {
                             okRecurso = true;
                             break;
                         }
                     }
                     // Si es seleccionable y esta libre se lo asigna y lo marca como no disponible.
-                    if (okRecurso && (context.Recursos.Find(rol.Recursos.FirstOrDefault().IdRecurso).Estado == EstadoRecurso.Disponible))
+                    if (okRecurso && (context.Recursos.Find(rol.recursos.FirstOrDefault().id).Estado == EstadoRecurso.Disponible))
                     {
-                        user.Recurso.Add(context.Recursos.Find(rol.Recursos.FirstOrDefault().IdRecurso));
-                        context.Recursos.Find(rol.Recursos.FirstOrDefault().IdRecurso).Estado = EstadoRecurso.NoDisponible;
+                        user.Recurso.Add(context.Recursos.Find(rol.recursos.FirstOrDefault().id));
+                        context.Recursos.Find(rol.recursos.FirstOrDefault().id).Estado = EstadoRecurso.NoDisponible;
                         context.SaveChanges();
                         return;
                     }
@@ -132,15 +132,15 @@ namespace CapaAcessoDatos
                     }
                 }
                 // Si el usuario se loguea por zonas.
-                else if (rol.Recursos.Count() == 0 && rol.Zonas.Count() > 0)
+                else if (rol.recursos.Count() == 0 && rol.zonas.Count() > 0)
                 {
-                    foreach (DtoZona z in rol.Zonas)
+                    foreach (DtoZona z in rol.zonas)
                     {
                         // Verifica que el usuario pertenezca a la unidad ejecutora de cada zona.
-                        Zona zona = context.Zonas.Find(z.IdZona);
+                        Zona zona = context.Zonas.Find(z.id);
                         if (user.Unidades_Ejecutoras.Contains(zona.Unidad_Ejecutora))
                         {
-                            user.Zonas.Add(context.Zonas.Find(z.IdZona));
+                            user.Zonas.Add(context.Zonas.Find(z.id));
                         }                        
                         // Si existe una zona que no le corresponda no agrega ninguna zona.
                         else
@@ -152,7 +152,7 @@ namespace CapaAcessoDatos
                     return;
                 }
                 // Si el usuario se loguea como visitante.
-                else if (rol.Recursos.Count() == 0 && rol.Zonas.Count() == 0)
+                else if (rol.recursos.Count() == 0 && rol.zonas.Count() == 0)
                 {
                     return;
                 }

@@ -25,11 +25,11 @@ namespace Servicios.Controllers
                 {
                     IMetodos dbAL = new Metodos();
                     DtoRol rol = dbAL.getRolUsuario(User.Identity.Name);
-                    resp = new DtoRespuesta() { Cod = 0, Response = rol };
+                    resp = new DtoRespuesta() { cod = 0, response = rol };
                 }
                 catch (Exception e)
                 {
-                    resp = new DtoRespuesta() { Cod = 2, Response = null };
+                    resp = new DtoRespuesta() { cod = 2, response = null };
                 }                
                 return resp;
             }            

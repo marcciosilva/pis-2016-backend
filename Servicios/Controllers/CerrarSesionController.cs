@@ -25,7 +25,7 @@ namespace Servicios.Controllers
                 {
                     IMetodos dbAL = new Metodos();
                     dbAL.cerrarSesion(User.Identity.Name);
-                    resp = new DtoRespuesta() { Cod = 0, Response = null };
+                    resp = new DtoRespuesta() { cod = 0, response = null };
                     if (Request.GetOwinContext() != null)
                     {
                         Request.GetOwinContext().Authentication.SignOut();
@@ -33,7 +33,7 @@ namespace Servicios.Controllers
                 }
                 catch (Exception e)
                 {
-                    resp = new DtoRespuesta() { Cod = 1, Response = null };
+                    resp = new DtoRespuesta() { cod = 1, response = null };
                 }
                 return resp;
             }            

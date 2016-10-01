@@ -62,14 +62,14 @@
 
             return new DtoExtension()
             {
-                Zona = Zona.getDto(),
-                Despachador = desp,
-                DescripcionDespachador = DescripcionDespachador,
-                DescripcionSupervisor= DescripcionSupervisor,
-                Estado = (DataTypeObject.EstadoExtension)Array.IndexOf(Enum.GetValues(Estado.GetType()), Estado),
-                TimeStamp = TimeStamp,
-                SegundaCategoria = cat,
-                Recursos= recursos
+                zona = Zona.getDto(),
+                despachador = desp,
+                descripcion_despachador = DescripcionDespachador,
+                descripcion_supervisor= DescripcionSupervisor,
+                estado = (DataTypeObject.EstadoExtension)Array.IndexOf(Enum.GetValues(Estado.GetType()), Estado),
+                time_stamp = TimeStamp,
+                segunda_categoria = cat,
+                recursos= recursos
             };
         }        
     }

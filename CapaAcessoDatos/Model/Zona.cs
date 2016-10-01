@@ -34,7 +34,7 @@
                 ue = Unidad_Ejecutora.Nombre;
             }
             */
-            return new DtoZona() { IdZona = Id, NombreZona = Nombre, NombreUE = Unidad_Ejecutora.Nombre};
+            return new DtoZona() { id = Id, nombre = Nombre, nombre_ue = Unidad_Ejecutora.Nombre};
             
         }          
     }

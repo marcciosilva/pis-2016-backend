@@ -23,11 +23,11 @@ namespace Servicios.Controllers
                 IMetodos dbAL = new Metodos();
                 DtoRol rol = JsonConvert.DeserializeObject<DtoRol>(json);
                 dbAL.loguearUsuario(User.Identity.Name, rol);
-                resp = new DtoRespuesta() { Cod = 0, Response = null };
+                resp = new DtoRespuesta() { cod = 0, response = null };
             }
             catch (Exception e)
             {
-                resp = new DtoRespuesta() { Cod = 2, Response = null };
+                resp = new DtoRespuesta() { cod = 2, response = null };
             }
             return resp;
         }
