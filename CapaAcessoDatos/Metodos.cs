@@ -59,12 +59,13 @@ namespace CapaAcessoDatos
                 // Quita posibles logins previos
                 user.Zonas.Clear();
                 user.Recurso.Clear();
+                context.SaveChanges();
 
                 // Si el usuario se loguea por recurso
                 if (rol.Recursos.Count() == 1 && rol.Zonas.Count() == 0)
                 {
                     bool okRecurso = false;
-                    // Verifica que el recurso seleccionado esta disponible para el usuario.
+                    // Verifica que el recurso seleccionado sea seleccionable por el usuario.
                     foreach(Grupo_Recurso gr in user.Grupos_Recursos)
                     {
                         if (gr.Recursos.FirstOrDefault(r => r.Id == rol.Recursos.FirstOrDefault().IdRecurso) != null)
@@ -73,10 +74,11 @@ namespace CapaAcessoDatos
                             break;
                         }
                     }
-                    // Si esta disponible, lo asigna.
-                    if (okRecurso)
+                    // Si es seleccionable y esta libre se lo asigna y lo marca como no disponible.
+                    if (okRecurso && (context.Recursos.Find(rol.Recursos.FirstOrDefault().IdRecurso).Estado == EstadoRecurso.Disponible)) ;
                     {
                         user.Recurso.Add(context.Recursos.Find(rol.Recursos.FirstOrDefault().IdRecurso));
+                        context.Recursos.Find(rol.Recursos.FirstOrDefault().IdRecurso).Estado = EstadoRecurso.NoDisponible;
                         context.SaveChanges();
                         return true;
                     }
@@ -118,6 +120,22 @@ namespace CapaAcessoDatos
                 }
             }
             return false;
+        }
+
+        public bool cerrarSesion(string userName)
+        {
+            using (var context = new EmsysContext())
+            {
+                var user = context.Users.FirstOrDefault(u => u.UserName == userName);
+                user.Zonas.Clear();
+                foreach (Recurso r in user.Recurso)
+                {
+                    r.Estado = EstadoRecurso.Disponible;
+                }
+                user.Recurso.Clear();
+                context.SaveChanges();
+            }
+            return true;
         }
     }
 }
