@@ -62,7 +62,7 @@
 
             return new DtoExtension()
             {
-                Zona = Zona.Nombre,
+                Zona = Zona.getDto(),
                 Despachador = desp,
                 DescripcionDespachador = DescripcionDespachador,
                 DescripcionSupervisor= DescripcionSupervisor,

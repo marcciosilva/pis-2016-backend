@@ -16,12 +16,22 @@ namespace Servicios.Controllers
         [Authorize]
         [HttpGet]
         [Route("getRolUsuario")]
-        public string Get()
+        public DtoRespuesta Get()
         {
             using (var context = new EmsysUserManager())
             {
-                var user = context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
-                return JsonConvert.SerializeObject(user.getRol());
+                DtoRespuesta resp;
+                try
+                {
+                    var user = context.Users.FirstOrDefault(u => u.UserName == User.Identity.Name);
+                    DtoRol rol = user.getRol();
+                    resp = new DtoRespuesta() { Cod = 0, Response = rol };
+                }
+                catch (Exception e)
+                {
+                    resp = new DtoRespuesta() { Cod = 2, Response = null };
+                }                
+                return resp;
             }            
         }
     }

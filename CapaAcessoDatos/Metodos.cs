@@ -105,7 +105,7 @@ namespace CapaAcessoDatos
                         // Si existe una zona que no le corresponda, retorna false y no agrega ninguna zona.
                         else
                         {
-                            return false;
+                            throw new ArgumentException("Argumentos invalidos");
                         }                        
                     }
                     context.SaveChanges();
@@ -117,7 +117,7 @@ namespace CapaAcessoDatos
                     return true;
                 }
             }
-            return false;
+            throw new ArgumentException("Argumentos invalidos");
         }
     }
 }

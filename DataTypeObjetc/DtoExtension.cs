@@ -15,7 +15,7 @@ namespace DataTypeObject
 
     public class DtoExtension
     {        
-        public string Zona { get; set; }
+        public DtoZona Zona { get; set; }
 
         public string Despachador { get; set; }
 
