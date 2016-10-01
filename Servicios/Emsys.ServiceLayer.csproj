@@ -221,11 +221,13 @@
     <Compile Include="App_Start\Startup.OAuth.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\EventoController.cs" />
     <Compile Include="Controllers\ListarEventosController.cs" />
     <Compile Include="Controllers\GetRolUsuarioController.cs" />
     <Compile Include="Controllers\LoguearUsuarioController.cs" />
     <Compile Include="Controllers\MultimediaController.cs" />
+    <Compile Include="Filtros\CustomAuthorization.cs" />
     <Compile Include="Filtros\LogFilter.cs" />
     <Compile Include="Filtros\RequiereHttps.cs" />
     <Compile Include="Global.asax.cs">
@@ -263,6 +265,10 @@
     <ProjectReference Include="..\Emsys.Logs\Emsys.Logs.csproj">
       <Project>{0e187470-df7b-447c-aad3-91d6f6590b1e}</Project>
       <Name>Emsys.Logs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils.Login\Utils.Login.csproj">
+      <Project>{17a7932d-27bc-45df-9f1d-64019e0389ed}</Project>
+      <Name>Utils.Login</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup>

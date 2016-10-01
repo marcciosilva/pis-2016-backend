@@ -37,6 +37,8 @@ namespace Emsys.DataAccesLayer.Core
 
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
 
+        //public DbSet<ApplicationUser> ApplicationUser { get; set; }
+
         public DbSet<Permiso> Permisos { get; set; }
 
         public DbSet<Grupo_Recurso> Grupos_Recursos { get; set; }

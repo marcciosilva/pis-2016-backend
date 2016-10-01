@@ -10,6 +10,7 @@ using Newtonsoft.Json;
 using Servicios.Identity;
 using DataTypeObject;
 using Emsys.DataAccesLayer.Model;
+using Servicios.Filtros;
 
 namespace Servicios.Controllers
 {
@@ -35,6 +36,8 @@ namespace Servicios.Controllers
         //    }
         //}
 
+
+        [CustomAuthorizeAttribute("Permiso","a")]
         [HttpGet]
         [Route("eventos")]
         public async Task<IHttpActionResult> Get()

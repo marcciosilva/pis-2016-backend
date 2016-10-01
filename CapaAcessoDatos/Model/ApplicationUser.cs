@@ -18,8 +18,18 @@
         
     public class ApplicationUser : IdentityUser
     {
+
+        public string NombreUsuario { get; set; }
+
+        public string Contraseña { get; set; }
+
+        public string  Token { get; set; }
+
+        public DateTime FechaInicioSesion { get; set; }
+
         [MaxLength(20)]
         public string Nombre { get; set; }
+
 
         [Required]
         public Estado Estado { get; set; }    
