@@ -30,7 +30,7 @@ namespace DataTypeObjetc
                 case UsuarioTieneOperacionesNoFinalizadas:
                     return 5;
                 case ErrorCerraSesion:
-                    return 500
+                    return 500;
                 default: 
                     return 9999999;
             }

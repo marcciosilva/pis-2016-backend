@@ -19,7 +19,7 @@ namespace Emsys.DataAccesLayer.Core
 
         protected override void Seed(EmsysContext context)
         {
-            /*
+            
             //Agregar unidades ejecutoras.
             Unidad_Ejecutora ue1 = new Unidad_Ejecutora() { Nombre = "ue1" };
             Unidad_Ejecutora ue2 = new Unidad_Ejecutora() { Nombre = "ue2" };
@@ -88,17 +88,15 @@ namespace Emsys.DataAccesLayer.Core
             // Agregar usuarios.
             var userStore = new UserStore<ApplicationUser>(context);
             var manager = new UserManager<ApplicationUser>(userStore);
-            var user1 = new ApplicationUser() { UserName = "usuario1", Nombre = "Usuario1" , ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>()};
+            var user1 = new ApplicationUser() {NombreUsuario="A", Contraseña= "6dcd4ce23d88e2ee9568ba546c007c63d9131c1b", UserName = "usuario1", Nombre = "Usuario1" , ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>()};
             manager.Create(user1, "usuario1");
-            var user2 = new ApplicationUser() { UserName = "usuario2", Nombre = "Usuario2", ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+            var user2 = new ApplicationUser() { NombreUsuario = "B", Contraseña = "B" , UserName = "usuario2", Nombre = "Usuario2", ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
             manager.Create(user2, "usuario2");
-            var user3 = new ApplicationUser() { UserName = "usuario3", Nombre = "Usuario3", ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
-            manager.Create(user3, "usuario3");
 
             // Asignar rol a usuarios.
             user1.ApplicationRoles.Add(rol1);
             user2.ApplicationRoles.Add(rol1);
-            user3.ApplicationRoles.Add(rol1);
+         //   user3.ApplicationRoles.Add(rol1);
 
             // Agregar usuarios a unidades ejecutoras y grupos recursos.
             user1.Grupos_Recursos.Add(gr1);
@@ -108,8 +106,8 @@ namespace Emsys.DataAccesLayer.Core
             user1.Unidades_Ejecutoras.Add(ue3);
             user2.Grupos_Recursos.Add(gr2);
             user2.Unidades_Ejecutoras.Add(ue2);
-            user3.Grupos_Recursos.Add(gr1);
-            user3.Unidades_Ejecutoras.Add(ue1);
+            //user3.Grupos_Recursos.Add(gr1);
+            //user3.Unidades_Ejecutoras.Add(ue1);
             
             // Agregar eventos.
             Evento evento1 = new Evento()
@@ -155,7 +153,7 @@ namespace Emsys.DataAccesLayer.Core
 
             // Asignar recursos a extensiones.
             rec1.Extensiones_Eventos.Add(ext1);
-            */
+          
         }
     }
 }

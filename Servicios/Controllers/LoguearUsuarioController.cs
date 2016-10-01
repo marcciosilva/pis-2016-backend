@@ -21,6 +21,7 @@ namespace Servicios.Controllers
             DtoRespuesta resp;
             try
             {
+                ObtenerUsuario.ObtenerNombreUsuario(Request);
                 IMetodos dbAL = new Metodos();
                 DtoRol rol = JsonConvert.DeserializeObject<DtoRol>(json);
                 dbAL.loguearUsuario(ObtenerUsuario.ObtenerNombreUsuario(Request), rol);
