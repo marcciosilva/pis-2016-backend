@@ -21,7 +21,6 @@ namespace Servicios.Controllers
         [Route("users/authenticate")]
         public async Task<GenericResponse> Login(string usuario, string contraseña)
         {
-
             try
             {
                 using (EmsysContext db = new EmsysContext())

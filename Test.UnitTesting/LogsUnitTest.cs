@@ -46,8 +46,6 @@ namespace Test.UnitTesting
             Assert.True(cantidadLogsPrevia == cantidadLogsDespues);
             var log = db.Logs.Where(x => x.Usuario == nombre).FirstOrDefault();
             Assert.NotNull(log);
-
         }
-
     }
 }
