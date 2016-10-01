@@ -44,10 +44,11 @@
         {
             return new DtoCategoria()
             {
-                Codigo = this.Codigo,
-                Clave = this.Clave,
-                Prioridad = (DataTypeObject.NombrePrioridad)Array.IndexOf(Enum.GetValues(Prioridad.GetType()), Prioridad),
-                Activo = this.Activo
+                id = Id,
+                codigo = this.Codigo,
+                clave = this.Clave,
+                prioridad = (DataTypeObject.NombrePrioridad)Array.IndexOf(Enum.GetValues(Prioridad.GetType()), Prioridad),
+                activo = this.Activo
             };
         }
     }

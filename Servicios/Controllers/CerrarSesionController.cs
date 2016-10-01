@@ -11,11 +11,11 @@ using System.Web.Http;
 
 namespace Servicios.Controllers
 {
-    public class GetRolUsuarioController : ApiController
+    public class CerrarSesionController : ApiController
     {
         [Authorize]
         [HttpGet]
-        [Route("users/getroles")]
+        [Route("cerrarSesion")]
         public DtoRespuesta Get()
         {
             using (var context = new EmsysUserManager())
@@ -24,13 +24,17 @@ namespace Servicios.Controllers
                 try
                 {
                     IMetodos dbAL = new Metodos();
-                    DtoRol rol = dbAL.getRolUsuario(User.Identity.Name);
-                    resp = new DtoRespuesta() { cod = 0, response = rol };
+                    dbAL.cerrarSesion(User.Identity.Name);
+                    resp = new DtoRespuesta() { cod = 0, response = null };
+                    if (Request.GetOwinContext() != null)
+                    {
+                        Request.GetOwinContext().Authentication.SignOut();
+                    }
                 }
                 catch (Exception e)
                 {
-                    resp = new DtoRespuesta() { cod = 2, response = null };
-                }                
+                    resp = new DtoRespuesta() { cod = 1, response = null };
+                }
                 return resp;
             }            
         }

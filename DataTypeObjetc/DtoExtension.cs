@@ -6,30 +6,22 @@ using System.Threading.Tasks;
 
 namespace DataTypeObject
 {
-    public enum EstadoExtension
-    {
-        FaltaDespachar,
-        Despachado,
-        Cerrado
-    }
 
     public class DtoExtension
     {        
-        public string Zona { get; set; }
+        public DtoZona zona { get; set; }
+        
+        public string descripcion_despachador { get; set; }
 
-        public string Despachador { get; set; }
+        public string descripcion_supervisor { get; set; }
 
-        public string DescripcionDespachador { get; set; }
+        public string estado { get; set; }
 
-        public string DescripcionSupervisor { get; set; }
+        public DateTime time_stamp { get; set; }
 
-        public EstadoExtension Estado { get; set; }
+        public DtoCategoria categoria { get; set; }
 
-        public DateTime TimeStamp { get; set; }
-
-        public DtoCategoria SegundaCategoria { get; set; }
-
-        public ICollection<string> Recursos { get; set; }
+        public ICollection<string> recursos { get; set; }
 
     }
 }

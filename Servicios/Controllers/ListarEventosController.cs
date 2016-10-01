@@ -17,10 +17,21 @@ namespace Servicios.Controllers
         [Authorize(Roles = "listarEventos")]
         [HttpGet]
         [Route("listarEventos")]
-        public string Get()
+        public DtoRespuesta Get()
         {
-            IMetodos dbAL = new Metodos();
-            return JsonConvert.SerializeObject(dbAL.listarEventos(User.Identity.Name));            
+            DtoRespuesta resp;
+            try
+            {
+                IMetodos dbAL = new Metodos();
+                ICollection<DtoEvento> eventos = dbAL.listarEventos(User.Identity.Name);
+                resp = new DtoRespuesta() { cod = 0, response = eventos };
+            }
+            catch (Exception e)
+            {
+                resp = new DtoRespuesta() { cod = 2, response = null };
+            }
+            Console.WriteLine(JsonConvert.SerializeObject(resp));
+            return resp;            
         }
     }
 }

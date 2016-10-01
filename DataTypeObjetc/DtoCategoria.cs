@@ -9,14 +9,15 @@
 
     public class DtoCategoria
     {
+        public int id { get; set; }
 
-        public string Codigo { get; set; }
+        public string codigo { get; set; }
 
-        public string Clave { get; set; }
+        public string clave { get; set; }
 
-        public NombrePrioridad Prioridad { get; set; }
+        public NombrePrioridad prioridad { get; set; }
 
-        public bool Activo { get; set; }
+        public bool activo { get; set; }
 
     }
 }

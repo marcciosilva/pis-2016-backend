@@ -15,11 +15,21 @@ namespace Servicios.Controllers
         [Authorize]
         [HttpGet]
         [Route("loguearUsuario")]
-        public string Get(string json)
+        public DtoRespuesta Get(string json)
         {
-            DtoRol rol = JsonConvert.DeserializeObject<DtoRol>(json);
-            IMetodos dbAL = new Metodos();
-            return JsonConvert.SerializeObject(dbAL.loguearUsuario(User.Identity.Name, rol));
+            DtoRespuesta resp;
+            try
+            {
+                IMetodos dbAL = new Metodos();
+                DtoRol rol = JsonConvert.DeserializeObject<DtoRol>(json);
+                dbAL.loguearUsuario(User.Identity.Name, rol);
+                resp = new DtoRespuesta() { cod = 0, response = null };
+            }
+            catch (Exception e)
+            {
+                resp = new DtoRespuesta() { cod = 2, response = null };
+            }
+            return resp;
         }
     }
 }
