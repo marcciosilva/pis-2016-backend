@@ -21,8 +21,9 @@ namespace Servicios.Controllers
                 try
                 {
                     IMetodos dbAL = new Metodos();
-                    dbAL.cerrarSesion(ObtenerUsuario.ObtenerNombreUsuario(Request));
-                    var user = db.Users.Where(x => x.UserName == ObtenerUsuario.ObtenerNombreUsuario(Request)).FirstOrDefault();
+                    string nombreUsuario = ObtenerUsuario.ObtenerNombreUsuario(Request);
+                    dbAL.cerrarSesion(nombreUsuario);
+                    var user = db.Users.Where(x => x.NombreUsuario == nombreUsuario).FirstOrDefault();
                     if (user!= null)
                     {
                         var usuarioOperacionesNoFinalizadas = false;//TODO esto no se puede hacer hasta tener operaciones
@@ -32,6 +33,7 @@ namespace Servicios.Controllers
                         }
                         user.Token = null;
                         user.FechaInicioSesion = null;
+                        db.SaveChanges();
                         return new GenericResponse(Mensajes.GetCodMenssage(Mensajes.Correcto), new Logout(null));
                     }
                     return new GenericResponse(Mensajes.GetCodMenssage(Mensajes.UsuarioNoAutenticado), new Logout(Mensajes.UsuarioNoAutenticado));

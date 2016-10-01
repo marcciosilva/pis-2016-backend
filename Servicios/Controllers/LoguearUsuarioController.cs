@@ -1,6 +1,7 @@
 ﻿using CapaAcessoDatos;
 using DataTypeObject;
 using Newtonsoft.Json;
+using Servicios.Filtros;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +14,14 @@ namespace Servicios.Controllers
 {
     public class LoguearUsuarioController : ApiController
     {
-        [Authorize]
+        [CustomAuthorizeAttribute("listarEventos")]
         [HttpGet]
-        [Route("loguearUsuario")]
+        [Route("users/login")]
         public DtoRespuesta Get(string json)
         {
             DtoRespuesta resp;
             try
             {
-                ObtenerUsuario.ObtenerNombreUsuario(Request);
                 IMetodos dbAL = new Metodos();
                 DtoRol rol = JsonConvert.DeserializeObject<DtoRol>(json);
                 dbAL.loguearUsuario(ObtenerUsuario.ObtenerNombreUsuario(Request), rol);

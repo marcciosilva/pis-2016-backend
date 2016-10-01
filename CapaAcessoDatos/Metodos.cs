@@ -22,7 +22,7 @@ namespace CapaAcessoDatos
             {
                 List<int> eventosAgregados = new List<int>();
                 List<DtoEvento> eventos = new List<DtoEvento>();
-                var user = context.Users.FirstOrDefault(u => u.UserName == userName);
+                var user = context.Users.FirstOrDefault(u => u.NombreUsuario == userName);
 
                 // Si el usuario esta conectado como recurso.
                 if (user.Recurso.Count() > 0)
@@ -64,7 +64,7 @@ namespace CapaAcessoDatos
         {
             using (var context = new EmsysContext())
             {
-                var user = context.Users.FirstOrDefault(u => u.UserName == userName);
+                var user = context.Users.FirstOrDefault(u => u.NombreUsuario == userName);
                 // Agrega las zonas disponibles para el usuario mediante sus unidades ejecutoras.
                 ICollection<DtoZona> zonas = new List<DtoZona>();
                 foreach (Unidad_Ejecutora ue in user.Unidades_Ejecutoras)
@@ -98,7 +98,7 @@ namespace CapaAcessoDatos
         {
             using (var context = new EmsysContext())
             {
-                var user = context.Users.FirstOrDefault(u => u.UserName == userName);
+                var user = context.Users.FirstOrDefault(u => u.NombreUsuario == userName);
 
                 // Quita posibles logins previos
                 user.Zonas.Clear();
@@ -167,7 +167,7 @@ namespace CapaAcessoDatos
         {
             using (var context = new EmsysContext())
             {
-                var user = context.Users.FirstOrDefault(u => u.UserName == userName);
+                var user = context.Users.FirstOrDefault(u => u.NombreUsuario == userName);
                 user.Zonas.Clear();
                 foreach (Recurso r in user.Recurso)
                 {

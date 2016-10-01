@@ -2,6 +2,7 @@
 using DataTypeObject;
 using Emsys.DataAccesLayer.Core;
 using Newtonsoft.Json;
+using Servicios.Filtros;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace Servicios.Controllers
 {
     public class GetRolUsuarioController : ApiController
     {
-        [Authorize]
+        [CustomAuthorizeAttribute("listarEventos")]
         [HttpGet]
         [Route("users/getroles")]
         public DtoRespuesta Get()
