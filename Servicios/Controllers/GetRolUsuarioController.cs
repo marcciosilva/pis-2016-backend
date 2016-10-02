@@ -16,9 +16,9 @@ namespace Servicios.Controllers
     public class GetRolUsuarioController : ApiController
     {
         [CustomAuthorizeAttribute()]
-        [HttpGet]
+        [HttpPost]
         [Route("users/getroles")]
-        public DtoRespuesta Get()
+        public DtoRespuesta GetRoles()
         {
             try
             {  

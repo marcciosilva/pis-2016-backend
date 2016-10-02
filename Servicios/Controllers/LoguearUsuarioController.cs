@@ -16,9 +16,9 @@ namespace Servicios.Controllers
     public class LoguearUsuarioController : ApiController
     {
         [CustomAuthorizeAttribute()]
-        [HttpGet]
+        [HttpPost]
         [Route("users/login")]
-        public DtoRespuesta Get(string json)
+        public DtoRespuesta ElegirRole(string json)
         {
             try
             {
