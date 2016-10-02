@@ -21,7 +21,7 @@ namespace CapaAcessoDatos
         {
             using (var context = new EmsysContext())
             {
-                if (context.Users.FirstOrDefault(u => u.NombreUsuario == userName) != null && context.Users.FirstOrDefault(u => u.NombreUsuario == userName).Contraseña == pass)
+                if (context.Users.FirstOrDefault(u => u.UserName == userName) != null && context.Users.FirstOrDefault(u => u.UserName == userName).Contraseña == pass)
                     return true;
                 return false;
             }
