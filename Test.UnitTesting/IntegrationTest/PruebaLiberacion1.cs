@@ -72,10 +72,6 @@ namespace Test.UnitTesting
                     }
                 }
             }
-            //Assert.IsTrue(response.TryGetContentValue<Product>(out product));
-            //controller.Request = new HttpRequestMessage();
-            //controller.Request.Headers.Add("auth", "A");
-            //controller.Configuration = new HttpConfiguration();
         }
     }
 }

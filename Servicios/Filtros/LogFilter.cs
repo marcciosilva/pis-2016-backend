@@ -17,6 +17,8 @@ using System.Threading;
 using System.Web.Http.Dispatcher;
 using Microsoft.AspNet.Identity;
 using Utils.Login;
+using System.Web.Http.Controllers;
+using System.Web.Http.Routing;
 
 namespace Emsys.ServiceLayer.Filtros
 {
@@ -28,7 +30,14 @@ namespace Emsys.ServiceLayer.Filtros
         {
             string requestBody = await request.Content.ReadAsStringAsync();
             var user = ObtenerUsuario.ObtenerNombreUsuario(request);// HttpContext.Current.User.Identity.GetUserId();
-            Emsys.Logs.Log.AgregarLog(user, GetClientIp(request), "Modulo", "Entidad", 0, "accion", "Request body: "+requestBody.ToString(), Emsys.Logs.Constantes.LogAcciones);
+
+            var attributedRoutesData = request.GetRouteData().GetSubRoutes();
+            var subRouteData = attributedRoutesData.FirstOrDefault();
+            var actions = (ReflectedHttpActionDescriptor[])subRouteData.Route.DataTokens["actions"];
+            var controllerName = actions[0].ControllerDescriptor.ControllerName;
+
+
+            Emsys.Logs.Log.AgregarLog(user, GetClientIp(request), "Emsys.ServiceLayer", controllerName, 0, "accion", "Request body: "+requestBody.ToString(), Emsys.Logs.Constantes.LogAcciones);
             // let other handlers process the request
             var result = await base.SendAsync(request, cancellationToken);
             if (result.Content != null)
