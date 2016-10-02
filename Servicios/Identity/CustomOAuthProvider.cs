@@ -21,7 +21,7 @@ namespace Servicios.Identity
         {
             context.OwinContext.Response.Headers.Add("Access-Control-Allow-Origin", new[] { "*" });
 
-            var user = context.OwinContext.Get<EmsysContext>().Users.FirstOrDefault(u => u.UserName == context.UserName);
+            var user = context.OwinContext.Get<EmsysContext>().Users.FirstOrDefault(u => u.NombreUsuario == context.UserName);
             if (!context.OwinContext.Get<EmsysUserManager>().CheckPassword(user, context.Password))
             {
                 context.SetError("invalid_grant", "The user name or password is incorrect");
