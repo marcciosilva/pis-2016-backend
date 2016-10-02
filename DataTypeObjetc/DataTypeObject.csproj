@@ -58,10 +58,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DtoRespuesta.cs" />
-    <Compile Include="Logout.cs" />
+    <Compile Include="Mensaje.cs" />
     <Compile Include="Mensajes.cs" />
     <Compile Include="DtoRecurso.cs" />
-    <Compile Include="GenericResponse.cs" />
     <Compile Include="DtoZona.cs" />
     <Compile Include="DtoRol.cs" />
     <Compile Include="DtoCategoria.cs" />

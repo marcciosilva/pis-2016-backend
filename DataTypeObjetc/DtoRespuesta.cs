@@ -8,5 +8,11 @@
 
         public object response { get; set; }
 
+        public DtoRespuesta(int codigo, object respuesta)
+        {
+            cod = codigo;
+            response = respuesta;
+        }
+
     }
 }

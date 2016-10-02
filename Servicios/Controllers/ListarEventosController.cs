@@ -1,5 +1,6 @@
 ﻿using CapaAcessoDatos;
 using DataTypeObject;
+using DataTypeObjetc;
 using Emsys.DataAccesLayer.Core;
 using Newtonsoft.Json;
 using Servicios.Filtros;
@@ -21,19 +22,17 @@ namespace Servicios.Controllers
         [Route("events")]
         public DtoRespuesta Get()
         {
-            DtoRespuesta resp;
             try
             {
                 IMetodos dbAL = new Metodos();
                 ICollection<DtoEvento> eventos = dbAL.listarEventos(ObtenerUsuario.ObtenerNombreUsuario(Request));
-                resp = new DtoRespuesta() { cod = 0, response = eventos };
+                return  new DtoRespuesta(0, eventos);
             }
             catch (Exception e)
             {
-                resp = new DtoRespuesta() { cod = 2, response = null };
-            }
-            Console.WriteLine(JsonConvert.SerializeObject(resp));
-            return resp;            
+                Emsys.Logs.Log.AgregarLogError(ObtenerUsuario.ObtenerNombreUsuario(Request), "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorIniciarSesion);
+                return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+            }       
         }
     }
 }

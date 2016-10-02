@@ -15,30 +15,7 @@ namespace DataTypeObjetc
         public const string UsuarioNoAutenticado = "Usuario no autenticado.";
         public const string UsuarioTieneOperacionesNoFinalizadas = "El usuario tiene una operación no finalizada.";
         public const string ErrorCerraSesion = "Ocurrio un error en el servidor al cerrar la sesion";
-        public static int GetCodMenssage(string constante)
-        {
-            switch (constante)
-            {
-                case Correcto:
-                    return 0;
-                case UsuarioContraseñaInvalidos:
-                    return 1;               
-                case UsuarioLogueado:
-                    return 6;
-                case UsuarioNoAutenticado:
-                    return 2;
-                case UsuarioTieneOperacionesNoFinalizadas:
-                    return 5;
-                case ErrorCerraSesion:
-                    return 500;
-                default: 
-                    return 9999999;
-            }
-        }
+        public const string ErrorIniciarSesion = "Ocurrio un error en el servidor al iniciar sesion";
 
-        public string GetMenssage(Mensajes constante)
-        {
-            return constante.ToString();
-        }
     }
 }

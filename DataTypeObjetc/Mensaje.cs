@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 
 namespace DataTypeObjetc
 {
-    public class Logout: Response
+    public class Mensaje
     {
         public string msg { get; set; }
 
-        public Logout(string message) {
-            msg = message;
+        public Mensaje(string mensaje)
+        {
+            msg = mensaje;
         }
     }
 }

@@ -12,6 +12,38 @@ namespace CapaAcessoDatos
     public class Metodos : IMetodos
     {
         /// <summary>
+        /// Indica si las credenciales ingresadas son validas para algun usuario.
+        /// </summary>
+        /// <param name="userName">Nombre de usuario</param>
+        /// <param name="pass">Contraseña hasheada del usuario</param>
+        /// <returns>Verdadero o falso si las credenciales son correctas</returns>
+        public bool autenticarUsuario(string userName, string pass)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (context.Users.FirstOrDefault(u => u.NombreUsuario == userName) != null && context.Users.FirstOrDefault(u => u.NombreUsuario == userName).Contraseña == pass)
+                    return true;
+                return false;
+            }
+        }
+
+        public bool registrarInicioUsuario(string userName, string token, DateTime fecha)
+        {
+            using (var context = new EmsysContext())
+            {
+                var user = context.Users.FirstOrDefault(u => u.NombreUsuario == userName);
+                if (user != null)
+                {
+                    user.Token = token;
+                    user.FechaInicioSesion = fecha;
+                    context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Retorna una coleccion de eventos que son visibles al usuario en cuestion.
         /// </summary>
         /// <param name="userName">El nombre de usuario</param>
@@ -174,6 +206,8 @@ namespace CapaAcessoDatos
                     r.Estado = EstadoRecurso.Disponible;
                 }
                 user.Recurso.Clear();
+                user.Token = null;
+                user.FechaInicioSesion = null;
                 context.SaveChanges();
             }
             return;

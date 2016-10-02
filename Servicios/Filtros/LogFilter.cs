@@ -23,6 +23,7 @@ namespace Emsys.ServiceLayer.Filtros
 
     public class LogFilter : DelegatingHandler
     {
+
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             string requestBody = await request.Content.ReadAsStringAsync();

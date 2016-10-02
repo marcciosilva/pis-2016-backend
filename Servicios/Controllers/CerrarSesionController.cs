@@ -16,36 +16,26 @@ namespace Servicios.Controllers
         [CustomAuthorizeAttribute()]
         [HttpGet]
         [Route("users/logout")]
-        public GenericResponse CerrarSesion()
-        {
-            using (var db = new EmsysContext())
+        public DtoRespuesta CerrarSesion()
+        {            
+            try
             {
-                try
+                string nombreUsuario = ObtenerUsuario.ObtenerNombreUsuario(Request);
+                // TODO esto no se puede hacer hasta tener operaciones.
+                var usuarioOperacionesNoFinalizadas = false;
+                if (usuarioOperacionesNoFinalizadas)
                 {
-                    IMetodos dbAL = new Metodos();
-                    string nombreUsuario = ObtenerUsuario.ObtenerNombreUsuario(Request);
-                    dbAL.cerrarSesion(nombreUsuario);
-                    var user = db.Users.Where(x => x.NombreUsuario == nombreUsuario).FirstOrDefault();
-                    if (user!= null)
-                    {
-                        var usuarioOperacionesNoFinalizadas = false;//TODO esto no se puede hacer hasta tener operaciones
-                        if (usuarioOperacionesNoFinalizadas) {
-                            return new GenericResponse(Mensajes.GetCodMenssage(Mensajes.UsuarioTieneOperacionesNoFinalizadas),
-                                new Logout(Mensajes.UsuarioTieneOperacionesNoFinalizadas));
-                        }
-                        user.Token = null;
-                        user.FechaInicioSesion = null;
-                        db.SaveChanges();
-                        return new GenericResponse(Mensajes.GetCodMenssage(Mensajes.Correcto), new Logout(null));
-                    }
-                    return new GenericResponse(Mensajes.GetCodMenssage(Mensajes.UsuarioNoAutenticado), new Logout(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(5, new Mensaje(Mensajes.UsuarioTieneOperacionesNoFinalizadas));
                 }
-                catch (Exception e)
-                {
-                    Emsys.Logs.Log.AgregarLogError(ObtenerUsuario.ObtenerNombreUsuario(Request), "", "Emsys.ServiceLayer", "CerrarSesionController", 0, "Logout", "Hubo un error al intentar cerrar sesion, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorCerrarSesion);
-                    return new GenericResponse(Mensajes.GetCodMenssage(Mensajes.ErrorCerraSesion), new Logout(Mensajes.ErrorCerraSesion));
-                }
-            }            
+                IMetodos dbAL = new Metodos();                        
+                dbAL.cerrarSesion(nombreUsuario);
+                return new DtoRespuesta(0, null);
+            }
+            catch (Exception e)
+            {
+                Emsys.Logs.Log.AgregarLogError(ObtenerUsuario.ObtenerNombreUsuario(Request), "", "Emsys.ServiceLayer", "CerrarSesionController", 0, "Logout", "Hubo un error al intentar cerrar sesion, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorCerrarSesion);
+                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorCerraSesion));
+            }          
         }
     }
 }
