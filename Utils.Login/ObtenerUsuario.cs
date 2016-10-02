@@ -19,11 +19,12 @@ namespace Utils.Login
                 if (request.Headers.TryGetValues("auth", out headerValues))
                 {
                     token = headerValues.FirstOrDefault();
+                    token = token.Replace("Bearer ", "");
+                    token = token.Replace("Bearer", "");
+                    var user = db.Users.FirstOrDefault(u => u.Token == token);
+                    return user.NombreUsuario;
                 }
-                token = token.Replace("Bearer ", "");
-                token = token.Replace("Bearer", "");
-                var user = db.Users.FirstOrDefault(u => u.Token == token);
-                return user.NombreUsuario;
+                return null;
             }
         }
     }

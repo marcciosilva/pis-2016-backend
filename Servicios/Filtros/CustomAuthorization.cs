@@ -24,33 +24,45 @@ namespace Servicios.Filtros
         protected override bool IsAuthorized(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
             bool autorizado = false;
-            //voy a obtener el usuario del token
+            // Voy a obtener el usuario del token.
             IEnumerable<string> salida;
-            actionContext.Request.Headers.TryGetValues("auth", out salida);
-            var token = salida.FirstOrDefault();
-            token = token.Replace("Bearer ", "");
-            token = token.Replace("Bearer", "");
-            using (Emsys.DataAccesLayer.Core.EmsysContext db=new Emsys.DataAccesLayer.Core.EmsysContext()) {
-                var usuario = db.Users.Where(x=>x.Token== token).FirstOrDefault();
-                if (usuario != null) {                    
-                    foreach (var item in PermisosEtiqueta)
+            if(actionContext.Request.Headers.TryGetValues("auth", out salida))
+            {
+                var token = salida.FirstOrDefault();
+                token = token.Replace("Bearer ", "");
+                token = token.Replace("Bearer", "");
+
+                using (Emsys.DataAccesLayer.Core.EmsysContext db = new Emsys.DataAccesLayer.Core.EmsysContext())
+                {
+                    var usuario = db.Users.Where(x => x.Token == token).FirstOrDefault();
+                    if (usuario != null)
                     {
-                        foreach (ApplicationRole ar in usuario.ApplicationRoles)
+                        if (!PermisosEtiqueta.Any())
                         {
-                            foreach (Permiso p in ar.Permisos)
+                            return true;
+                        }
+                        foreach (var item in PermisosEtiqueta)
+                        {
+                            foreach (ApplicationRole ar in usuario.ApplicationRoles)
                             {
-                                if (item==p.Clave) {
-                                    autorizado = true;
+                                foreach (Permiso p in ar.Permisos)
+                                {
+                                    if (item == p.Clave)
+                                    {
+                                        autorizado = true;
+                                    }
                                 }
                             }
                         }
                     }
+                    else
+                    {
+                        return false;
+                    }
                 }
-                else {
-                    return false;
-                }
-            }            
-            return autorizado;
+                return autorizado;
+            }
+            return false;
         }
     }
 }

@@ -2,6 +2,7 @@
 using DataTypeObject;
 using DataTypeObjetc;
 using Emsys.DataAccesLayer.Core;
+using Servicios.Filtros;
 using System;
 using System.Linq;
 using System.Net.Http;
@@ -12,6 +13,7 @@ namespace Servicios.Controllers
 {
     public class CerrarSesionController : ApiController
     {
+        [CustomAuthorizeAttribute()]
         [HttpGet]
         [Route("users/logout")]
         public GenericResponse CerrarSesion()
