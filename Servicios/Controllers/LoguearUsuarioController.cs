@@ -18,12 +18,12 @@ namespace Servicios.Controllers
         [CustomAuthorizeAttribute()]
         [HttpPost]
         [Route("users/login")]
-        public DtoRespuesta ElegirRole(string json)
+        public DtoRespuesta ElegirRoles([FromBody] DtoRol rol)
         {
             try
             {
                 IMetodos dbAL = new Metodos();
-                DtoRol rol = JsonConvert.DeserializeObject<DtoRol>(json);
+                //DtoRol rol = JsonConvert.DeserializeObject<DtoRol>(json);
                 dbAL.loguearUsuario(ObtenerUsuario.ObtenerNombreUsuario(Request), rol);
                 return new DtoRespuesta(0,null);
             }

@@ -14,7 +14,7 @@ namespace Servicios.Controllers
     public class CerrarSesionController : ApiController
     {
         [CustomAuthorizeAttribute()]
-        [HttpGet]
+        [HttpPost]
         [Route("users/logout")]
         public DtoRespuesta CerrarSesion()
         {            
