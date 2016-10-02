@@ -27,6 +27,13 @@ namespace CapaAcessoDatos
             }
         }
 
+        /// <summary>
+        /// Almacena el token de la sesion actual del usuario, junto con la fecha de inicio.
+        /// </summary>
+        /// <param name="userName">Nombre de usuario</param>
+        /// <param name="token">Token del usuario</param>
+        /// <param name="fecha">Fecha en la que inicio sesion</param>
+        /// <returns></returns>
         public bool registrarInicioUsuario(string userName, string token, DateTime fecha)
         {
             using (var context = new EmsysContext())
