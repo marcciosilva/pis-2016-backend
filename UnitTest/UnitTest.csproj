@@ -69,6 +69,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AutenticacionTest.cs" />
     <Compile Include="DALTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
