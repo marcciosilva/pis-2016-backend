@@ -106,9 +106,17 @@
       <Project>{e3ed4cd6-6749-42ec-9140-f97453140bea}</Project>
       <Name>Emsys.DataAccesLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataTypeObjetc\DataTypeObject.csproj">
+      <Project>{4fad5ded-34a2-42f7-9513-54b4cd1f9aa6}</Project>
+      <Name>DataTypeObject</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Emsys.Logs\Emsys.Logs.csproj">
       <Project>{0e187470-df7b-447c-aad3-91d6f6590b1e}</Project>
       <Name>Emsys.Logs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Servicios\Emsys.ServiceLayer.csproj">
+      <Project>{D2A66EC3-41A8-4577-A446-3FF3E5804161}</Project>
+      <Name>Emsys.ServiceLayer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
