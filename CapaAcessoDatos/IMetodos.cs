@@ -9,6 +9,10 @@ namespace CapaAcessoDatos
 {
     public interface IMetodos
     {
+        bool autenticarUsuario(string userName, string pass);
+
+        bool registrarInicioUsuario(string userName, string token, DateTime fecha);
+
         ICollection<DtoEvento> listarEventos(string userName);
 
         DtoRol getRolUsuario(string userName);

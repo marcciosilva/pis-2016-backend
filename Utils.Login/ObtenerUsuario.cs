@@ -22,7 +22,8 @@ namespace Utils.Login
                     token = token.Replace("Bearer ", "");
                     token = token.Replace("Bearer", "");
                     var user = db.Users.FirstOrDefault(u => u.Token == token);
-                    return user.NombreUsuario;
+                    if(user != null)
+                        return user.NombreUsuario;
                 }
                 return null;
             }

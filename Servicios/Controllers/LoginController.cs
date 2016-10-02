@@ -13,44 +13,35 @@ using Emsys.DataAccesLayer.Model;
 using Utils.Login;
 using DataTypeObjetc;
 using Emsys.Logs;
+using CapaAcessoDatos;
+
 namespace Servicios.Controllers
 {
     public class LoginController : ApiController
     {
         [HttpPost]
         [Route("users/authenticate")]
-        public async Task<GenericResponse> Login(string usuario, string contraseña)
-        {
+        public async Task<DtoRespuesta> Login(string usuario, string pass)
+        {           
             try
             {
-                using (EmsysContext db = new EmsysContext())
+                IMetodos dbAL = new Metodos();
+                if (dbAL.autenticarUsuario(usuario, Contraseñas.GetSHA1(pass)))
                 {
-                    var user = db.Users.Where(x => x.NombreUsuario == usuario).FirstOrDefault();
-                    if (user != null)
+                    var token = TokenGenerator.ObetenerToken();
+                    if (dbAL.registrarInicioUsuario(usuario, token, DateTime.Now))
                     {
-                        if (user.Contraseña == Contraseñas.GetSHA1(contraseña))
-                        {
-                            if (user.Token != null)
-                            {
-                                //ya estaba logueadok, no genero nuevo token
-                                return new GenericResponse(Mensajes.GetCodMenssage(Mensajes.UsuarioLogueado), new Authenticate(null, Mensajes.UsuarioLogueado));
-                            }
-                            //son correcto los datos entonces genero token
-                            user.Token = TokenGenerator.ObetenerToken();
-                            user.FechaInicioSesion = DateTime.Now;
-                            db.SaveChanges();
-                            return new GenericResponse(0, new Authenticate(user.Token, null));
-                        }
+                        return new DtoRespuesta(0, new Authenticate(token, null));
                     }
-                    //retoronar que los datos son invalidos.
-                    return new GenericResponse(Mensajes.GetCodMenssage(Mensajes.UsuarioContraseñaInvalidos), new Authenticate(null, Mensajes.UsuarioContraseñaInvalidos));
+                    return new DtoRespuesta(1, new Mensaje(Mensajes.ErrorIniciarSesion));
                 }
+                return new DtoRespuesta(1, new Mensaje(Mensajes.UsuarioContraseñaInvalidos));
             }
             catch (Exception e)
             {
-                Emsys.Logs.Log.AgregarLogError(usuario,"", "Emsys.ServiceLayer", "LoginController", 0, "Login","Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorIniciarSesion);
-                return new GenericResponse(Mensajes.GetCodMenssage(Mensajes.UsuarioContraseñaInvalidos), new Authenticate(null, Mensajes.UsuarioContraseñaInvalidos));
-            }
+                Emsys.Logs.Log.AgregarLogError(usuario, "", "Emsys.ServiceLayer", "LoginController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorIniciarSesion);
+                return new DtoRespuesta(1, new Mensaje(Mensajes.ErrorIniciarSesion));
+            }          
         }
     }
 }

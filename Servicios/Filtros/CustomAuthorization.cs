@@ -11,6 +11,9 @@ using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using System.Web.Http;
 using Emsys.DataAccesLayer.Model;
+using DataTypeObject;
+using DataTypeObjetc;
+using Newtonsoft.Json;
 
 namespace Servicios.Filtros
 {
@@ -18,15 +21,31 @@ namespace Servicios.Filtros
     {
         private readonly string[] PermisosEtiqueta;
 
-        public CustomAuthorizeAttribute(params string[] permisos) {
+        public CustomAuthorizeAttribute(params string[] permisos)
+        {
             PermisosEtiqueta = permisos;
         }
+
+        public override void OnAuthorization(HttpActionContext actionContext)
+        {
+            if (IsAuthorized(actionContext))
+                base.OnAuthorization(actionContext);
+            else
+            {
+                HttpResponseMessage responseMessage = new HttpResponseMessage()
+                {
+                    StatusCode = System.Net.HttpStatusCode.Unauthorized,
+                    Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado))))
+                };
+                actionContext.Response = responseMessage;
+            }
+        }
+
         protected override bool IsAuthorized(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
-            bool autorizado = false;
             // Voy a obtener el usuario del token.
             IEnumerable<string> salida;
-            if(actionContext.Request.Headers.TryGetValues("auth", out salida))
+            if (actionContext.Request.Headers.TryGetValues("auth", out salida))
             {
                 var token = salida.FirstOrDefault();
                 token = token.Replace("Bearer ", "");
@@ -49,21 +68,15 @@ namespace Servicios.Filtros
                                 {
                                     if (item == p.Clave)
                                     {
-                                        autorizado = true;
+                                        return true;
                                     }
                                 }
                             }
                         }
                     }
-                    else
-                    {
-                        return false;
-                    }
                 }
-                return autorizado;
             }
             return false;
         }
     }
 }
-
