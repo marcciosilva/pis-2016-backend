@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emsys.ServiceLayer", "Servicios\Emsys.ServiceLayer.csproj", "{D2A66EC3-41A8-4577-A446-3FF3E5804161}"
 EndProject
@@ -24,6 +24,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.UnitTesting", "Test.UnitTesting\Test.UnitTesting.csproj", "{56F195D5-C21B-49D2-8524-C0E7C33751FF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils.Login", "Utils.Login\Utils.Login.csproj", "{17A7932D-27BC-45DF-9F1D-64019E0389ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{4581A6FB-38DE-4DDF-A459-A6E92B0C4D97}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{17A7932D-27BC-45DF-9F1D-64019E0389ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{17A7932D-27BC-45DF-9F1D-64019E0389ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{17A7932D-27BC-45DF-9F1D-64019E0389ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4581A6FB-38DE-4DDF-A459-A6E92B0C4D97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4581A6FB-38DE-4DDF-A459-A6E92B0C4D97}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4581A6FB-38DE-4DDF-A459-A6E92B0C4D97}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4581A6FB-38DE-4DDF-A459-A6E92B0C4D97}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
