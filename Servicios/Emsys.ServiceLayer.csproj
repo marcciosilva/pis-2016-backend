@@ -241,6 +241,8 @@
   <ItemGroup>
     <Content Include="packages.config" />
     <Content Include="keys.config" />
+    <None Include="Properties\PublishProfiles\pis-Liberacion1-api - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\pis-prototipo1-api - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\pis-prototipo1-api - Web Deploy.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>

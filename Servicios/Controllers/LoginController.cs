@@ -21,15 +21,15 @@ namespace Servicios.Controllers
     {
         [HttpPost]
         [Route("users/authenticate")]
-        public async Task<DtoRespuesta> Login(string usuario, string pass)
+        public async Task<DtoRespuesta> Login([FromBody] DtoUser user)
         {           
             try
             {
                 IMetodos dbAL = new Metodos();
-                if (dbAL.autenticarUsuario(usuario, Contraseñas.GetSHA1(pass)))
+                if (dbAL.autenticarUsuario(user.username, Contraseñas.GetSHA1(user.password)))
                 {
                     var token = TokenGenerator.ObetenerToken();
-                    if (dbAL.registrarInicioUsuario(usuario, token, DateTime.Now))
+                    if (dbAL.registrarInicioUsuario(user.username, token, DateTime.Now))
                     {
                         return new DtoRespuesta(0, new Authenticate(token, null));
                     }
@@ -39,7 +39,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                Emsys.Logs.Log.AgregarLogError(usuario, "", "Emsys.ServiceLayer", "LoginController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorIniciarSesion);
+                Emsys.Logs.Log.AgregarLogError(user.username, "", "Emsys.ServiceLayer", "LoginController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorIniciarSesion);
                 return new DtoRespuesta(1, new Mensaje(Mensajes.ErrorIniciarSesion));
             }          
         }

@@ -20,7 +20,7 @@ namespace Servicios.Controllers
         [CustomAuthorizeAttribute("listarEventos")]
         [HttpGet]
         [Route("events")]
-        public DtoRespuesta Get()
+        public DtoRespuesta ListarEventos()
         {
             try
             {
