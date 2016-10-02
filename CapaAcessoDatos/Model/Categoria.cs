@@ -47,7 +47,7 @@
                 id = Id,
                 codigo = this.Codigo,
                 clave = this.Clave,
-                prioridad = (DataTypeObject.NombrePrioridad)Array.IndexOf(Enum.GetValues(Prioridad.GetType()), Prioridad),
+                prioridad =Prioridad.ToString().ToLower(),
                 activo = this.Activo
             };
         }

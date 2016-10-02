@@ -1,5 +1,6 @@
 ﻿using CapaAcessoDatos;
 using DataTypeObject;
+using DataTypeObjetc;
 using Newtonsoft.Json;
 using Servicios.Filtros;
 using System;
@@ -19,19 +20,18 @@ namespace Servicios.Controllers
         [Route("users/login")]
         public DtoRespuesta Get(string json)
         {
-            DtoRespuesta resp;
             try
             {
                 IMetodos dbAL = new Metodos();
                 DtoRol rol = JsonConvert.DeserializeObject<DtoRol>(json);
                 dbAL.loguearUsuario(ObtenerUsuario.ObtenerNombreUsuario(Request), rol);
-                resp = new DtoRespuesta() { cod = 0, response = null };
+                return new DtoRespuesta(0,null);
             }
             catch (Exception e)
             {
-                resp = new DtoRespuesta() { cod = 2, response = null };
+                Emsys.Logs.Log.AgregarLogError(ObtenerUsuario.ObtenerNombreUsuario(Request), "", "Emsys.ServiceLayer", "LoguearUsuarioController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorIniciarSesion);
+                return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }
-            return resp;
         }
     }
 }

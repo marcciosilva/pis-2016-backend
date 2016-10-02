@@ -18,7 +18,8 @@ namespace Servicios.Filtros
     {
         private readonly string[] PermisosEtiqueta;
 
-        public CustomAuthorizeAttribute(params string[] permisos) {
+        public CustomAuthorizeAttribute(params string[] permisos)
+        {
             PermisosEtiqueta = permisos;
         }
         protected override bool IsAuthorized(System.Web.Http.Controllers.HttpActionContext actionContext)
@@ -26,7 +27,7 @@ namespace Servicios.Filtros
             bool autorizado = false;
             // Voy a obtener el usuario del token.
             IEnumerable<string> salida;
-            if(actionContext.Request.Headers.TryGetValues("auth", out salida))
+            if (actionContext.Request.Headers.TryGetValues("auth", out salida))
             {
                 var token = salida.FirstOrDefault();
                 token = token.Replace("Bearer ", "");
@@ -66,4 +67,3 @@ namespace Servicios.Filtros
         }
     }
 }
-
