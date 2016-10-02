@@ -16,6 +16,6 @@ namespace DataTypeObjetc
         public const string UsuarioTieneOperacionesNoFinalizadas = "El usuario tiene una operación no finalizada.";
         public const string ErrorCerraSesion = "Ocurrio un error en el servidor al cerrar la sesion";
         public const string ErrorIniciarSesion = "Ocurrio un error en el servidor al iniciar sesion";
-
+        public const string ErrorGetRoles = "Ocurrio un error en el servidor al obtener roles.";
     }
 }

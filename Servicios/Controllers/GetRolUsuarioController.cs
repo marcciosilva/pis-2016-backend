@@ -23,13 +23,21 @@ namespace Servicios.Controllers
             try
             {  
                 IMetodos dbAL = new Metodos();
-                DtoRol rol = dbAL.getRolUsuario(ObtenerUsuario.ObtenerNombreUsuario(Request));
-                return new DtoRespuesta(0, rol);
+                var nombreUsuario = ObtenerUsuario.ObtenerNombreUsuario(Request);
+                if (nombreUsuario != null)
+                {
+                    DtoRol rol = dbAL.getRolUsuario(nombreUsuario);
+                    return new DtoRespuesta(0, rol);
+                }
+                else
+                {
+                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                }                
             }
             catch (Exception e)
             {
                 Emsys.Logs.Log.AgregarLogError(ObtenerUsuario.ObtenerNombreUsuario(Request), "", "Emsys.ServiceLayer", "GetRolUsuarioController", 0, "GetRoles", "Hubo un error al intentar obtener roles de un usuario, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorIniciarSesion);
-                return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorGetRoles));
             }         
         }
     }
