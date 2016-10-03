@@ -11,9 +11,9 @@ namespace DataTypeObject
     {        
         public DtoZona zona { get; set; }
         
-        public string descripcion_despachador { get; set; }
+        public string descripcion { get; set; }
 
-        public string descripcion_supervisor { get; set; }
+        //public string descripcion_supervisor { get; set; }
 
         public string estado { get; set; }
 

@@ -60,8 +60,7 @@
             return new DtoExtension()
             {
                 zona = Zona.getDto(),
-                descripcion_despachador = DescripcionDespachador,
-                descripcion_supervisor= DescripcionSupervisor,
+                descripcion = DescripcionDespachador,
                 estado = Estado.ToString().ToLower(),
                 time_stamp = TimeStamp,
                 categoria = cat,

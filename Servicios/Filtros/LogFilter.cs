@@ -17,8 +17,8 @@ using System.Threading;
 using System.Web.Http.Dispatcher;
 using Microsoft.AspNet.Identity;
 using Utils.Login;
-using System.Web.Http.Controllers;
 using System.Web.Http.Routing;
+using System.Web.Http.Controllers;
 
 namespace Emsys.ServiceLayer.Filtros
 {
@@ -31,25 +31,36 @@ namespace Emsys.ServiceLayer.Filtros
             string requestBody = await request.Content.ReadAsStringAsync();
             var user = ObtenerUsuario.ObtenerNombreUsuario(request);// HttpContext.Current.User.Identity.GetUserId();
 
-            var attributedRoutesData = request.GetRouteData().GetSubRoutes();
-            var subRouteData = attributedRoutesData.FirstOrDefault();
-            var actions = (ReflectedHttpActionDescriptor[])subRouteData.Route.DataTokens["actions"];
-            var controllerName = actions[0].ControllerDescriptor.ControllerName;
+            //var nombreControlador =ObtenerNombreControlador(request);
 
-
-            Emsys.Logs.Log.AgregarLog(user, GetClientIp(request), "Emsys.ServiceLayer", controllerName, 0, "accion", "Request body: "+requestBody.ToString(), Emsys.Logs.Constantes.LogAcciones);
+            Emsys.Logs.Log.AgregarLog(user, GetClientIp(request), "Modulo", "Entidad", 0, "accion", "Request body: " + requestBody.ToString(), Emsys.Logs.Constantes.LogAcciones);
             // let other handlers process the request
             var result = await base.SendAsync(request, cancellationToken);
             if (result.Content != null)
             {
                 var responseBody = await result.Content.ReadAsStringAsync();
-               
-                Emsys.Logs.Log.AgregarLog(user, GetClientIp(request), "Modulo","Entidad",0,"accion", "Response body: "+ responseBody.ToString(), Emsys.Logs.Constantes.LogAcciones);                
+
+                Emsys.Logs.Log.AgregarLog(user, GetClientIp(request), "Modulo", "Entidad", 0, "accion", "Response body: " + responseBody.ToString(), Emsys.Logs.Constantes.LogAcciones);
             }
 
             return result;
         }
 
+        private string ObtenerNombreControlador(HttpRequestMessage request)
+        {
+            try
+            {
+                var attributedRoutesData = request.GetRouteData().GetSubRoutes();
+                var subRouteData = attributedRoutesData.FirstOrDefault();
+                var actions = (ReflectedHttpActionDescriptor[])subRouteData.Route.DataTokens["actions"];
+                var controllerName = actions[0].ControllerDescriptor.ControllerName;
+                return controllerName;
+            }
+            catch (Exception e)
+            {
+                return "No tengo nombre controlador";
+            }
+        }
 
         private string GetClientIp(HttpRequestMessage request)
         {
