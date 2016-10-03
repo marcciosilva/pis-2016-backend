@@ -1,0 +1,15 @@
+Mensaje:  error al registrar un log No connection string named 'DefaultConnections' could be found in the application config file.
+HelpLink: 
+Hresult: -2146233079
+Innerexception: 
+Source: EntityFramework
+StackTrace:    en System.Data.Entity.Internal.LazyInternalConnection.get_ConnectionHasModel()
+   en System.Data.Entity.Internal.LazyInternalContext.InitializeContext()
+   en System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   en System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   en System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   en System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   en System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
+   en System.Data.Entity.DbSet`1.Add(TEntity entity)
+   en Emsys.Logs.Log.AgregarLogError(String IdUsuario, String terminal, String modulo, String Entidad, Int32 idEntidad, String accion, String detalles, Int32 codigo) en C:\Users\Andres\Desktop\PIs_repo\Emsys.Logs\Log.cs:línea 78
+TargetSite: Boolean get_ConnectionHasModel()
