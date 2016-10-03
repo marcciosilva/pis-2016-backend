@@ -15,6 +15,7 @@ namespace Servicios.Controllers
     {
         [CustomAuthorizeAttribute()]
         [HttpPost]
+        [LogFilter]
         [Route("users/logout")]
         public DtoRespuesta CerrarSesion()
         {            

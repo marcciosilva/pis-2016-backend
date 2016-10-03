@@ -18,6 +18,7 @@ namespace Servicios.Controllers
     {
         [CustomAuthorizeAttribute("listarEventos")]
         [HttpGet]
+        [LogFilter]
         [Route("events")]
         public DtoRespuesta ListarEventos()
         {

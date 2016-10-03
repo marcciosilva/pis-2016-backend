@@ -13,7 +13,7 @@ namespace Emsys.ServiceLayer
 
             // Web API routes
             config.MapHttpAttributeRoutes();
-            config.MessageHandlers.Add(new Emsys.ServiceLayer.Filtros.LogFilter());
+            config.MessageHandlers.Add(new Emsys.ServiceLayer.Filtros.DelegateHandler());
             config.Routes.MapHttpRoute(
                 name: "DefaultApi",
                 routeTemplate: "api/{controller}/{id}",

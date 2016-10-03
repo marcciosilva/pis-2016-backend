@@ -13,6 +13,7 @@ using Utils.Login;
 using DataTypeObjetc;
 using Emsys.Logs;
 using CapaAcessoDatos;
+using Servicios.Filtros;
 
 namespace Servicios.Controllers
 {
@@ -20,6 +21,7 @@ namespace Servicios.Controllers
     {
         [HttpPost]
         [Route("users/authenticate")]
+        [LogFilter]
         public async Task<DtoRespuesta> Login([FromBody] DtoUser user)
         {           
             try

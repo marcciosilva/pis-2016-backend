@@ -18,6 +18,8 @@ namespace Emsys.Logs
 
         public const int LogAcciones = 9999;
 
+        public const int LogLLamdos = 9998;
+
         public static string getMessageError(int idError)//Dejar un punto y espacio al final de los mensajes para que quede mas lindo en caso de anidar luego otro mensaje.
         {
             switch (idError)
@@ -26,10 +28,13 @@ namespace Emsys.Logs
                     return "Error al obtener el archivo multimedia.";
                 case LogAcciones:
                     return "Se logueo una accion.";
+                case LogLLamdos:
+                    return "Se realizo un llamado a la api.";
                 case ErrorIniciarSesion:
                     return "Error al iniciar sesion.";
                 case ErrorCerrarSesion:
                     return "Error al cerrar sesion.";
+
                 default:
                     return "Error interno, cancele la operacion y vuelva a intentarlo. ";
 
