@@ -8,10 +8,9 @@ namespace Utils.Login
 {
     public class TokenGenerator
     {
-        private static int token = 0;
-
-        public static string ObetenerToken() {
-            token++;
+        public static string ObetenerToken()
+        {
+            var token = Convert.ToBase64String(Guid.NewGuid().ToByteArray());
             return token.ToString();
         }
 

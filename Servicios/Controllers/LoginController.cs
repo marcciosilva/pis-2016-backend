@@ -30,6 +30,7 @@ namespace Servicios.Controllers
                 if (dbAL.autenticarUsuario(user.username, Contraseñas.GetSHA1(user.password)))
                 {
                     var token = TokenGenerator.ObetenerToken();
+
                     if (dbAL.registrarInicioUsuario(user.username, token, DateTime.Now))
                     {
                         return new DtoRespuesta(0, new Authenticate(token, null));
