@@ -38,14 +38,14 @@ namespace UnitTest
         [TestMethod]
         public void RegistrarUsuarioTest()
         {
-            using (var manager = new EmsysUserManager())
+            using (var db = new EmsysContext())
             {
-                var user = new ApplicationUser() { UserName = "prueba", Nombre = "prueba" };
-                IdentityResult result = manager.Create(user, "prueba");
-                Assert.IsTrue(result.Succeeded);
-                var usuarioAgregado = manager.Users.FirstOrDefault(x => x.Nombre.Equals("prueba"));
+                var user = new ApplicationUser() { NombreUsuario = "prueba", Nombre = "prueba" };
+                db.Users.Add(user);
+                db.SaveChanges();
+                var usuarioAgregado = db.Users.FirstOrDefault(x => x.NombreUsuario.Equals("prueba"));
                 Assert.IsNotNull(usuarioAgregado);
-                manager.Delete(user);
+                db.Users.Remove(user);
             }
         }
 
@@ -127,10 +127,10 @@ namespace UnitTest
                 else
                 {
                     Assert.Fail();
-                }   
+                }
             }
         }
-        
+
         //static void CrearCategoria()
         //{
         //    using (var context = new EmsysContext())

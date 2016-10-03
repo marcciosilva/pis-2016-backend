@@ -45,7 +45,7 @@ namespace UnitTest
             {
                 IMetodos dbAL = new Metodos();
                 
-                var user = new ApplicationUser() { UserName = "pruebaAutenticar", Nombre = "pruebaAutenticar", Contraseña = Contraseñas.GetSHA1("pruebaAutenticar") };
+                var user = new ApplicationUser() { NombreUsuario = "pruebaAutenticar", Nombre = "pruebaAutenticar", Contraseña = Contraseñas.GetSHA1("pruebaAutenticar") };
                 context.Users.Add(user);
 
                 // Pruebo con credenciales invalidas.

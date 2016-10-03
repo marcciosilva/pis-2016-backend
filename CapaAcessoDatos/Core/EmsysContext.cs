@@ -9,9 +9,10 @@ namespace Emsys.DataAccesLayer.Core
     //{
 
     //}
-    public partial class EmsysContext : IdentityDbContext<ApplicationUser>
+    public partial class EmsysContext : DbContext//IdentityDbContext<ApplicationUser>
     {
-        public EmsysContext() {
+        public EmsysContext() : base("name=DefaultConnection")
+        {
             //   Database.SetInitializer<EmsysContext>(new DropCreateDatabaseIfModelChanges<EmsysContext>());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<EmsysContext, Configuration>());
         }
@@ -42,6 +43,8 @@ namespace Emsys.DataAccesLayer.Core
         public DbSet<Permiso> Permisos { get; set; }
 
         public DbSet<Grupo_Recurso> Grupos_Recursos { get; set; }
+
+        public DbSet<ApplicationUser> Users { get; set; }
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{

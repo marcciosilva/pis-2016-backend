@@ -12,7 +12,6 @@ namespace Emsys.ServiceLayer
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
-            Database.SetInitializer(new Initializer());
             setUpFilters();
         }
 
