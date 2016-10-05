@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DtoAutenticacion.cs" />
     <Compile Include="DtoRespuesta.cs" />
     <Compile Include="DtoUser.cs" />
     <Compile Include="Mensaje.cs" />
@@ -68,8 +69,6 @@
     <Compile Include="DtoEvento.cs" />
     <Compile Include="DtoExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Authenticate.cs" />
-    <Compile Include="Response.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

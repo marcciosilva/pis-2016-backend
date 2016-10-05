@@ -138,8 +138,6 @@
   <ItemGroup>
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
-    <Compile Include="IMetodos.cs" />
-    <Compile Include="Metodos.cs" />
     <Compile Include="Model\ApplicationUser.cs" />
     <Compile Include="Model\GrupoRecurso.cs" />
     <Compile Include="Model\ApplicationRole.cs" />

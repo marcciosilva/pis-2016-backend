@@ -1,6 +1,7 @@
-﻿using CapaAcessoDatos;
-using DataTypeObject;
+﻿using DataTypeObject;
 using DataTypeObjetc;
+using Emsys.LogicLayer;
+using Emsys.LogicLayer.ApplicationExceptions;
 using Newtonsoft.Json;
 using Servicios.Filtros;
 using System;
@@ -23,14 +24,22 @@ namespace Servicios.Controllers
         {
             try
             {
+                string token = ObtenerToken.GetToken(Request);
+                if (token == null)
+                {
+                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                }
                 IMetodos dbAL = new Metodos();
-                //DtoRol rol = JsonConvert.DeserializeObject<DtoRol>(json);
-                dbAL.loguearUsuario(ObtenerUsuario.ObtenerNombreUsuario(Request), rol);
+                dbAL.loguearUsuario(token, rol);
                 return new DtoRespuesta(0,null);
+            }
+            catch (InvalidTokenException e)
+            {
+                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
             catch (Exception e)
             {
-                Emsys.Logs.Log.AgregarLogError(ObtenerUsuario.ObtenerNombreUsuario(Request), "", "Emsys.ServiceLayer", "LoguearUsuarioController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorIniciarSesion);
+                Emsys.Logs.Log.AgregarLogError("", "", "Emsys.ServiceLayer", "LoguearUsuarioController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorIniciarSesion);
                 return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }
         }

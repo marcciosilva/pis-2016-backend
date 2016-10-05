@@ -8,7 +8,6 @@ using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Http;
-using Emsys.DataAccesLayer.Core;
 using System.IdentityModel.Policy;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -19,6 +18,7 @@ using Microsoft.AspNet.Identity;
 using Utils.Login;
 using System.Web.Http.Routing;
 using System.Web.Http.Controllers;
+using Emsys.LogicLayer;
 
 namespace Emsys.ServiceLayer.Filtros
 {
@@ -29,8 +29,13 @@ namespace Emsys.ServiceLayer.Filtros
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             string requestBody = await request.Content.ReadAsStringAsync();
-            var user = ObtenerUsuario.ObtenerNombreUsuario(request);// HttpContext.Current.User.Identity.GetUserId();
-                      
+            string token = ObtenerToken.GetToken(request);
+            string user = null;
+            if (token != null)
+            {
+                IMetodos dbAL = new Metodos();
+                user = dbAL.getNombreUsuario(token);
+            }    
 
             Emsys.Logs.Log.AgregarLog(user, GetClientIp(request), "", "", 0, "", "Request body: " + requestBody.ToString(), Emsys.Logs.Constantes.LogAcciones);
             // let other handlers process the request

@@ -32,7 +32,7 @@ namespace Test.UnitTesting
             var response= controllerAutenticate.Login(new DtoUser() { username= nombreUsuario, password=contraseña});
             var respuesta=  response.Result;
             Assert.IsTrue(respuesta.cod==0);
-            var respuestaAutenticate =(Authenticate) respuesta.response;
+            var respuestaAutenticate =(DtoAutenticacion) respuesta.response;
             var token = respuestaAutenticate.access_token;
 
             var controllerGetRoles = new GetRolUsuarioController();

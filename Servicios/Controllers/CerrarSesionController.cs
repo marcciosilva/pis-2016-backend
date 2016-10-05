@@ -1,13 +1,13 @@
-﻿using CapaAcessoDatos;
-using DataTypeObject;
+﻿using DataTypeObject;
 using DataTypeObjetc;
-using Emsys.DataAccesLayer.Core;
 using Servicios.Filtros;
 using System;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
 using Utils.Login;
+using Emsys.LogicLayer;
+using Emsys.LogicLayer.ApplicationExceptions;
 
 namespace Servicios.Controllers
 {
@@ -18,23 +18,31 @@ namespace Servicios.Controllers
         [LogFilter]
         [Route("users/logout")]
         public DtoRespuesta CerrarSesion()
-        {            
+        {
             try
             {
-                string nombreUsuario = ObtenerUsuario.ObtenerNombreUsuario(Request);
+                string token = ObtenerToken.GetToken(Request);
+                if (token == null)
+                {
+                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                }
                 // TODO esto no se puede hacer hasta tener operaciones.
                 var usuarioOperacionesNoFinalizadas = false;
                 if (usuarioOperacionesNoFinalizadas)
                 {
                     return new DtoRespuesta(5, new Mensaje(Mensajes.UsuarioTieneOperacionesNoFinalizadas));
                 }
-                IMetodos dbAL = new Metodos();                        
-                dbAL.cerrarSesion(nombreUsuario);
+                IMetodos dbAL = new Metodos();
+                dbAL.cerrarSesion(token);
                 return new DtoRespuesta(0, null);
+            }
+            catch (InvalidTokenException e)
+            {
+                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
             catch (Exception e)
             {
-                Emsys.Logs.Log.AgregarLogError(ObtenerUsuario.ObtenerNombreUsuario(Request), "", "Emsys.ServiceLayer", "CerrarSesionController", 0, "Logout", "Hubo un error al intentar cerrar sesion, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorCerrarSesion);
+                Emsys.Logs.Log.AgregarLogError("", "", "Emsys.ServiceLayer", "CerrarSesionController", 0, "Logout", "Hubo un error al intentar cerrar sesion, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorCerrarSesion);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorCerraSesion));
             }          
         }

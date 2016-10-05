@@ -65,41 +65,6 @@
         public virtual ICollection<Extension_Evento> ExtensionesEvento { get; set; }
 
         public virtual Origen_Evento Origen_Evento { get; set; }
-
-        public DtoEvento getDto()
-        {
-            List<DtoExtension> extensiones = new List<DtoExtension>();
-            foreach (Extension_Evento e in ExtensionesEvento)
-            {
-                extensiones.Add(e.getDto());
-            }
-            string dep = null;
-            string sec = null;
-            if (this.Departamento != null)
-                dep = this.Departamento.Nombre;
-            if (this.Sector != null)
-                sec = this.Sector.Nombre;
-
-            return new DtoEvento()
-            {            
-                id = this.Id,
-                informante = this.NombreInformante,
-                telefono = TelefonoEvento,
-                categoria = this.Categoria.getDto(),
-                estado = Estado.ToString().ToLower(),
-                time_stamp = this.TimeStamp,
-                fecha_creacion = this.FechaCreacion,                
-                departamento = dep,
-                calle = this.Calle,
-                esquina = this.Esquina,
-                numero = this.Numero,
-                sector = sec,
-                latitud = this.Latitud,
-                longitud = this.Longitud,
-                descripcion = this.Descripcion,
-                en_proceso = this.EnProceso,
-                extensiones = extensiones
-            };
-        }                        
+         
     }
 }

@@ -5,8 +5,9 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Emsys.DataAccesLayer.Core;
 using Emsys.DataAccesLayer.Model;
 using Microsoft.AspNet.Identity;
-using CapaAcessoDatos;
 using Utils.Login;
+using Emsys.LogicLayer;
+using Emsys.LogicLayer.ApplicationExceptions;
 
 namespace UnitTest
 {
@@ -49,10 +50,21 @@ namespace UnitTest
                 context.Users.Add(user);
 
                 // Pruebo con credenciales invalidas.
-                Assert.IsFalse(dbAL.autenticarUsuario("pruebaAutenticar", Contraseñas.GetSHA1("pruebaIncorrecta")));
+                try
+                {
+                    dbAL.autenticarUsuario("pruebaAutenticar", "pruebaIncorrecta");
+                    Assert.Fail();
+                }
+                catch (InvalidCredentialsException e)
+                {
+                }
+                catch (Exception e)
+                {
+                    Assert.Fail();
+                }
 
                 // Pruebo con credenciales invalidas.
-                Assert.IsTrue(dbAL.autenticarUsuario("pruebaAutenticar", Contraseñas.GetSHA1("pruebaAutenticar")));
+                Assert.IsNotNull(dbAL.autenticarUsuario("pruebaAutenticar", "pruebaAutenticar"));
                 
                 context.Users.Remove(user);
             }

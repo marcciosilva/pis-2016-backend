@@ -256,13 +256,13 @@
     <Folder Include="Multimedia\" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CapaAcessoDatos\Emsys.DataAccesLayer.csproj">
-      <Project>{e3ed4cd6-6749-42ec-9140-f97453140bea}</Project>
-      <Name>Emsys.DataAccesLayer</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DataTypeObjetc\DataTypeObject.csproj">
       <Project>{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}</Project>
       <Name>DataTypeObject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Emsys.LogicLayer\Emsys.LogicLayer.csproj">
+      <Project>{ee8bc402-8fc4-4d4c-889a-210fc71dfc0a}</Project>
+      <Name>Emsys.LogicLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Emsys.Logs\Emsys.Logs.csproj">
       <Project>{0e187470-df7b-447c-aad3-91d6f6590b1e}</Project>

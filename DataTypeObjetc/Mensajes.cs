@@ -11,6 +11,7 @@ namespace DataTypeObjetc
     {
         public const string Correcto = "Correcto";
         public const string UsuarioContraseñaInvalidos = "Usuario/Password inválido.";
+        public const string TokenInvalido = "Token inválido.";
         public const string UsuarioLogueado = "Usuario ya autenticado.";
         public const string UsuarioNoAutenticado = "Usuario no autenticado.";
         public const string UsuarioTieneOperacionesNoFinalizadas = "El usuario tiene una operación no finalizada.";

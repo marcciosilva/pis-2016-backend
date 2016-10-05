@@ -24,10 +24,6 @@
         public virtual ICollection<Extension_Evento> Extensiones_Evento { get; set; }
 
         public virtual ICollection<Sector> Sectores { get; set; }
-
-        public DtoZona getDto()
-        {
-            return new DtoZona() { id = Id, nombre = Nombre, nombre_ue = Unidad_Ejecutora.Nombre};            
-        }          
+   
     }
 }
