@@ -58,8 +58,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DtoAutenticacion.cs" />
+    <Compile Include="DtoRespuestaExterna.cs" />
     <Compile Include="DtoRespuesta.cs" />
     <Compile Include="DtoUser.cs" />
+    <Compile Include="DtoConsultaExterna.cs" />
     <Compile Include="Mensaje.cs" />
     <Compile Include="Mensajes.cs" />
     <Compile Include="DtoRecurso.cs" />

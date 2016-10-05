@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emsys.ServiceLayer", "Servicios\Emsys.ServiceLayer.csproj", "{D2A66EC3-41A8-4577-A446-3FF3E5804161}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A1967C3A-93F9-4845-83F1-160DD268E158} = {A1967C3A-93F9-4845-83F1-160DD268E158}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PruebaNotificar", "TriggerProgram\PruebaNotificar.csproj", "{E3FEA67B-F1F8-42E8-A5E0-1C5278F5FF2D}"
 EndProject
@@ -26,6 +29,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTest", "UnitTest\UnitTest.csproj", "{4581A6FB-38DE-4DDF-A459-A6E92B0C4D97}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emsys.LogicLayer", "Emsys.LogicLayer\Emsys.LogicLayer.csproj", "{EE8BC402-8FC4-4D4C-889A-210FC71DFC0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServidorExterno", "ServidorExterno\ServidorExterno.csproj", "{A1967C3A-93F9-4845-83F1-160DD268E158}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +86,10 @@ Global
 		{EE8BC402-8FC4-4D4C-889A-210FC71DFC0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE8BC402-8FC4-4D4C-889A-210FC71DFC0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EE8BC402-8FC4-4D4C-889A-210FC71DFC0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1967C3A-93F9-4845-83F1-160DD268E158}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1967C3A-93F9-4845-83F1-160DD268E158}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1967C3A-93F9-4845-83F1-160DD268E158}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1967C3A-93F9-4845-83F1-160DD268E158}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

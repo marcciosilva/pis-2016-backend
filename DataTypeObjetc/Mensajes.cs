@@ -18,10 +18,12 @@ namespace DataTypeObject
         public const string ErrorCerraSesion = "Ocurrio un error en el servidor al cerrar la sesion";
         public const string ErrorIniciarSesion = "Ocurrio un error en el servidor al iniciar sesion";
         public const string ErrorGetRoles = "Ocurrio un error en el servidor al obtener roles.";
+        public const string ServicioExternoNoDisponible = "El servicio externo no se encuentra disponible.";
 
         // Codigos de error.
         public const int ErrorIniciarSesionCod = 1001;
         public const int ErrorCerrarSesionCod = 2001;
+        public const int ErrorConsumirServicioExternoCod = 3001;
         public const int LogAccionesCod = 9999;
         public const int LogLLamdosCod = 9998;
     }
