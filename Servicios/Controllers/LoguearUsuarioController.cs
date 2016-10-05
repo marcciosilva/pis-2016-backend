@@ -17,6 +17,7 @@ namespace Servicios.Controllers
     {
         [CustomAuthorizeAttribute()]
         [HttpPost]
+        [LogFilter]
         [Route("users/login")]
         public DtoRespuesta ElegirRoles([FromBody] DtoRol rol)
         {

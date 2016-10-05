@@ -68,13 +68,29 @@ namespace Servicios.Filtros
                                 {
                                     if (item == p.Clave)
                                     {
+                                        if (usuario.FechaInicioSesion.Value.Year < DateTime.Now.Year || 
+                                            usuario.FechaInicioSesion.Value.Month < DateTime.Now.Month ||
+                                            usuario.FechaInicioSesion.Value.Day < DateTime.Now.Day || 
+                                            usuario.FechaInicioSesion.Value.Hour < DateTime.Now.Hour-8
+                                            )
+                                        {
+                                            //libero recursos y expiro el token
+                                            usuario.Recurso.ToList().ForEach(x => x.Estado = 0);
+                                            usuario.Token = null;
+                                            usuario.FechaInicioSesion = null;
+                                            db.SaveChanges();
+                                            return false;
+                                        }
                                         return true;
                                     }
                                 }
                             }
                         }
                     }
+
+                   
                 }
+
             }
             return false;
         }

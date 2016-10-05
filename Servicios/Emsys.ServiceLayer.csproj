@@ -228,7 +228,8 @@
     <Compile Include="Controllers\LoguearUsuarioController.cs" />
     <Compile Include="Controllers\MultimediaController.cs" />
     <Compile Include="Filtros\CustomAuthorization.cs" />
-    <Compile Include="Filtros\LogFilter.cs" />
+    <Compile Include="Filtros\DelegateHandler.cs" />
+    <Compile Include="Filtros\LogFilterAttribute.cs" />
     <Compile Include="Filtros\RequiereHttps.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
