@@ -264,10 +264,6 @@
       <Project>{ee8bc402-8fc4-4d4c-889a-210fc71dfc0a}</Project>
       <Name>Emsys.LogicLayer</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Emsys.Logs\Emsys.Logs.csproj">
-      <Project>{0e187470-df7b-447c-aad3-91d6f6590b1e}</Project>
-      <Name>Emsys.Logs</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Utils.Login\Utils.Login.csproj">
       <Project>{17a7932d-27bc-45df-9f1d-64019e0389ed}</Project>
       <Name>Utils.Login</Name>

@@ -1,15 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
-using Newtonsoft.Json;
 using DataTypeObject;
-using Utils.Login;
-using DataTypeObjetc;
-using Emsys.Logs;
 using Servicios.Filtros;
 using Emsys.LogicLayer;
 using Emsys.LogicLayer.ApplicationExceptions;
@@ -23,9 +17,9 @@ namespace Servicios.Controllers
         [LogFilter]
         public async Task<DtoRespuesta> Login([FromBody] DtoUser user)
         {
+            IMetodos dbAL = new Metodos();
             try
-            {
-                IMetodos dbAL = new Metodos();
+            {                
                 DtoAutenticacion autenticacion = dbAL.autenticarUsuario(user.username, user.password);
                 return new DtoRespuesta(0, autenticacion);
             }
@@ -35,7 +29,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                Emsys.Logs.Log.AgregarLogError(user.username, "", "Emsys.ServiceLayer", "LoginController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorIniciarSesion);
+                dbAL.AgregarLogError(user.username, "", "Emsys.ServiceLayer", "LoginController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorIniciarSesion));
             }          
         }

@@ -12,14 +12,21 @@ namespace Utils.Login
     {
         public static string GetToken(HttpRequestMessage request)
         {
-            IEnumerable<string> headerValues;
-            var token = string.Empty;
-            if (request.Headers.TryGetValues("auth", out headerValues))
+            try
             {
-                token = headerValues.FirstOrDefault();
-                return token;
+                IEnumerable<string> headerValues;
+                var token = string.Empty;
+                if (request.Headers.TryGetValues("auth", out headerValues))
+                {
+                    token = headerValues.FirstOrDefault();
+                    return token;
+                }
+                return null;
             }
-            return null;
+            catch (Exception e)
+            {
+                return null;
+            }
         }
     }
 }

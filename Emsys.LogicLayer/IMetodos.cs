@@ -1,5 +1,4 @@
 ﻿using DataTypeObject;
-using DataTypeObjetc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,5 +23,10 @@ namespace Emsys.LogicLayer
         bool cerrarSesion(string token);
 
         string getNombreUsuario(string token);
+
+        void AgregarLog(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo);
+
+        void AgregarLogError(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo);
+
     }
 }

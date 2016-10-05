@@ -6,12 +6,10 @@ using System.Threading.Tasks;
 
 using System.Net.Http;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using System.Web.Http;
 using DataTypeObject;
-using DataTypeObjetc;
 using Newtonsoft.Json;
 using Utils.Login;
 using Emsys.LogicLayer;

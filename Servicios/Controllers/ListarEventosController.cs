@@ -1,5 +1,4 @@
 ﻿using DataTypeObject;
-using DataTypeObjetc;
 using Emsys.LogicLayer;
 using Emsys.LogicLayer.ApplicationExceptions;
 using Newtonsoft.Json;
@@ -22,14 +21,14 @@ namespace Servicios.Controllers
         [Route("events")]
         public DtoRespuesta ListarEventos()
         {
+            IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
             try
-            {
-                string token = ObtenerToken.GetToken(Request);
+            {                
                 if (token == null)
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
-                }
-                IMetodos dbAL = new Metodos();
+                }                
                 ICollection<DtoEvento> eventos = dbAL.listarEventos(token);
                 return  new DtoRespuesta(0, eventos);
             }
@@ -39,7 +38,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                Emsys.Logs.Log.AgregarLogError("", "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorIniciarSesion);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
                 return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }       
         }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataTypeObjetc
+namespace DataTypeObject
 {
 
     public class Mensajes 
@@ -18,5 +18,11 @@ namespace DataTypeObjetc
         public const string ErrorCerraSesion = "Ocurrio un error en el servidor al cerrar la sesion";
         public const string ErrorIniciarSesion = "Ocurrio un error en el servidor al iniciar sesion";
         public const string ErrorGetRoles = "Ocurrio un error en el servidor al obtener roles.";
+
+        // Codigos de error.
+        public const int ErrorIniciarSesionCod = 1001;
+        public const int ErrorCerrarSesionCod = 2001;
+        public const int LogAccionesCod = 9999;
+        public const int LogLLamdosCod = 9998;
     }
 }

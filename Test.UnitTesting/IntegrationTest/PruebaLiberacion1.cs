@@ -7,9 +7,6 @@ using DataTypeObject;
 using NUnit.Framework;
 using Servicios.Controllers;
 using System.Net.Http;
-using System.Web.Http;
-using DataTypeObjetc;
-using Newtonsoft.Json;
 using Emsys.DataAccesLayer.Core;
 using System.IO;
 

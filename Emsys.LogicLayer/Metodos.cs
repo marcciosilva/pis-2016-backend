@@ -1,11 +1,11 @@
 ﻿using DataTypeObject;
-using DataTypeObjetc;
 using Emsys.DataAccesLayer.Core;
 using Emsys.DataAccesLayer.Model;
 using Emsys.LogicLayer.ApplicationExceptions;
 using Emsys.LogicLayer.Utils;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 
 namespace Emsys.LogicLayer
@@ -57,6 +57,10 @@ namespace Emsys.LogicLayer
         {
             using (var context = new EmsysContext())
             {
+                if (token == null)
+                {
+                    throw new InvalidTokenException(Mensajes.TokenInvalido);
+                }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -90,6 +94,10 @@ namespace Emsys.LogicLayer
         {
             using (var context = new EmsysContext())
             {
+                if (token == null)
+                {
+                    throw new InvalidTokenException(Mensajes.TokenInvalido);
+                }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -132,6 +140,10 @@ namespace Emsys.LogicLayer
         {
             using (var context = new EmsysContext())
             {
+                if (token == null)
+                {
+                    throw new InvalidTokenException(Mensajes.TokenInvalido);
+                }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -204,6 +216,10 @@ namespace Emsys.LogicLayer
         {
             using (var context = new EmsysContext())
             {
+                if (token == null)
+                {
+                    throw new InvalidTokenException(Mensajes.TokenInvalido);
+                }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -249,6 +265,10 @@ namespace Emsys.LogicLayer
         {
             using (var context = new EmsysContext())
             {
+                if (token == null)
+                {
+                    throw new InvalidTokenException(Mensajes.TokenInvalido);
+                }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -273,12 +293,122 @@ namespace Emsys.LogicLayer
 
             using (var context = new EmsysContext())
             {
+                if (token == null)
+                {
+                    return "";
+                }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
                     return user.NombreUsuario;
                 }
                 return "";
+            }
+        }
+
+
+        public void AgregarLog(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo)
+        {
+            try
+            {                
+                using (EmsysContext context = new EmsysContext())
+                {
+                    string IdUsuario = "";
+                    if (token != null)
+                    {
+                        var user = context.Users.FirstOrDefault(u => u.Token == token);
+                        if (user != null)
+                            IdUsuario = user.NombreUsuario;
+                    }
+
+                    Log log = new Log();
+                    log.Usuario = IdUsuario;
+                    log.TimeStamp = DateTime.Now;
+                    log.Terminal = terminal;
+                    log.Modulo = modulo;
+                    log.Entidad = Entidad;
+                    log.idEntidad = idEntidad;
+                    log.Accion = accion;
+                    log.Detalles = detalles;
+                    log.Codigo = codigo;
+                    log.EsError = false;
+                    context.Logs.Add(log);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "Errores"))
+                {
+                    Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Errores");
+                }
+                string ruta = string.Format("{0}Errores\\{1}", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss").Replace(" ", "").Replace(":", "_") + ".txt");
+
+                StreamWriter fs = File.CreateText(ruta);
+                fs.Write("Mensaje: " + " error al registrar un log " + e.Message + "\n" +
+                        "HelpLink: " + e.HelpLink + "\n" +
+                        "Hresult: " + e.HResult + "\n" +
+                        "Innerexception: " + e.InnerException + "\n" +
+                        "Source: " + e.Source + "\n" +
+                        "StackTrace: " + e.StackTrace + "\n" +
+                        "TargetSite: " + e.TargetSite + "\n"
+                        );
+                fs.Close();
+            }
+        }
+
+
+        public void AgregarLogError(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo)
+        {
+            try
+            {
+                using (EmsysContext context = new EmsysContext())
+                {
+                    string IdUsuario = null;
+                    if (token != null)
+                    {
+                        var user = context.Users.FirstOrDefault(u => u.Token == token);
+                        if (user != null)
+                            IdUsuario = user.NombreUsuario;
+                    }
+
+                    Log log = new Log();
+                    log.Usuario = IdUsuario;
+                    log.TimeStamp = DateTime.Now;
+                    log.Terminal = terminal;
+                    log.Modulo = modulo;
+                    log.Entidad = Entidad;
+                    log.idEntidad = idEntidad;
+                    log.Accion = accion;
+                    log.Detalles = detalles;
+                    log.Codigo = codigo;
+                    log.EsError = false;
+                    context.Logs.Add(log);
+                    context.SaveChanges();
+
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message);
+                if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "Errores"))
+                {
+                    Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Errores");
+                }
+                string ruta = string.Format("{0}Errores\\{1}", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss").Replace(" ", "").Replace(":", "_") + ".txt");
+
+                StreamWriter fs = File.CreateText(ruta);
+                fs.Write("Mensaje: " + " error al registrar un log " + e.Message + "\n" +
+                        "HelpLink: " + e.HelpLink + "\n" +
+                        "Hresult: " + e.HResult + "\n" +
+                        "Innerexception: " + e.InnerException + "\n" +
+                        "Source: " + e.Source + "\n" +
+                        "StackTrace: " + e.StackTrace + "\n" +
+                        "TargetSite: " + e.TargetSite + "\n"
+                        );
+                fs.Close();
             }
         }
     }
