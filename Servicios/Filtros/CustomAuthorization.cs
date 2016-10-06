@@ -33,7 +33,6 @@ namespace Servicios.Filtros
             {
                 HttpResponseMessage responseMessage = new HttpResponseMessage()
                 {
-                    StatusCode = System.Net.HttpStatusCode.Unauthorized,
                     Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado))))
                 };
                 actionContext.Response = responseMessage;
