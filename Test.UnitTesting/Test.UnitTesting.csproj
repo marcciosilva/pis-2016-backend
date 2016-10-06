@@ -92,6 +92,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutenticacionTest.cs" />
+    <Compile Include="DALTest.cs" />
     <Compile Include="IntegrationTest\PruebaLiberacion1.cs" />
     <Compile Include="LogsUnitTest.cs" />
     <Compile Include="FirstUnitTest.cs" />
