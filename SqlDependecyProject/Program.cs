@@ -5,6 +5,7 @@ using TableDependency.Enums;
 using Emsys.DataAccesLayer.Model;
 using Emsys.DataAccesLayer.Core;
 using System.Linq;
+using DataTypeObject;
 
 namespace SqlDependecyProject
 {
@@ -16,15 +17,15 @@ namespace SqlDependecyProject
             try
             {
                 //para iniciar la bd si no esta creada
-                EmsysContext db = new EmsysContext();                
+                EmsysContext db = new EmsysContext();
                 var eventos = db.Evento.FirstOrDefault();
-                
+
                 //me quedo loopeando
                 while (true)
                 {
                     if (llamo)
                     {
-                        Console.WriteLine("Estoy esperando por modificaciones..");
+                        Console.WriteLine("Observo la BD:\n");
                         Listener();
                         llamo = false;
                     }
@@ -57,27 +58,46 @@ namespace SqlDependecyProject
         {
             throw e.Error;
         }
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Evento> e)
+        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Evento> evento)
         {
-            if (e.ChangeType != ChangeType.None)
+            if (evento.ChangeType != ChangeType.None)
             {
-                switch (e.ChangeType)
+                Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
+                switch (evento.ChangeType)
                 {
                     case ChangeType.Delete:
-                        Console.WriteLine("Boorrroo: " +e.Entity.NombreInformante);
-                    //_stocks.Remove(_stocks.FirstOrDefault(c => c.NombreGenerador == e.Entity.NombreGenerador));
+                        Console.WriteLine("Accion: Borro, Pk del evento: " + evento.Entity.NombreInformante);
+                        AtenderEvento(DataNotificacionesCodigos.CierreEvento, evento, GestorNotificaciones);
                         break;
                     case ChangeType.Insert:
-                        Console.WriteLine("Agrego: " + e.Entity.NombreInformante);
-                    //_stocks.Add(e.Entity);
-                    break;
+                        Console.WriteLine("Accion Insert, Pk del evento: " + evento.Entity.NombreInformante);
+                        AtenderEvento(DataNotificacionesCodigos.AltaEvento, evento, GestorNotificaciones);
+                        break;
                     case ChangeType.Update:
-                        //var customerIndex = _stocks.IndexOf(
-                        //        _stocks.FirstOrDefault(c => c.NombreGenerador == e.Entity.NombreGenerador));
-                        //if (customerIndex >= 0) _stocks[customerIndex] = e.Entity;
-                        Console.WriteLine("Actualizo: " + e.Entity.NombreInformante);
+                        Console.WriteLine("Accion update, Pk del evento: " + evento.Entity.Id);
+                        AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, evento, GestorNotificaciones);
                         break;
                 }
+            }
+        }
+
+        private static void AtenderEvento(string cod, TableDependency.EventArgs.RecordChangedEventArgs<Evento> evento, Utils.Notifications.INotifications GestorNotificaciones)
+        {
+            using (EmsysContext db = new EmsysContext())
+            {
+
+                Emsys.Logs.Log.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Evento", evento.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla Eventos. Se inicia la secuencia de envio de notificaciones.", Emsys.Logs.Constantes.LogCapturarCambioEvento);
+                var eventoBD = db.Evento.Find(evento.Entity.Id);
+                if (eventoBD!=null) {
+                    foreach (var extension in eventoBD.ExtensionesEvento)
+                    {
+                        foreach (var recurso in extension.Recursos)
+                        {
+                            GestorNotificaciones.SendMessage(cod, evento.Entity.Id.ToString(), recurso.Id.ToString());
+                        }
+                    }
+                }
+                
             }
         }
     }

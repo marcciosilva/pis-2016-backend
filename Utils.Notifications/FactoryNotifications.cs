@@ -14,16 +14,18 @@ namespace Utils.Notifications
         // Determina qué sistema se utiliza para push notifications.
         private static PushNotificationsSystem _currentNotificationSystem = PushNotificationsSystem.Firebase;
 
-        public static INotifications GetInstance() {
-            if (_currentNotificationSystem == PushNotificationsSystem.PubNub)
-            {
-                return new NotificationsPubNub();
-            }
-            else if (_currentNotificationSystem == PushNotificationsSystem.RealtimeFramework)
-            {
-                return new NotificationsRealtime();
-            }
-            else if (_currentNotificationSystem == PushNotificationsSystem.Firebase)
+        public static INotifications GetInstance()
+        {
+            //if (_currentNotificationSystem == PushNotificationsSystem.PubNub)
+            //{
+            //    return new NotificationsPubNub();
+            //}
+            //else if (_currentNotificationSystem == PushNotificationsSystem.RealtimeFramework)
+            //{
+            //    return new NotificationsRealtime();
+            //}
+            //else
+            if (_currentNotificationSystem == PushNotificationsSystem.Firebase)
             {
                 return new NotificationsFirebase();
             }

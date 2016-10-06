@@ -3,7 +3,7 @@ using System;
 
 namespace Utils.Notifications
 {
-    public class NotificationsRealtime : INotifications
+    public class NotificationsRealtime //: INotifications
     {
 
         private OrtcClient _ortcClient;
