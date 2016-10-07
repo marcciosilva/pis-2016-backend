@@ -8,23 +8,23 @@ using System.Net.Http;
 
 namespace Utils.Login
 {
-    public static class ObtenerUsuario
+    public static class ObtenerToken
     {
-        public static string ObtenerNombreUsuario(HttpRequestMessage request)
+        public static string GetToken(HttpRequestMessage request)
         {
-            using (Emsys.DataAccesLayer.Core.EmsysContext db = new Emsys.DataAccesLayer.Core.EmsysContext())
+            try
             {
                 IEnumerable<string> headerValues;
                 var token = string.Empty;
                 if (request.Headers.TryGetValues("auth", out headerValues))
                 {
                     token = headerValues.FirstOrDefault();
-                    token = token.Replace("Bearer ", "");
-                    token = token.Replace("Bearer", "");
-                    var user = db.Users.FirstOrDefault(u => u.Token == token);
-                    if(user != null)
-                        return user.NombreUsuario;
+                    return token;
                 }
+                return null;
+            }
+            catch (Exception e)
+            {
                 return null;
             }
         }

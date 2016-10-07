@@ -1,4 +1,6 @@
-﻿using System;
+﻿using DataTypeObject;
+using Emsys.LogicLayer;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
@@ -19,8 +21,9 @@ namespace Servicios.Filtros
             }
             var actionName = actionContext.ActionDescriptor.ActionName;
             var controller = actionContext.ControllerContext.ControllerDescriptor.ControllerName;
-            var user = ObtenerUsuario.ObtenerNombreUsuario(actionContext.Request);
-            Emsys.Logs.Log.AgregarLog(user, GetIp(actionContext.Request), "ServiceLayer", "", 0, controller+"Controller"+"/"+actionName, "Se llamo al metodo", Emsys.Logs.Constantes.LogAcciones);
+            string token = ObtenerToken.GetToken(actionContext.Request);
+            IMetodos dbAL = new Metodos();
+            dbAL.AgregarLog(token, GetIp(actionContext.Request), "ServiceLayer", "", 0, controller+"Controller"+"/"+actionName, "Se llamo al metodo", Mensajes.LogAccionesCod);
         }
         private string GetIp(HttpRequestMessage request)
         {

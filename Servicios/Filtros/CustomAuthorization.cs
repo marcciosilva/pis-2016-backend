@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 using System.Net.Http;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Web.Http.Controllers;
 using System.Web.Http.Filters;
 using System.Web.Http;
-using Emsys.DataAccesLayer.Model;
 using DataTypeObject;
-using DataTypeObjetc;
 using Newtonsoft.Json;
+using Utils.Login;
+using Emsys.LogicLayer;
 
 namespace Servicios.Filtros
 {
@@ -34,7 +33,6 @@ namespace Servicios.Filtros
             {
                 HttpResponseMessage responseMessage = new HttpResponseMessage()
                 {
-                    StatusCode = System.Net.HttpStatusCode.Unauthorized,
                     Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado))))
                 };
                 actionContext.Response = responseMessage;
@@ -43,56 +41,13 @@ namespace Servicios.Filtros
 
         protected override bool IsAuthorized(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
-            // Voy a obtener el usuario del token.
-            IEnumerable<string> salida;
-            if (actionContext.Request.Headers.TryGetValues("auth", out salida))
+            string token = ObtenerToken.GetToken(actionContext.Request);
+            if (token == null)
             {
-                var token = salida.FirstOrDefault();
-                token = token.Replace("Bearer ", "");
-                token = token.Replace("Bearer", "");
-
-                using (Emsys.DataAccesLayer.Core.EmsysContext db = new Emsys.DataAccesLayer.Core.EmsysContext())
-                {
-                    var usuario = db.Users.Where(x => x.Token == token).FirstOrDefault();
-                    if (usuario != null)
-                    {
-                        if (!PermisosEtiqueta.Any())
-                        {
-                            return true;
-                        }
-                        foreach (var item in PermisosEtiqueta)
-                        {
-                            foreach (ApplicationRole ar in usuario.ApplicationRoles)
-                            {
-                                foreach (Permiso p in ar.Permisos)
-                                {
-                                    if (item == p.Clave)
-                                    {
-                                        if (usuario.FechaInicioSesion.Value.Year < DateTime.Now.Year || 
-                                            usuario.FechaInicioSesion.Value.Month < DateTime.Now.Month ||
-                                            usuario.FechaInicioSesion.Value.Day < DateTime.Now.Day || 
-                                            usuario.FechaInicioSesion.Value.Hour < DateTime.Now.Hour-8
-                                            )
-                                        {
-                                            //libero recursos y expiro el token
-                                            usuario.Recurso.ToList().ForEach(x => x.Estado = 0);
-                                            usuario.Token = null;
-                                            usuario.FechaInicioSesion = null;
-                                            db.SaveChanges();
-                                            return false;
-                                        }
-                                        return true;
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                   
-                }
-
+                return false;
             }
-            return false;
+            IMetodos dbAL = new Metodos();
+            return dbAL.autorizarUsuario(token, PermisosEtiqueta);            
         }
     }
 }

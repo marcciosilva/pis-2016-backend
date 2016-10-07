@@ -1,13 +1,8 @@
-﻿using CapaAcessoDatos;
-using DataTypeObject;
-using DataTypeObjetc;
-using Newtonsoft.Json;
+﻿using DataTypeObject;
+using Emsys.LogicLayer;
+using Emsys.LogicLayer.ApplicationExceptions;
 using Servicios.Filtros;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using Utils.Login;
 
@@ -21,16 +16,34 @@ namespace Servicios.Controllers
         [Route("users/login")]
         public DtoRespuesta ElegirRoles([FromBody] DtoRol rol)
         {
+            IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
             try
+            {                
+                if (token == null)
+                {
+                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                }
+                if (dbAL.loguearUsuario(token, rol))
+                {
+                    return new DtoRespuesta(0, null);
+                }
+                else
+                {
+                    return new DtoRespuesta(3, new Mensaje(Mensajes.SeleccionZonasRecursosInvalida));
+                }                
+            }
+            catch (RecursoNoDisponibleException e)
             {
-                IMetodos dbAL = new Metodos();
-                //DtoRol rol = JsonConvert.DeserializeObject<DtoRol>(json);
-                dbAL.loguearUsuario(ObtenerUsuario.ObtenerNombreUsuario(Request), rol);
-                return new DtoRespuesta(0,null);
+                return new DtoRespuesta(4, new Mensaje(Mensajes.RecursoNoDisponible));
+            }
+            catch (InvalidTokenException e)
+            {
+                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
             catch (Exception e)
             {
-                Emsys.Logs.Log.AgregarLogError(ObtenerUsuario.ObtenerNombreUsuario(Request), "", "Emsys.ServiceLayer", "LoguearUsuarioController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorIniciarSesion);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoguearUsuarioController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
                 return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }
         }

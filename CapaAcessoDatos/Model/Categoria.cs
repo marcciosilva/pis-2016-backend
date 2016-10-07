@@ -40,16 +40,5 @@
 
         public virtual ICollection<Evento> Eventos { get; set; }
 
-        public DtoCategoria getDto()
-        {
-            return new DtoCategoria()
-            {
-                id = Id,
-                codigo = this.Codigo,
-                clave = this.Clave,
-                prioridad =Prioridad.ToString().ToLower(),
-                activo = this.Activo
-            };
-        }
     }
 }

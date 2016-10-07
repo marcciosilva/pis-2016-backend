@@ -92,6 +92,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutenticacionTest.cs" />
+    <Compile Include="DALTest.cs" />
     <Compile Include="IntegrationTest\PruebaLiberacion1.cs" />
     <Compile Include="LogsUnitTest.cs" />
     <Compile Include="FirstUnitTest.cs" />
@@ -110,9 +112,9 @@
       <Project>{4fad5ded-34a2-42f7-9513-54b4cd1f9aa6}</Project>
       <Name>DataTypeObject</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Emsys.Logs\Emsys.Logs.csproj">
-      <Project>{0e187470-df7b-447c-aad3-91d6f6590b1e}</Project>
-      <Name>Emsys.Logs</Name>
+    <ProjectReference Include="..\Emsys.LogicLayer\Emsys.LogicLayer.csproj">
+      <Project>{EE8BC402-8FC4-4D4C-889A-210FC71DFC0A}</Project>
+      <Name>Emsys.LogicLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Servicios\Emsys.ServiceLayer.csproj">
       <Project>{D2A66EC3-41A8-4577-A446-3FF3E5804161}</Project>

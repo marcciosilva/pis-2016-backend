@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Emsys.Logs;
 using Emsys.DataAccesLayer.Core;
 using NUnit.Framework;
 using System.IO;
+using Emsys.LogicLayer;
 
 namespace Test.UnitTesting
 {
@@ -16,14 +13,15 @@ namespace Test.UnitTesting
         [Test]
         public void AgregarLog()
         {
-            AppDomain.CurrentDomain.SetData(
-            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            //AppDomain.CurrentDomain.SetData(
+            //"DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
 
             var cantidadLogsPrevia = db.Logs.Count()+1;
             int PruebaConstante = 12345678;
             string nombre = Guid.NewGuid().ToString();
-            Log.AgregarLog(nombre, "1:1:1:1", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);
+            IMetodos dbAL = new Metodos();
+            dbAL.AgregarLog(nombre, "1:1:1:1", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);
             var cantidadLogsDespues = db.Logs.Count();
             Assert.True(cantidadLogsPrevia==cantidadLogsDespues);
             var log= db.Logs.Where(x => x.Usuario == nombre).FirstOrDefault();
@@ -41,7 +39,8 @@ namespace Test.UnitTesting
             var cantidadLogsPrevia = db.Logs.Count() + 1;
             int PruebaConstante = 12345678;
             string nombre = Guid.NewGuid().ToString();
-            Log.AgregarLogError(nombre, "1:1:1:1", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);
+            IMetodos dbAL = new Metodos();
+            dbAL.AgregarLogError(nombre, "1:1:1:1", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);
             var cantidadLogsDespues = db.Logs.Count();
             Assert.True(cantidadLogsPrevia == cantidadLogsDespues);
             var log = db.Logs.Where(x => x.Usuario == nombre).FirstOrDefault();

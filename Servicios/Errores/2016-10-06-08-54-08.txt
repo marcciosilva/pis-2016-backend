@@ -1,0 +1,10 @@
+Mensaje:  error al registrar un log Validation failed for one or more entities. See 'EntityValidationErrors' property for more details.
+HelpLink: 
+Hresult: -2146232032
+Innerexception: 
+Source: EntityFramework
+StackTrace:    at System.Data.Entity.Internal.InternalContext.SaveChanges()
+   at System.Data.Entity.Internal.LazyInternalContext.SaveChanges()
+   at System.Data.Entity.DbContext.SaveChanges()
+   at Emsys.LogicLayer.Metodos.AgregarLog(String token, String terminal, String modulo, String Entidad, Int32 idEntidad, String accion, String detalles, Int32 codigo) in C:\Users\diegoiri\Source\Repos\pis-2016-backend\Emsys.LogicLayer\Metodos.cs:line 341
+TargetSite: Int32 SaveChanges()

@@ -47,10 +47,6 @@
         public virtual ICollection<Grupo_Recurso> Grupos_Recursos { get; set; }
 
         public virtual ApplicationUser Usuario { get; set; }
-
-        public DtoRecurso getDto()
-        {
-            return new DtoRecurso() { id = Id, codigo = Codigo };
-        }
+        
     }
 }

@@ -1,8 +1,6 @@
-﻿using CapaAcessoDatos;
-using DataTypeObject;
-using DataTypeObjetc;
-using Emsys.DataAccesLayer.Core;
-using Newtonsoft.Json;
+﻿using DataTypeObject;
+using Emsys.LogicLayer;
+using Emsys.LogicLayer.ApplicationExceptions;
 using Servicios.Filtros;
 using System;
 using System.Collections.Generic;
@@ -21,23 +19,25 @@ namespace Servicios.Controllers
         [Route("users/getroles")]
         public DtoRespuesta GetRoles()
         {
+            IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
             try
-            {  
-                IMetodos dbAL = new Metodos();
-                var nombreUsuario = ObtenerUsuario.ObtenerNombreUsuario(Request);
-                if (nombreUsuario != null)
-                {
-                    DtoRol rol = dbAL.getRolUsuario(nombreUsuario);
-                    return new DtoRespuesta(0, rol);
-                }
-                else
+            {                
+                if (token == null)
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
-                }                
+                }                               
+                DtoRol rol = dbAL.getRolUsuario(token);
+                return new DtoRespuesta(0, rol);
+                           
+            }
+            catch (InvalidTokenException e)
+            {
+                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
             catch (Exception e)
             {
-                Emsys.Logs.Log.AgregarLogError(ObtenerUsuario.ObtenerNombreUsuario(Request), "", "Emsys.ServiceLayer", "GetRolUsuarioController", 0, "GetRoles", "Hubo un error al intentar obtener roles de un usuario, se adjunta excepcion: " + e.Message, Emsys.Logs.Constantes.ErrorIniciarSesion);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "GetRolUsuarioController", 0, "GetRoles", "Hubo un error al intentar obtener roles de un usuario, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorGetRoles));
             }         
         }

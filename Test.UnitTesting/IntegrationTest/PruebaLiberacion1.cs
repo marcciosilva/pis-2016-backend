@@ -7,9 +7,6 @@ using DataTypeObject;
 using NUnit.Framework;
 using Servicios.Controllers;
 using System.Net.Http;
-using System.Web.Http;
-using DataTypeObjetc;
-using Newtonsoft.Json;
 using Emsys.DataAccesLayer.Core;
 using System.IO;
 
@@ -32,7 +29,7 @@ namespace Test.UnitTesting
             var response= controllerAutenticate.Login(new DtoUser() { username= nombreUsuario, password=contraseña});
             var respuesta=  response.Result;
             Assert.IsTrue(respuesta.cod==0);
-            var respuestaAutenticate =(Authenticate) respuesta.response;
+            var respuestaAutenticate =(DtoAutenticacion) respuesta.response;
             var token = respuestaAutenticate.access_token;
 
             var controllerGetRoles = new GetRolUsuarioController();
