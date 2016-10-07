@@ -17,8 +17,14 @@ namespace Emsys.LogicLayer
             using (var context = new EmsysContext())
             {
                 var user = context.Users.FirstOrDefault(u => u.NombreUsuario == userName);
-                if (user != null && user.Contraseña == Passwords.GetSHA1(password))
+                if ((user != null) && (user.Contraseña == Passwords.GetSHA1(password)))
                 {
+                    // Quita posibles logins previos.
+                    user.Recurso.ToList().ForEach(x => x.Estado = EstadoRecurso.Disponible);
+                    user.Zonas.Clear();
+                    user.Recurso.Clear();
+                    context.SaveChanges();
+
                     //// Comentado por compatibilidad con front end.
                     //// Agrega las zonas disponibles para el usuario mediante sus unidades ejecutoras.
                     //ICollection<DtoZona> zonas = new List<DtoZona>();
@@ -101,6 +107,21 @@ namespace Emsys.LogicLayer
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
+                    // Si el token ya expiro.
+                    if ((user.FechaInicioSesion.Value.Year < DateTime.Now.Year) ||
+                        (user.FechaInicioSesion.Value.Month < DateTime.Now.Month) ||
+                        (user.FechaInicioSesion.Value.Day < DateTime.Now.Day) ||
+                        (user.FechaInicioSesion.Value.Hour < DateTime.Now.Hour - 8))
+                    {
+                        // Libero recursos y expiro el token.
+                        user.Recurso.ToList().ForEach(x => x.Estado = EstadoRecurso.Disponible);
+                        user.Recurso.Clear();
+                        user.Zonas.Clear();
+                        user.Token = null;
+                        user.FechaInicioSesion = null;
+                        context.SaveChanges();
+                        return false;
+                    }
                     if (!etiquetas.Any())
                     {
                         return true;
@@ -112,20 +133,7 @@ namespace Emsys.LogicLayer
                             foreach (Permiso p in ar.Permisos)
                             {
                                 if (item == p.Clave)
-                                {
-                                    if (user.FechaInicioSesion.Value.Year < DateTime.Now.Year ||
-                                        user.FechaInicioSesion.Value.Month < DateTime.Now.Month ||
-                                        user.FechaInicioSesion.Value.Day < DateTime.Now.Day ||
-                                        user.FechaInicioSesion.Value.Hour < DateTime.Now.Hour - 8
-                                        )
-                                    {
-                                        //libero recursos y expiro el token
-                                        user.Recurso.ToList().ForEach(x => x.Estado = 0);
-                                        user.Token = null;
-                                        user.FechaInicioSesion = null;
-                                        context.SaveChanges();
-                                        return false;
-                                    }
+                                {                                    
                                     return true;
                                 }
                             }
@@ -147,47 +155,46 @@ namespace Emsys.LogicLayer
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
-                    // Quita posibles logins previos
-                    user.Zonas.Clear();
-                    user.Recurso.Clear();
-                    context.SaveChanges();
-
                     // Si el usuario se loguea por recurso
-                    if (rol.recursos.Count() == 1 && rol.zonas.Count() == 0)
+                    if ((rol.recursos.Count() == 1) && (rol.zonas.Count() == 0))
                     {
-                        bool okRecurso = false;
+                        Recurso recurso = null;
                         // Verifica que el recurso seleccionado sea seleccionable por el usuario.
                         foreach (Grupo_Recurso gr in user.Grupos_Recursos)
                         {
-                            if (gr.Recursos.FirstOrDefault(r => r.Id == rol.recursos.FirstOrDefault().id) != null)
-                            {
-                                okRecurso = true;
+                            recurso = gr.Recursos.FirstOrDefault(r => r.Id == rol.recursos.FirstOrDefault().id);
+                            if (recurso != null)
                                 break;
-                            }
                         }
                         // Si es seleccionable y esta libre se lo asigna y lo marca como no disponible.
-                        if (okRecurso && (context.Recursos.Find(rol.recursos.FirstOrDefault().id).Estado == EstadoRecurso.Disponible))
+                        if ((recurso != null) && (recurso.Estado == EstadoRecurso.Disponible))
                         {
                             user.Recurso.Add(context.Recursos.Find(rol.recursos.FirstOrDefault().id));
                             context.Recursos.Find(rol.recursos.FirstOrDefault().id).Estado = EstadoRecurso.NoDisponible;
                             context.SaveChanges();
                             return true;
                         }
+                        // Si el recurso no se encuentra disponible se lanza una excepcion.
+                        else if ((recurso != null) && (recurso.Estado == EstadoRecurso.NoDisponible))
+                        {
+                            throw new RecursoNoDisponibleException(Mensajes.RecursoNoDisponible);
+                        }
+                        // Si el recurso no existe o el usuario no tiene acceso a este se retorna false.
                         else
                         {
                             return false;
                         }
                     }
                     // Si el usuario se loguea por zonas.
-                    else if (rol.recursos.Count() == 0 && rol.zonas.Count() > 0)
+                    else if ((rol.recursos.Count() == 0) && (rol.zonas.Count() > 0))
                     {
                         foreach (DtoZona z in rol.zonas)
                         {
                             // Verifica que el usuario pertenezca a la unidad ejecutora de cada zona.
                             Zona zona = context.Zonas.Find(z.id);
-                            if (user.Unidades_Ejecutoras.Contains(zona.Unidad_Ejecutora))
+                            if ((zona != null) && (user.Unidades_Ejecutoras.Contains(zona.Unidad_Ejecutora)))
                             {
-                                user.Zonas.Add(context.Zonas.Find(z.id));
+                                user.Zonas.Add(zona);
                             }
                             // Si existe una zona que no le corresponda no agrega ninguna zona.
                             else
@@ -199,10 +206,11 @@ namespace Emsys.LogicLayer
                         return true;
                     }
                     // Si el usuario se loguea como visitante.
-                    else if (rol.recursos.Count() == 0 && rol.zonas.Count() == 0)
+                    else if ((rol.recursos.Count() == 0) && (rol.zonas.Count() == 0))
                     {
                         return true;
                     }
+                    // Si se recibe una combinacion de zonas y recursos o mas de un recurso retorna false.
                     else
                     {
                         return false;
@@ -232,7 +240,7 @@ namespace Emsys.LogicLayer
                     {
                         foreach (Extension_Evento ext in user.Recurso.FirstOrDefault().Extensiones_Eventos)
                         {
-                            if (ext.Estado != Emsys.DataAccesLayer.Model.EstadoExtension.Cerrado && !eventosAgregados.Contains(ext.Evento.Id))
+                            if ((ext.Estado != EstadoExtension.Cerrado) && !(eventosAgregados.Contains(ext.Evento.Id)))
                             {
                                 eventos.Add(DtoGetters.getDtoEvento(ext.Evento));
                                 eventosAgregados.Add(ext.Evento.Id);
@@ -246,7 +254,7 @@ namespace Emsys.LogicLayer
                         {
                             foreach (Extension_Evento ext in z.Extensiones_Evento)
                             {
-                                if (ext.Estado != Emsys.DataAccesLayer.Model.EstadoExtension.Cerrado && !eventosAgregados.Contains(ext.Evento.Id))
+                                if ((ext.Estado != EstadoExtension.Cerrado) && !(eventosAgregados.Contains(ext.Evento.Id)))
                                 {
                                     eventos.Add(DtoGetters.getDtoEvento(ext.Evento));
                                     eventosAgregados.Add(ext.Evento.Id);

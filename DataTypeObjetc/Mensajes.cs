@@ -19,6 +19,8 @@ namespace DataTypeObject
         public const string ErrorIniciarSesion = "Ocurrio un error en el servidor al iniciar sesion";
         public const string ErrorGetRoles = "Ocurrio un error en el servidor al obtener roles.";
         public const string ServicioExternoNoDisponible = "El servicio externo no se encuentra disponible.";
+        public const string RecursoNoDisponible = "El recurso seleccionado no se encuentra disponible.";
+        public const string SeleccionZonasRecursosInvalida = "Seleccion invalida de zonas y recursos.";
 
         // Codigos de error.
         public const int ErrorIniciarSesionCod = 1001;

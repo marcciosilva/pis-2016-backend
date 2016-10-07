@@ -23,9 +23,19 @@ namespace Servicios.Controllers
                 if (token == null)
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                }
+                if (dbAL.loguearUsuario(token, rol))
+                {
+                    return new DtoRespuesta(0, null);
+                }
+                else
+                {
+                    return new DtoRespuesta(3, new Mensaje(Mensajes.SeleccionZonasRecursosInvalida));
                 }                
-                dbAL.loguearUsuario(token, rol);
-                return new DtoRespuesta(0,null);
+            }
+            catch (RecursoNoDisponibleException e)
+            {
+                return new DtoRespuesta(4, new Mensaje(Mensajes.RecursoNoDisponible));
             }
             catch (InvalidTokenException e)
             {
