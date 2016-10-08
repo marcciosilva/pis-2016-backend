@@ -2,14 +2,9 @@ namespace Emsys.DataAccesLayer.Core
 {
     using System;
     using System.Data.Entity;
-    using Microsoft.AspNet.Identity.EntityFramework;
     using Model;
-
-    //public class ApplicationUser : IdentityUser
-    //{
-
-    //}
-    public partial class EmsysContext : DbContext//IdentityDbContext<ApplicationUser>
+    
+    public partial class EmsysContext : DbContext
     {
         public EmsysContext() : base("name=DefaultConnection")
         {

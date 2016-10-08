@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Emsys.Logs;
 using Emsys.DataAccesLayer.Core;
 using NUnit.Framework;
 using System.IO;
+using Emsys.LogicLayer;
 
 namespace Test.UnitTesting
 {
@@ -22,11 +19,13 @@ namespace Test.UnitTesting
 
             var cantidadLogsPrevia = db.Logs.Count()+1;
             int PruebaConstante = 12345678;
-            string nombre = Guid.NewGuid().ToString();
-            Log.AgregarLog(nombre, "1:1:1:1", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);
+            string nombre = "A";
+            IMetodos dbAL = new Metodos();
+            dbAL.AgregarLog(nombre, "1:1:1:1", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);            
             var cantidadLogsDespues = db.Logs.Count();
             Assert.True(cantidadLogsPrevia==cantidadLogsDespues);
-            var log= db.Logs.Where(x => x.Usuario == nombre).FirstOrDefault();
+            db.SaveChanges();
+            var log = db.Logs.FirstOrDefault(x => x.Terminal == "1:1:1:1");
             Assert.NotNull(log);
 
         }
@@ -41,10 +40,11 @@ namespace Test.UnitTesting
             var cantidadLogsPrevia = db.Logs.Count() + 1;
             int PruebaConstante = 12345678;
             string nombre = Guid.NewGuid().ToString();
-            Log.AgregarLogError(nombre, "1:1:1:1", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);
+            IMetodos dbAL = new Metodos();
+            dbAL.AgregarLogError(nombre, "2:2:2:2", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);
             var cantidadLogsDespues = db.Logs.Count();
             Assert.True(cantidadLogsPrevia == cantidadLogsDespues);
-            var log = db.Logs.Where(x => x.Usuario == nombre).FirstOrDefault();
+            var log = db.Logs.FirstOrDefault(x => x.Terminal == "2:2:2:2");
             Assert.NotNull(log);
         }
     }

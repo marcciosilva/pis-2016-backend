@@ -45,27 +45,5 @@
         public virtual Categoria SegundaCategoria { get; set; }
 
         public virtual ICollection<Recurso> Recursos { get; set; }
-              
-        public DtoExtension getDto()        
-        {
-            List<string> recursos = new List<string>();
-            foreach (Recurso r in Recursos)
-            {
-                recursos.Add(r.Codigo);
-            }
-            DtoCategoria cat = null;
-            if (this.SegundaCategoria != null)
-                cat = SegundaCategoria.getDto();
-
-            return new DtoExtension()
-            {
-                zona = Zona.getDto(),
-                descripcion = DescripcionDespachador,
-                estado = Estado.ToString().ToLower(),
-                time_stamp = TimeStamp,
-                categoria = cat,
-                recursos= recursos
-            };
-        }        
     }
 }

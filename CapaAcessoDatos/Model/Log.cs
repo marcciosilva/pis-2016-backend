@@ -13,8 +13,7 @@
     {
         [Key]
         public int Id { get; set; }
-
-        [Required]
+        
         public virtual string Usuario { get; set; }
 
         public DateTime TimeStamp { get; set; }

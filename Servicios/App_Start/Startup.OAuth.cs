@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Configuration;
-using Emsys.DataAccesLayer.Core;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin;
