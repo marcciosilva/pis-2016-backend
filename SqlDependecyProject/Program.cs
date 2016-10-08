@@ -9,10 +9,10 @@ using DataTypeObject;
 
 namespace SqlDependecyProject
 {
-    class Program
+    public class Program
     {
         private static bool llamo = true;
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             try
             {
@@ -39,7 +39,7 @@ namespace SqlDependecyProject
             }
         }
 
-        static void Listener()
+        public static void Listener()
         {
             var mapper = new ModelToTableMapper<Evento>();
             mapper.AddMapping(model => model.NombreInformante, "NombreInformante");

@@ -61,8 +61,8 @@
       <HintPath>..\packages\Microsoft.AspNet.Identity.EntityFramework.2.2.1\lib\net45\Microsoft.AspNet.Identity.EntityFramework.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=6.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="nunit.framework, Version=3.4.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
@@ -96,6 +96,7 @@
     <Compile Include="DALTest.cs" />
     <Compile Include="IntegrationTest\PruebaLiberacion1.cs" />
     <Compile Include="LogsUnitTest.cs" />
+    <Compile Include="NotifiacionesUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -143,6 +144,14 @@
     <ProjectReference Include="..\Servicios\Emsys.ServiceLayer.csproj">
       <Project>{D2A66EC3-41A8-4577-A446-3FF3E5804161}</Project>
       <Name>Emsys.ServiceLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SqlDependecyProject\Emsys.ObserverDataBase.csproj">
+      <Project>{1ddb2c9b-93db-4962-8dcc-e8615fdb1068}</Project>
+      <Name>Emsys.ObserverDataBase</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils.Notifications\Utils.Notifications.csproj">
+      <Project>{a10bb2f4-e63f-40d5-a9b7-52bae04a6316}</Project>
+      <Name>Utils.Notifications</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
