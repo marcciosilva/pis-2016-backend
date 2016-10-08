@@ -426,6 +426,10 @@ namespace Test.UnitTesting
                 {
                     context.Unidades_Ejecutoras.Remove(ue);
                 }
+                foreach (var sector in context.Sectores)
+                {
+                    context.Sectores.Remove(sector);
+                }
                 foreach (var zona in context.Zonas)
                 {
                     context.Zonas.Remove(zona);
