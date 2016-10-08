@@ -92,8 +92,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObtenerNombreUsuarioTest.cs" />
-    <Compile Include="AutorizarTest.cs" />
     <Compile Include="AutenticacionTest.cs" />
     <Compile Include="DALTest.cs" />
     <Compile Include="IntegrationTest\PruebaLiberacion1.cs" />
@@ -159,26 +157,8 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="App_Data\DatabasePruebas.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\DatabasePruebas_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>DatabasePruebas.mdf</DependentUpon>
-    </Content>
-    <Content Include="App_Data\Prototipo1.ldf">
-      <DependentUpon>Prototipo1.mdf</DependentUpon>
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\Prototipo1.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="App_Data\Prototipo1_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>Prototipo1.mdf</DependentUpon>
-    </Content>
+    <Folder Include="App_Data\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
