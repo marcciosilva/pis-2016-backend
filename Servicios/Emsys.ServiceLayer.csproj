@@ -228,11 +228,8 @@
     <Compile Include="App_Start\Startup.OAuth.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\CerrarSesionController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
     <Compile Include="Controllers\ListarEventosController.cs" />
-    <Compile Include="Controllers\GetRolUsuarioController.cs" />
-    <Compile Include="Controllers\LoguearUsuarioController.cs" />
     <Compile Include="Controllers\MultimediaController.cs" />
     <Compile Include="Controllers\ServicioExternoController.cs" />
     <Compile Include="Controllers\Filtros\CustomAuthorization.cs" />

@@ -28,25 +28,23 @@ namespace Test.UnitTesting
                 var nombreUsuario = "A";
                 var contraseña = "A";
                 // LOGIN.
-                var controllerAutenticate = new LoginController();
-                var response = controllerAutenticate.Login(new DtoUser() { username = nombreUsuario, password = contraseña });
+                var controllerLogin = new LoginController();
+                var response = controllerLogin.Login(new DtoUser() { username = nombreUsuario, password = contraseña });
                 var respuesta = response.Result;
                 Assert.IsTrue(respuesta.cod == 0);
                 var respuestaAutenticate = (DtoAutenticacion)respuesta.response;
                 var token = respuestaAutenticate.access_token;
 
-                var controllerGetRoles = new GetRolUsuarioController();
-                controllerGetRoles.Request = new HttpRequestMessage();
-                controllerGetRoles.Request.Headers.Add("auth", token);
-                var respuesta2 = controllerGetRoles.GetRoles();
+                controllerLogin.Request = new HttpRequestMessage();
+                controllerLogin.Request.Headers.Add("auth", token);
+                var respuesta2 = controllerLogin.GetRoles();
                 Assert.IsTrue(respuesta2.cod == 0);
                 var recurso_o_zona = (DtoRol)respuesta2.response;
 
-                var controllerLoguearUsuario = new LoguearUsuarioController();
-                controllerLoguearUsuario.Request = new HttpRequestMessage();
-                controllerLoguearUsuario.Request.Headers.Add("auth", token);
+                controllerLogin.Request = new HttpRequestMessage();
+                controllerLogin.Request.Headers.Add("auth", token);
                 var rolElegidoZona = new DtoRol() { zonas = recurso_o_zona.zonas, recursos = new List<DtoRecurso>() };
-                var respuesta3 = controllerLoguearUsuario.ElegirRoles(rolElegidoZona);
+                var respuesta3 = controllerLogin.ElegirRoles(rolElegidoZona);
                 Assert.IsTrue(respuesta3.cod == 0);
 
 
@@ -76,10 +74,9 @@ namespace Test.UnitTesting
                 }
 
                 // CERRAR SESION.
-                var controllerCerrarSesion = new CerrarSesionController();
-                controllerCerrarSesion.Request = new HttpRequestMessage();
-                controllerCerrarSesion.Request.Headers.Add("auth", token);
-                var respuesta5 = controllerCerrarSesion.CerrarSesion();
+                controllerLogin.Request = new HttpRequestMessage();
+                controllerLogin.Request.Headers.Add("auth", token);
+                var respuesta5 = controllerLogin.CerrarSesion();
                 Assert.IsTrue(respuesta5.cod == 0);
                 Assert.IsTrue(context.Users.FirstOrDefault(u => u.NombreUsuario == "A").Zonas.Count() == 0);
             }
