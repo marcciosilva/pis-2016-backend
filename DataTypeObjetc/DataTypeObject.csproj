@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DtoAutenticacion.cs" />
+    <Compile Include="DtoGeoUbicacion.cs" />
     <Compile Include="DtoRespuestaExterna.cs" />
     <Compile Include="DtoRespuesta.cs" />
     <Compile Include="DtoUser.cs" />

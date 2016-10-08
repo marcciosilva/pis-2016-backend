@@ -1,4 +1,7 @@
-﻿using System;
+﻿using DataTypeObject;
+using Emsys.DataAccesLayer.Core;
+using Emsys.DataAccesLayer.Model;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
@@ -18,22 +21,34 @@ namespace Servicios.Controllers
         /// Los archivos esperados son del formato MIME
         /// </summary>
         /// <returns></returns>
-        public IHttpActionResult Post()
+        [Route("subirFile")]
+        public DtoRespuesta Post()
         {
-            var request = HttpContext.Current.Request;
-            if (request.Files.Count > 0)
+            using (var context = new EmsysContext())
             {
-                foreach (string file in request.Files)
+                var request = HttpContext.Current.Request;
+                if (request.Files.Count > 0)
                 {
-                    var postedFile = request.Files[file];
+                    foreach (string file in request.Files)
+                    {
+                        var postedFile = request.Files[file];
+                        Imagen img = new Imagen() { Nombre = postedFile.FileName, FechaEnvio = DateTime.Now, Usuario = context.Users.FirstOrDefault() };
 
-                    var filePath = HttpContext.Current.Server.MapPath(string.Format("~/Multimedia/{0}", postedFile.FileName));
-                    postedFile.SaveAs(filePath);
+                        using (MemoryStream ms = new MemoryStream())
+                        {
+                            postedFile.InputStream.CopyTo(ms);
+                            img.imagen = ms.ToArray();
+                        }
+                        context.Imagenes.Add(img);
+                        context.SaveChanges();
+                        //var filePath = HttpContext.Current.Server.MapPath(string.Format("~/Multimedia/{0}", postedFile.FileName));
+                        //postedFile.SaveAs(filePath);
+                    }
+                    return new DtoRespuesta(0, null);
                 }
-                return Ok(true);
+                else
+                    return new DtoRespuesta(1, null);
             }
-            else
-                return BadRequest();
             // este codgio de aabajo tambien funciona pero me parecio mejor el de arriba.
 
             //if (!Request.Content.IsMimeMultipartContent())
@@ -60,18 +75,22 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="nombreArchivo"></param>
         /// <returns></returns>
+        [Route("getFile")]
         [HttpGet]
-        public HttpResponseMessage Get(string nombreArchivo)
+        public HttpResponseMessage Get()
         {
-            var path = System.Web.HttpContext.Current.Server.MapPath("~/Multimedia/+nombreArchivo"); ;
-            HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
-            var stream = new FileStream(path, FileMode.Open);
-            result.Content = new StreamContent(stream);
-            result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-            result.Content.Headers.ContentDisposition.FileName = Path.GetFileName(path);
-            result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-            result.Content.Headers.ContentLength = stream.Length;
-            return result;
+            using (var context = new EmsysContext())
+            {
+                HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
+                var img = context.Imagenes.FirstOrDefault();
+                var stream = new MemoryStream(img.imagen);
+                result.Content = new StreamContent(stream);
+                result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                result.Content.Headers.ContentDisposition.FileName = img.Nombre;
+                result.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                result.Content.Headers.ContentLength = stream.Length;
+                return result;
+            }
         }
 
     }

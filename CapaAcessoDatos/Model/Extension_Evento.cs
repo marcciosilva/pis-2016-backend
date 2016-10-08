@@ -45,5 +45,13 @@
         public virtual Categoria SegundaCategoria { get; set; }
 
         public virtual ICollection<Recurso> Recursos { get; set; }
+
+        public virtual ICollection<Imagen> Imagenes { get; set; }
+
+        public virtual ICollection<Video> Videos { get; set; }
+
+        public virtual ICollection<Audio> Audios { get; set; }
+
+        public virtual ICollection<GeoUbicacion> GeoUbicaciones { get; set; }
     }
 }

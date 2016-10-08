@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationExceptions\EventoInvalidoException.cs" />
     <Compile Include="ApplicationExceptions\RecursoNoDisponibleException.cs" />
     <Compile Include="ApplicationExceptions\InvalidTokenException.cs" />
     <Compile Include="ApplicationExceptions\InvalidCredentialsException.cs" />

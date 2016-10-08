@@ -65,6 +65,14 @@
         public virtual ICollection<Extension_Evento> ExtensionesEvento { get; set; }
 
         public virtual Origen_Evento Origen_Evento { get; set; }
-         
+
+        public virtual ICollection<Imagen> Imagenes { get; set; }
+
+        public virtual ICollection<Video> Videos { get; set; }
+
+        public virtual ICollection<Audio> Audios { get; set; }
+
+        public virtual ICollection<GeoUbicacion> GeoUbicaciones { get; set; }
+
     }
 }

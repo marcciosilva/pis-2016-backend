@@ -15,6 +15,12 @@ namespace Emsys.DataAccesLayer.Core
 
         public DbSet<Imagen> Imagenes { get; set; }
 
+        public DbSet<Audio> Audios { get; set; }
+
+        public DbSet<Video> Videos { get; set; }
+
+        public DbSet<GeoUbicacion> GeoUbicaciones { get; set; }
+
         public DbSet<Categoria> Categorias { get; set; }
 
         public DbSet<Departamento> Departamentos { get; set; }
@@ -34,9 +40,7 @@ namespace Emsys.DataAccesLayer.Core
         public DbSet<Zona> Zonas { get; set; }
 
         public DbSet<ApplicationRole> ApplicationRoles { get; set; }
-
-        //public DbSet<ApplicationUser> ApplicationUser { get; set; }
-
+        
         public DbSet<Permiso> Permisos { get; set; }
 
         public DbSet<Grupo_Recurso> Grupos_Recursos { get; set; }

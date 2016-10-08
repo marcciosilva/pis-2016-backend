@@ -5,18 +5,14 @@
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    
 
-
-
-    //[Table("Sectores")]
-    public partial class Adjunto
+    [Table("GeoUbicaciones")]
+    public partial class GeoUbicacion : Adjunto
     {
-        [Key]
-        public int Id { get; set; }
-        
-        public virtual ApplicationUser Usuario {get; set; }
-       
-        public DateTime FechaEnvio { get; set; }
-        
+        public double Longitud { get; set; }
+
+        public double Latitud { get; set; }
+
     }
 }

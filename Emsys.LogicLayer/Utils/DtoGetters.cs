@@ -10,6 +10,15 @@ namespace Emsys.LogicLayer.Utils
 {
     class DtoGetters
     {
+        public static DtoGeoUbicacion getDtoGeoUbicacion(GeoUbicacion ubicacion)
+        {
+            return new DtoGeoUbicacion()
+            {
+                longitud = ubicacion.Longitud,
+                latitud = ubicacion.Latitud
+            };
+        }
+
         public static DtoZona getDtoZona(Zona zona)
         {
             return new DtoZona()

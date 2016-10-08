@@ -419,5 +419,47 @@ namespace Emsys.LogicLayer
                 fs.Close();
             }
         }
+
+        public ICollection<DtoGeoUbicacion> getGeoUbicacionesEvento(string token, int idEvento)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new InvalidTokenException(Mensajes.TokenInvalido);
+                }
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user != null)
+                {
+                    var evento = context.Evento.FirstOrDefault(e => e.Id == idEvento);
+                    if(evento == null)
+                    {
+                        throw new EventoInvalidoException();
+                    }
+                    bool permitido = false;
+                    foreach (Zona z in user.Zonas)
+                    {
+                        foreach (Extension_Evento ext in evento.ExtensionesEvento)
+                        {
+                            if (ext.Zona == z)
+                            {
+                                permitido = true;
+                                break;
+                            }
+                        }
+                    }
+                    if (permitido)
+                    {
+                        List<DtoGeoUbicacion> resp = new List<DtoGeoUbicacion>();
+                        foreach (GeoUbicacion g in evento.GeoUbicaciones)
+                        {
+                            resp.Add(DtoGetters.getDtoGeoUbicacion(g));
+                        }
+                        return resp;
+                    }
+                }
+                throw new InvalidTokenException(Mensajes.TokenInvalido);
+            }
+        }
     }
 }
