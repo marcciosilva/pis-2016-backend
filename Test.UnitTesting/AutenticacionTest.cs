@@ -8,6 +8,7 @@ using NUnit.Framework;
 using Emsys.LogicLayer;
 using Emsys.DataAccesLayer.Model;
 using Emsys.LogicLayer.ApplicationExceptions;
+using System.IO;
 
 namespace Test.UnitTesting
 {
@@ -23,31 +24,29 @@ namespace Test.UnitTesting
         {
             using (var context = new EmsysContext())
             {
-                IMetodos dbAL = new Metodos();
-
-                var user = new ApplicationUser() { NombreUsuario = "pruebaAutenticar", Nombre = "pruebaAutenticar", Contraseña = "pruebaAutenticar" };
-                context.Users.Add(user);
-
-                // Pruebo con credenciales invalidas.
+                AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));     
+                IMetodos logica = new Metodos();
                 try
                 {
-                    dbAL.autenticarUsuario("pruebaAutenticar", "pruebaIncorrecta");
+                    logica.autenticarUsuario("usuario", "incorrecto");
                     Assert.Fail();
                 }
                 catch (InvalidCredentialsException e)
                 {
+                    Assert.IsTrue(true);
                 }
-                catch (Exception e)
+
+                try
+                {
+                    //Assert.IsTrue(context.Users.FirstOrDefault(u => u.NombreUsuario == "usuario1") != null);
+                    var result = logica.autenticarUsuario("usuario1", "usuario1");
+                    Assert.IsNotNull(result);
+                }
+                catch (InvalidCredentialsException e)
                 {
                     Assert.Fail();
                 }
-
-                // Pruebo con credenciales invalidas.
-                Assert.IsNotNull(dbAL.autenticarUsuario("pruebaAutenticar", "pruebaAutenticar"));
-
-                context.Users.Remove(user);
             }
         }
-
     }
 }

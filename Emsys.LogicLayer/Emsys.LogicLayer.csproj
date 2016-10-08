@@ -68,10 +68,6 @@
       <Project>{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}</Project>
       <Name>DataTypeObject</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Utils.Login\Utils.Login.csproj">
-      <Project>{17A7932D-27BC-45DF-9F1D-64019E0389ED}</Project>
-      <Name>Utils.Login</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

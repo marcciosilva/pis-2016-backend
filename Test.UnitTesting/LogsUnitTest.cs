@@ -13,18 +13,19 @@ namespace Test.UnitTesting
         [Test]
         public void AgregarLog()
         {
-            //AppDomain.CurrentDomain.SetData(
-            //"DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
 
             var cantidadLogsPrevia = db.Logs.Count()+1;
             int PruebaConstante = 12345678;
-            string nombre = Guid.NewGuid().ToString();
+            string nombre = "A";
             IMetodos dbAL = new Metodos();
-            dbAL.AgregarLog(nombre, "1:1:1:1", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);
+            dbAL.AgregarLog(nombre, "1:1:1:1", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);            
             var cantidadLogsDespues = db.Logs.Count();
             Assert.True(cantidadLogsPrevia==cantidadLogsDespues);
-            var log= db.Logs.Where(x => x.Usuario == nombre).FirstOrDefault();
+            db.SaveChanges();
+            var log = db.Logs.FirstOrDefault(x => x.Terminal == "1:1:1:1");
             Assert.NotNull(log);
 
         }
@@ -40,10 +41,10 @@ namespace Test.UnitTesting
             int PruebaConstante = 12345678;
             string nombre = Guid.NewGuid().ToString();
             IMetodos dbAL = new Metodos();
-            dbAL.AgregarLogError(nombre, "1:1:1:1", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);
+            dbAL.AgregarLogError(nombre, "2:2:2:2", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);
             var cantidadLogsDespues = db.Logs.Count();
             Assert.True(cantidadLogsPrevia == cantidadLogsDespues);
-            var log = db.Logs.Where(x => x.Usuario == nombre).FirstOrDefault();
+            var log = db.Logs.FirstOrDefault(x => x.Terminal == "2:2:2:2");
             Assert.NotNull(log);
         }
     }

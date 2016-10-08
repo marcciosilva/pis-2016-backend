@@ -6,111 +6,113 @@ using System.Text;
 using System.Threading.Tasks;
 using Emsys.LogicLayer;
 using Emsys.DataAccesLayer.Core;
+using Emsys.DataAccesLayer.Model;
 
 namespace Test.UnitTesting
 {
     [TestFixture]
     class DALTest
     {
-        ///// <summary>
-        ///// Test que prueba que se pueda registrar un usuario a Identity.
-        ///// </summary>
+        /// <summary>
+        /// Test que prueba que se pueda registrar un usuario a Identity.
+        /// </summary>
+        [Test]
+        public void RegistrarUsuarioTest()
+        {
+            using (var db = new EmsysContext())
+            {
+                var user = new ApplicationUser() { NombreUsuario = "prueba", Nombre = "prueba" };
+                db.Users.Add(user);
+                db.SaveChanges();
+                var usuarioAgregado = db.Users.FirstOrDefault(x => x.NombreUsuario.Equals("prueba"));
+                Assert.IsNotNull(usuarioAgregado);
+                db.Users.Remove(user);
+            }
+        }
+
+        /// <summary>
+        /// Test que prueba que se pueda crear una Unidad Ejecutora y agregarla a la base de datos.
+        /// </summary>
+        [Test]
+        public void CrearUnidadEjecutora()
+        {
+            using (var context = new EmsysContext())
+            {
+                context.Unidades_Ejecutoras.Add(new Unidad_Ejecutora() { Nombre = "pruebaUE" });
+                context.SaveChanges();
+                var unidadEjecutoraAgregada = context.Unidades_Ejecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUE"));
+                Assert.IsNotNull(unidadEjecutoraAgregada);
+                context.Unidades_Ejecutoras.Remove(unidadEjecutoraAgregada);
+            }
+        }
+
+        /// <summary>
+        /// Test que prueba que se pueda crear una Zona y agregarla a la base de datos.
+        /// </summary>
+        [Test]
+        public void CrearZona()
+        {
+            using (var context = new EmsysContext())
+            {
+                context.Unidades_Ejecutoras.Add(new Unidad_Ejecutora() { Nombre = "pruebaUEZona" });
+                context.SaveChanges();
+                var unidadEjecutoraAgregada = context.Unidades_Ejecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUEZona"));
+                if (unidadEjecutoraAgregada != null)
+                {
+                    context.Zonas.Add(new Zona() { Nombre = "pruebaZona", Unidad_Ejecutora = unidadEjecutoraAgregada });
+                    context.SaveChanges();
+                    var zonaAgregada = context.Zonas.FirstOrDefault(x => x.Nombre.Equals("pruebaZona"));
+                    Assert.IsNotNull(zonaAgregada);
+                    context.Zonas.Remove(zonaAgregada);
+                    context.Unidades_Ejecutoras.Remove(unidadEjecutoraAgregada);
+                }
+                else
+                {
+                    Assert.Fail();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Test que prueba que se pueda crear un Sector y agregarlo a la base de datos.
+        /// </summary>
+        [Test]
+        public void CrearSector()
+        {
+            using (var context = new EmsysContext())
+            {
+                context.Unidades_Ejecutoras.Add(new Unidad_Ejecutora() { Nombre = "pruebaUEZonaSector" });
+                context.SaveChanges();
+                var unidadEjecutoraAgregada = context.Unidades_Ejecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUEZonaSector"));
+                if (unidadEjecutoraAgregada != null)
+                {
+                    context.Zonas.Add(new Zona() { Nombre = "pruebaZonaSector", Unidad_Ejecutora = unidadEjecutoraAgregada });
+                    context.SaveChanges();
+                    var zonaAgregada = context.Zonas.FirstOrDefault(x => x.Nombre.Equals("pruebaZonaSector"));
+                    if (zonaAgregada != null)
+                    {
+                        context.Sectores.Add(new Sector() { Nombre = "prueba", Zona = zonaAgregada });
+                        context.SaveChanges();
+                        var sectorAgregado = context.Sectores.FirstOrDefault(x => x.Nombre.Equals("prueba"));
+                        Assert.IsNotNull(sectorAgregado);
+                        context.Sectores.Remove(sectorAgregado);
+                        context.Zonas.Remove(zonaAgregada);
+                        context.Unidades_Ejecutoras.Remove(unidadEjecutoraAgregada);
+                    }
+                    else
+                    {
+                        Assert.Fail();
+                    }
+
+                }
+                else
+                {
+                    Assert.Fail();
+                }
+            }
+        }
+
         //[Test]
-        //public void RegistrarUsuarioTest()
-        //{
-        //    using (var db = new EmsysContext())
-        //    {
-        //        var user = new ApplicationUser() { NombreUsuario = "prueba", Nombre = "prueba" };
-        //        db.Users.Add(user);
-        //        db.SaveChanges();
-        //        var usuarioAgregado = db.Users.FirstOrDefault(x => x.NombreUsuario.Equals("prueba"));
-        //        Assert.IsNotNull(usuarioAgregado);
-        //        db.Users.Remove(user);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Test que prueba que se pueda crear una Unidad Ejecutora y agregarla a la base de datos.
-        ///// </summary>
-        //[TestMethod]
-        //public void CrearUnidadEjecutora()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        context.Unidades_Ejecutoras.Add(new Unidad_Ejecutora() { Nombre = "pruebaUE" });
-        //        context.SaveChanges();
-        //        var unidadEjecutoraAgregada = context.Unidades_Ejecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUE"));
-        //        Assert.IsNotNull(unidadEjecutoraAgregada);
-        //        context.Unidades_Ejecutoras.Remove(unidadEjecutoraAgregada);
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Test que prueba que se pueda crear una Zona y agregarla a la base de datos.
-        ///// </summary>
-        //[TestMethod]
-        //public void CrearZona()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        context.Unidades_Ejecutoras.Add(new Unidad_Ejecutora() { Nombre = "pruebaUEZona" });
-        //        context.SaveChanges();
-        //        var unidadEjecutoraAgregada = context.Unidades_Ejecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUEZona"));
-        //        if (unidadEjecutoraAgregada != null)
-        //        {
-        //            context.Zonas.Add(new Zona() { Nombre = "pruebaZona", Unidad_Ejecutora = unidadEjecutoraAgregada });
-        //            context.SaveChanges();
-        //            var zonaAgregada = context.Zonas.FirstOrDefault(x => x.Nombre.Equals("pruebaZona"));
-        //            Assert.IsNotNull(zonaAgregada);
-        //            context.Zonas.Remove(zonaAgregada);
-        //            context.Unidades_Ejecutoras.Remove(unidadEjecutoraAgregada);
-        //        }
-        //        else
-        //        {
-        //            Assert.Fail();
-        //        }
-        //    }
-        //}
-
-        ///// <summary>
-        ///// Test que prueba que se pueda crear un Sector y agregarlo a la base de datos.
-        ///// </summary>
-        //[TestMethod]
-        //public void CrearSector()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        context.Unidades_Ejecutoras.Add(new Unidad_Ejecutora() { Nombre = "pruebaUEZonaSector" });
-        //        context.SaveChanges();
-        //        var unidadEjecutoraAgregada = context.Unidades_Ejecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUEZonaSector"));
-        //        if (unidadEjecutoraAgregada != null)
-        //        {
-        //            context.Zonas.Add(new Zona() { Nombre = "pruebaZonaSector", Unidad_Ejecutora = unidadEjecutoraAgregada });
-        //            context.SaveChanges();
-        //            var zonaAgregada = context.Zonas.FirstOrDefault(x => x.Nombre.Equals("pruebaZonaSector"));
-        //            if (zonaAgregada != null)
-        //            {
-        //                context.Sectores.Add(new Sector() { Nombre = "prueba", Zona = zonaAgregada });
-        //                context.SaveChanges();
-        //                var sectorAgregado = context.Sectores.FirstOrDefault(x => x.Nombre.Equals("prueba"));
-        //                Assert.IsNotNull(sectorAgregado);
-        //                context.Sectores.Remove(sectorAgregado);
-        //                context.Zonas.Remove(zonaAgregada);
-        //                context.Unidades_Ejecutoras.Remove(unidadEjecutoraAgregada);
-        //            }
-        //            else
-        //            {
-        //                Assert.Fail();
-        //            }
-
-        //        }
-        //        else
-        //        {
-        //            Assert.Fail();
-        //        }
-        //    }
-        //}
-
         //static void CrearCategoria()
         //{
         //    using (var context = new EmsysContext())
@@ -137,6 +139,7 @@ namespace Test.UnitTesting
         //    }
         //}
 
+        //[Test]
         //static void CrearEvento()
         //{
         //    using (var context = new EmsysContext())

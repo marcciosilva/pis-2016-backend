@@ -28,9 +28,8 @@
 
         public DateTime? FechaInicioSesion { get; set; }
 
-        [MaxLength(20)]
+        [MaxLength(200)]
         public string Nombre { get; set; }
-
 
         [Required]
         public Estado Estado { get; set; }    

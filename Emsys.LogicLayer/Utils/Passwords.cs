@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Emsys.LogicLayer.Utils
 {
-    class Passwords
+    public class Passwords
     {
         public static string GetSHA1(string str)
         {

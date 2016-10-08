@@ -8,7 +8,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using Utils.Login;
 namespace Servicios.Controllers
 {
     public class GetRolUsuarioController : ApiController

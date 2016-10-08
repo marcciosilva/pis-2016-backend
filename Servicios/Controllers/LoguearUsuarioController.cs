@@ -4,7 +4,6 @@ using Emsys.LogicLayer.ApplicationExceptions;
 using Servicios.Filtros;
 using System;
 using System.Web.Http;
-using Utils.Login;
 
 namespace Servicios.Controllers
 {

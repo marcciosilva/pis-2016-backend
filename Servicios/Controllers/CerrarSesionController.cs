@@ -4,7 +4,6 @@ using System;
 using System.Linq;
 using System.Net.Http;
 using System.Web.Http;
-using Utils.Login;
 using Emsys.LogicLayer;
 using Emsys.LogicLayer.ApplicationExceptions;
 

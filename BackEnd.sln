@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emsys.ServiceLayer", "Servicios\Emsys.ServiceLayer.csproj", "{D2A66EC3-41A8-4577-A446-3FF3E5804161}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -23,8 +23,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTypeObject", "DataTypeObjetc\DataTypeObject.csproj", "{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test.UnitTesting", "Test.UnitTesting\Test.UnitTesting.csproj", "{56F195D5-C21B-49D2-8524-C0E7C33751FF}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils.Login", "Utils.Login\Utils.Login.csproj", "{17A7932D-27BC-45DF-9F1D-64019E0389ED}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emsys.LogicLayer", "Emsys.LogicLayer\Emsys.LogicLayer.csproj", "{EE8BC402-8FC4-4D4C-889A-210FC71DFC0A}"
 EndProject
@@ -72,10 +70,6 @@ Global
 		{56F195D5-C21B-49D2-8524-C0E7C33751FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56F195D5-C21B-49D2-8524-C0E7C33751FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{56F195D5-C21B-49D2-8524-C0E7C33751FF}.Release|Any CPU.Build.0 = Release|Any CPU
-		{17A7932D-27BC-45DF-9F1D-64019E0389ED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{17A7932D-27BC-45DF-9F1D-64019E0389ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{17A7932D-27BC-45DF-9F1D-64019E0389ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{17A7932D-27BC-45DF-9F1D-64019E0389ED}.Release|Any CPU.Build.0 = Release|Any CPU
 		{EE8BC402-8FC4-4D4C-889A-210FC71DFC0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EE8BC402-8FC4-4D4C-889A-210FC71DFC0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EE8BC402-8FC4-4D4C-889A-210FC71DFC0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
