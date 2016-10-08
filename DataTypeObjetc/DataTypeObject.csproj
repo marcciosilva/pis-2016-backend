@@ -59,6 +59,8 @@
   <ItemGroup>
     <Compile Include="DtoAutenticacion.cs" />
     <Compile Include="DtoRespuestaExterna.cs" />
+    <Compile Include="Notificacion.Data.cs" />
+    <Compile Include="Notificaciones.Data.Codigos.cs" />
     <Compile Include="DtoRespuesta.cs" />
     <Compile Include="DtoUser.cs" />
     <Compile Include="DtoConsultaExterna.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="DtoCategoria.cs" />
     <Compile Include="DtoEvento.cs" />
     <Compile Include="DtoExtension.cs" />
+    <Compile Include="Notificacion.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

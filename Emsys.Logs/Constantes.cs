@@ -20,6 +20,11 @@ namespace Emsys.Logs
 
         public const int LogLLamdos = 9998;
 
+        public const int LogNotificaciones= 9997;
+
+        public const int LogCapturarCambioEvento = 9996;
+        public const int LogCapturarCambioEventoError = 9999;
+
         public static string getMessageError(int idError)//Dejar un punto y espacio al final de los mensajes para que quede mas lindo en caso de anidar luego otro mensaje.
         {
             switch (idError)
@@ -34,6 +39,10 @@ namespace Emsys.Logs
                     return "Error al iniciar sesion.";
                 case ErrorCerrarSesion:
                     return "Error al cerrar sesion.";
+                case LogNotificaciones:
+                    return "Se agrego un log por la notificacion.";
+                case LogCapturarCambioEvento:
+                    return "Se agrego un log por capturar un cambio en eventos";
 
                 default:
                     return "Error interno, cancele la operacion y vuelva a intentarlo. ";
