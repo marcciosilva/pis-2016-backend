@@ -13,6 +13,8 @@ namespace Emsys.DataAccesLayer.Core
         }
         public DbSet<Evento> Evento { get; set; }
 
+        public DbSet<Imagen> Imagenes { get; set; }
+
         public DbSet<Categoria> Categorias { get; set; }
 
         public DbSet<Departamento> Departamentos { get; set; }

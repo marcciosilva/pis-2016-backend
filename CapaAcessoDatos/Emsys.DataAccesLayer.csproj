@@ -142,6 +142,7 @@
     <Compile Include="Model\GrupoRecurso.cs" />
     <Compile Include="Model\ApplicationRole.cs" />
     <Compile Include="Model\Permiso.cs" />
+    <Compile Include="Model\Adjunto.cs" />
     <Compile Include="Model\Unidad_Ejecutora.cs" />
     <Compile Include="Model\Zona.cs" />
     <Compile Include="Model\Sector.cs" />
