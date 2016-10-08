@@ -60,24 +60,32 @@ namespace SqlDependecyProject
         }
         private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Evento> evento)
         {
-            if (evento.ChangeType != ChangeType.None)
+            try
             {
-                Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
-                switch (evento.ChangeType)
+                if (evento.ChangeType != ChangeType.None)
                 {
-                    case ChangeType.Delete:
-                        Console.WriteLine("Accion: Borro, Pk del evento: " + evento.Entity.NombreInformante);
-                        AtenderEvento(DataNotificacionesCodigos.CierreEvento, evento, GestorNotificaciones);
-                        break;
-                    case ChangeType.Insert:
-                        Console.WriteLine("Accion Insert, Pk del evento: " + evento.Entity.NombreInformante);
-                        AtenderEvento(DataNotificacionesCodigos.AltaEvento, evento, GestorNotificaciones);
-                        break;
-                    case ChangeType.Update:
-                        Console.WriteLine("Accion update, Pk del evento: " + evento.Entity.Id);
-                        AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, evento, GestorNotificaciones);
-                        break;
+                    Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
+                    switch (evento.ChangeType)
+                    {
+                        case ChangeType.Delete:
+                            Console.WriteLine("Accion: Borro, Pk del evento: " + evento.Entity.NombreInformante);
+                            AtenderEvento(DataNotificacionesCodigos.CierreEvento, evento, GestorNotificaciones);
+                            break;
+                        case ChangeType.Insert:
+                            Console.WriteLine("Accion Insert, Pk del evento: " + evento.Entity.NombreInformante);
+                            AtenderEvento(DataNotificacionesCodigos.AltaEvento, evento, GestorNotificaciones);
+                            break;
+                        case ChangeType.Update:
+                            Console.WriteLine("Accion update, Pk del evento: " + evento.Entity.Id);
+                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, evento, GestorNotificaciones);
+                            break;
+                    }
                 }
+            }
+            catch (Exception e)
+            {
+                Emsys.Logs.Log.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. ", Emsys.Logs.Constantes.LogCapturarCambioEventoError);
+
             }
         }
 

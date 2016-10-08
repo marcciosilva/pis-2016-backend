@@ -23,6 +23,7 @@ namespace Emsys.Logs
         public const int LogNotificaciones= 9997;
 
         public const int LogCapturarCambioEvento = 9996;
+        public const int LogCapturarCambioEventoError = 9999;
 
         public static string getMessageError(int idError)//Dejar un punto y espacio al final de los mensajes para que quede mas lindo en caso de anidar luego otro mensaje.
         {

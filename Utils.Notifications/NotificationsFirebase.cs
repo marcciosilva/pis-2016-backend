@@ -51,8 +51,17 @@ namespace Utils.Notifications
                 var content = new StringContent(notificationJSon, Encoding.UTF8, "application/json");
                 request.Content = content;
                 var response = await client.SendAsync(request);
+                var responseString = await response.Content.ReadAsStringAsync();//{"message_id":6526277793921178237}
+                if (!response.IsSuccessStatusCode) {
+                    Emsys.Logs.Log.AgregarLogError("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), Emsys.Logs.Constantes.LogNotificaciones);
+                    return;
+                }
+                string mensaje = responseString.Split(':')[0].ToString();
+                if (mensaje  != "{\"message_id\"") {
+                    Emsys.Logs.Log.AgregarLogError("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), Emsys.Logs.Constantes.LogNotificaciones);
+                    return;
+                }
 
-                var responseString = await response.Content.ReadAsStringAsync();
             }
             Emsys.Logs.Log.AgregarLog("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: "+ topic+"con el codigo: "+ cod + "y la pk:" + pk, Emsys.Logs.Constantes.LogNotificaciones);
 
