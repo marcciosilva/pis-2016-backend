@@ -193,6 +193,11 @@ namespace Test.UnitTesting
         {
             using (var context = new EmsysContext())
             {
+                foreach(var u in context.Evento)
+                {
+                    context.Evento.Remove(u);
+                }
+
                 foreach (var u in context.Users)
                 {
                     context.Users.Remove(u);

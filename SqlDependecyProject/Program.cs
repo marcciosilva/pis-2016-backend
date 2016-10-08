@@ -84,7 +84,7 @@ namespace SqlDependecyProject
             }
             catch (Exception e)
             {
-                Emsys.Logs.Log.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. ", Emsys.Logs.Constantes.LogCapturarCambioEventoError);
+                Emsys.Logs.Log.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. ", Emsys.Logs.Constantes.LogCapturarCambioEvento);
 
             }
         }
