@@ -37,7 +37,7 @@ namespace Servicios.Controllers
                         using (MemoryStream ms = new MemoryStream())
                         {
                             postedFile.InputStream.CopyTo(ms);
-                            img.imagen = ms.ToArray();
+                            img.DatosImagen = ms.ToArray();
                         }
                         context.Imagenes.Add(img);
                         context.SaveChanges();
@@ -83,7 +83,7 @@ namespace Servicios.Controllers
             {
                 HttpResponseMessage result = new HttpResponseMessage(HttpStatusCode.OK);
                 var img = context.Imagenes.FirstOrDefault();
-                var stream = new MemoryStream(img.imagen);
+                var stream = new MemoryStream(img.DatosImagen);
                 result.Content = new StreamContent(stream);
                 result.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
                 result.Content.Headers.ContentDisposition.FileName = img.Nombre;

@@ -82,13 +82,20 @@ namespace Emsys.LogicLayer.Utils
             {
                 extensiones.Add(getDtoExtension(e));
             }
+
+            List<DtoGeoUbicacion> ubicaciones = new List<DtoGeoUbicacion>();
+            foreach (GeoUbicacion g in evento.GeoUbicaciones)
+            {
+                ubicaciones.Add(getDtoGeoUbicacion(g));
+            }
+
             string dep = null;
             string sec = null;
             if (evento.Departamento != null)
                 dep = evento.Departamento.Nombre;
             if (evento.Sector != null)
-                sec = evento.Sector.Nombre;   
-                     
+                sec = evento.Sector.Nombre;
+
             return new DtoEvento()
             {
                 id = evento.Id,
@@ -103,11 +110,10 @@ namespace Emsys.LogicLayer.Utils
                 esquina = evento.Esquina,
                 numero = evento.Numero,
                 sector = sec,
-                latitud = evento.Latitud,
-                longitud = evento.Longitud,
                 descripcion = evento.Descripcion,
                 en_proceso = evento.EnProceso,
-                extensiones = extensiones
+                extensiones = extensiones,
+                geoubicaciones = ubicaciones
             };
         }
     }

@@ -87,12 +87,12 @@ namespace Emsys.DataAccesLayer.Core
             //    rol1.Permisos.Add(permiso1);
 
             //    // Agregar usuarios.
-               
-            //    var user1 = new ApplicationUser() { Id=1,  NombreUsuario = "A", Contraseña = "6dcd4ce23d88e2ee9568ba546c007c63d9131c1b", Nombre = "Usuario1", ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+
+            //    var user1 = new ApplicationUser() { Id = 1, NombreUsuario = "A", Contraseña = "6dcd4ce23d88e2ee9568ba546c007c63d9131c1b", Nombre = "Usuario1", ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
             //    // manager.Create(user1, "usuario1");
-            //    var user2 = new ApplicationUser() {Id=2,  NombreUsuario = "B", Contraseña = "B", Nombre = "Usuario2", ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+            //    var user2 = new ApplicationUser() { Id = 2, NombreUsuario = "B", Contraseña = "B", Nombre = "Usuario2", ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
             //    context.Users.AddOrUpdate(x => x.Id, user1, user2);
-            //     context.Users.AddOrUpdate(x => x.Id, user1, user2);
+            //    context.Users.AddOrUpdate(x => x.Id, user1, user2);
 
             //    // Asignar rol a usuarios.
             //    user1.ApplicationRoles.Add(rol1);
@@ -120,7 +120,8 @@ namespace Emsys.DataAccesLayer.Core
             //        Descripcion = "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
             //        EnProceso = true,
             //        TimeStamp = DateTime.Now,
-            //        FechaCreacion = DateTime.Now
+            //        FechaCreacion = DateTime.Now,
+            //        GeoUbicaciones = new List<GeoUbicacion>()
             //    };
             //    context.Evento.Add(evento1);
             //    Extension_Evento ext1 = new Extension_Evento()
@@ -129,8 +130,9 @@ namespace Emsys.DataAccesLayer.Core
             //        Evento = evento1,
             //        Zona = zona1,
             //        Estado = EstadoExtension.FaltaDespachar,
-            //        TimeStamp = DateTime.Now
-            //    };
+            //        TimeStamp = DateTime.Now,
+            //        GeoUbicaciones = new List<GeoUbicacion>()
+            //};
             //    context.Extensiones_Evento.Add(ext1);
 
             //    Evento evento2 = new Evento()
@@ -184,13 +186,29 @@ namespace Emsys.DataAccesLayer.Core
 
             //    // Asignar recursos a extensiones.
             //    rec1.Extensiones_Eventos.Add(ext1);
+
+            //    // Agregar geo ubicaciones.
+            //    GeoUbicacion geo1 = new GeoUbicacion() { Latitud = 11.1, Longitud = 22.2, FechaEnvio = DateTime.Now, Usuario = user1 };
+            //    GeoUbicacion geo2 = new GeoUbicacion() { Latitud = 33.3, Longitud = 44.4, FechaEnvio = DateTime.Now, Usuario = user1 };
+            //    GeoUbicacion geo3 = new GeoUbicacion() { Latitud = 55.5, Longitud = 66.6, FechaEnvio = DateTime.Now, Usuario = user1 };
+            //    GeoUbicacion geo4 = new GeoUbicacion() { Latitud = 77.7, Longitud = 88.8, FechaEnvio = DateTime.Now, Usuario = user1 };
+
+            //    context.GeoUbicaciones.Add(geo1);
+            //    context.GeoUbicaciones.Add(geo1);
+            //    context.GeoUbicaciones.Add(geo3);
+            //    context.GeoUbicaciones.Add(geo4);
+
+            //    // Agregar geo ubicaciones a eventos y extensiones.
+            //    evento1.GeoUbicaciones.Add(geo1);
+            //    evento1.GeoUbicaciones.Add(geo2);
+            //    ext1.GeoUbicaciones.Add(geo3);
+            //    ext1.GeoUbicaciones.Add(geo4);
             //}
             //catch (Exception e)
             //{
 
 
             //}
-
         }
     }
 }

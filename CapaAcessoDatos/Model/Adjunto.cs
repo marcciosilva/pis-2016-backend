@@ -7,8 +7,7 @@
     using System.Data.Entity.Spatial;
 
 
-
-    //[Table("Sectores")]
+    
     public partial class Adjunto
     {
         [Key]
@@ -18,5 +17,6 @@
        
         public DateTime FechaEnvio { get; set; }
         
+        public string Descripcion { get; set; }
     }
 }

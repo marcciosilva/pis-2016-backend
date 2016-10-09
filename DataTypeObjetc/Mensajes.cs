@@ -21,6 +21,7 @@ namespace DataTypeObject
         public const string ServicioExternoNoDisponible = "El servicio externo no se encuentra disponible.";
         public const string RecursoNoDisponible = "El recurso seleccionado no se encuentra disponible.";
         public const string SeleccionZonasRecursosInvalida = "Seleccion invalida de zonas y recursos.";
+        public const string EventoInvalido = "El evento solicitado es invalido.";
 
         // Codigos de error.
         public const int ErrorIniciarSesionCod = 1001;

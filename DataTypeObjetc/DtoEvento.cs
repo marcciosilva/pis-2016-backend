@@ -30,16 +30,14 @@ namespace DataTypeObject
         
         public string numero { get; set; }
 
-        public string sector { get; set; }
-
-        public double latitud { get; set; }
-
-        public double longitud { get; set; }
+        public string sector { get; set; }        
 
         public string descripcion { get; set; }
 
         public bool en_proceso { get; set; }
 
+        public ICollection<DtoGeoUbicacion> geoubicaciones { get; set; }      
+        
         public ICollection<DtoExtension> extensiones { get; set; }
                 
     }
