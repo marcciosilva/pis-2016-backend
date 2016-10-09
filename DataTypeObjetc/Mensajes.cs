@@ -22,6 +22,8 @@ namespace DataTypeObject
         public const string RecursoNoDisponible = "El recurso seleccionado no se encuentra disponible.";
         public const string SeleccionZonasRecursosInvalida = "Seleccion invalida de zonas y recursos.";
         public const string EventoInvalido = "El evento solicitado es invalido.";
+        public const string SesionActiva = "El usuario ya cuenta con una sesion activas.";
+        public const string ExtensionInvalida = "La extension de evento seleccionada no es valida.";
 
         // Codigos de error.
         public const int ErrorIniciarSesionCod = 1001;
@@ -29,5 +31,7 @@ namespace DataTypeObject
         public const int ErrorConsumirServicioExternoCod = 3001;
         public const int LogAccionesCod = 9999;
         public const int LogLLamdosCod = 9998;
+        public const int LogNotificacionesCod = 9997;
+        public const int LogCapturarCambioEventoCod = 9997;
     }
 }

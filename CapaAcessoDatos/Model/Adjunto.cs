@@ -18,5 +18,6 @@
         public DateTime FechaEnvio { get; set; }
         
         public string Descripcion { get; set; }
+        
     }
 }

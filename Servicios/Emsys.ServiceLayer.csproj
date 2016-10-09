@@ -229,8 +229,8 @@
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\LoginController.cs" />
-    <Compile Include="Controllers\ListarEventosController.cs" />
-    <Compile Include="Controllers\MultimediaController.cs" />
+    <Compile Include="Controllers\EventosController.cs" />
+    <Compile Include="Controllers\AdjuntosController.cs" />
     <Compile Include="Controllers\ServicioExternoController.cs" />
     <Compile Include="Controllers\Filtros\CustomAuthorization.cs" />
     <Compile Include="Controllers\Filtros\DelegateHandler.cs" />

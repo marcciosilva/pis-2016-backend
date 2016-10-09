@@ -49,7 +49,7 @@ namespace Test.UnitTesting
 
 
                 // LISTAR EVENTOS.
-                var controllerListarEventos = new ListarEventosController();
+                var controllerListarEventos = new EventosController();
                 controllerListarEventos.Request = new HttpRequestMessage();
                 controllerListarEventos.Request.Headers.Add("auth", token);
                 var respuesta4 = controllerListarEventos.ListarEventos();

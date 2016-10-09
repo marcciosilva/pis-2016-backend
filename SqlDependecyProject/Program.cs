@@ -84,7 +84,7 @@ namespace SqlDependecyProject
             }
             catch (Exception e)
             {
-                Emsys.Logs.Log.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. ", Emsys.Logs.Constantes.LogCapturarCambioEvento);
+                Emsys.Logs.Log.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. ", Mensajes.LogCapturarCambioEventoCod);
 
             }
         }
@@ -94,7 +94,7 @@ namespace SqlDependecyProject
             using (EmsysContext db = new EmsysContext())
             {
 
-                Emsys.Logs.Log.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Evento", evento.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla Eventos. Se inicia la secuencia de envio de notificaciones.", Emsys.Logs.Constantes.LogCapturarCambioEvento);
+                Emsys.Logs.Log.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Evento", evento.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla Eventos. Se inicia la secuencia de envio de notificaciones.", Mensajes.LogCapturarCambioEventoCod);
                 var eventoBD = db.Evento.Find(evento.Entity.Id);
                 if (eventoBD!=null) {
                     foreach (var extension in eventoBD.ExtensionesEvento)

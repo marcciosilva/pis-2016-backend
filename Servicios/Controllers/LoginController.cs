@@ -19,9 +19,13 @@ namespace Servicios.Controllers
         {
             IMetodos dbAL = new Metodos();
             try
-            {                
+            {
                 DtoAutenticacion autenticacion = dbAL.autenticarUsuario(user.username, user.password);
                 return new DtoRespuesta(0, autenticacion);
+            }
+            catch (SesionActivaException e)
+            {
+                return new DtoRespuesta(1, new Mensaje(Mensajes.SesionActiva));
             }
             catch (InvalidCredentialsException e)
             {

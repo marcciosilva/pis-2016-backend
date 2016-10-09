@@ -27,8 +27,9 @@ namespace Emsys.LogicLayer
         void AgregarLog(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo);
 
         void AgregarLogError(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo);
+        
+        DtoEvento verInfoEvento(string token, int idEvento);
 
-        ICollection<DtoGeoUbicacion> getGeoUbicacionesEvento(string token, int idEvento);
-
+        bool adjuntarGeoUbicacion(string token, DtoGeoUbicacion ubicacion);
     }
 }

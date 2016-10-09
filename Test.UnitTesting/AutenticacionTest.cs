@@ -109,7 +109,7 @@ namespace Test.UnitTesting
                 IMetodos logica = new Metodos();
                 var resp = logica.autenticarUsuario("usuario1", "usuario1");
                 var token = resp.access_token;
-                Assert.IsTrue(logica.getNombreUsuario(token) == "usuario1");
+                Assert.IsTrue(logica.getNombreUsuario(token) == "Usuario1");
             }
         }
 

@@ -19,6 +19,12 @@ namespace Emsys.LogicLayer
                 var user = context.Users.FirstOrDefault(u => u.NombreUsuario == userName);
                 if ((user != null) && (user.Contraseña == Passwords.GetSHA1(password)))
                 {
+                    // Si el usuario ya tiene una sesion activa.
+                    if (user.Token != null)
+                    {
+                        throw new SesionActivaException();
+                    }
+
                     // Quita posibles logins previos.
                     user.Recurso.ToList().ForEach(x => x.Estado = EstadoRecurso.Disponible);
                     user.Zonas.Clear();
@@ -54,7 +60,7 @@ namespace Emsys.LogicLayer
                     //return new DtoAutenticacion(token, Mensajes.Correcto, rol);
                     return new DtoAutenticacion(token, Mensajes.Correcto);
                 }
-                throw new InvalidCredentialsException(Mensajes.UsuarioContraseñaInvalidos);
+                throw new InvalidCredentialsException();
             }
         }
         
@@ -65,7 +71,7 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException(Mensajes.TokenInvalido);
+                    throw new InvalidTokenException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
@@ -92,7 +98,7 @@ namespace Emsys.LogicLayer
                     DtoRol rol = new DtoRol() { zonas = zonas, recursos = recursos };
                     return rol;
                 }
-                throw new InvalidTokenException(Mensajes.TokenInvalido);
+                throw new InvalidTokenException();
             }
         }
 
@@ -102,7 +108,7 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException(Mensajes.TokenInvalido);
+                    throw new InvalidTokenException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
@@ -150,7 +156,7 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException(Mensajes.TokenInvalido);
+                    throw new InvalidTokenException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
@@ -177,7 +183,7 @@ namespace Emsys.LogicLayer
                         // Si el recurso no se encuentra disponible se lanza una excepcion.
                         else if ((recurso != null) && (recurso.Estado == EstadoRecurso.NoDisponible))
                         {
-                            throw new RecursoNoDisponibleException(Mensajes.RecursoNoDisponible);
+                            throw new RecursoNoDisponibleException();
                         }
                         // Si el recurso no existe o el usuario no tiene acceso a este se retorna false.
                         else
@@ -216,7 +222,7 @@ namespace Emsys.LogicLayer
                         return false;
                     }
                 }
-                throw new InvalidTokenException(Mensajes.TokenInvalido);
+                throw new InvalidTokenException();
             }
         }
 
@@ -226,7 +232,7 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException(Mensajes.TokenInvalido);
+                    throw new InvalidTokenException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
@@ -264,7 +270,7 @@ namespace Emsys.LogicLayer
                     }
                     return eventos;
                 }
-                throw new InvalidTokenException(Mensajes.TokenInvalido);
+                throw new InvalidTokenException();
             }
         }
 
@@ -275,7 +281,7 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException(Mensajes.TokenInvalido);
+                    throw new InvalidTokenException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
@@ -291,7 +297,7 @@ namespace Emsys.LogicLayer
                     context.SaveChanges();
                     return true;
                 }
-                throw new InvalidTokenException(Mensajes.TokenInvalido);
+                throw new InvalidTokenException();
             }            
         }
 
@@ -418,48 +424,57 @@ namespace Emsys.LogicLayer
                         );
                 fs.Close();
             }
-        }
+        }        
 
-        public ICollection<DtoGeoUbicacion> getGeoUbicacionesEvento(string token, int idEvento)
+
+        public DtoEvento verInfoEvento(string token, int idEvento)
         {
             using (var context = new EmsysContext())
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException(Mensajes.TokenInvalido);
+                    throw new InvalidTokenException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
-                    var evento = context.Evento.FirstOrDefault(e => e.Id == idEvento);
-                    if(evento == null)
+                    Evento evento = context.Evento.FirstOrDefault(e => e.Id == idEvento);
+                    if (TieneVision.tieneVisionEvento(user, evento))
                     {
-                        throw new EventoInvalidoException();
+                        return DtoGetters.getDtoEvento(evento);
                     }
-                    bool permitido = false;
-                    foreach (Zona z in user.Zonas)
-                    {
-                        foreach (Extension_Evento ext in evento.ExtensionesEvento)
-                        {
-                            if (ext.Zona == z)
-                            {
-                                permitido = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (permitido)
-                    {
-                        List<DtoGeoUbicacion> resp = new List<DtoGeoUbicacion>();
-                        foreach (GeoUbicacion g in evento.GeoUbicaciones)
-                        {
-                            resp.Add(DtoGetters.getDtoGeoUbicacion(g));
-                        }
-                        return resp;
-                    }
+                    throw new EventoInvalidoException();               
                 }
-                throw new InvalidTokenException(Mensajes.TokenInvalido);
+                throw new InvalidTokenException();
             }
         }
+
+
+        public bool adjuntarGeoUbicacion(string token, DtoGeoUbicacion ubicacion)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new InvalidTokenException();
+                }
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user != null)
+                {
+                    Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == ubicacion.idExtension);
+                    if (TieneVision.tieneVisionExtension(user, ext))
+                    {
+                        GeoUbicacion geoU = new GeoUbicacion() { Usuario = user, FechaEnvio = DateTime.Now, Descripcion = ubicacion.descripcion, Latitud = ubicacion.latitud, Longitud = ubicacion.longitud };
+                        context.GeoUbicaciones.Add(geoU);
+                        ext.GeoUbicaciones.Add(geoU);
+                        context.SaveChanges();
+                        return true;
+                    }
+                    return false;
+                }
+                throw new InvalidTokenException();
+            }
+        }
+
     }
 }

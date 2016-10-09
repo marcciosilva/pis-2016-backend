@@ -53,17 +53,17 @@ namespace Utils.Notifications
                 var response = await client.SendAsync(request);
                 var responseString = await response.Content.ReadAsStringAsync();//{"message_id":6526277793921178237}
                 if (!response.IsSuccessStatusCode) {
-                    Emsys.Logs.Log.AgregarLogError("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), Emsys.Logs.Constantes.LogNotificaciones);
+                    Emsys.Logs.Log.AgregarLogError("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), Mensajes.LogNotificacionesCod);
                     return;
                 }
                 string mensaje = responseString.Split(':')[0].ToString();
                 if (mensaje  != "{\"message_id\"") {
-                    Emsys.Logs.Log.AgregarLogError("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), Emsys.Logs.Constantes.LogNotificaciones);
+                    Emsys.Logs.Log.AgregarLogError("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), Mensajes.LogNotificacionesCod);
                     return;
                 }
 
             }
-            Emsys.Logs.Log.AgregarLog("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: "+ topic+"con el codigo: "+ cod + "y la pk:" + pk, Emsys.Logs.Constantes.LogNotificaciones);
+            Emsys.Logs.Log.AgregarLog("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: "+ topic+"con el codigo: "+ cod + "y la pk:" + pk, Mensajes.LogNotificacionesCod);
 
         }
     }

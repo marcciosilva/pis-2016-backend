@@ -12,7 +12,7 @@
     {
         public string Nombre { get; set; }
 
-        public byte[] DatosImagen { get; set; }
+        public string DatosImagenString { get; set; }
 
     }
 }
