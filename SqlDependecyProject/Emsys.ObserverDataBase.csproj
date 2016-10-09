@@ -42,6 +42,10 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="Microsoft.AspNet.Identity.EntityFramework, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" />
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
@@ -82,6 +86,18 @@
     <ProjectReference Include="..\CapaAcessoDatos\Emsys.DataAccesLayer.csproj">
       <Project>{e3ed4cd6-6749-42ec-9140-f97453140bea}</Project>
       <Name>Emsys.DataAccesLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataTypeObjetc\DataTypeObject.csproj">
+      <Project>{4fad5ded-34a2-42f7-9513-54b4cd1f9aa6}</Project>
+      <Name>DataTypeObject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Emsys.Logs\Emsys.Logs.csproj">
+      <Project>{0e187470-df7b-447c-aad3-91d6f6590b1e}</Project>
+      <Name>Emsys.Logs</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils.Notifications\Utils.Notifications.csproj">
+      <Project>{a10bb2f4-e63f-40d5-a9b7-52bae04a6316}</Project>
+      <Name>Utils.Notifications</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -7,7 +7,7 @@ using PubNubMessaging.Core;
 
 namespace Utils.Notifications
 {
-    public class NotificationsPubNub : INotifications
+    public class NotificationsPubNub //: INotifications
     {
         private static string PublishKey = "pub-c-a024c6ed-96da-40cd-8e1a-45279bd4b63b";
         private static string SuscribeKey = "sub-c-7d3f5b56-6e54-11e6-9259-0619f8945a4f";

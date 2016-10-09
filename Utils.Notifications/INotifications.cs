@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DataTypeObject;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,8 +9,8 @@ namespace Utils.Notifications
 {
     public interface INotifications
     {
-        void SubscribeChanel(string channelName);
-        void UnsubscribeChanel(string channelName);
-        void SendMessage(string channelName, string message);
+        //void SubscribeChanel(string channelName);
+        //void UnsubscribeChanel(string channelName);
+        void SendMessage(string cod, string pk, string topic);
     }
 }
