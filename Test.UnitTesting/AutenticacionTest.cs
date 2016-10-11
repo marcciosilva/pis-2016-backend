@@ -29,14 +29,14 @@ namespace Test.UnitTesting
             using (var context = new EmsysContext())
             {
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
-                string pass = Passwords.GetSHA1("usuario1");
-                ApplicationUser usuarioPrueba = new ApplicationUser { NombreUsuario = "usuario1", Contraseña = pass };
+                string pass = Passwords.GetSHA1("usuarioPruebaAutenticar");
+                ApplicationUser usuarioPrueba = new ApplicationUser { NombreUsuario = "usuarioPruebaAutenticar", Contraseña = pass };
                 context.Users.Add(usuarioPrueba);
                 context.SaveChanges();
                 IMetodos logica = new Metodos();
                 try
                 {
-                    logica.autenticarUsuario("usuario1", "incorrecto");
+                    logica.autenticarUsuario("usuarioPruebaAutenticar", "incorrecto");
                     Assert.Fail();
                 }
                 catch (InvalidCredentialsException e)
@@ -46,7 +46,7 @@ namespace Test.UnitTesting
 
                 try
                 {
-                    var result = logica.autenticarUsuario("usuario1", "usuario1");
+                    var result = logica.autenticarUsuario("usuarioPruebaAutenticar", "usuarioPruebaAutenticar");
                     Assert.IsNotNull(result);
                 }
                 catch (InvalidCredentialsException e)
@@ -105,11 +105,14 @@ namespace Test.UnitTesting
             using (var context = new EmsysContext())
             {
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
-
+                string pass = Passwords.GetSHA1("usuarioPruebaGetNombre");
+                ApplicationUser usuarioPrueba = new ApplicationUser { NombreUsuario = "usuarioPruebaGetNombre", Contraseña = pass };
+                context.Users.Add(usuarioPrueba);
+                context.SaveChanges();
                 IMetodos logica = new Metodos();
-                var resp = logica.autenticarUsuario("usuario1", "usuario1");
+                var resp = logica.autenticarUsuario("usuarioPruebaGetNombre", "usuarioPruebaGetNombre");
                 var token = resp.access_token;
-                Assert.IsTrue(logica.getNombreUsuario(token) == "Usuario1");
+                Assert.IsTrue(logica.getNombreUsuario(token) == "usuarioPruebaGetNombre");
             }
         }
 
@@ -397,45 +400,45 @@ namespace Test.UnitTesting
             }
         }
 
-        /// <summary>
-        /// Se llama luego de correr cada test y borra la base de datos.
-        /// </summary>
-        [SetUp]
-        public void limpiarBase()
-        {
-            using (var context = new EmsysContext())
-            {
-                foreach(var u in context.Evento)
-                {
-                    context.Evento.Remove(u);
-                }
+        ///// <summary>
+        ///// Se llama luego de correr cada test y borra la base de datos.
+        ///// </summary>
+        //[SetUp]
+        //public void limpiarBase()
+        //{
+        //    using (var context = new EmsysContext())
+        //    {
+        //        foreach(var u in context.Evento)
+        //        {
+        //            context.Evento.Remove(u);
+        //        }
 
-                foreach (var u in context.Users)
-                {
-                    context.Users.Remove(u);
-                }
-                foreach (var gr in context.Grupos_Recursos)
-                {
-                    context.Grupos_Recursos.Remove(gr);
-                }
-                foreach (var r in context.Recursos)
-                {
-                    context.Recursos.Remove(r);
-                }
-                foreach (var ue in context.Unidades_Ejecutoras)
-                {
-                    context.Unidades_Ejecutoras.Remove(ue);
-                }
-                foreach (var sector in context.Sectores)
-                {
-                    context.Sectores.Remove(sector);
-                }
-                foreach (var zona in context.Zonas)
-                {
-                    context.Zonas.Remove(zona);
-                }
-                context.SaveChanges();
-            }
-        }
+        //        foreach (var u in context.Users)
+        //        {
+        //            context.Users.Remove(u);
+        //        }
+        //        foreach (var gr in context.Grupos_Recursos)
+        //        {
+        //            context.Grupos_Recursos.Remove(gr);
+        //        }
+        //        foreach (var r in context.Recursos)
+        //        {
+        //            context.Recursos.Remove(r);
+        //        }
+        //        foreach (var ue in context.Unidades_Ejecutoras)
+        //        {
+        //            context.Unidades_Ejecutoras.Remove(ue);
+        //        }
+        //        foreach (var sector in context.Sectores)
+        //        {
+        //            context.Sectores.Remove(sector);
+        //        }
+        //        foreach (var zona in context.Zonas)
+        //        {
+        //            context.Zonas.Remove(zona);
+        //        }
+        //        context.SaveChanges();
+        //    }
+        //}
     }
 }

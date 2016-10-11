@@ -93,6 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AutenticacionTest.cs" />
+    <Compile Include="Configuracion.cs" />
     <Compile Include="DALTest.cs" />
     <Compile Include="EventoTest.cs" />
     <Compile Include="IntegrationTest\PruebaLiberacion1.cs" />
@@ -167,8 +168,11 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Content Include="App_Data\DatosBD.sql">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
