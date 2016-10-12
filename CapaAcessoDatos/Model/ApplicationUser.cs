@@ -16,7 +16,7 @@
         Inactivo
     }
         
-    public class ApplicationUser //: IdentityUser
+    public class ApplicationUser
     {
         [Key]
         public int Id { get; set; }

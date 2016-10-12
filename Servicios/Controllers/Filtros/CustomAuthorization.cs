@@ -23,7 +23,10 @@ namespace Servicios.Filtros
         {
             PermisosEtiqueta = permisos;
         }
-
+        /// <summary>
+        /// Sobreescritura del metodo de autorizacion de AuthorizeAtribute
+        /// </summary>
+        /// <param name="actionContext">Contexto del resquest.</param>
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             if (IsAuthorized(actionContext))
@@ -37,7 +40,11 @@ namespace Servicios.Filtros
                 actionContext.Response = responseMessage;
             }
         }
-
+        /// <summary>
+        /// Metodo que retorna si el usuario esta autorizdo a realizar la opreacion para la cual se utilizo la etiqueta.
+        /// </summary>
+        /// <param name="actionContext">Contexto del request.</param>
+        /// <returns>Si esta autorizado el usuario o no.</returns>
         protected override bool IsAuthorized(System.Web.Http.Controllers.HttpActionContext actionContext)
         {
             string token = ObtenerToken.GetToken(actionContext.Request);

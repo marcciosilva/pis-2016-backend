@@ -21,9 +21,9 @@ namespace Servicios.Controllers
     public class AdjuntosController : ApiController
     {
         /// <summary>
-        /// Los archivos esperados son del formato MIME
+        /// Los archivos esperados son del formato MIME.
         /// </summary>
-        /// <returns></returns>
+        /// <returns> Retorna una respuesta con el resultado de cargar el objeto.</returns>
         [Route("subirFile")]
         public DtoRespuesta Post()
         {
@@ -73,13 +73,13 @@ namespace Servicios.Controllers
             //return Ok(true);
         }
 
-        /// <summary>
-        /// Utiliza el formato octet-stream
-        /// </summary>
-        /// <param name="nombreArchivo"></param>
-        /// <returns></returns>
+        
         [Route("getFile")]
         [HttpGet]
+        /// <summary>
+        /// Utiliza el formato octet-stream.
+        /// </summary>
+        /// <returns>Retprma ima respuesta HTTP.</returns>
         public HttpResponseMessage Get()
         {
             using (var context = new EmsysContext())
@@ -96,7 +96,11 @@ namespace Servicios.Controllers
             }
         }
 
-       // [CustomAuthorizeAttribute("adjuntarGeoUbicacion")]
+       /// <summary>
+       /// Servicio para poder recibir la geoubicacion.
+       /// </summary>
+       /// <param name="ubicacion">DataType con los datos necesarios para guardar la ubicacion.</param>
+       /// <returns>Retorna respuesta segun formato del documento de interfaz.</returns>
         [CustomAuthorizeAttribute()]
         [LogFilter]
         [Route("adjuntos/adjuntarGeoUbicacion")]
@@ -117,7 +121,7 @@ namespace Servicios.Controllers
                 }
                 return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }

@@ -62,8 +62,6 @@
     <Compile Include="FactoryNotifications.cs" />
     <Compile Include="INotifications.cs" />
     <Compile Include="NotificationsFirebase.cs" />
-    <Compile Include="NotificationsPubNub.cs" />
-    <Compile Include="NotificationsRealtime.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,9 +73,9 @@
       <Project>{4fad5ded-34a2-42f7-9513-54b4cd1f9aa6}</Project>
       <Name>DataTypeObject</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Emsys.Logs\Emsys.Logs.csproj">
-      <Project>{0e187470-df7b-447c-aad3-91d6f6590b1e}</Project>
-      <Name>Emsys.Logs</Name>
+    <ProjectReference Include="..\Emsys.LogicLayer\Emsys.LogicLayer.csproj">
+      <Project>{EE8BC402-8FC4-4D4C-889A-210FC71DFC0A}</Project>
+      <Name>Emsys.LogicLayer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -39,7 +39,7 @@ namespace Test.UnitTesting
                     logica.autenticarUsuario("usuarioPruebaAutenticar", "incorrecto");
                     Assert.Fail();
                 }
-                catch (InvalidCredentialsException e)
+                catch (InvalidCredentialsException)
                 {
                     Assert.IsTrue(true);
                 }
@@ -49,7 +49,7 @@ namespace Test.UnitTesting
                     var result = logica.autenticarUsuario("usuarioPruebaAutenticar", "usuarioPruebaAutenticar");
                     Assert.IsNotNull(result);
                 }
-                catch (InvalidCredentialsException e)
+                catch (InvalidCredentialsException)
                 {
                     Assert.Fail();
                 }
@@ -162,7 +162,7 @@ namespace Test.UnitTesting
                     //var u = context.Users.Find(user.Id);
                     //Assert.IsTrue(u.Recurso.Contains(recursoDisponible));
                 }
-                catch(RecursoNoDisponibleException e)
+                catch(RecursoNoDisponibleException)
                 {
                     Assert.Fail();
                 }
@@ -175,7 +175,7 @@ namespace Test.UnitTesting
                     logica.loguearUsuario(token, rol);
                     Assert.Fail();
                 }
-                catch (RecursoNoDisponibleException e)
+                catch (RecursoNoDisponibleException)
                 {
                 }
 
@@ -188,7 +188,7 @@ namespace Test.UnitTesting
                 {
                     Assert.IsFalse(logica.loguearUsuario(token2, rol2));
                 }
-                catch (RecursoNoDisponibleException e)
+                catch (RecursoNoDisponibleException)
                 {
                     Assert.Fail();
                 }
@@ -268,7 +268,7 @@ namespace Test.UnitTesting
                     //Assert.IsTrue(u.Zonas.Contains(zona2));
                     //Assert.IsTrue(u.Zonas.Contains(zona3));
                 }
-                catch (RecursoNoDisponibleException e)
+                catch (RecursoNoDisponibleException)
                 {
                     Assert.Fail();
                 }
@@ -282,7 +282,7 @@ namespace Test.UnitTesting
                 {
                     Assert.IsFalse(logica.loguearUsuario(token, rol2));
                 }
-                catch (RecursoNoDisponibleException e)
+                catch (RecursoNoDisponibleException)
                 {
                     Assert.Fail();
                 }
@@ -393,7 +393,7 @@ namespace Test.UnitTesting
                         Assert.IsNull(tieneZonasAsignadas.FirstOrDefault());
                     }                    
                 }
-                catch (RecursoNoDisponibleException e)
+                catch (RecursoNoDisponibleException)
                 {
                     Assert.Fail();
                 }

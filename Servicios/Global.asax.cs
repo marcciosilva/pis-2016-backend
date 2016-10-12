@@ -1,5 +1,4 @@
-﻿//#define CLIENT
-using Servicios.App_Start;
+﻿using Servicios.App_Start;
 using System.Data.Entity;
 using System.Diagnostics;
 using System.Web.Http;
@@ -8,6 +7,9 @@ namespace Emsys.ServiceLayer
 {
     public class WebApiApplication : System.Web.HttpApplication
     {
+        /// <summary>
+        /// Metodo de inicio de los servicios.
+        /// </summary>
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);

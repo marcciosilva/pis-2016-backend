@@ -28,10 +28,12 @@ namespace DataTypeObject
         // Codigos de error.
         public const int ErrorIniciarSesionCod = 1001;
         public const int ErrorCerrarSesionCod = 2001;
+        public const int ErrorAlGenerarToken = 4001;
         public const int ErrorConsumirServicioExternoCod = 3001;
         public const int LogAccionesCod = 9999;
         public const int LogLLamdosCod = 9998;
         public const int LogNotificacionesCod = 9997;
         public const int LogCapturarCambioEventoCod = 9997;
+
     }
 }

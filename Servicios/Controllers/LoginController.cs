@@ -12,10 +12,15 @@ namespace Servicios.Controllers
 {
     public class LoginController : ApiController
     {
+        /// <summary>
+        /// Servicio de login.
+        /// </summary>
+        /// <param name="user">Datos del usuario.</param>
+        /// <returns>Respuesta definida en el documento de interfaz.</returns>
         [HttpPost]
         [Route("users/authenticate")]
         [LogFilter]
-        public async Task<DtoRespuesta> Login([FromBody] DtoUser user)
+        public  DtoRespuesta Login([FromBody] DtoUser user)
         {
             IMetodos dbAL = new Metodos();
             try
@@ -23,11 +28,11 @@ namespace Servicios.Controllers
                 DtoAutenticacion autenticacion = dbAL.autenticarUsuario(user.username, user.password);
                 return new DtoRespuesta(0, autenticacion);
             }
-            catch (SesionActivaException e)
+            catch (SesionActivaException)
             {
                 return new DtoRespuesta(1, new Mensaje(Mensajes.SesionActiva));
             }
-            catch (InvalidCredentialsException e)
+            catch (InvalidCredentialsException)
             {
                 return new DtoRespuesta(1, new Mensaje(Mensajes.UsuarioContraseñaInvalidos));
             }
@@ -38,7 +43,10 @@ namespace Servicios.Controllers
             }          
         }
 
-
+        /// <summary>
+        /// Servicio obtener roles.
+        /// </summary>
+        /// <returns>Devulve los roles asociados a un usuario. En el header del request se recibe el token del usuario.</returns>
         [CustomAuthorizeAttribute()]
         [HttpPost]
         [LogFilter]
@@ -57,7 +65,7 @@ namespace Servicios.Controllers
                 return new DtoRespuesta(0, rol);
 
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
@@ -68,7 +76,11 @@ namespace Servicios.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Servicio para elegir con que rol se loguea un usuario.
+        /// </summary>
+        /// <param name="rol">Roles a los que sea desea loguear.</param>
+        /// <returns>Devuelve la respuesta definida en el documento de interfaz.</returns>
         [CustomAuthorizeAttribute()]
         [HttpPost]
         [LogFilter]
@@ -92,11 +104,11 @@ namespace Servicios.Controllers
                     return new DtoRespuesta(3, new Mensaje(Mensajes.SeleccionZonasRecursosInvalida));
                 }
             }
-            catch (RecursoNoDisponibleException e)
+            catch (RecursoNoDisponibleException)
             {
                 return new DtoRespuesta(4, new Mensaje(Mensajes.RecursoNoDisponible));
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
@@ -107,7 +119,10 @@ namespace Servicios.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Servicio para cerrar session de usuario. Borrando el token y la fecha de inicio de sesion.
+        /// </summary>
+        /// <returns>Retorna la respuesta definida en el documento de interfaz.</returns>
         [CustomAuthorizeAttribute()]
         [HttpPost]
         [LogFilter]
@@ -131,7 +146,7 @@ namespace Servicios.Controllers
                 dbAL.cerrarSesion(token);
                 return new DtoRespuesta(0, null);
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }

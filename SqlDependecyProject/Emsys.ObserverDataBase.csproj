@@ -91,9 +91,9 @@
       <Project>{4fad5ded-34a2-42f7-9513-54b4cd1f9aa6}</Project>
       <Name>DataTypeObject</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Emsys.Logs\Emsys.Logs.csproj">
-      <Project>{0e187470-df7b-447c-aad3-91d6f6590b1e}</Project>
-      <Name>Emsys.Logs</Name>
+    <ProjectReference Include="..\Emsys.LogicLayer\Emsys.LogicLayer.csproj">
+      <Project>{EE8BC402-8FC4-4D4C-889A-210FC71DFC0A}</Project>
+      <Name>Emsys.LogicLayer</Name>
     </ProjectReference>
     <ProjectReference Include="..\Utils.Notifications\Utils.Notifications.csproj">
       <Project>{a10bb2f4-e63f-40d5-a9b7-52bae04a6316}</Project>

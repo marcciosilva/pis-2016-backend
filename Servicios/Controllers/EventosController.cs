@@ -14,6 +14,10 @@ namespace Servicios.Controllers
 {
     public class EventosController : ApiController
     {
+        /// <summary>
+        /// Servicio que retorna los eventos a partir de un token enviado en el header.
+        /// </summary>
+        /// <returns>Retorna un objeto definido en el documento de interfaz.</returns>
         [CustomAuthorizeAttribute("listarEventos")]
         [HttpGet]
         [LogFilter]
@@ -31,7 +35,7 @@ namespace Servicios.Controllers
                 ICollection<DtoEvento> eventos = dbAL.listarEventos(token);
                 return  new DtoRespuesta(0, eventos);
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
@@ -43,7 +47,11 @@ namespace Servicios.Controllers
         }
 
 
-        //[CustomAuthorizeAttribute("verInfoEvento")]
+        /// <summary>
+        /// Servicio que dado un evento se obtiene la informacion del mismo.
+        /// </summary>
+        /// <param name="idEvento">Identificador del evento.</param>
+        /// <returns>Devuelve la informacion del evento siguiendo el documento de interfaz.</returns>
         [CustomAuthorizeAttribute()]
         [HttpGet]
         [LogFilter]
@@ -61,11 +69,11 @@ namespace Servicios.Controllers
                 DtoEvento evento = dbAL.verInfoEvento(token, idEvento);
                 return new DtoRespuesta(0, evento);
             }
-            catch(EventoInvalidoException e)
+            catch (EventoInvalidoException)
             {
                 return new DtoRespuesta(9, new Mensaje(Mensajes.EventoInvalido));
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
