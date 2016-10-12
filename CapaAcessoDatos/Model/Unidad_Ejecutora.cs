@@ -19,7 +19,7 @@
 
         public virtual ICollection<Zona> Zonas { get; set; }
 
-        public virtual ICollection<ApplicationUser> Usuarios { get; set; }
+        public virtual ICollection<Usuario> Usuarios { get; set; }
 
     }
 }

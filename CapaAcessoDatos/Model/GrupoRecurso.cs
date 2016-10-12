@@ -15,11 +15,11 @@
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(50)]
+        [MaxLength(200)]
         public string Nombre { get; set; }
         
         public virtual ICollection<Recurso> Recursos { get; set; }
 
-        public virtual ICollection<ApplicationUser> Usuarios { get; set; }
+        public virtual ICollection<Usuario> Usuarios { get; set; }
     }
 }

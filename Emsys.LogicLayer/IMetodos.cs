@@ -18,7 +18,7 @@ namespace Emsys.LogicLayer
 
         bool loguearUsuario(string token, DtoRol rol);
 
-        ICollection<DtoEvento> listarEventos(string token);
+        ICollection<DtoItemListar> listarEventos(string token);
 
         bool cerrarSesion(string token);
 
@@ -31,5 +31,22 @@ namespace Emsys.LogicLayer
         DtoEvento verInfoEvento(string token, int idEvento);
 
         bool adjuntarGeoUbicacion(string token, DtoGeoUbicacion ubicacion);
+
+        int agregarFileData(byte[] data, string extension);
+
+        DtoApplicationFile getImageData(string token, int idAdjunto);
+
+        DtoApplicationFile getVideoData(string token, int idAdjunto);
+
+        DtoApplicationFile getAudioData(string token, int idAdjunto);
+
+        bool adjuntarImagen(string token, DtoImagen imagen);
+
+        bool adjuntarVideo(string token, DtoVideo video);
+
+        bool adjuntarAudio(string token, DtoAudio audio);
+
+        //string getDataImagen(string token, int idImagen);
+
     }
 }

@@ -1,17 +1,55 @@
-namespace Emsys.DataAccesLayer.Model
+﻿namespace Emsys.DataAccesLayer.Model
 {
+    using DataTypeObject;
+    using Microsoft.AspNet.Identity.EntityFramework;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Usuario")]
-    public partial class Usuario
+
+
+    public enum Estado
+    {
+        Activo,
+        Inactivo
+    }
+        
+    public class Usuario //: IdentityUser
     {
         [Key]
-        public string NombreUsuario { get; set; }
+        public int Id { get; set; }
+
+        public string NombreLogin { get; set; }
 
         public string Contraseña { get; set; }
+
+        public string  Token { get; set; }
+
+        public DateTime? FechaInicioSesion { get; set; }
+
+        [MaxLength(200)]
+        public string Nombre { get; set; }
+
+        [Required]
+        public Estado Estado { get; set; }    
+
+        public virtual ICollection<Unidad_Ejecutora> Unidades_Ejecutoras { get; set; }
+
+        public virtual ICollection<Log> Logs { get; set; }
+
+        public virtual ICollection<Zona> Zonas { get; set; }
+
+        public virtual ICollection<Extension_Evento> Despachando { get; set; }
+
+        public virtual ICollection<Evento> EventosCreados { get; set; }
+
+        public virtual ICollection<Grupo_Recurso> Grupos_Recursos { get; set; }
+
+        public virtual ICollection<Recurso> Recurso { get; set; }
+
+        public virtual ICollection<Rol> ApplicationRoles { get; set; }
+
     }
 }

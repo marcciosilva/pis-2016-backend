@@ -46,7 +46,7 @@
 
         public virtual ICollection<Grupo_Recurso> Grupos_Recursos { get; set; }
 
-        public virtual ApplicationUser Usuario { get; set; }
+        public virtual Usuario Usuario { get; set; }
         
     }
 }

@@ -8,11 +8,19 @@
     
 
     [Table("Videos")]
-    public partial class Video : Adjunto
+    public partial class Video
     {
-        public string Nombre { get; set; }
+        [Key]
+        public int Id { get; set; }
 
-        public string DatosVideoString { get; set; }
+        public virtual Usuario Usuario { get; set; }
 
+        public DateTime FechaEnvio { get; set; }
+        
+        public virtual ApplicationFile VideoData { get; set; }
+
+        public virtual Evento Evento { get; set; }
+
+        public virtual Extension_Evento ExtensionEvento { get; set; }
     }
 }

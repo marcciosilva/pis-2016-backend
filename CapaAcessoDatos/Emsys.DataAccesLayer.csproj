@@ -138,15 +138,16 @@
   <ItemGroup>
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
+    <Compile Include="Model\ApplicationFile.cs" />
     <Compile Include="Model\Audio.cs" />
+    <Compile Include="Model\AsignacionRecurso.cs" />
     <Compile Include="Model\GeoUbicacion.cs" />
     <Compile Include="Model\Video.cs" />
     <Compile Include="Model\Imagen.cs" />
-    <Compile Include="Model\ApplicationUser.cs" />
+    <Compile Include="Model\Usuario.cs" />
     <Compile Include="Model\GrupoRecurso.cs" />
-    <Compile Include="Model\ApplicationRole.cs" />
+    <Compile Include="Model\Rol.cs" />
     <Compile Include="Model\Permiso.cs" />
-    <Compile Include="Model\Adjunto.cs" />
     <Compile Include="Model\Unidad_Ejecutora.cs" />
     <Compile Include="Model\Zona.cs" />
     <Compile Include="Model\Sector.cs" />

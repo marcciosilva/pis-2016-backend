@@ -32,7 +32,7 @@ namespace Test.UnitTesting
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
 
                 // Se crea un usuario con un recurso asociado en la BD.
-                var user = new ApplicationUser() { NombreUsuario = "usuarioListarEventoRecurso", Nombre = "usuarioListarEventoRecurso", Contraseña = Passwords.GetSHA1("usuarioListarEventoRecurso"), Grupos_Recursos = new List<Grupo_Recurso>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>() };
+                var user = new Usuario() { NombreLogin = "usuarioListarEventoRecurso", Nombre = "usuarioListarEventoRecurso", Contraseña = Passwords.GetSHA1("usuarioListarEventoRecurso"), Grupos_Recursos = new List<Grupo_Recurso>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>() };
                 var recursoDisponible = new Recurso() { Codigo = "recursoListarEvento", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Extensiones_Eventos = new List<Extension_Evento>() };
                 var gr = new Grupo_Recurso() { Nombre = "grPrueba", Recursos = new List<Recurso>() };
                 var zona1 = new Zona() { Nombre = "zona1" };
@@ -46,10 +46,10 @@ namespace Test.UnitTesting
                 unidadEjecutora1.Zonas.Add(zona2);
                 unidadEjecutora2.Zonas.Add(zona3);
                 unidadEjecutora3.Zonas.Add(zona4);
-                zona1.Unidad_Ejecutora = unidadEjecutora1;
-                zona2.Unidad_Ejecutora = unidadEjecutora1;
-                zona3.Unidad_Ejecutora = unidadEjecutora2;
-                zona4.Unidad_Ejecutora = unidadEjecutora3;
+                zona1.UnidadEjecutora = unidadEjecutora1;
+                zona2.UnidadEjecutora = unidadEjecutora1;
+                zona3.UnidadEjecutora = unidadEjecutora2;
+                zona4.UnidadEjecutora = unidadEjecutora3;
                 user.Unidades_Ejecutoras.Add(unidadEjecutora1);
                 user.Unidades_Ejecutoras.Add(unidadEjecutora2);
                 gr.Recursos.Add(recursoDisponible);
@@ -124,8 +124,8 @@ namespace Test.UnitTesting
 
                 if (logica.loguearUsuario(token, rol))
                 {
-                    List<DtoEvento> listaEventos =  logica.listarEventos(token).ToList();
-                    int cantExt = listaEventos.FirstOrDefault().extensiones.Count;
+                    List<DtoItemListar> listaEventos =  logica.listarEventos(token).ToList();
+                    int cantExt = listaEventos.Count;
                     Assert.IsTrue(cantExt == 2);
                 }
             }    

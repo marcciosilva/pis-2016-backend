@@ -19,10 +19,10 @@ namespace DataTypeObject
         public string estado { get; set; }
 
         public DateTime time_stamp { get; set; }
+
+        public string creador { get; set; }
         
-        public DateTime fecha_creacion { get; set; }
-        
-        public string departamento { get; set; }
+        public DateTime fecha_creacion { get; set; }     
 
         public string calle { get; set; }
         
@@ -30,15 +30,29 @@ namespace DataTypeObject
         
         public string numero { get; set; }
 
-        public string sector { get; set; }        
+        public string departamento { get; set; }
+
+        public string sector { get; set; }
+
+        public DtoGeoUbicacion geo_ubicacion { get; set; }
+
+        public DtoGeoUbicacion geoubicacion { get; set; }
 
         public string descripcion { get; set; }
 
-        public bool en_proceso { get; set; }
-
-        public ICollection<DtoGeoUbicacion> geoubicaciones { get; set; }      
+        public bool en_proceso { get; set; }              
         
         public ICollection<DtoExtension> extensiones { get; set; }
-                
+
+        //public DtoOrigenEvento origen_evento { get; set; }
+
+        public virtual ICollection<DtoImagen> imagenes { get; set; }
+
+        public virtual ICollection<DtoVideo> videos { get; set; }
+
+        public virtual ICollection<DtoAudio> audios { get; set; }
+
+        //public virtual ICollection<DtoGeoUbicacion> geo_ubicaciones { get; set; }
+
     }
 }

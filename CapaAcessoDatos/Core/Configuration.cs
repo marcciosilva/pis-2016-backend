@@ -30,10 +30,10 @@ namespace Emsys.DataAccesLayer.Core
             //    context.Unidades_Ejecutoras.Add(ue3);
 
             //    // Agregar zonas.
-            //    Zona zona1 = new Zona() { Nombre = "zona1", Unidad_Ejecutora = ue1 };
-            //    Zona zona2 = new Zona() { Nombre = "zona2", Unidad_Ejecutora = ue1 };
-            //    Zona zona3 = new Zona() { Nombre = "zona3", Unidad_Ejecutora = ue2 };
-            //    Zona zona4 = new Zona() { Nombre = "zona4", Unidad_Ejecutora = ue3 };
+            //    Zona zona1 = new Zona() { Nombre = "zona1", UnidadEjecutora = ue1 };
+            //    Zona zona2 = new Zona() { Nombre = "zona2", UnidadEjecutora = ue1 };
+            //    Zona zona3 = new Zona() { Nombre = "zona3", UnidadEjecutora = ue2 };
+            //    Zona zona4 = new Zona() { Nombre = "zona4", UnidadEjecutora = ue3 };
             //    context.Zonas.Add(zona1);
             //    context.Zonas.Add(zona2);
             //    context.Zonas.Add(zona3);
@@ -76,28 +76,28 @@ namespace Emsys.DataAccesLayer.Core
             //    rec2.Grupos_Recursos.Add(gr2);
 
             //    // Agregar rol.
-            //    ApplicationRole rol1 = new ApplicationRole() { Nombre = "Admin", Permisos = new List<Permiso>() };
+            //    Rol rol1 = new Rol() { Nombre = "Admin", Permisos = new List<Permiso>() };
             //    context.ApplicationRoles.Add(rol1);
 
             //    // Agregar permisos.
             //    Permiso permiso1 = new Permiso() { Clave = "listarEventos", Descripcion = "Permite al usuario ver los eventos de sus zonas actuales/recurso" };
             //    context.Permisos.Add(permiso1);
+            //    Permiso permiso2 = new Permiso() { Clave = "adjuntarMultimedia", Descripcion = "Permite al usuario adjuntar multimedia" };
+            //    context.Permisos.Add(permiso2);
 
             //    // Asignar permisos a roles.
             //    rol1.Permisos.Add(permiso1);
+            //    rol1.Permisos.Add(permiso2);
 
             //    // Agregar usuarios.
-
-            //    var user1 = new ApplicationUser() { Id = 1, NombreUsuario = "A", Contraseña = "6dcd4ce23d88e2ee9568ba546c007c63d9131c1b", Nombre = "Usuario1", ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
-            //    // manager.Create(user1, "usuario1");
-            //    var user2 = new ApplicationUser() { Id = 2, NombreUsuario = "B", Contraseña = "B", Nombre = "Usuario2", ApplicationRoles = new List<ApplicationRole>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+            //    var user1 = new Usuario() { Id = 1, NombreLogin = "A", Contraseña = "6dcd4ce23d88e2ee9568ba546c007c63d9131c1b", Nombre = "Usuario1", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+            //    var user2 = new Usuario() { Id = 2, NombreLogin = "B", Contraseña = "B", Nombre = "Usuario2", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
             //    context.Users.AddOrUpdate(x => x.Id, user1, user2);
             //    context.Users.AddOrUpdate(x => x.Id, user1, user2);
 
             //    // Asignar rol a usuarios.
             //    user1.ApplicationRoles.Add(rol1);
             //    user2.ApplicationRoles.Add(rol1);
-            //    //   user3.ApplicationRoles.Add(rol1);
 
             //    // Agregar usuarios a unidades ejecutoras y grupos recursos.
             //    user1.Grupos_Recursos.Add(gr1);
@@ -121,6 +121,8 @@ namespace Emsys.DataAccesLayer.Core
             //        EnProceso = true,
             //        TimeStamp = DateTime.Now,
             //        FechaCreacion = DateTime.Now,
+            //        Latitud = 19.9,
+            //        Longitud = 20.5,
             //        GeoUbicaciones = new List<GeoUbicacion>()
             //    };
             //    context.Evento.Add(evento1);
@@ -132,7 +134,7 @@ namespace Emsys.DataAccesLayer.Core
             //        Estado = EstadoExtension.FaltaDespachar,
             //        TimeStamp = DateTime.Now,
             //        GeoUbicaciones = new List<GeoUbicacion>()
-            //};
+            //    };
             //    context.Extensiones_Evento.Add(ext1);
 
             //    Evento evento2 = new Evento()

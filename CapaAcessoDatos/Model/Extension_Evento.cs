@@ -28,7 +28,7 @@
         [Required]
         public virtual Zona Zona { get; set; }
 
-        public virtual ApplicationUser Despachador { get; set; }
+        public virtual Usuario Despachador { get; set; }
 
         public string DescripcionDespachador { get; set; }
         
@@ -53,5 +53,7 @@
         public virtual ICollection<Audio> Audios { get; set; }
 
         public virtual ICollection<GeoUbicacion> GeoUbicaciones { get; set; }
+
+        public virtual ICollection<AsignacionRecirso> AccionesRecursos { get; set; }
     }
 }

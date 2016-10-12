@@ -57,7 +57,7 @@ namespace Test.UnitTesting
                 var eventosRespuesta = (ICollection<DtoEvento>)respuesta4.response;
                 using (EmsysContext db = new EmsysContext())
                 {
-                    var user = db.Users.Where(x => x.NombreUsuario == nombreUsuario).FirstOrDefault();
+                    var user = db.Users.Where(x => x.NombreLogin == nombreUsuario).FirstOrDefault();
                     if (user != null)
                     {
                         var zonas = user.Zonas;
@@ -78,7 +78,7 @@ namespace Test.UnitTesting
                 controllerLogin.Request.Headers.Add("auth", token);
                 var respuesta5 = controllerLogin.CerrarSesion();
                 Assert.IsTrue(respuesta5.cod == 0);
-                Assert.IsTrue(context.Users.FirstOrDefault(u => u.NombreUsuario == "A").Zonas.Count() == 0);
+                Assert.IsTrue(context.Users.FirstOrDefault(u => u.NombreLogin == "A").Zonas.Count() == 0);
             }
         }
     }

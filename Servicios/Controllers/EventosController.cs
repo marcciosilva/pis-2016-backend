@@ -28,8 +28,8 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }                
-                ICollection<DtoEvento> eventos = dbAL.listarEventos(token);
-                return  new DtoRespuesta(0, eventos);
+                ICollection<DtoItemListar> lista = dbAL.listarEventos(token);
+                return  new DtoRespuesta(0, lista);
             }
             catch (InvalidTokenException e)
             {
@@ -72,7 +72,7 @@ namespace Servicios.Controllers
             catch (Exception e)
             {
                 dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
-                return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorObtenerEvento));
             }
         }
     }

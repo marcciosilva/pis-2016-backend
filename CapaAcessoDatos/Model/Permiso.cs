@@ -14,14 +14,17 @@
         [Key]
         public int Id { get; set; }
 
-        [Required]
         [MaxLength(50)]
-        public string Clave { get; set; }
+        public string Nombre { get; set; }
 
         [MaxLength(150)]
         public string Descripcion { get; set; }
 
-        public ICollection<ApplicationRole> Roles { get; set; }
+        [Required]
+        [MaxLength(50)]
+        public string Clave { get; set; }        
+
+        public ICollection<Rol> Roles { get; set; }
         
     }
 }

@@ -24,6 +24,16 @@ namespace DataTypeObject
         public const string EventoInvalido = "El evento solicitado es invalido.";
         public const string SesionActiva = "El usuario ya cuenta con una sesion activas.";
         public const string ExtensionInvalida = "La extension de evento seleccionada no es valida.";
+        public const string ErrorEnviarArchivo = "Ocurrio un error al enviar el archivo al servidor.";
+        public const string FormatoNoSoportado = "El formato del archivo enviado no es soportado.";
+        public const string ErrorObtenerEvento = "Ocurrio un error al intentar obtener la informacion del evento.";
+        public const string UsuarioNoAutorizado = "El usuario no esta autorizado a acceder al contenido solicitado.";
+        public const string ImagenInvalida = "La imagen solicitada no es valida.";
+        public const string VideoInvalido = "El video solicitado no es valido.";
+        public const string AudioInvalido = "El audio solicitado no es valido.";
+
+
+
 
         // Codigos de error.
         public const int ErrorIniciarSesionCod = 1001;

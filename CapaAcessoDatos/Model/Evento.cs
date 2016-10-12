@@ -14,7 +14,7 @@
     }
 
 
-    [Table("Evento")]
+    [Table("Eventos")]
     public partial class Evento
     {
         [Key]
@@ -23,6 +23,7 @@
         [MaxLength(200)]
         public string NombreInformante { get; set; }
 
+        [MaxLength(50)]
         public string TelefonoEvento { get; set; }
 
         [Required]
@@ -34,7 +35,7 @@
         [Required]
         public DateTime TimeStamp { get; set; }
         
-        public virtual ApplicationUser Usuario { get; set; }
+        public virtual Usuario Usuario { get; set; }
 
         [Required]
         public DateTime FechaCreacion { get; set; }

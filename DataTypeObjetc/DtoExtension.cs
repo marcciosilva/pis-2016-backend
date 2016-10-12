@@ -9,19 +9,33 @@ namespace DataTypeObject
 
     public class DtoExtension
     {        
-        public DtoZona zona { get; set; }
-        
-        public string descripcion { get; set; }
+        public int id { get; set; }
 
-        //public string descripcion_supervisor { get; set; }
+        public DtoZona zona { get; set; }
+
+        public string despachador { get; set; }
+        
+        public string descripcion_despachadores { get; set; }
+
+        public string descripcion_supervisor { get; set; }
+
+        public ICollection<DtoAccionesRecursoExtension> acciones_recursos { get; set; }
 
         public string estado { get; set; }
 
         public DateTime time_stamp { get; set; }
 
-        public DtoCategoria categoria { get; set; }
+        public DtoCategoria segunda_categoria { get; set; }
 
         public ICollection<string> recursos { get; set; }
+
+        public virtual ICollection<DtoImagen> imagenes { get; set; }
+
+        public virtual ICollection<DtoVideo> videos { get; set; }
+
+        public virtual ICollection<DtoAudio> audios { get; set; }
+
+        public virtual ICollection<DtoGeoUbicacion> geo_ubicaciones { get; set; }
 
     }
 }

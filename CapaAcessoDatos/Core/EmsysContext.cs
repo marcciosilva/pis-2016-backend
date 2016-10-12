@@ -13,6 +13,8 @@ namespace Emsys.DataAccesLayer.Core
         }
         public DbSet<Evento> Evento { get; set; }
 
+        public DbSet<ApplicationFile> ApplicationFiles { get; set; }
+
         public DbSet<Imagen> Imagenes { get; set; }
 
         public DbSet<Audio> Audios { get; set; }
@@ -39,13 +41,13 @@ namespace Emsys.DataAccesLayer.Core
         
         public DbSet<Zona> Zonas { get; set; }
 
-        public DbSet<ApplicationRole> ApplicationRoles { get; set; }
+        public DbSet<Rol> ApplicationRoles { get; set; }
         
         public DbSet<Permiso> Permisos { get; set; }
 
         public DbSet<Grupo_Recurso> Grupos_Recursos { get; set; }
 
-        public DbSet<ApplicationUser> Users { get; set; }
+        public DbSet<Usuario> Users { get; set; }
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{

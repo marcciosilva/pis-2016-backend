@@ -10,6 +10,60 @@ namespace Emsys.LogicLayer.Utils
 {
     class DtoGetters
     {
+        public static DtoApplicationFile GetDtoApplicationfile(ApplicationFile file)
+        {
+            return new DtoApplicationFile()
+            {
+                nombre = file.Nombre,
+                file_data = file.FileData
+            };
+        }
+
+        public static DtoAccionesRecursoExtension getDtoAccionesRecursoExtension(AsignacionRecirso acciones)
+        {
+            return new DtoAccionesRecursoExtension()
+            {
+                id = acciones.Id,
+                recurso = acciones.Recurso.Codigo,
+                descripcion = acciones.Descripcion,
+                fecha_arribo = acciones.FechaArribo,
+                actualmente_asignado = acciones.ActualmenteAsignado
+            };
+        }
+
+        public static DtoImagen getDtoImagen(Imagen img)
+        {
+            return new DtoImagen()
+            {
+                id = img.Id,
+                id_imagen = img.ImagenData.Id,
+                usuario = img.Usuario.Nombre,
+                fecha_envio = img.FechaEnvio                
+            };
+        }
+
+        public static DtoVideo getDtoVideo(Video vid)
+        {
+            return new DtoVideo()
+            {
+                id = vid.Id,
+                id_video = vid.VideoData.Id,
+                usuario = vid.Usuario.Nombre,
+                fecha_envio = vid.FechaEnvio
+            };
+        }
+
+        public static DtoAudio getDtoAudio(Audio aud)
+        {
+            return new DtoAudio()
+            {
+                id = aud.Id,
+                id_audio = aud.AudioData.Id,
+                usuario = aud.Usuario.Nombre,
+                fecha_envio = aud.FechaEnvio
+            };
+        }
+        
         public static DtoGeoUbicacion getDtoGeoUbicacion(GeoUbicacion ubicacion)
         {
             return new DtoGeoUbicacion()
@@ -25,7 +79,7 @@ namespace Emsys.LogicLayer.Utils
             {
                 id = zona.Id,
                 nombre = zona.Nombre,
-                nombre_ue = zona.Unidad_Ejecutora.Nombre
+                nombre_ue = zona.UnidadEjecutora.Nombre
             };
         }
 
@@ -50,27 +104,93 @@ namespace Emsys.LogicLayer.Utils
             };
         }
 
-        public static DtoExtension getDtoExtension(Extension_Evento ext)
+
+        public static DtoItemListar getDtoItemListar(Extension_Evento ext)
         {
-            List<string> recursos = new List<string>();
-            foreach (Recurso r in ext.Recursos)
-            {
-                recursos.Add(r.Codigo);
-            }
             DtoCategoria cat = null;
             if (ext.SegundaCategoria != null)
             {
                 cat = getDtoCategoria(ext.SegundaCategoria);
             }
+            else
+            {
+                cat = getDtoCategoria(ext.Evento.Categoria);
+            }
+
+            string desp = null;
+            if (ext.Estado == EstadoExtension.Despachado)
+                desp = ext.Despachador.Nombre;
+
+            DtoGeoUbicacion geoU = null;
+            if ((ext.Evento.Latitud != 0) && (ext.Evento.Longitud != 0))
+            {
+                geoU = new DtoGeoUbicacion() { latitud = ext.Evento.Latitud, longitud = ext.Evento.Longitud };
+            }
+
+            return new DtoItemListar()
+            {
+                id_evento = ext.Evento.Id,
+                zona = getDtoZona(ext.Zona),
+                descripcion = ext.Evento.Descripcion,
+                despachador = desp,
+                estado  = ext.Estado.ToString().ToLower(),
+                fecha_creacion = ext.Evento.FechaCreacion,
+                categoria = cat,
+                geoubicacion = geoU                
+            };
+        }
+
+
+        public static DtoExtension getDtoExtension(Extension_Evento ext)
+        {
+            List<string> recursos = new List<string>();
+            foreach (Recurso r in ext.Recursos)
+                recursos.Add(r.Codigo);
+
+            List<DtoAccionesRecursoExtension> acciones = new List<DtoAccionesRecursoExtension>();
+            foreach (AsignacionRecirso a in ext.AccionesRecursos)
+                acciones.Add(getDtoAccionesRecursoExtension(a));
+
+            DtoCategoria cat = null;
+            if (ext.SegundaCategoria != null)
+                cat = getDtoCategoria(ext.SegundaCategoria);
+
+            string desp = null;
+            if (ext.Despachador != null)
+                desp = ext.Despachador.Nombre;
+
+            List<DtoImagen> imgs = new List<DtoImagen>();
+            foreach (Imagen i in ext.Imagenes)
+                imgs.Add(getDtoImagen(i));
+
+            List<DtoVideo> vids = new List<DtoVideo>();
+            foreach (Video v in ext.Videos)
+                vids.Add(getDtoVideo(v));
+
+            List<DtoAudio> auds = new List<DtoAudio>();
+            foreach (Audio a in ext.Audios)
+                auds.Add(getDtoAudio(a));
+
+            List<DtoGeoUbicacion> geos = new List<DtoGeoUbicacion>();
+            foreach (GeoUbicacion g in ext.GeoUbicaciones)
+                geos.Add(getDtoGeoUbicacion(g));
 
             return new DtoExtension()
             {
+                id = ext.Id,
                 zona = getDtoZona(ext.Zona),
-                descripcion = ext.DescripcionDespachador,
+                despachador = desp,
+                descripcion_despachadores = ext.DescripcionDespachador,
+                descripcion_supervisor = ext.DescripcionSupervisor,
+                acciones_recursos = acciones,
                 estado = ext.Estado.ToString().ToLower(),
                 time_stamp = ext.TimeStamp,
-                categoria = cat,
-                recursos = recursos
+                segunda_categoria = cat,
+                recursos = recursos,
+                imagenes = imgs,
+                videos = vids,
+                audios = auds,
+                geo_ubicaciones = geos
             };
         }
 
@@ -83,18 +203,31 @@ namespace Emsys.LogicLayer.Utils
                 extensiones.Add(getDtoExtension(e));
             }
 
-            List<DtoGeoUbicacion> ubicaciones = new List<DtoGeoUbicacion>();
-            foreach (GeoUbicacion g in evento.GeoUbicaciones)
+            DtoGeoUbicacion ubicacion = null;
+            if((evento.Longitud != 0) && (evento.Latitud!=0))
             {
-                ubicaciones.Add(getDtoGeoUbicacion(g));
+                ubicacion = new DtoGeoUbicacion()
+                {
+                    longitud = evento.Longitud,
+                    latitud = evento.Latitud
+                };
             }
 
             string dep = null;
-            string sec = null;
             if (evento.Departamento != null)
                 dep = evento.Departamento.Nombre;
-            if (evento.Sector != null)
-                sec = evento.Sector.Nombre;
+
+            List<DtoImagen> imgs = new List<DtoImagen>();
+            foreach (Imagen i in evento.Imagenes)
+                imgs.Add(getDtoImagen(i));
+
+            List<DtoVideo> vids = new List<DtoVideo>();
+            foreach (Video v in evento.Videos)
+                vids.Add(getDtoVideo(v));
+
+            List<DtoAudio> auds = new List<DtoAudio>();
+            foreach (Audio a in evento.Audios)
+                auds.Add(getDtoAudio(a));
 
             return new DtoEvento()
             {
@@ -104,16 +237,20 @@ namespace Emsys.LogicLayer.Utils
                 categoria = getDtoCategoria(evento.Categoria),
                 estado = evento.Estado.ToString().ToLower(),
                 time_stamp = evento.TimeStamp,
-                fecha_creacion = evento.FechaCreacion,
-                departamento = dep,
+                creador = evento.Usuario.Nombre,
+                fecha_creacion = evento.FechaCreacion,                
                 calle = evento.Calle,
                 esquina = evento.Esquina,
                 numero = evento.Numero,
-                sector = sec,
+                departamento = dep,
+                sector = evento.Sector.Nombre,
+                geo_ubicacion = ubicacion,
                 descripcion = evento.Descripcion,
                 en_proceso = evento.EnProceso,
                 extensiones = extensiones,
-                geoubicaciones = ubicaciones
+                imagenes = imgs,
+                videos = vids,
+                audios = auds
             };
         }
     }

@@ -8,8 +8,15 @@
     
 
     [Table("GeoUbicaciones")]
-    public partial class GeoUbicacion : Adjunto
+    public partial class GeoUbicacion
     {
+        [Key]
+        public int Id { get; set; }
+
+        public virtual Usuario Usuario { get; set; }
+
+        public DateTime FechaEnvio { get; set; }
+        
         public double Longitud { get; set; }
 
         public double Latitud { get; set; }

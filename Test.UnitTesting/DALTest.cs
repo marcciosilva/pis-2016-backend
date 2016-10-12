@@ -21,10 +21,10 @@ namespace Test.UnitTesting
         {
             using (var db = new EmsysContext())
             {
-                var user = new ApplicationUser() { NombreUsuario = "prueba", Nombre = "prueba" };
+                var user = new Usuario() { NombreLogin = "prueba", Nombre = "prueba" };
                 db.Users.Add(user);
                 db.SaveChanges();
-                var usuarioAgregado = db.Users.FirstOrDefault(x => x.NombreUsuario.Equals("prueba"));
+                var usuarioAgregado = db.Users.FirstOrDefault(x => x.NombreLogin.Equals("prueba"));
                 Assert.IsNotNull(usuarioAgregado);
                 db.Users.Remove(user);
             }
@@ -59,7 +59,7 @@ namespace Test.UnitTesting
                 var unidadEjecutoraAgregada = context.Unidades_Ejecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUEZona"));
                 if (unidadEjecutoraAgregada != null)
                 {
-                    context.Zonas.Add(new Zona() { Nombre = "pruebaZona", Unidad_Ejecutora = unidadEjecutoraAgregada });
+                    context.Zonas.Add(new Zona() { Nombre = "pruebaZona", UnidadEjecutora = unidadEjecutoraAgregada });
                     context.SaveChanges();
                     var zonaAgregada = context.Zonas.FirstOrDefault(x => x.Nombre.Equals("pruebaZona"));
                     Assert.IsNotNull(zonaAgregada);
@@ -86,7 +86,7 @@ namespace Test.UnitTesting
                 var unidadEjecutoraAgregada = context.Unidades_Ejecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUEZonaSector"));
                 if (unidadEjecutoraAgregada != null)
                 {
-                    context.Zonas.Add(new Zona() { Nombre = "pruebaZonaSector", Unidad_Ejecutora = unidadEjecutoraAgregada });
+                    context.Zonas.Add(new Zona() { Nombre = "pruebaZonaSector", UnidadEjecutora = unidadEjecutoraAgregada });
                     context.SaveChanges();
                     var zonaAgregada = context.Zonas.FirstOrDefault(x => x.Nombre.Equals("pruebaZonaSector"));
                     if (zonaAgregada != null)
