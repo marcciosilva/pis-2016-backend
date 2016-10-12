@@ -99,19 +99,61 @@ namespace Emsys.LogicLayer
         /// <param name="ubicacion">Objeto de ubicacion.</param>
         /// <returns>Retorna su pudo realizar la persistencia de la  geoubicacion o no.</returns>
         bool adjuntarGeoUbicacion(string token, DtoGeoUbicacion ubicacion);
-
+        
+        /// <summary>
+        /// Agrega un arhivo a la tabla ApplicationFile.
+        /// </summary>
+        /// <param name="data">Bytes del archivo</param>
+        /// <param name="extension">Extension del nombre del archivo, Ej: ".jpg"</param>
+        /// <returns>El identificador del archivo agregado</returns>
         int agregarFileData(byte[] data, string extension);
 
+        /// <summary>
+        /// Devuelve el nombre y datos de el archivo de imagen indicado.
+        /// </summary>
+        /// <param name="token">Token del usuario que solicita la imagen</param>
+        /// <param name="idAdjunto">Id de la imagen solicitada</param>
+        /// <returns>DtoApplicationFile con los bytes y nombre del archivo</returns>
         DtoApplicationFile getImageData(string token, int idAdjunto);
 
+        /// <summary>
+        /// Devuelve el nombre y datos de el archivo de video indicado.
+        /// </summary>
+        /// <param name="token">Token del usuario que solicita el video</param>
+        /// <param name="idAdjunto">Id del video solicitada</param>
+        /// <returns>DtoApplicationFile con los bytes y nombre del archivo</returns>
         DtoApplicationFile getVideoData(string token, int idAdjunto);
 
+        /// <summary>
+        /// Devuelve el nombre y datos de el archivo de audio indicado.
+        /// </summary>
+        /// <param name="token">Token del usuario que solicita el audio</param>
+        /// <param name="idAdjunto">Id del audio solicitada</param>
+        /// <returns>DtoApplicationFile con los bytes y nombre del archivo</returns>
         DtoApplicationFile getAudioData(string token, int idAdjunto);
 
+        /// <summary>
+        /// Agrega una imagen a una extension de evento, el archivo de la imagen debe haber sido enviado previamente con "agregarFileData".
+        /// </summary>
+        /// <param name="token">Token del usuario que desea adjuntar la imagen</param>
+        /// <param name="imagen">DtoImagen con el id de la extension a la cual agregar, y el id del archivo de imagen</param>
+        /// <returns>Si se agrego correctamente</returns>
         bool adjuntarImagen(string token, DtoImagen imagen);
 
+        /// <summary>
+        /// Agrega un video a una extension de evento, el archivo del video debe haber sido enviado previamente con "agregarFileData".
+        /// </summary>
+        /// <param name="token">Token del usuario que desea adjuntar el video</param>
+        /// <param name="video">DtoVideo con el id de la extension a la cual agregar, y el id del archivo de video</param>
+        /// <returns>Si se agrego correctamente</returns>
         bool adjuntarVideo(string token, DtoVideo video);
 
+        /// <summary>
+        /// Agrega un audio a una extension de evento, el archivo del audio debe haber sido enviado previamente con "agregarFileData".
+        /// </summary>
+        /// <param name="token">Token del usuario que desea adjuntar el audio</param>
+        /// <param name="audio">DtoAudio con el id de la extension a la cual agregar, y el id del archivo de video</param>
+        /// <returns>Si se agrego correctamente</returns>
         bool adjuntarAudio(string token, DtoAudio audio);
 
         //string getDataImagen(string token, int idImagen);

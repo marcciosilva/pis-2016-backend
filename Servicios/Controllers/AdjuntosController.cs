@@ -21,7 +21,10 @@ namespace Servicios.Controllers
 {
     public class AdjuntosController : ApiController
     {
-
+        /// <summary>
+        /// Permite enviar en archivo de imagen al servidor.
+        /// </summary>
+        /// <returns>Un DtoRespuesta que contiene un int, necesario para asociar el archivo enviado a un evento o extension</returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
         [HttpPost]
@@ -63,7 +66,10 @@ namespace Servicios.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Permite enviar en archivo de video al servidor.
+        /// </summary>
+        /// <returns>Un DtoRespuesta que contiene un int, necesario para asociar el archivo enviado a un evento o extension</returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
         [HttpPost]
@@ -106,7 +112,10 @@ namespace Servicios.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Permite enviar en archivo de audio al servidor.
+        /// </summary>
+        /// <returns>Un DtoRespuesta que contiene un int, necesario para asociar el archivo enviado a un evento o extension</returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
         [HttpPost]
@@ -149,7 +158,10 @@ namespace Servicios.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Permite enviar una geo ubicacion al servidor e indicar a que evento o extension le pertenece.
+        /// </summary>
+        /// <returns>Un DtoRespuesta que indica si se agrego correctamente</returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
         [Route("adjuntos/postgeoubicacion")]
@@ -181,7 +193,11 @@ namespace Servicios.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Agrega un vdieo a un evento o extension.
+        /// </summary>
+        /// <param name="imagen">DtoImagen que indica a que evento o extension agregar la imagen, y el id de imagen, agregado previamente con "PostImageFile"</param>
+        /// <returns>Un DtoRespuesta que indica si se agrego correctamente</returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
         [Route("adjuntos/adjuntarImagen")]
@@ -214,6 +230,11 @@ namespace Servicios.Controllers
         }
 
 
+        /// <summary>
+        /// Agrega un vdieo a un evento o extension.
+        /// </summary>
+        /// <param name="video">DtoVideo que indica a que evento o extension agregar el video, y el id del archivo de video, agregado previamente con "PostVideoFile"</param>
+        /// <returns>Un DtoRespuesta que indica si se agrego correctamente</returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
         [Route("adjuntos/adjuntarVideo")]
@@ -245,7 +266,11 @@ namespace Servicios.Controllers
             }
         }
 
-
+        /// <summary>
+        /// Agrega un audio a un evento o extension.
+        /// </summary>
+        /// <param name="audio">DtoAudio que indica a que evento o extension agregar el audio, y el id del archivo de audio, agregado previamente con "PostVideoFile"</param>
+        /// <returns>Un DtoRespuesta que indica si se agrego correctamente</returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
         [Route("adjuntos/adjuntarAudio")]
@@ -278,7 +303,11 @@ namespace Servicios.Controllers
         }
 
 
-
+        /// <summary>
+        /// Retorna el archivo de imagen indicada.
+        /// </summary>
+        /// <param name="idImagen">Id de la imagen seleccionada</param>
+        /// <returns>Un stream con la imagen selecionada</returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
         [Route("adjuntos/getimagedata")]
@@ -334,6 +363,11 @@ namespace Servicios.Controllers
         }
 
 
+        /// <summary>
+        /// Retorna el archivo del video indicado.
+        /// </summary>
+        /// <param name="idVideo">id del video seleccinado</param>
+        /// <returns>Un stream con el video seleccionado</returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
         [Route("adjuntos/getvideodata")]
@@ -389,6 +423,11 @@ namespace Servicios.Controllers
         }
 
 
+        /// <summary>
+        /// Retorna el archivo de audio indicado.
+        /// </summary>
+        /// <param name="idAudio">Id del audio seleccionado</param>
+        /// <returns>Un stream con el audio seleccionado</returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
         [Route("adjuntos/getaduiodata")]
