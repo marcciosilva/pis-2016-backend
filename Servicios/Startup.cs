@@ -10,9 +10,13 @@ namespace Servicios
     /// </summary>
     public partial class Startup
     {
+        /// <summary>
+        ///Metodo de configuracion.
+        /// </summary>
+        /// <param name="app">Parametro.</param>
         public void Configuration(IAppBuilder app)
         {
-           // ConfigureOAuth(app);
+            // ConfigureOAuth(app);
         }
     }
 }

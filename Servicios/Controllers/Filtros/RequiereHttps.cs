@@ -10,6 +10,10 @@ namespace Emsys.ServiceLayer.Filtros
 {
     public class RequireHttpsAttribute : AuthorizationFilterAttribute
     {
+        /// <summary>
+        /// Metodo que valida que los request sean https.
+        /// </summary>
+        /// <param name="actionContext">Contexto.</param>
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             if (actionContext.Request.RequestUri.Scheme != Uri.UriSchemeHttps)

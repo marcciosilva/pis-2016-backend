@@ -9,6 +9,9 @@ namespace Emsys.ServiceLayer
 {
     public class SwaggerConfig
     {
+        /// <summary>
+        /// Metodo de congiguracion para swaagger
+        /// </summary>
         public static void Register()
         {
             var thisAssembly = typeof(SwaggerConfig).Assembly;

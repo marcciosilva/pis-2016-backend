@@ -1,33 +1,20 @@
-﻿using DataTypeObject;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DataTypeObject
+﻿namespace DataTypeObject
 {
-
     public class DtoAutenticacion
     {
-        public string access_token { get; set; }
-
-        public string msg { get; set; }
-
-        //public DtoRol rol { get; set; }
-
+        /// <summary>
+        /// Constructor con parametros para crear un Data Type Object de Autenticacion utilizado para generar la respuesta al Login.
+        /// </summary>
+        /// <param name="token">Token generado por la logica de un usuario autenticado.</param>
+        /// <param name="mensaje">Mensaje que se desea enviar.</param>
         public DtoAutenticacion(string token, string mensaje)
         {
             access_token = token;
             msg = mensaje;
         }
 
-        // Comentado por compatibilidad.
-        //public DtoAutenticacion(string token, string  mensaje, DtoRol dtorol)
-        //{
-        //    access_token = token;
-        //    msg = mensaje;
-        //    rol = dtorol;
-        //}
+        public string access_token { get; set; }
+
+        public string msg { get; set; }
     }
 }

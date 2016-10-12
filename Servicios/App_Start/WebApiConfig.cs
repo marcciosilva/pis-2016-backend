@@ -7,6 +7,10 @@ namespace Emsys.ServiceLayer
 {
     public static class WebApiConfig
     {
+        /// <summary>
+        /// Metodo que registra la configuracion de Ruteo y filtros para los servicios.
+        /// </summary>
+        /// <param name="config">Parametro de configuracion.</param>
         public static void Register(HttpConfiguration config)
         {
             // Web API configuration and services

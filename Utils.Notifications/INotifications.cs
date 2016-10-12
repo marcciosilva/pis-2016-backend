@@ -11,6 +11,12 @@ namespace Utils.Notifications
     {
         //void SubscribeChanel(string channelName);
         //void UnsubscribeChanel(string channelName);
+        /// <summary>
+        /// Metodo a sobreescribir por la clase concreta para enviar una notificacion push.
+        /// </summary>
+        /// <param name="cod">Codigo definido en Codigos.</param>
+        /// <param name="pk">Primary Key del elemento que se desea realizar una notificacion.</param>
+        /// <param name="topic">Nombre del topic / channel que se desea enviar la notificacion.</param>
         void SendMessage(string cod, string pk, string topic);
     }
 }

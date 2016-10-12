@@ -12,7 +12,12 @@ namespace Emsys.ServiceLayer.Filtros
 
     public class DelegateHandler : DelegatingHandler
     {
-
+        /// <summary>
+        /// Metodo que se dispara automaticamente al realizarse un request. Util para loguear el request y el response.
+        /// </summary>
+        /// <param name="request">Request de la llamada.</param>
+        /// <param name="cancellationToken">No se usa.</param>
+        /// <returns>Una tarea para que se ejecute esta logica de forma asincronica.</returns>
         protected override async Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
             string requestBody = await request.Content.ReadAsStringAsync();
@@ -27,11 +32,14 @@ namespace Emsys.ServiceLayer.Filtros
 
                 dbAL.AgregarLog(token, GetClientIp(request), "", "", 0, "", "Response body: " + responseBody.ToString(), Mensajes.LogAccionesCod);
             }
-
             return result;
         }
 
-
+        /// <summary>
+        /// Funcion para obtener la identificacion del dispositivo.
+        /// </summary>
+        /// <param name="request">Request del llamado al servicio.</param>
+        /// <returns>Identificacion del dispositivo que realizo el request.</returns>
         private string GetClientIp(HttpRequestMessage request)
         {
             String ip;

@@ -170,7 +170,7 @@ namespace Servicios.Controllers
                 }
                 return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }

@@ -29,8 +29,7 @@ namespace Test.UnitTesting
                 var contraseña = "A";
                 // LOGIN.
                 var controllerLogin = new LoginController();
-                var response = controllerLogin.Login(new DtoUser() { username = nombreUsuario, password = contraseña });
-                var respuesta = response.Result;
+                var respuesta = controllerLogin.Login(new DtoUser() { username = nombreUsuario, password = contraseña });
                 Assert.IsTrue(respuesta.cod == 0);
                 var respuestaAutenticate = (DtoAutenticacion)respuesta.response;
                 var token = respuestaAutenticate.access_token;

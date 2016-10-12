@@ -29,27 +29,27 @@ namespace Test.UnitTesting
             using (var context = new EmsysContext())
             {
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
-                string pass = Passwords.GetSHA1("usuario1");
-                Usuario usuarioPrueba = new Usuario { NombreLogin = "usuario1", Contraseña = pass };
+                string pass = Passwords.GetSHA1("usuarioPruebaAutenticar");
+                ApplicationUser usuarioPrueba = new ApplicationUser { NombreUsuario = "usuarioPruebaAutenticar", Contraseña = pass };
                 context.Users.Add(usuarioPrueba);
                 context.SaveChanges();
                 IMetodos logica = new Metodos();
                 try
                 {
-                    logica.autenticarUsuario("usuario1", "incorrecto");
+                    logica.autenticarUsuario("usuarioPruebaAutenticar", "incorrecto");
                     Assert.Fail();
                 }
-                catch (InvalidCredentialsException e)
+                catch (InvalidCredentialsException)
                 {
                     Assert.IsTrue(true);
                 }
 
                 try
                 {
-                    var result = logica.autenticarUsuario("usuario1", "usuario1");
+                    var result = logica.autenticarUsuario("usuarioPruebaAutenticar", "usuarioPruebaAutenticar");
                     Assert.IsNotNull(result);
                 }
-                catch (InvalidCredentialsException e)
+                catch (InvalidCredentialsException)
                 {
                     Assert.Fail();
                 }
@@ -105,16 +105,14 @@ namespace Test.UnitTesting
             using (var context = new EmsysContext())
             {
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
-
-                //string pass = Passwords.GetSHA1("usuario1");
-                //ApplicationUser usuarioPrueba = new ApplicationUser { NombreUsuario = "usuario1", Contraseña = pass };
-                //context.Users.Add(usuarioPrueba);
-                //context.SaveChanges();
-
+                string pass = Passwords.GetSHA1("usuarioPruebaGetNombre");
+                ApplicationUser usuarioPrueba = new ApplicationUser { NombreUsuario = "usuarioPruebaGetNombre", Contraseña = pass };
+                context.Users.Add(usuarioPrueba);
+                context.SaveChanges();
                 IMetodos logica = new Metodos();
-                var resp = logica.autenticarUsuario("A", "A");
+                var resp = logica.autenticarUsuario("usuarioPruebaGetNombre", "usuarioPruebaGetNombre");
                 var token = resp.access_token;
-                Assert.IsTrue(logica.getNombreUsuario(token) == "Usuario1");
+                Assert.IsTrue(logica.getNombreUsuario(token) == "usuarioPruebaGetNombre");
             }
         }
 
@@ -164,7 +162,7 @@ namespace Test.UnitTesting
                     //var u = context.Users.Find(user.Id);
                     //Assert.IsTrue(u.Recurso.Contains(recursoDisponible));
                 }
-                catch(RecursoNoDisponibleException e)
+                catch(RecursoNoDisponibleException)
                 {
                     Assert.Fail();
                 }
@@ -177,7 +175,7 @@ namespace Test.UnitTesting
                     logica.loguearUsuario(token, rol);
                     Assert.Fail();
                 }
-                catch (RecursoNoDisponibleException e)
+                catch (RecursoNoDisponibleException)
                 {
                 }
 
@@ -190,7 +188,7 @@ namespace Test.UnitTesting
                 {
                     Assert.IsFalse(logica.loguearUsuario(token2, rol2));
                 }
-                catch (RecursoNoDisponibleException e)
+                catch (RecursoNoDisponibleException)
                 {
                     Assert.Fail();
                 }
@@ -270,7 +268,7 @@ namespace Test.UnitTesting
                     //Assert.IsTrue(u.Zonas.Contains(zona2));
                     //Assert.IsTrue(u.Zonas.Contains(zona3));
                 }
-                catch (RecursoNoDisponibleException e)
+                catch (RecursoNoDisponibleException)
                 {
                     Assert.Fail();
                 }
@@ -284,7 +282,7 @@ namespace Test.UnitTesting
                 {
                     Assert.IsFalse(logica.loguearUsuario(token, rol2));
                 }
-                catch (RecursoNoDisponibleException e)
+                catch (RecursoNoDisponibleException)
                 {
                     Assert.Fail();
                 }
@@ -395,16 +393,16 @@ namespace Test.UnitTesting
                         Assert.IsNull(tieneZonasAsignadas.FirstOrDefault());
                     }                    
                 }
-                catch (RecursoNoDisponibleException e)
+                catch (RecursoNoDisponibleException)
                 {
                     Assert.Fail();
                 }
             }
         }
 
-        /// <summary>
-        /// Se llama luego de correr cada test y borra la base de datos.
-        /// </summary>
+        ///// <summary>
+        ///// Se llama luego de correr cada test y borra la base de datos.
+        ///// </summary>
         //[SetUp]
         //public void limpiarBase()
         //{
