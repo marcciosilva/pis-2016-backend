@@ -129,6 +129,7 @@
     <None Include="Prototipo1DataSet.xss">
       <DependentUpon>Prototipo1DataSet.xsd</DependentUpon>
     </None>
+    <None Include="Settings.StyleCop" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CapaAcessoDatos\Emsys.DataAccesLayer.csproj">
