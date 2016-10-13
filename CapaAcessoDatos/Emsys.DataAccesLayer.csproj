@@ -139,6 +139,7 @@
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
     <Compile Include="Model\ApplicationFile.cs" />
+    <Compile Include="Model\AsignacionRecursoDescripcion.cs" />
     <Compile Include="Model\Audio.cs" />
     <Compile Include="Model\AsignacionRecurso.cs" />
     <Compile Include="Model\GeoUbicacion.cs" />

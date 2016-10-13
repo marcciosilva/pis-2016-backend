@@ -10,7 +10,7 @@
 
 
     [Table("AsignacionesRecursos")]
-    public partial class AsignacionRecirso
+    public partial class AsignacionRecurso
     {
         [Key]
         public int Id { get; set; }
@@ -25,6 +25,8 @@
         public DateTime FechaArribo { get; set; }
 
         public bool ActualmenteAsignado { get; set; }
+
+        public virtual List<AsignacionRecursoDescripcion> AsignacionRecursoDescripcion { get; set; }
 
     }
 }

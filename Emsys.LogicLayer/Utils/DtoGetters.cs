@@ -19,7 +19,7 @@ namespace Emsys.LogicLayer.Utils
             };
         }
 
-        public static DtoAccionesRecursoExtension getDtoAccionesRecursoExtension(AsignacionRecirso acciones)
+        public static DtoAccionesRecursoExtension getDtoAccionesRecursoExtension(AsignacionRecurso acciones)
         {
             return new DtoAccionesRecursoExtension()
             {
@@ -148,7 +148,7 @@ namespace Emsys.LogicLayer.Utils
                 recursos.Add(r.Codigo);
 
             List<DtoAccionesRecursoExtension> acciones = new List<DtoAccionesRecursoExtension>();
-            foreach (AsignacionRecirso a in ext.AccionesRecursos)
+            foreach (AsignacionRecurso a in ext.AccionesRecursos)
                 acciones.Add(getDtoAccionesRecursoExtension(a));
 
             DtoCategoria cat = null;

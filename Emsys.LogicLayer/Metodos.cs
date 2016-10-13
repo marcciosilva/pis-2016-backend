@@ -748,5 +748,36 @@ namespace Emsys.LogicLayer
                 throw new InvalidTokenException();
             }
         }
+
+
+
+        public Mensaje ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token) {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new InvalidTokenException();
+                }
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user != null)
+                {
+                    var extension=context.Extensiones_Evento.Find(descParam.idExtension);
+
+                    if (extension != null)
+                    {      
+                        //falta verificar que la extension sea del usuario!!!                                       
+                        foreach (var item in extension.AccionesRecursos)
+                        {
+                            item.AsignacionRecursoDescripcion.Add( new AsignacionRecursoDescripcion(descParam.dtoDescripcion.descripcion, descParam.dtoDescripcion.fecha));
+                            context.SaveChanges();
+                        }
+                    }
+                    else {
+                        //TODO expcion por que no existe la extension con ese id
+                    }
+                }
+                throw new InvalidTokenException();
+            }
+        }
     }
 }

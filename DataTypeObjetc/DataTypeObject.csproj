@@ -65,6 +65,8 @@
     <Compile Include="DtoAutenticacion.cs" />
     <Compile Include="DtoAudio.cs" />
     <Compile Include="DtoAccionesRecursoExtension.cs" />
+    <Compile Include="DtoActualizarDescripcionParametro.cs" />
+    <Compile Include="DtoDescripcion.cs" />
     <Compile Include="DtoOrigenEvento.cs" />
     <Compile Include="DtoVideo.cs" />
     <Compile Include="DtoItemListar.cs" />

@@ -54,6 +54,6 @@
 
         public virtual ICollection<GeoUbicacion> GeoUbicaciones { get; set; }
 
-        public virtual ICollection<AsignacionRecirso> AccionesRecursos { get; set; }
+        public virtual ICollection<AsignacionRecurso> AccionesRecursos { get; set; }
     }
 }
