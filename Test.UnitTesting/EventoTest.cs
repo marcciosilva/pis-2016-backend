@@ -83,23 +83,25 @@ namespace Test.UnitTesting
                     Evento = evento,
                     Zona = zona1,
                     Estado = EstadoExtension.Despachado,
-                    TimeStamp = DateTime.Now
+                    TimeStamp = DateTime.Now,
+                    Despachador = user
                 };
                 var ext2 = new Extension_Evento()
                 {
                     Evento = evento,
                     Zona = zona2,
                     Estado = EstadoExtension.Despachado,
-                    TimeStamp = DateTime.Now
+                    TimeStamp = DateTime.Now,
+                    Despachador = user
                 };
                 var ext3 = new Extension_Evento()
                 {
                     Evento = evento,
                     Zona = zona3,
                     Estado = EstadoExtension.Despachado,
-                    TimeStamp = DateTime.Now
+                    TimeStamp = DateTime.Now,
+                    Despachador = user
                 };
-
                 IMetodos logica = new Metodos();
                 
                 // Obtengo token de usuario. 

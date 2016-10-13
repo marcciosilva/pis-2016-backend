@@ -218,7 +218,7 @@ namespace Servicios.Controllers
                 }
                 return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
@@ -255,7 +255,7 @@ namespace Servicios.Controllers
                 }
                 return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
@@ -291,7 +291,7 @@ namespace Servicios.Controllers
                 }
                 return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
@@ -339,17 +339,17 @@ namespace Servicios.Controllers
                 return responseMessage;
 
             }
-            catch (ImagenInvalidaException e)
+            catch (ImagenInvalidaException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.ImagenInvalida))));
                 return responseMessage;
             }
-            catch (UsuarioNoAutorizadoException e)
+            catch (UsuarioNoAutorizadoException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(14, new Mensaje(Mensajes.UsuarioNoAutorizado))));
                 return responseMessage;
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
                 return responseMessage;
@@ -399,17 +399,17 @@ namespace Servicios.Controllers
                 return responseMessage;
 
             }
-            catch (ImagenInvalidaException e)
+            catch (ImagenInvalidaException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.VideoInvalido))));
                 return responseMessage;
             }
-            catch (UsuarioNoAutorizadoException e)
+            catch (UsuarioNoAutorizadoException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(14, new Mensaje(Mensajes.UsuarioNoAutorizado))));
                 return responseMessage;
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
                 return responseMessage;
@@ -459,17 +459,17 @@ namespace Servicios.Controllers
                 return responseMessage;
 
             }
-            catch (ImagenInvalidaException e)
+            catch (ImagenInvalidaException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.AudioInvalido))));
                 return responseMessage;
             }
-            catch (UsuarioNoAutorizadoException e)
+            catch (UsuarioNoAutorizadoException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(14, new Mensaje(Mensajes.UsuarioNoAutorizado))));
                 return responseMessage;
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
                 return responseMessage;
