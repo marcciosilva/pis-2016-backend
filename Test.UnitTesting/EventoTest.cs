@@ -130,47 +130,6 @@ namespace Test.UnitTesting
                 }
             }    
         }
-
-        ///// <summary>
-        ///// Se llama luego de correr cada test y borra la base de datos.
-        ///// </summary>
-        //[SetUp]
-        //public void limpiarBase()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        foreach (var u in context.Evento)
-        //        {
-        //            context.Evento.Remove(u);
-        //        }
-
-        //        foreach (var u in context.Users)
-        //        {
-        //            context.Users.Remove(u);
-        //        }
-        //        foreach (var gr in context.Grupos_Recursos)
-        //        {
-        //            context.Grupos_Recursos.Remove(gr);
-        //        }
-        //        foreach (var r in context.Recursos)
-        //        {
-        //            context.Recursos.Remove(r);
-        //        }
-        //        foreach (var ue in context.Unidades_Ejecutoras)
-        //        {
-        //            context.Unidades_Ejecutoras.Remove(ue);
-        //        }
-        //        foreach (var sector in context.Sectores)
-        //        {
-        //            context.Sectores.Remove(sector);
-        //        }
-
-        //        foreach (var zona in context.Zonas)
-        //        {
-        //            context.Zonas.Remove(zona);
-        //        }
-        //        context.SaveChanges();
-        //    }
-        //}
+        
     }
 }
