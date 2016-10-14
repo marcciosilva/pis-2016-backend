@@ -13,7 +13,7 @@ namespace DataTypeObject
         
         public string recurso { get; set; }
         
-        public string descripcion { get; set; }
+        public List<DtoDescripcionRecurso> descripcion { get; set; }
 
         public DateTime fecha_arribo { get; set; }
 

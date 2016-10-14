@@ -21,14 +21,15 @@ namespace Emsys.LogicLayer.Utils
 
         public static DtoAccionesRecursoExtension getDtoAccionesRecursoExtension(AsignacionRecirso acciones)
         {
-            return new DtoAccionesRecursoExtension()
+            DtoAccionesRecursoExtension resultado = new DtoAccionesRecursoExtension()
             {
                 id = acciones.Id,
                 recurso = acciones.Recurso.Codigo,
-                descripcion = acciones.Descripcion,
                 fecha_arribo = acciones.FechaArribo,
                 actualmente_asignado = acciones.ActualmenteAsignado
             };
+            resultado.descripcion = parsearDesacripcion(acciones.Descripcion).ToList();
+            return resultado;
         }
 
         public static DtoImagen getDtoImagen(Imagen img)
@@ -38,7 +39,7 @@ namespace Emsys.LogicLayer.Utils
                 id = img.Id,
                 id_imagen = img.ImagenData.Id,
                 usuario = img.Usuario.Nombre,
-                fecha_envio = img.FechaEnvio                
+                fecha_envio = img.FechaEnvio
             };
         }
 
@@ -63,7 +64,7 @@ namespace Emsys.LogicLayer.Utils
                 fecha_envio = aud.FechaEnvio
             };
         }
-        
+
         public static DtoGeoUbicacion getDtoGeoUbicacion(GeoUbicacion ubicacion)
         {
             return new DtoGeoUbicacion()
@@ -133,10 +134,10 @@ namespace Emsys.LogicLayer.Utils
                 zona = getDtoZona(ext.Zona),
                 descripcion = ext.Evento.Descripcion,
                 despachador = desp,
-                estado  = ext.Estado.ToString().ToLower(),
+                estado = ext.Estado.ToString().ToLower(),
                 fecha_creacion = ext.Evento.FechaCreacion,
                 categoria = cat,
-                geoubicacion = geoU                
+                geoubicacion = geoU
             };
         }
 
@@ -204,7 +205,7 @@ namespace Emsys.LogicLayer.Utils
             }
 
             DtoGeoUbicacion ubicacion = null;
-            if((evento.Longitud != 0) && (evento.Latitud!=0))
+            if ((evento.Longitud != 0) && (evento.Latitud != 0))
             {
                 ubicacion = new DtoGeoUbicacion()
                 {
@@ -238,7 +239,7 @@ namespace Emsys.LogicLayer.Utils
                 estado = evento.Estado.ToString().ToLower(),
                 time_stamp = evento.TimeStamp,
                 creador = evento.Usuario.Nombre,
-                fecha_creacion = evento.FechaCreacion,                
+                fecha_creacion = evento.FechaCreacion,
                 calle = evento.Calle,
                 esquina = evento.Esquina,
                 numero = evento.Numero,
@@ -252,6 +253,34 @@ namespace Emsys.LogicLayer.Utils
                 videos = vids,
                 audios = auds
             };
+        }
+
+        /// <summary>
+        /// Metodo auxiliar que convierte un string con formato hora1\\usuario1\\texto1\\hora2\\usuario2\\texto2....
+        /// en una colección de DtoDescripcion
+        /// </summary>
+        /// <param name="descripcion"></param>
+        /// <returns></returns>
+        private static IEnumerable<DtoDescripcionRecurso> parsearDesacripcion(string descripcion)
+        {
+            string[] separadores = { "\\" };
+            string[] textoParseado = descripcion.Split(separadores, int.MaxValue, StringSplitOptions.None);
+
+            List<DtoDescripcionRecurso> resultado = new List<DtoDescripcionRecurso>();
+
+            DtoDescripcionRecurso d;
+            for (int i = 0; i < textoParseado.Count(); i = i + 3)
+            {
+                d = new DtoDescripcionRecurso()
+                {
+                    fecha = DateTime.Parse(textoParseado[i]),
+                    usuario = textoParseado[i + 1],
+                    texto = textoParseado[i + 2]
+                };
+                resultado.Add(d);
+            }
+
+            return resultado;
         }
     }
 }
