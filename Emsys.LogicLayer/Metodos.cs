@@ -239,7 +239,6 @@ namespace Emsys.LogicLayer
                 {
                     List<DtoItemListar> extensiones = new List<DtoItemListar>();
 
-
                     // Si el usuario esta conectado como recurso.
                     if (user.Recurso.Count() > 0)
                     {
