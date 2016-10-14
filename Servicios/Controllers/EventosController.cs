@@ -66,7 +66,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }
-                DtoEvento evento = dbAL.verInfoEvento(token, idEvento);
+                DataItemlistar evento = dbAL.verInfoEvento(token, idEvento);
                 return new DtoRespuesta(0, evento);
             }
             catch (EventoInvalidoException)

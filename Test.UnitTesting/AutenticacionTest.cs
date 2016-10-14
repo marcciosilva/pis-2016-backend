@@ -30,7 +30,7 @@ namespace Test.UnitTesting
             {
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
                 string pass = Passwords.GetSHA1("usuarioPruebaAutenticar");
-                ApplicationUser usuarioPrueba = new ApplicationUser { NombreUsuario = "usuarioPruebaAutenticar", Contraseña = pass };
+                Usuario usuarioPrueba = new Usuario { NombreLogin = "usuarioPruebaAutenticar", Contraseña = pass };
                 context.Users.Add(usuarioPrueba);
                 context.SaveChanges();
                 IMetodos logica = new Metodos();
@@ -106,7 +106,7 @@ namespace Test.UnitTesting
             {
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
                 string pass = Passwords.GetSHA1("usuarioPruebaGetNombre");
-                ApplicationUser usuarioPrueba = new ApplicationUser { NombreUsuario = "usuarioPruebaGetNombre", Contraseña = pass };
+                Usuario usuarioPrueba = new Usuario { NombreLogin = "usuarioPruebaGetNombre", Contraseña = pass };
                 context.Users.Add(usuarioPrueba);
                 context.SaveChanges();
                 IMetodos logica = new Metodos();

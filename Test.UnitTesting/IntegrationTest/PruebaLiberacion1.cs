@@ -53,7 +53,7 @@ namespace Test.UnitTesting
                 controllerListarEventos.Request.Headers.Add("auth", token);
                 var respuesta4 = controllerListarEventos.ListarEventos();
                 Assert.IsTrue(respuesta4.cod == 0);
-                var eventosRespuesta = (ICollection<DtoEvento>)respuesta4.response;
+                var eventosRespuesta = (ICollection<DataTypeObject.DtoItemListar>)respuesta4.response;
                 using (EmsysContext db = new EmsysContext())
                 {
                     var user = db.Users.Where(x => x.NombreLogin == nombreUsuario).FirstOrDefault();
@@ -64,7 +64,7 @@ namespace Test.UnitTesting
                         {
                             foreach (var extensionEvento in item.Extensiones_Evento)
                             {
-                                var esta = eventosRespuesta.Where(x => x.id == extensionEvento.Evento.Id).FirstOrDefault();
+                                var esta = eventosRespuesta.Where(x => x.id_evento == extensionEvento.Evento.Id).FirstOrDefault();
                                 Assert.IsNotNull(esta);
                             }
 

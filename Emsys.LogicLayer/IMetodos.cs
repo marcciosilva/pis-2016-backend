@@ -90,7 +90,7 @@ namespace Emsys.LogicLayer
         /// <param name="token">Identificador de usuario.</param>
         /// <param name="idEvento">Identificador del evento.</param>
         /// <returns>Devuelve la informacion del evento segun el documento de interfaz.</returns>
-        DtoEvento verInfoEvento(string token, int idEvento);
+        DataItemlistar verInfoEvento(string token, int idEvento);
 
         /// <summary>
         /// Adjunto la geoubicacion a un usuario.

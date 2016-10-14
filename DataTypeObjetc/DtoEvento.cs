@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataTypeObject
 {
-    public class DtoEvento
+    public class DataItemlistar
     {
         public int id { get; set; }
         

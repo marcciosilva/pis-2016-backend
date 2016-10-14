@@ -195,7 +195,7 @@ namespace Emsys.LogicLayer.Utils
         }
 
 
-        public static DtoEvento getDtoEvento(Evento evento)
+        public static DataItemlistar getDtoEvento(Evento evento)
         {
             List<DtoExtension> extensiones = new List<DtoExtension>();
             foreach (Extension_Evento e in evento.ExtensionesEvento)
@@ -229,7 +229,7 @@ namespace Emsys.LogicLayer.Utils
             foreach (Audio a in evento.Audios)
                 auds.Add(getDtoAudio(a));
 
-            return new DtoEvento()
+            return new DataItemlistar()
             {
                 id = evento.Id,
                 informante = evento.NombreInformante,

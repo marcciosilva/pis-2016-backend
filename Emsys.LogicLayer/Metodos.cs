@@ -423,7 +423,7 @@ namespace Emsys.LogicLayer
         }        
 
 
-        public DtoEvento verInfoEvento(string token, int idEvento)
+        public DataItemlistar verInfoEvento(string token, int idEvento)
         {
             using (var context = new EmsysContext())
             {
