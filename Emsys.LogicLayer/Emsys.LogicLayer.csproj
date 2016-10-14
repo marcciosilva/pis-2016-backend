@@ -53,6 +53,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationExceptions\InvalidExtensionException.cs" />
+    <Compile Include="ApplicationExceptions\InvalidExtensionForUserException.cs" />
     <Compile Include="ApplicationExceptions\UsuarioNoAutorizadoException.cs" />
     <Compile Include="ApplicationExceptions\AudioInvalidoException .cs" />
     <Compile Include="ApplicationExceptions\VideoInvalidoException.cs" />
