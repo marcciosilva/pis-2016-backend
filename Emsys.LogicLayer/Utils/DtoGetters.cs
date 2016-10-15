@@ -215,7 +215,7 @@ namespace Emsys.LogicLayer.Utils
                 };
             }
 
-            string dep = null;
+            string dep = "";
             if (evento.Departamento != null)
                 dep = evento.Departamento.Nombre;
 
@@ -231,7 +231,7 @@ namespace Emsys.LogicLayer.Utils
             foreach (Audio a in evento.Audios)
                 auds.Add(getDtoAudio(a));
 
-            return new DataItemlistar()
+            DataItemlistar res = new DataItemlistar()
             {
                 id = evento.Id,
                 informante = evento.NombreInformante,
@@ -239,14 +239,12 @@ namespace Emsys.LogicLayer.Utils
                 categoria = getDtoCategoria(evento.Categoria),
                 estado = evento.Estado.ToString().ToLower(),
                 time_stamp = evento.TimeStamp,
-                creador = evento.Usuario.Nombre,
                 fecha_creacion = evento.FechaCreacion,
                 calle = evento.Calle,
                 esquina = evento.Esquina,
                 numero = evento.Numero,
                 departamento = dep,
                 sector = evento.Sector.Nombre,
-                geo_ubicacion = ubicacion,
                 descripcion = evento.Descripcion,
                 en_proceso = evento.EnProceso,
                 extensiones = extensiones,
@@ -254,6 +252,15 @@ namespace Emsys.LogicLayer.Utils
                 videos = vids,
                 audios = auds
             };
+            if (ubicacion != null)
+            {
+                res.geo_ubicacion = ubicacion;
+            }
+            if (evento.Usuario != null)
+            {
+                res.creador = evento.Usuario.Nombre;
+            }
+            return res;
         }
 
         /// <summary>
