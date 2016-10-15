@@ -41,7 +41,12 @@ namespace Emsys.LogicLayer
         /// <returns>Devulve si puede asignarse el rol al usuario o no.</returns>
         bool loguearUsuario(string token, DtoRol rol);
 
-        ICollection<DtoItemListar> listarEventos(string token);
+        /// <summary>
+        /// Retorna una lista con todos los eventos visibles para el usuario.
+        /// </summary>
+        /// <param name="token">Token del usuario</param>
+        /// <returns>Lista de DtoEvento con su informacion, incluyendo las extensiones del mismo</returns>
+        ICollection<DtoEvento> listarEventos(string token);
 
         /// <summary>
         /// Cierra la sesion del usuario. Eliminando el token y la fecha de inicio de sesion de la base de datos.
@@ -90,7 +95,7 @@ namespace Emsys.LogicLayer
         /// <param name="token">Identificador de usuario.</param>
         /// <param name="idEvento">Identificador del evento.</param>
         /// <returns>Devuelve la informacion del evento segun el documento de interfaz.</returns>
-        DataItemlistar verInfoEvento(string token, int idEvento);
+        DtoEvento verInfoEvento(string token, int idEvento);
 
         /// <summary>
         /// Adjunto la geoubicacion a un usuario.

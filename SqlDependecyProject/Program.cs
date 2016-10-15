@@ -21,7 +21,7 @@ namespace SqlDependecyProject
         {
             try
             {
-                //para iniciar la bd si no esta creada
+                // Para iniciar la bd si no esta creada.
                 EmsysContext db = new EmsysContext();
                 db.Evento.ToList();
                 //me quedo loopeando

@@ -32,7 +32,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }                
-                ICollection<DtoItemListar> lista = dbAL.listarEventos(token);
+                ICollection<DtoEvento> lista = dbAL.listarEventos(token);
                 return  new DtoRespuesta(0, lista);
             }
             catch (InvalidTokenException)
@@ -56,7 +56,7 @@ namespace Servicios.Controllers
         [HttpGet]
         [LogFilter]
         [Route("eventos/obtener")]
-        public DtoRespuesta VerInfoEvento(int idEvento)
+        public DtoRespuesta getEvento(int idEvento)
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
@@ -66,7 +66,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }
-                DataItemlistar evento = dbAL.verInfoEvento(token, idEvento);
+                DtoEvento evento = dbAL.verInfoEvento(token, idEvento);
                 return new DtoRespuesta(0, evento);
             }
             catch (EventoInvalidoException)

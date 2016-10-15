@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataTypeObject
 {
-    public class DataItemlistar
+    public class DtoEvento
     {
         public int id { get; set; }
         
@@ -35,9 +35,7 @@ namespace DataTypeObject
         public string sector { get; set; }
 
         public DtoGeoUbicacion geo_ubicacion { get; set; }
-
-        public DtoGeoUbicacion geoubicacion { get; set; }
-
+        
         public string descripcion { get; set; }
 
         public bool en_proceso { get; set; }              

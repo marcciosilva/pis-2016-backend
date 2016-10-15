@@ -21,14 +21,16 @@ namespace Test.UnitTesting
         {
             using (var context = new EmsysContext())
             {
-                AppDomain.CurrentDomain.SetData(
-                "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
-                
+                AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+
+
 
                 var nombreUsuario = "B";
                 var contraseña = "A";
                 // LOGIN.
                 var controllerLogin = new LoginController();
+                var us = context.Evento.FirstOrDefault();
+
                 var respuesta = controllerLogin.Login(new DtoUser() { username = nombreUsuario, password = contraseña });
                 Assert.IsTrue(respuesta.cod == 0);
                 var respuestaAutenticate = (DtoAutenticacion)respuesta.response;

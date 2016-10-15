@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DtoApplicationFile.cs" />
+    <Compile Include="DtoAsignacionRecurso.cs" />
     <Compile Include="DtoAutenticacion.cs" />
     <Compile Include="DtoAudio.cs" />
     <Compile Include="DtoAccionesRecursoExtension.cs" />
