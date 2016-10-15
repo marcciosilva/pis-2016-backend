@@ -225,8 +225,8 @@ namespace Emsys.LogicLayer
                 throw new InvalidTokenException();
             }
         }
-
-        public ICollection<DtoItemListar> listarEventos(string token)
+        
+        public ICollection<DtoEvento> listarEventos(string token)
         {
             using (var context = new EmsysContext())
             {
@@ -237,16 +237,18 @@ namespace Emsys.LogicLayer
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
-                    List<DtoItemListar> extensiones = new List<DtoItemListar>();
+                    List<DtoEvento> eventos = new List<DtoEvento>();
+                    List<int> eventosAgregados = new List<int>();
 
                     // Si el usuario esta conectado como recurso.
                     if (user.Recurso.Count() > 0)
                     {
                         foreach (Extension_Evento ext in user.Recurso.FirstOrDefault().Extensiones_Eventos)
                         {
-                            if (ext.Estado != EstadoExtension.Cerrado)
+                            if (ext.Estado != EstadoExtension.Cerrado && !eventosAgregados.Contains(ext.Evento.Id))
                             {
-                                extensiones.Add(DtoGetters.getDtoItemListar(ext));
+                                eventos.Add(DtoGetters.getDtoEvento(ext.Evento));
+                                eventosAgregados.Add(ext.Evento.Id);
                             }
                         }
                     }
@@ -257,14 +259,15 @@ namespace Emsys.LogicLayer
                         {
                             foreach (Extension_Evento ext in z.Extensiones_Evento)
                             {
-                                if (ext.Estado != EstadoExtension.Cerrado)
+                                if (ext.Estado != EstadoExtension.Cerrado && !eventosAgregados.Contains(ext.Evento.Id))
                                 {
-                                    extensiones.Add(DtoGetters.getDtoItemListar(ext));
+                                    eventos.Add(DtoGetters.getDtoEvento(ext.Evento));
+                                    eventosAgregados.Add(ext.Evento.Id);
                                 }
                             }
                         }
                     }
-                    return extensiones;
+                    return eventos;
                 }
                 throw new InvalidTokenException();
             }
@@ -423,7 +426,7 @@ namespace Emsys.LogicLayer
         }        
 
 
-        public DataItemlistar verInfoEvento(string token, int idEvento)
+        public DtoEvento verInfoEvento(string token, int idEvento)
         {
             using (var context = new EmsysContext())
             {
@@ -581,7 +584,7 @@ namespace Emsys.LogicLayer
                         }
                         return null;
                     }
-                    throw new ImagenInvalidaException();
+                    throw new VideoInvalidoException();
                 }
                 throw new InvalidTokenException();
             }
@@ -630,7 +633,7 @@ namespace Emsys.LogicLayer
                         }
                         return null;
                     }
-                    throw new ImagenInvalidaException();
+                    throw new AudioInvalidoException();
                 }
                 throw new InvalidTokenException();
             }

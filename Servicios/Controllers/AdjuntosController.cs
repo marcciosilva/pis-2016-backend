@@ -399,7 +399,7 @@ namespace Servicios.Controllers
                 return responseMessage;
 
             }
-            catch (ImagenInvalidaException)
+            catch (VideoInvalidoException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.VideoInvalido))));
                 return responseMessage;
@@ -459,7 +459,7 @@ namespace Servicios.Controllers
                 return responseMessage;
 
             }
-            catch (ImagenInvalidaException)
+            catch (AudioInvalidoException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.AudioInvalido))));
                 return responseMessage;

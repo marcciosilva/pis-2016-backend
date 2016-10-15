@@ -19,9 +19,9 @@ namespace Emsys.LogicLayer.Utils
             };
         }
 
-        public static DtoAccionesRecursoExtension getDtoAccionesRecursoExtension(AsignacionRecirso acciones)
+        public static DtoAsignacionRecurso getDtoAsignacionesRecursos(AsignacionRecirso acciones)
         {
-            return new DtoAccionesRecursoExtension()
+            return new DtoAsignacionRecurso()
             {
                 id = acciones.Id,
                 recurso = acciones.Recurso.Codigo,
@@ -147,9 +147,9 @@ namespace Emsys.LogicLayer.Utils
             foreach (Recurso r in ext.Recursos)
                 recursos.Add(r.Codigo);
 
-            List<DtoAccionesRecursoExtension> acciones = new List<DtoAccionesRecursoExtension>();
+            List<DtoAsignacionRecurso> asignaciones = new List<DtoAsignacionRecurso>();
             foreach (AsignacionRecirso a in ext.AccionesRecursos)
-                acciones.Add(getDtoAccionesRecursoExtension(a));
+                asignaciones.Add(getDtoAsignacionesRecursos(a));
 
             DtoCategoria cat = null;
             if (ext.SegundaCategoria != null)
@@ -182,7 +182,7 @@ namespace Emsys.LogicLayer.Utils
                 despachador = desp,
                 descripcion_despachadores = ext.DescripcionDespachador,
                 descripcion_supervisor = ext.DescripcionSupervisor,
-                acciones_recursos = acciones,
+                asignaciones_recursos = asignaciones,
                 estado = ext.Estado.ToString().ToLower(),
                 time_stamp = ext.TimeStamp,
                 segunda_categoria = cat,
@@ -195,7 +195,7 @@ namespace Emsys.LogicLayer.Utils
         }
 
 
-        public static DataItemlistar getDtoEvento(Evento evento)
+        public static DtoEvento getDtoEvento(Evento evento)
         {
             List<DtoExtension> extensiones = new List<DtoExtension>();
             foreach (Extension_Evento e in evento.ExtensionesEvento)
@@ -229,7 +229,7 @@ namespace Emsys.LogicLayer.Utils
             foreach (Audio a in evento.Audios)
                 auds.Add(getDtoAudio(a));
 
-            return new DataItemlistar()
+            return new DtoEvento()
             {
                 id = evento.Id,
                 informante = evento.NombreInformante,
