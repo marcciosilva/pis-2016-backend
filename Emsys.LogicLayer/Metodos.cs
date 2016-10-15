@@ -55,6 +55,7 @@ namespace Emsys.LogicLayer
                     string token = TokenGenerator.ObtenerToken();
                     user.Token = token;
                     user.FechaInicioSesion = DateTime.Now;
+                    user.UltimoSignal = DateTime.Now;
                     context.SaveChanges();
 
                     //return new DtoAutenticacion(token, Mensajes.Correcto, rol);
@@ -63,7 +64,7 @@ namespace Emsys.LogicLayer
                 throw new InvalidCredentialsException();
             }
         }
-        
+
         // Metodo legado.
         public DtoRol getRolUsuario(string token)
         {
@@ -139,7 +140,7 @@ namespace Emsys.LogicLayer
                             foreach (Permiso p in ar.Permisos)
                             {
                                 if (item == p.Clave)
-                                {                                    
+                                {
                                     return true;
                                 }
                             }
@@ -225,8 +226,8 @@ namespace Emsys.LogicLayer
                 throw new InvalidTokenException();
             }
         }
-
-        public ICollection<DtoItemListar> listarEventos(string token)
+        
+        public ICollection<DtoEvento> listarEventos(string token)
         {
             using (var context = new EmsysContext())
             {
@@ -237,17 +238,18 @@ namespace Emsys.LogicLayer
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
-                    List<DtoItemListar> extensiones = new List<DtoItemListar>();
-
+                    List<DtoEvento> eventos = new List<DtoEvento>();
+                    List<int> eventosAgregados = new List<int>();
 
                     // Si el usuario esta conectado como recurso.
                     if (user.Recurso.Count() > 0)
                     {
                         foreach (Extension_Evento ext in user.Recurso.FirstOrDefault().Extensiones_Eventos)
                         {
-                            if (ext.Estado != EstadoExtension.Cerrado)
+                            if (ext.Estado != EstadoExtension.Cerrado && !eventosAgregados.Contains(ext.Evento.Id))
                             {
-                                extensiones.Add(DtoGetters.getDtoItemListar(ext));
+                                eventos.Add(DtoGetters.getDtoEvento(ext.Evento));
+                                eventosAgregados.Add(ext.Evento.Id);
                             }
                         }
                     }
@@ -258,14 +260,15 @@ namespace Emsys.LogicLayer
                         {
                             foreach (Extension_Evento ext in z.Extensiones_Evento)
                             {
-                                if (ext.Estado != EstadoExtension.Cerrado)
+                                if (ext.Estado != EstadoExtension.Cerrado && !eventosAgregados.Contains(ext.Evento.Id))
                                 {
-                                    extensiones.Add(DtoGetters.getDtoItemListar(ext));
+                                    eventos.Add(DtoGetters.getDtoEvento(ext.Evento));
+                                    eventosAgregados.Add(ext.Evento.Id);
                                 }
                             }
                         }
                     }
-                    return extensiones;
+                    return eventos;
                 }
                 throw new InvalidTokenException();
             }
@@ -291,11 +294,12 @@ namespace Emsys.LogicLayer
                     user.Recurso.Clear();
                     user.Token = null;
                     user.FechaInicioSesion = null;
+                    user.UltimoSignal = null;
                     context.SaveChanges();
                     return true;
                 }
                 throw new InvalidTokenException();
-            }            
+            }
         }
 
 
@@ -321,7 +325,7 @@ namespace Emsys.LogicLayer
         public void AgregarLog(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo)
         {
             try
-            {                
+            {
                 using (EmsysContext context = new EmsysContext())
                 {
                     string IdUsuario = "";
@@ -421,7 +425,7 @@ namespace Emsys.LogicLayer
                         );
                 fs.Close();
             }
-        }        
+        }
 
 
         public DtoEvento verInfoEvento(string token, int idEvento)
@@ -440,7 +444,7 @@ namespace Emsys.LogicLayer
                     {
                         return DtoGetters.getDtoEvento(evento);
                     }
-                    throw new EventoInvalidoException();               
+                    throw new EventoInvalidoException();
                 }
                 throw new InvalidTokenException();
             }
@@ -485,7 +489,7 @@ namespace Emsys.LogicLayer
                     nombre = "1" + extension;
 
                 var file = new ApplicationFile() { Nombre = nombre, FileData = data };
-                context.ApplicationFiles.Add(file);              
+                context.ApplicationFiles.Add(file);
                 context.SaveChanges();
                 return file.Id;
             }
@@ -582,7 +586,7 @@ namespace Emsys.LogicLayer
                         }
                         return null;
                     }
-                    throw new ImagenInvalidaException();
+                    throw new VideoInvalidoException();
                 }
                 throw new InvalidTokenException();
             }
@@ -631,7 +635,7 @@ namespace Emsys.LogicLayer
                         }
                         return null;
                     }
-                    throw new ImagenInvalidaException();
+                    throw new AudioInvalidoException();
                 }
                 throw new InvalidTokenException();
             }
@@ -654,7 +658,7 @@ namespace Emsys.LogicLayer
                     {
                         Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == imagen.idExtension);
                         if (TieneAcceso.tieneAccesoExtension(user, ext))
-                        {                        
+                        {
                             Imagen img = new Imagen() { Usuario = user, FechaEnvio = DateTime.Now, ImagenData = file };
                             context.Imagenes.Add(img);
                             ext.Imagenes.Add(img);
@@ -691,7 +695,7 @@ namespace Emsys.LogicLayer
                     {
                         Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == video.idExtension);
                         if (TieneAcceso.tieneAccesoExtension(user, ext))
-                        {                        
+                        {
                             Video vid = new Video() { Usuario = user, FechaEnvio = DateTime.Now, VideoData = file };
                             context.Videos.Add(vid);
                             ext.Videos.Add(vid);
@@ -729,7 +733,7 @@ namespace Emsys.LogicLayer
                     {
                         Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == audio.idExtension);
                         if (TieneAcceso.tieneAccesoExtension(user, ext))
-                        {                        
+                        {
                             Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file };
                             context.Audios.Add(aud);
                             ext.Audios.Add(aud);
@@ -744,6 +748,93 @@ namespace Emsys.LogicLayer
                         }
                     }
                     return false;
+                }
+                throw new InvalidTokenException();
+            }
+        }
+
+
+        /// <summary>
+        /// Implementacion de ActualizarDescripcionRecurso, actualiza la descripcion segun los parametros.
+        /// </summary>
+        /// <param name="descParam">Data Type Object con la descripcion a agregar y la fecha.</param>
+        /// <param name="token">Identificador unico del usuario.</param>
+        /// <returns></returns>
+        public Mensaje ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token)
+        {
+            if (token == null)
+            {
+                throw new InvalidTokenException();
+            }
+            using (var context = new EmsysContext())
+            {
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user != null)
+                {
+                    var extension = context.Extensiones_Evento.Find(descParam.idExtension);
+                    if (extension != null)
+                    {
+                        //verifico que la extension sea del usuario
+                        bool extensionAsociadaUsuario = ExtensionAsociadaUsuario(descParam.idExtension, user);
+                        if (!extensionAsociadaUsuario)
+                        {
+                            throw new InvalidExtensionForUserException();
+                        }
+                        foreach (var item in extension.AccionesRecursos)
+                        {
+                            item.AsignacionRecursoDescripcion.Add(new AsignacionRecursoDescripcion(descParam.dtoDescripcion.descripcion, descParam.dtoDescripcion.fecha));
+                            context.SaveChanges();
+                        }
+                        return new Mensaje("Exito.");
+                    }
+                    else
+                    {
+                        throw new InvalidExtensionException();
+                    }
+                }
+                throw new InvalidTokenException();
+            }
+        }
+        /// <summary>
+        /// Funcion interna que verifica si para algun recurso del usuario esta asociada a la extension.
+        /// </summary>
+        /// <param name="extensionId">Identificacion de la extension.</param>
+        /// <param name="user">Usuario.</param>
+        /// <returns>Si la extension esta asociada al usuario o no.</returns>
+        private static bool ExtensionAsociadaUsuario(int  extensionId, Usuario user)
+        {
+            bool extensionAsociadaUsuario = false;
+            foreach (var recursoUsuario in user.Grupos_Recursos)
+            {
+                var recursos = recursoUsuario.Recursos; 
+                foreach (var item in recursos)
+                {
+                    var extensionUsuario= item.Extensiones_Eventos.FirstOrDefault(x => x.Id == extensionId);
+                    if (extensionUsuario != null)
+                    {
+                        extensionAsociadaUsuario = true;
+                    }
+                }
+                
+            }
+            return extensionAsociadaUsuario;
+        }
+
+
+        public bool keepMeAlive(string token)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new InvalidTokenException();
+                }
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user != null)
+                {
+                    user.UltimoSignal = DateTime.Now;
+                    context.SaveChanges();
+                    return true;
                 }
                 throw new InvalidTokenException();
             }

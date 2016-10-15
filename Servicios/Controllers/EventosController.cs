@@ -32,7 +32,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }                
-                ICollection<DtoItemListar> lista = dbAL.listarEventos(token);
+                ICollection<DtoEvento> lista = dbAL.listarEventos(token);
                 return  new DtoRespuesta(0, lista);
             }
             catch (InvalidTokenException)
@@ -41,7 +41,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }       
         }
@@ -56,7 +56,7 @@ namespace Servicios.Controllers
         [HttpGet]
         [LogFilter]
         [Route("eventos/obtener")]
-        public DtoRespuesta VerInfoEvento(int idEvento)
+        public DtoRespuesta getEvento(int idEvento)
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
@@ -79,7 +79,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorObtenerEvento));
             }
         }

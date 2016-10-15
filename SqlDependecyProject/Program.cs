@@ -21,9 +21,9 @@ namespace SqlDependecyProject
         {
             try
             {
-                //para iniciar la bd si no esta creada
+                // Para iniciar la bd si no esta creada.
                 EmsysContext db = new EmsysContext();
-
+                db.Evento.ToList();
                 //me quedo loopeando
                 while (true)
                 {
@@ -39,7 +39,6 @@ namespace SqlDependecyProject
             {
                 Console.WriteLine("Ocurrio un error: ");
                 Console.WriteLine(e.Message);
-                throw;
             }
         }
         /// <summary>
@@ -49,7 +48,7 @@ namespace SqlDependecyProject
         {
             var mapper = new ModelToTableMapper<Evento>();
             mapper.AddMapping(model => model.NombreInformante, "NombreInformante");
-            _dependency = new SqlTableDependency<Evento>(_connectionString, "Evento", mapper);
+            _dependency = new SqlTableDependency<Evento>(_connectionString, "Eventos", mapper);
             _dependency.OnChanged += _dependency_OnChanged;
             _dependency.OnError += _dependency_OnError;
             _dependency.Start();
@@ -84,12 +83,13 @@ namespace SqlDependecyProject
                     Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
                     switch (evento.ChangeType)
                     {
-                        case ChangeType.Delete:
-                            Console.WriteLine("Accion: Borro, Pk del evento: " + evento.Entity.NombreInformante);
-                            AtenderEvento(DataNotificacionesCodigos.CierreEvento, evento, GestorNotificaciones);
-                            break;
+                        //// el caso no es util por que si se crea un evento no tiene asignados recursos probablemte
+                        ////case ChangeType.Delete:
+                        ////    Console.WriteLine("Accion: Borro, Pk del evento: " + evento.Entity.NombreInformante);
+                        ////    AtenderEvento(DataNotificacionesCodigos.CierreEvento, evento, GestorNotificaciones);
+                        ////    break;
                         case ChangeType.Insert:
-                            Console.WriteLine("Accion Insert, Pk del evento: " + evento.Entity.NombreInformante);
+                            Console.WriteLine("Accion Insert, Pk del evento: " + evento.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.AltaEvento, evento, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
@@ -102,7 +102,7 @@ namespace SqlDependecyProject
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, Mensajes.LogCapturarCambioEventoCod);
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, CodigosLog.LogCapturarCambioEventoCod);
 
             }
         }
@@ -118,7 +118,7 @@ namespace SqlDependecyProject
             {
 
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Evento", evento.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla Eventos. Se inicia la secuencia de envio de notificaciones.", Mensajes.LogCapturarCambioEventoCod);
+                dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Evento", evento.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla Eventos. Se inicia la secuencia de envio de notificaciones.", CodigosLog.LogCapturarCambioEventoCod);
                 var eventoBD = db.Evento.Find(evento.Entity.Id);
                 if (eventoBD != null)
                 {

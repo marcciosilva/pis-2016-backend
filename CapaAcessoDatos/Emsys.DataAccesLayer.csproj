@@ -138,7 +138,16 @@
   <ItemGroup>
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
+    <Compile Include="Migrations\201610151846089__Initial.cs" />
+    <Compile Include="Migrations\201610151846089__Initial.Designer.cs">
+      <DependentUpon>201610151846089__Initial.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610151932475_keepAlive.cs" />
+    <Compile Include="Migrations\201610151932475_keepAlive.Designer.cs">
+      <DependentUpon>201610151932475_keepAlive.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\ApplicationFile.cs" />
+    <Compile Include="Model\AsignacionRecursoDescripcion.cs" />
     <Compile Include="Model\Audio.cs" />
     <Compile Include="Model\AsignacionRecurso.cs" />
     <Compile Include="Model\GeoUbicacion.cs" />
@@ -165,12 +174,7 @@
     <None Include="packages.config" />
     <None Include="Settings.StyleCop" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Datos\datosprueba usuarios.sql" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\DataTypeObjetc\DataTypeObject.csproj">
       <Project>{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}</Project>
@@ -179,6 +183,14 @@
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201610151846089__Initial.resx">
+      <DependentUpon>201610151846089__Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610151932475_keepAlive.resx">
+      <DependentUpon>201610151932475_keepAlive.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

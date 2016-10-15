@@ -34,9 +34,9 @@ namespace DataTypeObject
 
         public string sector { get; set; }
 
-        public DtoGeoUbicacion geo_ubicacion { get; set; }
+        public double longitud { get; set; }
 
-        public DtoGeoUbicacion geoubicacion { get; set; }
+        public double latitud { get; set; }
 
         public string descripcion { get; set; }
 

@@ -41,7 +41,12 @@ namespace Emsys.LogicLayer
         /// <returns>Devulve si puede asignarse el rol al usuario o no.</returns>
         bool loguearUsuario(string token, DtoRol rol);
 
-        ICollection<DtoItemListar> listarEventos(string token);
+        /// <summary>
+        /// Retorna una lista con todos los eventos visibles para el usuario.
+        /// </summary>
+        /// <param name="token">Token del usuario</param>
+        /// <returns>Lista de DtoEvento con su informacion, incluyendo las extensiones del mismo</returns>
+        ICollection<DtoEvento> listarEventos(string token);
 
         /// <summary>
         /// Cierra la sesion del usuario. Eliminando el token y la fecha de inicio de sesion de la base de datos.
@@ -156,7 +161,22 @@ namespace Emsys.LogicLayer
         /// <returns>Si se agrego correctamente</returns>
         bool adjuntarAudio(string token, DtoAudio audio);
 
+        /// <summary>
+        /// Indica al servidor que el usuario esta conectado.
+        /// </summary>
+        /// <param name="token">token del usuario</param>
+        /// <returns>Si se realizo correctamente</returns>
+        bool keepMeAlive(string token);
+
+
         //string getDataImagen(string token, int idImagen);
 
+
+        /// <summary>
+        /// Interfaz Actualizar descripcion  implentado por la capa de servicios.
+        /// </summary>
+        /// <param name="descParam">Contiene identificador de la extension y la descripcion que se quiere agregar.</param>
+        /// <returns>Retorna la respuesta segun el documento de interfaz.</returns>
+        Mensaje ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token);
     }
 }

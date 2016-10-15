@@ -15,11 +15,11 @@ namespace DataTypeObject
 
         public string despachador { get; set; }
         
-        public string descripcion_despachadores { get; set; }
+        public List<DtoDescripcion> descripcion_despachadores { get; set; }
 
         public string descripcion_supervisor { get; set; }
 
-        public ICollection<DtoAccionesRecursoExtension> acciones_recursos { get; set; }
+        public ICollection<DtoAsignacionRecurso> asignaciones_recursos { get; set; }
 
         public string estado { get; set; }
 

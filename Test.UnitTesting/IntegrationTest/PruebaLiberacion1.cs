@@ -21,14 +21,16 @@ namespace Test.UnitTesting
         {
             using (var context = new EmsysContext())
             {
-                AppDomain.CurrentDomain.SetData(
-                "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
-                
+                AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+
+
 
                 var nombreUsuario = "A";
                 var contraseña = "A";
                 // LOGIN.
                 var controllerLogin = new LoginController();
+                var us = context.Evento.FirstOrDefault();
+
                 var respuesta = controllerLogin.Login(new DtoUser() { username = nombreUsuario, password = contraseña });
                 Assert.IsTrue(respuesta.cod == 0);
                 var respuestaAutenticate = (DtoAutenticacion)respuesta.response;
@@ -53,7 +55,7 @@ namespace Test.UnitTesting
                 controllerListarEventos.Request.Headers.Add("auth", token);
                 var respuesta4 = controllerListarEventos.ListarEventos();
                 Assert.IsTrue(respuesta4.cod == 0);
-                var eventosRespuesta = (ICollection<DtoEvento>)respuesta4.response;
+                var eventosRespuesta = (ICollection<DataTypeObject.DtoEvento>)respuesta4.response;
                 using (EmsysContext db = new EmsysContext())
                 {
                     var user = db.Users.Where(x => x.NombreLogin == nombreUsuario).FirstOrDefault();

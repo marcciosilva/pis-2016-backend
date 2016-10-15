@@ -31,7 +31,7 @@ namespace Servicios
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("", "", "Emsys.ServiceLayer", "LoginController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, Mensajes.ErrorAlGenerarToken);
+                dbAL.AgregarLogError("", "", "Emsys.ServiceLayer", "LoginController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorAlGenerarToken);
                 return null;
             }
         }

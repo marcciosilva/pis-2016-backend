@@ -97,6 +97,7 @@
     <Compile Include="DALTest.cs" />
     <Compile Include="EventoTest.cs" />
     <Compile Include="IntegrationTest\PruebaLiberacion1.cs" />
+    <Compile Include="ActualizarDescripcionExtensionUnitTest.cs" />
     <Compile Include="LogsUnitTest.cs" />
     <Compile Include="NotifiacionesUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

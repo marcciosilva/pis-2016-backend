@@ -22,10 +22,10 @@
         [Key]
         public int Id { get; set; }
 
-        [Required]
+        //[Required]
         public virtual Evento Evento { get; set; }
 
-        [Required]
+        //[Required]
         public virtual Zona Zona { get; set; }
 
         public virtual Usuario Despachador { get; set; }
@@ -54,6 +54,6 @@
 
         public virtual ICollection<GeoUbicacion> GeoUbicaciones { get; set; }
 
-        public virtual ICollection<AsignacionRecirso> AccionesRecursos { get; set; }
+        public virtual ICollection<AsignacionRecurso> AccionesRecursos { get; set; }
     }
 }

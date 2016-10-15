@@ -61,7 +61,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostFile", "Hubo un error al intentar enviar un archivo, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostFile", "Hubo un error al intentar enviar un archivo, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorEnviarArchivo));
             }
         }
@@ -107,7 +107,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostFile", "Hubo un error al intentar enviar un archivo, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostFile", "Hubo un error al intentar enviar un archivo, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorEnviarArchivo));
             }
         }
@@ -153,7 +153,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostFile", "Hubo un error al intentar enviar un archivo, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostFile", "Hubo un error al intentar enviar un archivo, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorEnviarArchivo));
             }
         }
@@ -188,7 +188,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarGeoUbicacion", "Hubo un error al intentar adjuntar una geo ubicacion, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarGeoUbicacion", "Hubo un error al intentar adjuntar una geo ubicacion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }
         }
@@ -218,13 +218,13 @@ namespace Servicios.Controllers
                 }
                 return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }
         }
@@ -255,13 +255,13 @@ namespace Servicios.Controllers
                 }
                 return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }
         }
@@ -291,13 +291,13 @@ namespace Servicios.Controllers
                 }
                 return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }
         }
@@ -339,24 +339,24 @@ namespace Servicios.Controllers
                 return responseMessage;
 
             }
-            catch (ImagenInvalidaException e)
+            catch (ImagenInvalidaException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.ImagenInvalida))));
                 return responseMessage;
             }
-            catch (UsuarioNoAutorizadoException e)
+            catch (UsuarioNoAutorizadoException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(14, new Mensaje(Mensajes.UsuarioNoAutorizado))));
                 return responseMessage;
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
                 return responseMessage;
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
                 return responseMessage;
             }
@@ -399,24 +399,24 @@ namespace Servicios.Controllers
                 return responseMessage;
 
             }
-            catch (ImagenInvalidaException e)
+            catch (VideoInvalidoException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.VideoInvalido))));
                 return responseMessage;
             }
-            catch (UsuarioNoAutorizadoException e)
+            catch (UsuarioNoAutorizadoException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(14, new Mensaje(Mensajes.UsuarioNoAutorizado))));
                 return responseMessage;
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
                 return responseMessage;
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
                 return responseMessage;
             }
@@ -459,24 +459,24 @@ namespace Servicios.Controllers
                 return responseMessage;
 
             }
-            catch (ImagenInvalidaException e)
+            catch (AudioInvalidoException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.AudioInvalido))));
                 return responseMessage;
             }
-            catch (UsuarioNoAutorizadoException e)
+            catch (UsuarioNoAutorizadoException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(14, new Mensaje(Mensajes.UsuarioNoAutorizado))));
                 return responseMessage;
             }
-            catch (InvalidTokenException e)
+            catch (InvalidTokenException)
             {
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
                 return responseMessage;
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
                 return responseMessage;
             }

@@ -1,13 +1,12 @@
-﻿using DataTypeObject;
-using Emsys.DataAccesLayer.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Emsys.LogicLayer.Utils
+﻿namespace Emsys.LogicLayer.Utils
 {
+    using DataAccesLayer.Model;
+    using DataTypeObject;
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+
     class DtoGetters
     {
         public static DtoApplicationFile GetDtoApplicationfile(ApplicationFile file)
@@ -19,14 +18,14 @@ namespace Emsys.LogicLayer.Utils
             };
         }
 
-        public static DtoAccionesRecursoExtension getDtoAccionesRecursoExtension(AsignacionRecirso acciones)
+        public static DtoAsignacionRecurso getDtoAsignacionesRecursos(AsignacionRecurso acciones)
         {
-            return new DtoAccionesRecursoExtension()
+            return new DtoAsignacionRecurso()
             {
                 id = acciones.Id,
                 recurso = acciones.Recurso.Codigo,
-                descripcion = acciones.Descripcion,
                 fecha_arribo = acciones.FechaArribo,
+                descripcion = acciones.Descripcion,
                 actualmente_asignado = acciones.ActualmenteAsignado
             };
         }
@@ -38,7 +37,7 @@ namespace Emsys.LogicLayer.Utils
                 id = img.Id,
                 id_imagen = img.ImagenData.Id,
                 usuario = img.Usuario.Nombre,
-                fecha_envio = img.FechaEnvio                
+                fecha_envio = img.FechaEnvio
             };
         }
 
@@ -63,7 +62,7 @@ namespace Emsys.LogicLayer.Utils
                 fecha_envio = aud.FechaEnvio
             };
         }
-        
+
         public static DtoGeoUbicacion getDtoGeoUbicacion(GeoUbicacion ubicacion)
         {
             return new DtoGeoUbicacion()
@@ -133,10 +132,10 @@ namespace Emsys.LogicLayer.Utils
                 zona = getDtoZona(ext.Zona),
                 descripcion = ext.Evento.Descripcion,
                 despachador = desp,
-                estado  = ext.Estado.ToString().ToLower(),
+                estado = ext.Estado.ToString().ToLower(),
                 fecha_creacion = ext.Evento.FechaCreacion,
                 categoria = cat,
-                geoubicacion = geoU                
+                geoubicacion = geoU
             };
         }
 
@@ -147,9 +146,9 @@ namespace Emsys.LogicLayer.Utils
             foreach (Recurso r in ext.Recursos)
                 recursos.Add(r.Codigo);
 
-            List<DtoAccionesRecursoExtension> acciones = new List<DtoAccionesRecursoExtension>();
-            foreach (AsignacionRecirso a in ext.AccionesRecursos)
-                acciones.Add(getDtoAccionesRecursoExtension(a));
+            List<DtoAsignacionRecurso> asignaciones = new List<DtoAsignacionRecurso>();
+            foreach (AsignacionRecurso a in ext.AccionesRecursos)
+                asignaciones.Add(getDtoAsignacionesRecursos(a));
 
             DtoCategoria cat = null;
             if (ext.SegundaCategoria != null)
@@ -175,14 +174,36 @@ namespace Emsys.LogicLayer.Utils
             foreach (GeoUbicacion g in ext.GeoUbicaciones)
                 geos.Add(getDtoGeoUbicacion(g));
 
+            var desc = new List<DtoDescripcion>();
+            //if (ext.DescripcionDespachador != null)
+            //{
+            //    res.descripcion_despachadores = parsearDesacripcion(ext.DescripcionDespachador, OrigenDescripcion.Despachador).ToList();
+            //}
+            //else
+            //{
+            //    res.descripcion_despachadores = new List<DtoDescripcion>();
+            //}
+            foreach (var item in ext.AccionesRecursos)
+            {
+                foreach (var item2 in item.AsignacionRecursoDescripcion)
+                {
+                    desc.Add(new DtoDescripcion {
+                        descripcion=item2.Descripcion,
+                        fecha= item2.Fecha,
+                        origen= OrigenDescripcion.Despachador,
+                        texto= item2.Descripcion,
+                    });
+                }
+            }
+            
+
             return new DtoExtension()
             {
                 id = ext.Id,
                 zona = getDtoZona(ext.Zona),
                 despachador = desp,
-                descripcion_despachadores = ext.DescripcionDespachador,
                 descripcion_supervisor = ext.DescripcionSupervisor,
-                acciones_recursos = acciones,
+                asignaciones_recursos = asignaciones,
                 estado = ext.Estado.ToString().ToLower(),
                 time_stamp = ext.TimeStamp,
                 segunda_categoria = cat,
@@ -190,8 +211,12 @@ namespace Emsys.LogicLayer.Utils
                 imagenes = imgs,
                 videos = vids,
                 audios = auds,
-                geo_ubicaciones = geos
+                geo_ubicaciones = geos,
+                descripcion_despachadores= desc,
             };
+
+
+            //return res;
         }
 
 
@@ -203,17 +228,8 @@ namespace Emsys.LogicLayer.Utils
                 extensiones.Add(getDtoExtension(e));
             }
 
-            DtoGeoUbicacion ubicacion = null;
-            if((evento.Longitud != 0) && (evento.Latitud!=0))
-            {
-                ubicacion = new DtoGeoUbicacion()
-                {
-                    longitud = evento.Longitud,
-                    latitud = evento.Latitud
-                };
-            }
 
-            string dep = null;
+            string dep = "";
             if (evento.Departamento != null)
                 dep = evento.Departamento.Nombre;
 
@@ -229,22 +245,27 @@ namespace Emsys.LogicLayer.Utils
             foreach (Audio a in evento.Audios)
                 auds.Add(getDtoAudio(a));
 
+            string cread = null;
+            if (evento.Usuario != null)
+                cread = evento.Usuario.Nombre;
+
             return new DtoEvento()
             {
                 id = evento.Id,
-                informante = evento.NombreInformante,
+                informante = evento.NombreInformante,                
                 telefono = evento.TelefonoEvento,
                 categoria = getDtoCategoria(evento.Categoria),
                 estado = evento.Estado.ToString().ToLower(),
                 time_stamp = evento.TimeStamp,
-                creador = evento.Usuario.Nombre,
-                fecha_creacion = evento.FechaCreacion,                
+                creador = cread,
+                fecha_creacion = evento.FechaCreacion,
                 calle = evento.Calle,
                 esquina = evento.Esquina,
                 numero = evento.Numero,
                 departamento = dep,
                 sector = evento.Sector.Nombre,
-                geo_ubicacion = ubicacion,
+                longitud = evento.Longitud,
+                latitud = evento.Latitud,
                 descripcion = evento.Descripcion,
                 en_proceso = evento.EnProceso,
                 extensiones = extensiones,
@@ -252,6 +273,35 @@ namespace Emsys.LogicLayer.Utils
                 videos = vids,
                 audios = auds
             };
+        }
+
+        /// <summary>
+        /// Metodo auxiliar que convierte un string con formato hora1\\usuario1\\texto1\\hora2\\usuario2\\texto2....
+        /// en una colección de DtoDescripcion
+        /// </summary>
+        /// <param name="descripcion"></param>
+        /// <returns></returns>
+        private static IEnumerable<DtoDescripcion> parsearDesacripcion(string descripcion, OrigenDescripcion origen)
+        {
+            string[] separadores = { "\\" };
+            string[] textoParseado = descripcion.Split(separadores, int.MaxValue, StringSplitOptions.None);
+
+            List<DtoDescripcion> resultado = new List<DtoDescripcion>();
+
+            DtoDescripcion d;
+            for (int i = 0; i < textoParseado.Count(); i = i + 3)
+            {
+                d = new DtoDescripcion()
+                {
+                    fecha = DateTime.Parse(textoParseado[i]),
+                    usuario = textoParseado[i + 1],
+                    texto = textoParseado[i + 2],
+                    origen = origen
+                };
+                resultado.Add(d);
+            }
+
+            return resultado;
         }
     }
 }
