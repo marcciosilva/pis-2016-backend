@@ -103,25 +103,37 @@ namespace Emsys.DataAccesLayer.Core
 
                 // Agregar usuarios.
                 var user1 = new Usuario() { Id = 1, NombreLogin = "A", Contraseña = "6dcd4ce23d88e2ee9568ba546c007c63d9131c1b", Nombre = "Usuario1", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
-                var user2 = new Usuario() { Id = 2, NombreLogin = "B", Contraseña = "6dcd4ce23d88e2ee9568ba546c007c63d9131c1b", Nombre = "Usuario2", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+                var user2 = new Usuario() { Id = 2, NombreLogin = "B", Contraseña = "ae4f281df5a5d0ff3cad6371f76d5c29b6d953ec", Nombre = "Usuario2", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+                var user3 = new Usuario() { Id = 3, NombreLogin = "C", Contraseña = "32096c2e0eff33d844ee6d675407ace18289357d", Nombre = "Usuario3", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+                var user4 = new Usuario() { Id = 4, NombreLogin = "D", Contraseña = "50c9e8d5fc98727b4bbc93cf5d64a68db647f04f", Nombre = "Usuario4", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+
 
                 //se agregan luego
-                //context.Users.AddOrUpdate(x => x.Id, user1, user2);
-                //context.Users.AddOrUpdate(x => x.Id, user1, user2);
+                context.Users.AddOrUpdate(x => x.Id, user1);
+                context.Users.AddOrUpdate(x => x.Id, user2);
+                context.Users.AddOrUpdate(x => x.Id, user3);
+                context.Users.AddOrUpdate(x => x.Id, user4);
 
                 //    // Asignar rol a usuarios.
                 user1.ApplicationRoles.Add(rol1);
                 user2.ApplicationRoles.Add(rol1);
+                user3.ApplicationRoles.Add(rol1);
+                user4.ApplicationRoles.Add(rol1);
 
                 // Agregar usuarios a unidades ejecutoras y grupos recursos.
                 user1.Grupos_Recursos.Add(gr1);
                 user1.Grupos_Recursos.Add(gr2);
                 user2.Grupos_Recursos.Add(gr2);
+                user3.Grupos_Recursos.Add(gr2);
+                user4.Grupos_Recursos.Add(gr1);
 
                 user1.Unidades_Ejecutoras.Add(ue1);
                 user1.Unidades_Ejecutoras.Add(ue2);
                 user1.Unidades_Ejecutoras.Add(ue3);
                 user2.Unidades_Ejecutoras.Add(ue2);
+                user3.Unidades_Ejecutoras.Add(ue3);
+                user4.Unidades_Ejecutoras.Add(ue1);
+                user4.Unidades_Ejecutoras.Add(ue2);
 
 
                 // Agregar eventos.
@@ -140,7 +152,7 @@ namespace Emsys.DataAccesLayer.Core
                     Longitud = 20.5,
                     GeoUbicaciones = new List<GeoUbicacion>()
                 };
-               
+
                 Evento evento2 = new Evento()
                 {
                     Id = 2,
@@ -153,57 +165,49 @@ namespace Emsys.DataAccesLayer.Core
                     FechaCreacion = DateTime.Now
                 };
 
-            Evento evento3 = new Evento()
-            {
-                Id = 3,
-                Categoria = cat3,
-                Estado = EstadoEvento.Enviado,
-                Usuario = user1,
-                Sector = sector3,
-                EnProceso = true,
-                TimeStamp = DateTime.Now,
-                FechaCreacion = DateTime.Now
-            };
-
-            Extension_Evento ext1 = new Extension_Evento()
-            {
-                Id = 1,
-                DescripcionDespachador = "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
-                Evento = evento1,
-                Zona = zona1,
-                Estado = EstadoExtension.FaltaDespachar,
-                TimeStamp = DateTime.Now,
-                GeoUbicaciones = new List<GeoUbicacion>(),
-                Recursos = new List<Recurso>(),
-                AccionesRecursos = new List<AsignacionRecurso>(),
-            };
-
-            ext1.AccionesRecursos.Add(new AsignacionRecurso {
-                ActualmenteAsignado=true,
-                AsignacionRecursoDescripcion= new List<AsignacionRecursoDescripcion>(),
-                 Extension= ext1,
-                 FechaArribo=DateTime.Now,
-                 Recurso= rec1
-            });
-
-            Extension_Evento ext2 =new Extension_Evento()
-            {
-                Id = 2,
-                DescripcionDespachador = "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
-                Evento = evento2,
-                Zona = zona2,
-                Estado = EstadoExtension.FaltaDespachar,
-                TimeStamp = DateTime.Now
-            };
-            Extension_Evento ext3= new Extension_Evento()
-            {
-                Id = 3,
-                DescripcionDespachador = "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
-                Evento = evento3,
-                Zona = zona4,
-                Estado = EstadoExtension.FaltaDespachar,
-                TimeStamp = DateTime.Now
-            };
+                Evento evento3 = new Evento()
+                {
+                    Id = 3,
+                    Categoria = cat3,
+                    Estado = EstadoEvento.Enviado,
+                    Usuario = user1,
+                    Sector = sector3,
+                    EnProceso = true,
+                    TimeStamp = DateTime.Now,
+                    FechaCreacion = DateTime.Now
+                };
+                //context.Evento.AddOrUpdate(x => x.Id, evento1);
+                //context.Evento.AddOrUpdate(x => x.Id, evento2);
+                //context.Evento.AddOrUpdate(x => x.Id, evento3);
+                Extension_Evento ext1 = new Extension_Evento()
+                {
+                    Id = 1,
+                    DescripcionDespachador = "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
+                    Evento = evento1,
+                    Zona = zona1,
+                    Estado = EstadoExtension.FaltaDespachar,
+                    TimeStamp = DateTime.Now,
+                    GeoUbicaciones = new List<GeoUbicacion>(),
+                    Recursos = new List<Recurso>()
+                };
+                Extension_Evento ext2 = new Extension_Evento()
+                {
+                    Id = 2,
+                    DescripcionDespachador = "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
+                    Evento = evento2,
+                    Zona = zona2,
+                    Estado = EstadoExtension.FaltaDespachar,
+                    TimeStamp = DateTime.Now
+                };
+                Extension_Evento ext3 = new Extension_Evento()
+                {
+                    Id = 3,
+                    DescripcionDespachador = "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
+                    Evento = evento3,
+                    Zona = zona4,
+                    Estado = EstadoExtension.FaltaDespachar,
+                    TimeStamp = DateTime.Now
+                };
 
                 // Agregar geo ubicaciones.
                 GeoUbicacion geo1 = new GeoUbicacion() { Latitud = 11.1, Longitud = 22.2, FechaEnvio = DateTime.Now, Usuario = user1 };

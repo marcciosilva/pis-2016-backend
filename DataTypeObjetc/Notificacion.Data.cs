@@ -9,11 +9,11 @@ namespace DataTypeObject
     public class data
     {
         public data(string cod, string pk) {
-            codigo = cod;
+            code = cod;
             primarykey = pk;    
         }
 
-        public string codigo { get; set; }
+        public string code { get; set; }
         public string primarykey { get; set; }
 
     }
