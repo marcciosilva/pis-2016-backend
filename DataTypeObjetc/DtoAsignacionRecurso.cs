@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DataTypeObject
 {
 
-    public class DtoAccionesRecursoExtension
+    public class DtoAsignacionRecurso
     {
         public int id { get; set; }
         

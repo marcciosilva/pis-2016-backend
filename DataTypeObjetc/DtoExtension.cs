@@ -19,7 +19,7 @@ namespace DataTypeObject
 
         public string descripcion_supervisor { get; set; }
 
-        public ICollection<DtoAccionesRecursoExtension> acciones_recursos { get; set; }
+        public ICollection<DtoAsignacionRecurso> asignaciones_recursos { get; set; }
 
         public string estado { get; set; }
 

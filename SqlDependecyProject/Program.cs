@@ -21,10 +21,10 @@ namespace SqlDependecyProject
         {
             try
             {
-                //para iniciar la bd si no esta creada
+                // Para iniciar la bd si no esta creada.
                 EmsysContext db = new EmsysContext();
 
-                //me quedo loopeando
+                // Me quedo loopeando.
                 while (true)
                 {
                     if (llamo)
