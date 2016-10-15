@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace DataTypeObject
 {
 
-    public class Mensajes 
+    public class Mensajes
     {
         public const string Correcto = "Correcto";
         public const string UsuarioContraseñaInvalidos = "Usuario/Password inválido.";
@@ -32,18 +32,26 @@ namespace DataTypeObject
         public const string VideoInvalido = "El video solicitado no es valido.";
         public const string AudioInvalido = "El audio solicitado no es valido.";
 
+        public const int Correct = 0;
+        public const int ExtensionNoAsignadaAlRecurso = 9;
+        public const int UsuarioNoAutenticadoComoRecurso = 10;
+        public const int IdentificadorExtensionIncorrecto = 11;
 
-
-
-        // Codigos de error.
-        public const int ErrorIniciarSesionCod = 1001;
-        public const int ErrorCerrarSesionCod = 2001;
-        public const int ErrorAlGenerarToken = 4001;
-        public const int ErrorConsumirServicioExternoCod = 3001;
-        public const int LogAccionesCod = 9999;
-        public const int LogLLamdosCod = 9998;
-        public const int LogNotificacionesCod = 9997;
-        public const int LogCapturarCambioEventoCod = 9997;
-
+        public static string GetDescription(int cod)
+        {
+            switch (cod)
+            {
+                case Correct:
+                    return "Exito.";
+                case ExtensionNoAsignadaAlRecurso:
+                    return "Extensión no asignada al recurso.";
+                case UsuarioNoAutenticadoComoRecurso:
+                    return "Usuario no autenticado como recurso.";
+                case IdentificadorExtensionIncorrecto:
+                    return "Identificador de extension incorrecto.";
+                default:
+                    return "Error.";
+            }
+        }
     }
 }

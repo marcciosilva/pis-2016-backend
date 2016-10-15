@@ -44,13 +44,13 @@ namespace Servicios.Controllers
             catch (SoapException e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError(ObtenerToken.GetToken(Request), "", "Emsys.ServiceLayer", "CerrarSesionController", 0, "ConsumirServicioExterno", "Hubo un error al intentar consumir el servicio externo, se adjunta excepcion: " + e.Message, Mensajes.ErrorConsumirServicioExternoCod);
+                dbAL.AgregarLogError(ObtenerToken.GetToken(Request), "", "Emsys.ServiceLayer", "CerrarSesionController", 0, "ConsumirServicioExterno", "Hubo un error al intentar consumir el servicio externo, se adjunta excepcion: " + e.Message, CodigosLog.ErrorConsumirServicioExternoCod);
                 return new DtoRespuesta(8, new Mensaje(Mensajes.ServicioExternoNoDisponible));
             }
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError(ObtenerToken.GetToken(Request), "", "Emsys.ServiceLayer", "ServicioExternoController", 0, "ConsumirServicioExterno", "Hubo un error al intentar consumir el servicio externo, se adjunta excepcion: " + e.Message, Mensajes.ErrorConsumirServicioExternoCod);
+                dbAL.AgregarLogError(ObtenerToken.GetToken(Request), "", "Emsys.ServiceLayer", "ServicioExternoController", 0, "ConsumirServicioExterno", "Hubo un error al intentar consumir el servicio externo, se adjunta excepcion: " + e.Message, CodigosLog.ErrorConsumirServicioExternoCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorCerraSesion));
             }
         }

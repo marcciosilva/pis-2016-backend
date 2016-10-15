@@ -23,14 +23,14 @@ namespace Emsys.ServiceLayer.Filtros
             string requestBody = await request.Content.ReadAsStringAsync();
             string token = ObtenerToken.GetToken(request);
             IMetodos dbAL = new Metodos();
-            dbAL.AgregarLog(token, GetClientIp(request), "", "", 0, "", "Request body: " + requestBody.ToString(), Mensajes.LogAccionesCod);
+            dbAL.AgregarLog(token, GetClientIp(request), "", "", 0, "", "Request body: " + requestBody.ToString(), CodigosLog.LogAccionesCod);
             // let other handlers process the request
             var result = await base.SendAsync(request, cancellationToken);
             if (result.Content != null)
             {
                 var responseBody = await result.Content.ReadAsStringAsync();
 
-                dbAL.AgregarLog(token, GetClientIp(request), "", "", 0, "", "Response body: " + responseBody.ToString(), Mensajes.LogAccionesCod);
+                dbAL.AgregarLog(token, GetClientIp(request), "", "", 0, "", "Response body: " + responseBody.ToString(), CodigosLog.LogAccionesCod);
             }
             return result;
         }

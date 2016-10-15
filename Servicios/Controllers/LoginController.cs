@@ -38,7 +38,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(user.username, "", "Emsys.ServiceLayer", "LoginController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(user.username, "", "Emsys.ServiceLayer", "LoginController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorIniciarSesion));
             }          
         }
@@ -152,6 +152,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "CerrarSesionController", 0, "Logout", "Hubo un error al intentar cerrar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorCerrarSesionCod);
                 dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "CerrarSesion", "Hubo un error al intentar cerrar sesion, se adjunta excepcion: " + e.Message, Mensajes.ErrorCerrarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorCerraSesion));
             }

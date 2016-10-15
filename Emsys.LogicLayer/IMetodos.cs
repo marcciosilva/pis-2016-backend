@@ -171,5 +171,12 @@ namespace Emsys.LogicLayer
 
         //string getDataImagen(string token, int idImagen);
 
+
+        /// <summary>
+        /// Interfaz Actualizar descripcion  implentado por la capa de servicios.
+        /// </summary>
+        /// <param name="descParam">Contiene identificador de la extension y la descripcion que se quiere agregar.</param>
+        /// <returns>Retorna la respuesta segun el documento de interfaz.</returns>
+        Mensaje ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token);
     }
 }

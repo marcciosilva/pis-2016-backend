@@ -26,5 +26,7 @@
 
         public bool ActualmenteAsignado { get; set; }
 
+        public virtual List<AsignacionRecursoDescripcion> AsignacionRecursoDescripcion { get; set; }
+
     }
 }

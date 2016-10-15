@@ -3,7 +3,7 @@ namespace Emsys.DataAccesLayer.Core
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Intial : DbMigration
+    public partial class _Initial : DbMigration
     {
         public override void Up()
         {
@@ -62,19 +62,19 @@ namespace Emsys.DataAccesLayer.Core
                         Estado = c.Int(nullable: false),
                         TimeStamp = c.DateTime(nullable: false),
                         SegundaCategoria_Id = c.Int(),
+                        Evento_Id = c.Int(),
+                        Zona_Id = c.Int(),
                         Despachador_Id = c.Int(),
-                        Evento_Id = c.Int(nullable: false),
-                        Zona_Id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Categorias", t => t.SegundaCategoria_Id)
+                .ForeignKey("dbo.Eventos", t => t.Evento_Id)
+                .ForeignKey("dbo.Zonas", t => t.Zona_Id)
                 .ForeignKey("dbo.Usuarios", t => t.Despachador_Id)
-                .ForeignKey("dbo.Eventos", t => t.Evento_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Zonas", t => t.Zona_Id, cascadeDelete: true)
                 .Index(t => t.SegundaCategoria_Id)
-                .Index(t => t.Despachador_Id)
                 .Index(t => t.Evento_Id)
-                .Index(t => t.Zona_Id);
+                .Index(t => t.Zona_Id)
+                .Index(t => t.Despachador_Id);
             
             CreateTable(
                 "dbo.AsignacionesRecursos",
@@ -92,6 +92,19 @@ namespace Emsys.DataAccesLayer.Core
                 .ForeignKey("dbo.Recursos", t => t.Recurso_Id, cascadeDelete: true)
                 .Index(t => t.Extension_Id)
                 .Index(t => t.Recurso_Id);
+            
+            CreateTable(
+                "dbo.AsignacionRecursoDescripcion",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        Descripcion = c.String(),
+                        Fecha = c.DateTime(nullable: false),
+                        AsignacionRecurso_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.AsignacionesRecursos", t => t.AsignacionRecurso_Id)
+                .Index(t => t.AsignacionRecurso_Id);
             
             CreateTable(
                 "dbo.Recursos",
@@ -406,9 +419,7 @@ namespace Emsys.DataAccesLayer.Core
         {
             DropForeignKey("dbo.Zonas", "Usuario_Id", "dbo.Usuarios");
             DropForeignKey("dbo.Logs", "Usuario_Id", "dbo.Usuarios");
-            DropForeignKey("dbo.Extensiones_Evento", "Zona_Id", "dbo.Zonas");
             DropForeignKey("dbo.GeoUbicaciones", "Extension_Evento_Id", "dbo.Extensiones_Evento");
-            DropForeignKey("dbo.Extensiones_Evento", "Evento_Id", "dbo.Eventos");
             DropForeignKey("dbo.Extensiones_Evento", "Despachador_Id", "dbo.Usuarios");
             DropForeignKey("dbo.Audios", "Usuario_Id", "dbo.Usuarios");
             DropForeignKey("dbo.Audios", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
@@ -422,6 +433,7 @@ namespace Emsys.DataAccesLayer.Core
             DropForeignKey("dbo.Unidad_EjecutoraUsuario", "Usuario_Id", "dbo.Usuarios");
             DropForeignKey("dbo.Unidad_EjecutoraUsuario", "Unidad_Ejecutora_Id", "dbo.Unidades_Ejecutoras");
             DropForeignKey("dbo.Sectores", "Zona_Id", "dbo.Zonas");
+            DropForeignKey("dbo.Extensiones_Evento", "Zona_Id", "dbo.Zonas");
             DropForeignKey("dbo.Origen_Eventos", "Id", "dbo.Eventos");
             DropForeignKey("dbo.Imagenes", "Usuario_Id", "dbo.Usuarios");
             DropForeignKey("dbo.Imagenes", "ImagenData_Id", "dbo.ApplicationFiles");
@@ -429,6 +441,7 @@ namespace Emsys.DataAccesLayer.Core
             DropForeignKey("dbo.Imagenes", "Evento_Id", "dbo.Eventos");
             DropForeignKey("dbo.GeoUbicaciones", "Evento_Id", "dbo.Eventos");
             DropForeignKey("dbo.GeoUbicaciones", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.Extensiones_Evento", "Evento_Id", "dbo.Eventos");
             DropForeignKey("dbo.Eventos", "Departamento_Id", "dbo.Departamentos");
             DropForeignKey("dbo.Eventos", "Categoria_Id", "dbo.Categorias");
             DropForeignKey("dbo.Extensiones_Evento", "SegundaCategoria_Id", "dbo.Categorias");
@@ -443,6 +456,7 @@ namespace Emsys.DataAccesLayer.Core
             DropForeignKey("dbo.RecursoExtension_Evento", "Extension_Evento_Id", "dbo.Extensiones_Evento");
             DropForeignKey("dbo.RecursoExtension_Evento", "Recurso_Id", "dbo.Recursos");
             DropForeignKey("dbo.AsignacionesRecursos", "Extension_Id", "dbo.Extensiones_Evento");
+            DropForeignKey("dbo.AsignacionRecursoDescripcion", "AsignacionRecurso_Id", "dbo.AsignacionesRecursos");
             DropForeignKey("dbo.UsuarioRols", "Rol_Id", "dbo.ApplicationRoles");
             DropForeignKey("dbo.UsuarioRols", "Usuario_Id", "dbo.Usuarios");
             DropForeignKey("dbo.PermisoRols", "Rol_Id", "dbo.ApplicationRoles");
@@ -484,11 +498,12 @@ namespace Emsys.DataAccesLayer.Core
             DropIndex("dbo.Audios", new[] { "Evento_Id" });
             DropIndex("dbo.Audios", new[] { "AudioData_Id" });
             DropIndex("dbo.Recursos", new[] { "Usuario_Id" });
+            DropIndex("dbo.AsignacionRecursoDescripcion", new[] { "AsignacionRecurso_Id" });
             DropIndex("dbo.AsignacionesRecursos", new[] { "Recurso_Id" });
             DropIndex("dbo.AsignacionesRecursos", new[] { "Extension_Id" });
+            DropIndex("dbo.Extensiones_Evento", new[] { "Despachador_Id" });
             DropIndex("dbo.Extensiones_Evento", new[] { "Zona_Id" });
             DropIndex("dbo.Extensiones_Evento", new[] { "Evento_Id" });
-            DropIndex("dbo.Extensiones_Evento", new[] { "Despachador_Id" });
             DropIndex("dbo.Extensiones_Evento", new[] { "SegundaCategoria_Id" });
             DropTable("dbo.Unidad_EjecutoraUsuario");
             DropTable("dbo.Grupo_RecursoUsuario");
@@ -510,6 +525,7 @@ namespace Emsys.DataAccesLayer.Core
             DropTable("dbo.Audios");
             DropTable("dbo.Grupos_Recursos");
             DropTable("dbo.Recursos");
+            DropTable("dbo.AsignacionRecursoDescripcion");
             DropTable("dbo.AsignacionesRecursos");
             DropTable("dbo.Extensiones_Evento");
             DropTable("dbo.Usuarios");

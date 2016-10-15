@@ -41,7 +41,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }       
         }
@@ -79,7 +79,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, Mensajes.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorObtenerEvento));
             }
         }

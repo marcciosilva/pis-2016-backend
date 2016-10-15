@@ -20,6 +20,8 @@ namespace DataTypeObject
 
         public DateTime fecha { get; set; }
 
+        public string descripcion { get; set; }
+
         public OrigenDescripcion origen { get; set; }
     }
 }

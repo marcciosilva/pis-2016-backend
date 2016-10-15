@@ -7,13 +7,13 @@ namespace Emsys.DataAccesLayer.Core
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class Intial : IMigrationMetadata
+    public sealed partial class _Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(Intial));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(_Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610140345503_Intial"; }
+            get { return "201610151846089__Initial"; }
         }
         
         string IMigrationMetadata.Source
