@@ -126,8 +126,8 @@ namespace Test.UnitTesting
 
                 if (logica.loguearUsuario(token, rol))
                 {
-                    List<DtoItemListar> listaEventos =  logica.listarEventos(token).ToList();
-                    int cantExt = listaEventos.Count;
+                    List<DtoEvento> listaEventos =  logica.listarEventos(token).ToList();
+                    int cantExt = listaEventos.FirstOrDefault().extensiones.Count;
                     Assert.IsTrue(cantExt == 2);
                 }
             }    
@@ -226,7 +226,7 @@ namespace Test.UnitTesting
 
                 if (logica.loguearUsuario(token, rol))
                 {
-                    DataItemlistar dtoEvento = logica.verInfoEvento(token, evento.Id);
+                    DtoEvento dtoEvento = logica.verInfoEvento(token, evento.Id);
                     DtoExtension dtoExt = dtoEvento.extensiones.FirstOrDefault();
 
                     // Compruebo que existan los 3 dtoDescripcion

@@ -29,7 +29,6 @@ namespace Emsys.LogicLayer.Utils
                 descripcion = acciones.Descripcion,
                 actualmente_asignado = acciones.ActualmenteAsignado
             };
-            return resultado;
         }
 
         public static DtoImagen getDtoImagen(Imagen img)
@@ -192,7 +191,15 @@ namespace Emsys.LogicLayer.Utils
                 audios = auds,
                 geo_ubicaciones = geos
             };
-            res.descripcion_despachadores = parsearDesacripcion(ext.DescripcionDespachador, OrigenDescripcion.Despachador).ToList();
+            if (ext.DescripcionDespachador != null)
+            {
+                res.descripcion_despachadores = parsearDesacripcion(ext.DescripcionDespachador, OrigenDescripcion.Despachador).ToList();
+            }
+            else
+            {
+                res.descripcion_despachadores = new List<DtoDescripcion>();
+            }
+            
             return res;
         }
 
@@ -231,7 +238,7 @@ namespace Emsys.LogicLayer.Utils
             foreach (Audio a in evento.Audios)
                 auds.Add(getDtoAudio(a));
 
-            return new DtoEvento()
+            DtoEvento res = new DtoEvento()
             {
                 id = evento.Id,
                 informante = evento.NombreInformante,
