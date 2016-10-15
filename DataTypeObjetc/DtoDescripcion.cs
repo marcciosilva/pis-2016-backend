@@ -6,12 +6,20 @@ using System.Threading.Tasks;
 
 namespace DataTypeObject
 {
-    public class DtoDescripcionRecurso
+    public enum OrigenDescripcion
+    {
+        Recurso,
+        Despachador
+    }
+
+    public class DtoDescripcion
     {
         public string usuario { get; set; }
 
         public string texto { get; set; }
 
         public DateTime fecha { get; set; }
+
+        public OrigenDescripcion origen { get; set; }
     }
 }

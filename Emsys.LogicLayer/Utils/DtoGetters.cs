@@ -26,9 +26,9 @@ namespace Emsys.LogicLayer.Utils
                 id = acciones.Id,
                 recurso = acciones.Recurso.Codigo,
                 fecha_arribo = acciones.FechaArribo,
+                descripcion = acciones.Descripcion,
                 actualmente_asignado = acciones.ActualmenteAsignado
             };
-            resultado.descripcion = parsearDesacripcion(acciones.Descripcion).ToList();
             return resultado;
         }
 
@@ -176,12 +176,11 @@ namespace Emsys.LogicLayer.Utils
             foreach (GeoUbicacion g in ext.GeoUbicaciones)
                 geos.Add(getDtoGeoUbicacion(g));
 
-            return new DtoExtension()
+            DtoExtension res = new DtoExtension()
             {
                 id = ext.Id,
                 zona = getDtoZona(ext.Zona),
                 despachador = desp,
-                descripcion_despachadores = ext.DescripcionDespachador,
                 descripcion_supervisor = ext.DescripcionSupervisor,
                 acciones_recursos = acciones,
                 estado = ext.Estado.ToString().ToLower(),
@@ -193,6 +192,8 @@ namespace Emsys.LogicLayer.Utils
                 audios = auds,
                 geo_ubicaciones = geos
             };
+            res.descripcion_despachadores = parsearDesacripcion(ext.DescripcionDespachador, OrigenDescripcion.Despachador).ToList();
+            return res;
         }
 
 
@@ -261,21 +262,22 @@ namespace Emsys.LogicLayer.Utils
         /// </summary>
         /// <param name="descripcion"></param>
         /// <returns></returns>
-        private static IEnumerable<DtoDescripcionRecurso> parsearDesacripcion(string descripcion)
+        private static IEnumerable<DtoDescripcion> parsearDesacripcion(string descripcion, OrigenDescripcion origen)
         {
             string[] separadores = { "\\" };
             string[] textoParseado = descripcion.Split(separadores, int.MaxValue, StringSplitOptions.None);
 
-            List<DtoDescripcionRecurso> resultado = new List<DtoDescripcionRecurso>();
+            List<DtoDescripcion> resultado = new List<DtoDescripcion>();
 
-            DtoDescripcionRecurso d;
+            DtoDescripcion d;
             for (int i = 0; i < textoParseado.Count(); i = i + 3)
             {
-                d = new DtoDescripcionRecurso()
+                d = new DtoDescripcion()
                 {
                     fecha = DateTime.Parse(textoParseado[i]),
                     usuario = textoParseado[i + 1],
-                    texto = textoParseado[i + 2]
+                    texto = textoParseado[i + 2],
+                    origen = origen
                 };
                 resultado.Add(d);
             }

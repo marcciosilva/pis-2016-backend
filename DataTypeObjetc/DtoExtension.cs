@@ -15,7 +15,7 @@ namespace DataTypeObject
 
         public string despachador { get; set; }
         
-        public string descripcion_despachadores { get; set; }
+        public List<DtoDescripcion> descripcion_despachadores { get; set; }
 
         public string descripcion_supervisor { get; set; }
 
