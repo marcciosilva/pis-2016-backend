@@ -20,7 +20,7 @@
 
         public Extension_Evento Extension { get; set; }
         
-        //public string  Descripcion { get; set; }
+        public string  Descripcion { get; set; }
 
         public DateTime FechaArribo { get; set; }
 

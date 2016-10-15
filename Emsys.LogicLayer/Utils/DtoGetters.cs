@@ -1,13 +1,12 @@
-﻿using DataTypeObject;
-using Emsys.DataAccesLayer.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Emsys.LogicLayer.Utils
+﻿namespace Emsys.LogicLayer.Utils
 {
+    using DataAccesLayer.Model;
+    using DataTypeObject;
+    using System;
+    using System.Collections.Generic;
+    using System.Data.Entity.Migrations;
+    using System.Linq;
+
     class DtoGetters
     {
         public static DtoApplicationFile GetDtoApplicationfile(ApplicationFile file)
@@ -19,15 +18,12 @@ namespace Emsys.LogicLayer.Utils
             };
         }
 
-        public static DtoAccionesRecursoExtension getDtoAccionesRecursoExtension(AsignacionRecurso acciones)
-        {           
-            var desc = "";
-            acciones.AsignacionRecursoDescripcion.ForEach(x => desc=desc +"/"+ x.Descripcion);
-            return new DtoAccionesRecursoExtension()
+        public static DtoAsignacionRecurso getDtoAsignacionesRecursos(AsignacionRecurso acciones)
+        {
+            return new DtoAsignacionRecurso()
             {
                 id = acciones.Id,
                 recurso = acciones.Recurso.Codigo,
-                descripcion = desc,
                 fecha_arribo = acciones.FechaArribo,
                 descripcion = acciones.Descripcion,
                 actualmente_asignado = acciones.ActualmenteAsignado
@@ -150,9 +146,9 @@ namespace Emsys.LogicLayer.Utils
             foreach (Recurso r in ext.Recursos)
                 recursos.Add(r.Codigo);
 
-            List<DtoAccionesRecursoExtension> acciones = new List<DtoAccionesRecursoExtension>();
+            List<DtoAsignacionRecurso> asignaciones = new List<DtoAsignacionRecurso>();
             foreach (AsignacionRecurso a in ext.AccionesRecursos)
-                acciones.Add(getDtoAccionesRecursoExtension(a));
+                asignaciones.Add(getDtoAsignacionesRecursos(a));
 
             DtoCategoria cat = null;
             if (ext.SegundaCategoria != null)
@@ -178,6 +174,29 @@ namespace Emsys.LogicLayer.Utils
             foreach (GeoUbicacion g in ext.GeoUbicaciones)
                 geos.Add(getDtoGeoUbicacion(g));
 
+            var desc = new List<DtoDescripcion>();
+            //if (ext.DescripcionDespachador != null)
+            //{
+            //    res.descripcion_despachadores = parsearDesacripcion(ext.DescripcionDespachador, OrigenDescripcion.Despachador).ToList();
+            //}
+            //else
+            //{
+            //    res.descripcion_despachadores = new List<DtoDescripcion>();
+            //}
+            foreach (var item in ext.AccionesRecursos)
+            {
+                foreach (var item2 in item.AsignacionRecursoDescripcion)
+                {
+                    desc.Add(new DtoDescripcion {
+                        descripcion=item2.Descripcion,
+                        fecha= item2.Fecha,
+                        origen= OrigenDescripcion.Despachador,
+                        texto= item2.Descripcion,
+                    });
+                }
+            }
+            
+
             return new DtoExtension()
             {
                 id = ext.Id,
@@ -192,17 +211,11 @@ namespace Emsys.LogicLayer.Utils
                 imagenes = imgs,
                 videos = vids,
                 audios = auds,
-                geo_ubicaciones = geos
+                geo_ubicaciones = geos,
+                descripcion_despachadores= desc,
             };
-            //if (ext.DescripcionDespachador != null)
-            //{
-            //    res.descripcion_despachadores = parsearDesacripcion(ext.DescripcionDespachador, OrigenDescripcion.Despachador).ToList();
-            //}
-            //else
-            //{
-            //    res.descripcion_despachadores = new List<DtoDescripcion>();
-            //}
-            
+
+
             //return res;
         }
 
@@ -254,7 +267,7 @@ namespace Emsys.LogicLayer.Utils
                 estado = evento.Estado.ToString().ToLower(),
                 time_stamp = evento.TimeStamp,
                 creador = cread,
-                fecha_creacion = evento.FechaCreacion,                
+                fecha_creacion = evento.FechaCreacion,
                 calle = evento.Calle,
                 esquina = evento.Esquina,
                 numero = evento.Numero,
@@ -267,15 +280,6 @@ namespace Emsys.LogicLayer.Utils
                 videos = vids,
                 audios = auds
             };
-            //if (ubicacion != null)
-            //{
-            //    res.geo_ubicacion = ubicacion;
-            //}
-            //if (evento.Usuario != null)
-            //{
-            //    res.creador = evento.Usuario.Nombre;
-            //}
-            //return res;
         }
 
         /// <summary>

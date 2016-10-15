@@ -188,8 +188,18 @@ namespace Emsys.DataAccesLayer.Core
                     Estado = EstadoExtension.FaltaDespachar,
                     TimeStamp = DateTime.Now,
                     GeoUbicaciones = new List<GeoUbicacion>(),
-                    Recursos = new List<Recurso>()
+                    Recursos = new List<Recurso>(),
+                    AccionesRecursos = new LinkedList<AsignacionRecurso>(),
                 };
+                ext1.AccionesRecursos.Add(new AsignacionRecurso
+                {
+                    ActualmenteAsignado = true,
+                    AsignacionRecursoDescripcion = new List<AsignacionRecursoDescripcion>(),
+                    Extension = ext1,
+                    FechaArribo = DateTime.Now,
+                    Recurso = rec1,
+                    Descripcion = ""
+                });
                 Extension_Evento ext2 = new Extension_Evento()
                 {
                     Id = 2,

@@ -81,6 +81,7 @@ namespace Emsys.DataAccesLayer.Core
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
+                        Descripcion = c.String(),
                         FechaArribo = c.DateTime(nullable: false),
                         ActualmenteAsignado = c.Boolean(nullable: false),
                         Extension_Id = c.Int(),
