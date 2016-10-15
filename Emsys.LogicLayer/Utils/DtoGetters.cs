@@ -229,6 +229,10 @@ namespace Emsys.LogicLayer.Utils
             foreach (Audio a in evento.Audios)
                 auds.Add(getDtoAudio(a));
 
+            string cread = null;
+            if (evento.Usuario != null)
+                cread = evento.Usuario.Nombre;
+
             return new DtoEvento()
             {
                 id = evento.Id,
@@ -237,7 +241,7 @@ namespace Emsys.LogicLayer.Utils
                 categoria = getDtoCategoria(evento.Categoria),
                 estado = evento.Estado.ToString().ToLower(),
                 time_stamp = evento.TimeStamp,
-                creador = evento.Usuario.Nombre,
+                creador = cread,
                 fecha_creacion = evento.FechaCreacion,                
                 calle = evento.Calle,
                 esquina = evento.Esquina,

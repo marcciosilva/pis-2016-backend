@@ -126,8 +126,8 @@ namespace Test.UnitTesting
 
                 if (logica.loguearUsuario(token, rol))
                 {
-                    List<DtoItemListar> listaEventos =  logica.listarEventos(token).ToList();
-                    int cantExt = listaEventos.Count;
+                    var listaEventos =  logica.listarEventos(token);
+                    int cantExt = listaEventos.FirstOrDefault().extensiones.Count();
                     Assert.IsTrue(cantExt == 2);
                 }
             }    
