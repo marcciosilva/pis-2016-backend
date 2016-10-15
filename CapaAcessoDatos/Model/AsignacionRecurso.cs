@@ -10,7 +10,7 @@
 
 
     [Table("AsignacionesRecursos")]
-    public partial class AsignacionRecirso
+    public partial class AsignacionRecurso
     {
         [Key]
         public int Id { get; set; }

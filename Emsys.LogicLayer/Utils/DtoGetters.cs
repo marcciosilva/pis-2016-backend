@@ -19,7 +19,7 @@ namespace Emsys.LogicLayer.Utils
             };
         }
 
-        public static DtoAsignacionRecurso getDtoAsignacionesRecursos(AsignacionRecirso acciones)
+        public static DtoAsignacionRecurso getDtoAsignacionesRecursos(AsignacionRecurso acciones)
         {
             return new DtoAsignacionRecurso()
             {
@@ -148,7 +148,7 @@ namespace Emsys.LogicLayer.Utils
                 recursos.Add(r.Codigo);
 
             List<DtoAsignacionRecurso> asignaciones = new List<DtoAsignacionRecurso>();
-            foreach (AsignacionRecirso a in ext.AccionesRecursos)
+            foreach (AsignacionRecurso a in ext.AccionesRecursos)
                 asignaciones.Add(getDtoAsignacionesRecursos(a));
 
             DtoCategoria cat = null;
@@ -212,15 +212,6 @@ namespace Emsys.LogicLayer.Utils
                 extensiones.Add(getDtoExtension(e));
             }
 
-            DtoGeoUbicacion ubicacion = null;
-            if ((evento.Longitud != 0) && (evento.Latitud != 0))
-            {
-                ubicacion = new DtoGeoUbicacion()
-                {
-                    longitud = evento.Longitud,
-                    latitud = evento.Latitud
-                };
-            }
 
             string dep = "";
             if (evento.Departamento != null)
@@ -245,7 +236,7 @@ namespace Emsys.LogicLayer.Utils
             return new DtoEvento()
             {
                 id = evento.Id,
-                informante = evento.NombreInformante,
+                informante = evento.NombreInformante,                
                 telefono = evento.TelefonoEvento,
                 categoria = getDtoCategoria(evento.Categoria),
                 estado = evento.Estado.ToString().ToLower(),
@@ -257,6 +248,8 @@ namespace Emsys.LogicLayer.Utils
                 numero = evento.Numero,
                 departamento = dep,
                 sector = evento.Sector.Nombre,
+                longitud = evento.Longitud,
+                latitud = evento.Latitud,
                 descripcion = evento.Descripcion,
                 en_proceso = evento.EnProceso,
                 extensiones = extensiones,
@@ -264,15 +257,6 @@ namespace Emsys.LogicLayer.Utils
                 videos = vids,
                 audios = auds
             };
-            //if (ubicacion != null)
-            //{
-            //    res.geo_ubicacion = ubicacion;
-            //}
-            //if (evento.Usuario != null)
-            //{
-            //    res.creador = evento.Usuario.Nombre;
-            //}
-            //return res;
         }
 
         /// <summary>

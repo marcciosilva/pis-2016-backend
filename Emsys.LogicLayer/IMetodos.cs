@@ -161,6 +161,14 @@ namespace Emsys.LogicLayer
         /// <returns>Si se agrego correctamente</returns>
         bool adjuntarAudio(string token, DtoAudio audio);
 
+        /// <summary>
+        /// Indica al servidor que el usuario esta conectado.
+        /// </summary>
+        /// <param name="token">token del usuario</param>
+        /// <returns>Si se realizo correctamente</returns>
+        bool keepMeAlive(string token);
+
+
         //string getDataImagen(string token, int idImagen);
 
     }

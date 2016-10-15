@@ -27,6 +27,8 @@
 
         public string  Token { get; set; }
 
+        public DateTime? UltimoSignal { get; set; }
+
         public DateTime? FechaInicioSesion { get; set; }
 
         [MaxLength(200)]
