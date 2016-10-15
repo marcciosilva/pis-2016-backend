@@ -800,13 +800,18 @@ namespace Emsys.LogicLayer
         private static bool ExtensionAsociadaUsuario(int  extensionId, Usuario user)
         {
             bool extensionAsociadaUsuario = false;
-            foreach (var recursoUsuario in user.Recurso)
+            foreach (var recursoUsuario in user.Grupos_Recursos)
             {
-                var extensionUsuario = recursoUsuario.Extensiones_Eventos.FirstOrDefault(x => x.Id == extensionId);
-                if (extensionUsuario != null)
+                var recursos = recursoUsuario.Recursos; 
+                foreach (var item in recursos)
                 {
-                    extensionAsociadaUsuario = true;
+                    var extensionUsuario= item.Extensiones_Eventos.FirstOrDefault(x => x.Id == extensionId);
+                    if (extensionUsuario != null)
+                    {
+                        extensionAsociadaUsuario = true;
+                    }
                 }
+                
             }
             return extensionAsociadaUsuario;
         }

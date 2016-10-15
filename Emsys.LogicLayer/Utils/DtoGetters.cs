@@ -20,12 +20,14 @@ namespace Emsys.LogicLayer.Utils
         }
 
         public static DtoAccionesRecursoExtension getDtoAccionesRecursoExtension(AsignacionRecurso acciones)
-        {
+        {           
+            var desc = "";
+            acciones.AsignacionRecursoDescripcion.ForEach(x => desc=desc +"/"+ x.Descripcion);
             return new DtoAccionesRecursoExtension()
             {
                 id = acciones.Id,
                 recurso = acciones.Recurso.Codigo,
-                descripcion = acciones.Descripcion,
+                descripcion = desc,
                 fecha_arribo = acciones.FechaArribo,
                 actualmente_asignado = acciones.ActualmenteAsignado
             };
