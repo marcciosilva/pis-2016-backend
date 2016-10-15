@@ -103,7 +103,7 @@ namespace Emsys.DataAccesLayer.Core
 
                 // Agregar usuarios.
                 var user1 = new Usuario() { Id = 1, NombreLogin = "A", Contraseña = "6dcd4ce23d88e2ee9568ba546c007c63d9131c1b", Nombre = "Usuario1", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
-                var user2 = new Usuario() { Id = 2, NombreLogin = "B", Contraseña = "B", Nombre = "Usuario2", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+                var user2 = new Usuario() { Id = 2, NombreLogin = "B", Contraseña = "6dcd4ce23d88e2ee9568ba546c007c63d9131c1b", Nombre = "Usuario2", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
 
                 //se agregan luego
                 //context.Users.AddOrUpdate(x => x.Id, user1, user2);

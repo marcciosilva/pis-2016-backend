@@ -25,7 +25,7 @@ namespace Test.UnitTesting
                 "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
                 
 
-                var nombreUsuario = "A";
+                var nombreUsuario = "B";
                 var contraseña = "A";
                 // LOGIN.
                 var controllerLogin = new LoginController();
