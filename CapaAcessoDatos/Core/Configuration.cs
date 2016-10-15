@@ -103,25 +103,37 @@ namespace Emsys.DataAccesLayer.Core
 
                 // Agregar usuarios.
                 var user1 = new Usuario() { Id = 1, NombreLogin = "A", Contraseña = "6dcd4ce23d88e2ee9568ba546c007c63d9131c1b", Nombre = "Usuario1", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
-                var user2 = new Usuario() { Id = 2, NombreLogin = "B", Contraseña = "B", Nombre = "Usuario2", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+                var user2 = new Usuario() { Id = 2, NombreLogin = "B", Contraseña = "ae4f281df5a5d0ff3cad6371f76d5c29b6d953ec", Nombre = "Usuario2", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+                var user3 = new Usuario() { Id = 3, NombreLogin = "C", Contraseña = "32096c2e0eff33d844ee6d675407ace18289357d", Nombre = "Usuario3", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+                var user4 = new Usuario() { Id = 4, NombreLogin = "D", Contraseña = "50c9e8d5fc98727b4bbc93cf5d64a68db647f04f", Nombre = "Usuario4", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+
 
                 //se agregan luego
-                //context.Users.AddOrUpdate(x => x.Id, user1, user2);
-                //context.Users.AddOrUpdate(x => x.Id, user1, user2);
+                context.Users.AddOrUpdate(x => x.Id, user1);
+                context.Users.AddOrUpdate(x => x.Id, user2);
+                context.Users.AddOrUpdate(x => x.Id, user3);
+                context.Users.AddOrUpdate(x => x.Id, user4);
 
                 //    // Asignar rol a usuarios.
                 user1.ApplicationRoles.Add(rol1);
                 user2.ApplicationRoles.Add(rol1);
+                user3.ApplicationRoles.Add(rol1);
+                user4.ApplicationRoles.Add(rol1);
 
                 // Agregar usuarios a unidades ejecutoras y grupos recursos.
                 user1.Grupos_Recursos.Add(gr1);
                 user1.Grupos_Recursos.Add(gr2);
                 user2.Grupos_Recursos.Add(gr2);
+                user3.Grupos_Recursos.Add(gr2);
+                user4.Grupos_Recursos.Add(gr1);
 
                 user1.Unidades_Ejecutoras.Add(ue1);
                 user1.Unidades_Ejecutoras.Add(ue2);
                 user1.Unidades_Ejecutoras.Add(ue3);
                 user2.Unidades_Ejecutoras.Add(ue2);
+                user3.Unidades_Ejecutoras.Add(ue3);
+                user4.Unidades_Ejecutoras.Add(ue1);
+                user4.Unidades_Ejecutoras.Add(ue2);
 
 
                 // Agregar eventos.

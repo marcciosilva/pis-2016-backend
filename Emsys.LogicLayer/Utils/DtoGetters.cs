@@ -175,7 +175,7 @@ namespace Emsys.LogicLayer.Utils
             foreach (GeoUbicacion g in ext.GeoUbicaciones)
                 geos.Add(getDtoGeoUbicacion(g));
 
-            DtoExtension res = new DtoExtension()
+            return new DtoExtension()
             {
                 id = ext.Id,
                 zona = getDtoZona(ext.Zona),
@@ -191,16 +191,16 @@ namespace Emsys.LogicLayer.Utils
                 audios = auds,
                 geo_ubicaciones = geos
             };
-            if (ext.DescripcionDespachador != null)
-            {
-                res.descripcion_despachadores = parsearDesacripcion(ext.DescripcionDespachador, OrigenDescripcion.Despachador).ToList();
-            }
-            else
-            {
-                res.descripcion_despachadores = new List<DtoDescripcion>();
-            }
+            //if (ext.DescripcionDespachador != null)
+            //{
+            //    res.descripcion_despachadores = parsearDesacripcion(ext.DescripcionDespachador, OrigenDescripcion.Despachador).ToList();
+            //}
+            //else
+            //{
+            //    res.descripcion_despachadores = new List<DtoDescripcion>();
+            //}
             
-            return res;
+            //return res;
         }
 
 
@@ -264,15 +264,15 @@ namespace Emsys.LogicLayer.Utils
                 videos = vids,
                 audios = auds
             };
-            if (ubicacion != null)
-            {
-                res.geo_ubicacion = ubicacion;
-            }
-            if (evento.Usuario != null)
-            {
-                res.creador = evento.Usuario.Nombre;
-            }
-            return res;
+            //if (ubicacion != null)
+            //{
+            //    res.geo_ubicacion = ubicacion;
+            //}
+            //if (evento.Usuario != null)
+            //{
+            //    res.creador = evento.Usuario.Nombre;
+            //}
+            //return res;
         }
 
         /// <summary>
