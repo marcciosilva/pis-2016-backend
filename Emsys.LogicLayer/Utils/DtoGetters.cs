@@ -25,8 +25,8 @@ namespace Emsys.LogicLayer.Utils
             {
                 id = acciones.Id,
                 recurso = acciones.Recurso.Codigo,
-                descripcion = acciones.Descripcion,
                 fecha_arribo = acciones.FechaArribo,
+                descripcion = acciones.Descripcion,
                 actualmente_asignado = acciones.ActualmenteAsignado
             };
         }
@@ -38,7 +38,7 @@ namespace Emsys.LogicLayer.Utils
                 id = img.Id,
                 id_imagen = img.ImagenData.Id,
                 usuario = img.Usuario.Nombre,
-                fecha_envio = img.FechaEnvio                
+                fecha_envio = img.FechaEnvio
             };
         }
 
@@ -63,7 +63,7 @@ namespace Emsys.LogicLayer.Utils
                 fecha_envio = aud.FechaEnvio
             };
         }
-        
+
         public static DtoGeoUbicacion getDtoGeoUbicacion(GeoUbicacion ubicacion)
         {
             return new DtoGeoUbicacion()
@@ -133,10 +133,10 @@ namespace Emsys.LogicLayer.Utils
                 zona = getDtoZona(ext.Zona),
                 descripcion = ext.Evento.Descripcion,
                 despachador = desp,
-                estado  = ext.Estado.ToString().ToLower(),
+                estado = ext.Estado.ToString().ToLower(),
                 fecha_creacion = ext.Evento.FechaCreacion,
                 categoria = cat,
-                geoubicacion = geoU                
+                geoubicacion = geoU
             };
         }
 
@@ -175,12 +175,11 @@ namespace Emsys.LogicLayer.Utils
             foreach (GeoUbicacion g in ext.GeoUbicaciones)
                 geos.Add(getDtoGeoUbicacion(g));
 
-            return new DtoExtension()
+            DtoExtension res = new DtoExtension()
             {
                 id = ext.Id,
                 zona = getDtoZona(ext.Zona),
                 despachador = desp,
-                descripcion_despachadores = ext.DescripcionDespachador,
                 descripcion_supervisor = ext.DescripcionSupervisor,
                 asignaciones_recursos = asignaciones,
                 estado = ext.Estado.ToString().ToLower(),
@@ -192,6 +191,16 @@ namespace Emsys.LogicLayer.Utils
                 audios = auds,
                 geo_ubicaciones = geos
             };
+            if (ext.DescripcionDespachador != null)
+            {
+                res.descripcion_despachadores = parsearDesacripcion(ext.DescripcionDespachador, OrigenDescripcion.Despachador).ToList();
+            }
+            else
+            {
+                res.descripcion_despachadores = new List<DtoDescripcion>();
+            }
+            
+            return res;
         }
 
 
@@ -204,7 +213,7 @@ namespace Emsys.LogicLayer.Utils
             }
 
             DtoGeoUbicacion ubicacion = null;
-            if((evento.Longitud != 0) && (evento.Latitud!=0))
+            if ((evento.Longitud != 0) && (evento.Latitud != 0))
             {
                 ubicacion = new DtoGeoUbicacion()
                 {
@@ -213,7 +222,7 @@ namespace Emsys.LogicLayer.Utils
                 };
             }
 
-            string dep = null;
+            string dep = "";
             if (evento.Departamento != null)
                 dep = evento.Departamento.Nombre;
 
@@ -248,7 +257,6 @@ namespace Emsys.LogicLayer.Utils
                 numero = evento.Numero,
                 departamento = dep,
                 sector = evento.Sector.Nombre,
-                geo_ubicacion = ubicacion,
                 descripcion = evento.Descripcion,
                 en_proceso = evento.EnProceso,
                 extensiones = extensiones,
@@ -256,6 +264,44 @@ namespace Emsys.LogicLayer.Utils
                 videos = vids,
                 audios = auds
             };
+            if (ubicacion != null)
+            {
+                res.geo_ubicacion = ubicacion;
+            }
+            if (evento.Usuario != null)
+            {
+                res.creador = evento.Usuario.Nombre;
+            }
+            return res;
+        }
+
+        /// <summary>
+        /// Metodo auxiliar que convierte un string con formato hora1\\usuario1\\texto1\\hora2\\usuario2\\texto2....
+        /// en una colección de DtoDescripcion
+        /// </summary>
+        /// <param name="descripcion"></param>
+        /// <returns></returns>
+        private static IEnumerable<DtoDescripcion> parsearDesacripcion(string descripcion, OrigenDescripcion origen)
+        {
+            string[] separadores = { "\\" };
+            string[] textoParseado = descripcion.Split(separadores, int.MaxValue, StringSplitOptions.None);
+
+            List<DtoDescripcion> resultado = new List<DtoDescripcion>();
+
+            DtoDescripcion d;
+            for (int i = 0; i < textoParseado.Count(); i = i + 3)
+            {
+                d = new DtoDescripcion()
+                {
+                    fecha = DateTime.Parse(textoParseado[i]),
+                    usuario = textoParseado[i + 1],
+                    texto = textoParseado[i + 2],
+                    origen = origen
+                };
+                resultado.Add(d);
+            }
+
+            return resultado;
         }
     }
 }
