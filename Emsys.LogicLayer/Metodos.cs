@@ -55,6 +55,7 @@ namespace Emsys.LogicLayer
                     string token = TokenGenerator.ObtenerToken();
                     user.Token = token;
                     user.FechaInicioSesion = DateTime.Now;
+                    user.UltimoSignal = DateTime.Now;
                     context.SaveChanges();
 
                     //return new DtoAutenticacion(token, Mensajes.Correcto, rol);
@@ -293,6 +294,7 @@ namespace Emsys.LogicLayer
                     user.Recurso.Clear();
                     user.Token = null;
                     user.FechaInicioSesion = null;
+                    user.UltimoSignal = null;
                     context.SaveChanges();
                     return true;
                 }
@@ -816,6 +818,26 @@ namespace Emsys.LogicLayer
                 
             }
             return extensionAsociadaUsuario;
+        }
+
+
+        public bool keepMeAlive(string token)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new InvalidTokenException();
+                }
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user != null)
+                {
+                    user.UltimoSignal = DateTime.Now;
+                    context.SaveChanges();
+                    return true;
+                }
+                throw new InvalidTokenException();
+            }
         }
     }
 }

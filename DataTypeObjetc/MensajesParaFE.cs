@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace DataTypeObject
 {
-
     public class Mensajes
     {
         public const string Correcto = "Correcto";

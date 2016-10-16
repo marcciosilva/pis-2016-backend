@@ -7,6 +7,5 @@
         public int id_origen { get; set; }
 
         public string tipo_origen { get; set; }
-        
     }
 }

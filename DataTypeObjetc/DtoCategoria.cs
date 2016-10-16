@@ -11,6 +11,5 @@
         public string prioridad { get; set; }
 
         public bool activo { get; set; }
-
     }
 }
