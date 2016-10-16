@@ -1,0 +1,28 @@
+Mensaje:  error al registrar un log Automatic migration was not applied because it would result in data loss. Set AutomaticMigrationDataLossAllowed to 'true' on your DbMigrationsConfiguration to allow application of automatic migrations even if they might cause data loss. Alternately, use Update-Database with the '-Force' option, or scaffold an explicit migration.
+HelpLink: 
+Hresult: -2146233088
+Innerexception: 
+Source: EntityFramework
+StackTrace:    at System.Data.Entity.Migrations.DbMigrator.AutoMigrate(String migrationId, VersionedModel sourceModel, VersionedModel targetModel, Boolean downgrading)
+   at System.Data.Entity.Migrations.DbMigrator.ApplyMigration(DbMigration migration, DbMigration lastMigration)
+   at System.Data.Entity.Migrations.DbMigrator.Upgrade(IEnumerable`1 pendingMigrations, String targetMigrationId, String lastMigrationId)
+   at System.Data.Entity.Migrations.DbMigrator.UpdateInternal(String targetMigration)
+   at System.Data.Entity.Migrations.DbMigrator.<>c__DisplayClassc.<Update>b__b()
+   at System.Data.Entity.Migrations.DbMigrator.EnsureDatabaseExists(Action mustSucceedToKeepDatabase)
+   at System.Data.Entity.Migrations.DbMigrator.Update(String targetMigration)
+   at System.Data.Entity.MigrateDatabaseToLatestVersion`2.InitializeDatabase(TContext context)
+   at System.Data.Entity.Internal.InternalContext.<>c__DisplayClassf`1.<CreateInitializationAction>b__e()
+   at System.Data.Entity.Internal.InternalContext.PerformInitializationAction(Action action)
+   at System.Data.Entity.Internal.InternalContext.PerformDatabaseInitialization()
+   at System.Data.Entity.Internal.LazyInternalContext.<InitializeDatabase>b__4(InternalContext c)
+   at System.Data.Entity.Internal.RetryAction`1.PerformAction(TInput input)
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeDatabaseAction(Action`1 action)
+   at System.Data.Entity.Internal.LazyInternalContext.InitializeDatabase()
+   at System.Data.Entity.Internal.InternalContext.GetEntitySetAndBaseTypeForType(Type entityType)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Initialize()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.get_InternalContext()
+   at System.Data.Entity.Internal.Linq.InternalSet`1.ActOnSet(Action action, EntityState newState, Object entity, String methodName)
+   at System.Data.Entity.Internal.Linq.InternalSet`1.Add(Object entity)
+   at System.Data.Entity.DbSet`1.Add(TEntity entity)
+   at Emsys.LogicLayer.Metodos.AgregarLog(String token, String terminal, String modulo, String Entidad, Int32 idEntidad, String accion, String detalles, Int32 codigo) in C:\Users\diegoiri\Source\Repos\pis-2016-backend\Emsys.LogicLayer\Metodos.cs:line 350
+TargetSite: Void AutoMigrate(System.String, System.Data.Entity.Migrations.Infrastructure.VersionedModel, System.Data.Entity.Migrations.Infrastructure.VersionedModel, Boolean)

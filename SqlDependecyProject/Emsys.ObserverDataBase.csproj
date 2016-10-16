@@ -49,10 +49,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>A7A0F354EC14D01B16785B20D5D4C39D9F8E4C8F</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>969E9247C1DEFB0C44D007CF64EDA51DA870918A</ManifestCertificateThumbprint>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestKeyFile>Emsys.ObserverDataBase_TemporaryKey.pfx</ManifestKeyFile>
+    <ManifestKeyFile>Emsys.ObserverDataBase_1_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
     <GenerateManifests>true</GenerateManifests>
@@ -101,7 +101,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Emsys.ObserverDataBase_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Settings.StyleCop" />
   </ItemGroup>

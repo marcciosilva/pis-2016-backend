@@ -156,5 +156,34 @@ namespace Servicios.Controllers
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorCerraSesion));
             }
         }
+
+
+        [CustomAuthorizeAttribute()]
+        [HttpPost]
+        [LogFilter]
+        [Route("users/keepmealive")]
+        public DtoRespuesta KeepMeAlive()
+        {
+            IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
+            try
+            {
+                if (token == null)
+                {
+                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                }                
+                dbAL.keepMeAlive(token);
+                return new DtoRespuesta(0, null);
+            }
+            catch (InvalidTokenException)
+            {
+                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
+            }
+            catch (Exception e)
+            {
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "CerrarSesionController", 0, "Logout", "Hubo un error al intentar cerrar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorCerrarSesionCod);
+                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorCerraSesion));
+            }
+        }
     }
 }

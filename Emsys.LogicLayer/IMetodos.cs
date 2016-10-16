@@ -170,5 +170,15 @@ namespace Emsys.LogicLayer
         /// <param name="descParam">Contiene identificador de la extension y la descripcion que se quiere agregar.</param>
         /// <returns>Retorna la respuesta segun el documento de interfaz.</returns>
         Mensaje ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token);
+
+        /// <summary>
+        /// Indica al servidor que el usuario continua conectado.
+        /// </summary>
+        /// <param name="token">Token del usuario</param>
+        /// <returns>Si se registro correctamente</returns>
+        bool keepMeAlive(string token);
+
+
+        void desconectarAusentes(int maxTime);
     }
 }

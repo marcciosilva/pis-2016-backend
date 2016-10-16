@@ -55,6 +55,7 @@ namespace Emsys.LogicLayer
                     string token = TokenGenerator.ObtenerToken();
                     user.Token = token;
                     user.FechaInicioSesion = DateTime.Now;
+                    user.UltimoSignal = DateTime.Now;
                     context.SaveChanges();
 
                     //return new DtoAutenticacion(token, Mensajes.Correcto, rol);
@@ -293,6 +294,7 @@ namespace Emsys.LogicLayer
                     user.Recurso.Clear();
                     user.Token = null;
                     user.FechaInicioSesion = null;
+                    user.UltimoSignal = null;
                     context.SaveChanges();
                     return true;
                 }
@@ -817,5 +819,56 @@ namespace Emsys.LogicLayer
             }
             return extensionAsociadaUsuario;
         }
+
+
+        public bool keepMeAlive(string token)
+        {
+            if (token == null)
+            {
+                throw new InvalidTokenException();
+            }
+            using (var context = new EmsysContext())
+            {
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user != null)
+                {
+                    user.UltimoSignal = DateTime.Now;
+                    context.SaveChanges();
+                    return true;
+                }
+                throw new InvalidTokenException();
+            }
+        }
+
+        public void desconectarAusentes(int maxTime)
+        {
+            using (var context = new EmsysContext())
+            {
+                DateTime ahora = DateTime.Now;
+                foreach (Usuario user in context.Users)
+                {
+                    try
+                    {
+                        // Si el usuario cuenta con una sesion activa.
+                        if ((user.Token != null) && (user.UltimoSignal != null))
+                        {
+                            // Si el usuario esta inactivo.
+                            if ((ahora.Subtract(user.UltimoSignal.Value)).Minutes > maxTime)
+                            {
+                                cerrarSesion(user.Token);
+                                Console.WriteLine("Se desconecto al usuario <" + user.NombreLogin + ">");
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Ocurrio un error: " + e.ToString());
+                    }
+                }
+            }
+        }
+
+
+
     }
 }
