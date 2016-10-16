@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace DataTypeObject
 {
-
     public class DtoItemListar
     {        
         public int id_evento { get; set; }
@@ -24,6 +23,5 @@ namespace DataTypeObject
         public DtoCategoria categoria { get; set; }
 
         public DtoGeoUbicacion geoubicacion { get; set; }
-
     }
 }

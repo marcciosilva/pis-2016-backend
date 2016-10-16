@@ -13,6 +13,5 @@ namespace DataTypeObject
         public DateTime fecha_envio { get; set; }
 
         public int idExtension { get; set; }
-
     }
 }
