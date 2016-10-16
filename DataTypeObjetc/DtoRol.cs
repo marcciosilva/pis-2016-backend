@@ -7,6 +7,5 @@ namespace DataTypeObject
         public ICollection<DtoZona> zonas { get; set; }
 
         public ICollection<DtoRecurso> recursos { get; set; }
-
     }
 }

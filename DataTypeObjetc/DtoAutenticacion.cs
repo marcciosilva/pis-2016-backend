@@ -9,8 +9,8 @@
         /// <param name="mensaje">Mensaje que se desea enviar.</param>
         public DtoAutenticacion(string token, string mensaje)
         {
-            access_token = token;
-            msg = mensaje;
+            this.access_token = token;
+            this.msg = mensaje;
         }
 
         public string access_token { get; set; }

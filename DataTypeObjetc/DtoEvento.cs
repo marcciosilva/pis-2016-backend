@@ -53,6 +53,5 @@ namespace DataTypeObject
         public virtual ICollection<DtoAudio> audios { get; set; }
 
         //public virtual ICollection<DtoGeoUbicacion> geo_ubicaciones { get; set; }
-
     }
 }

@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace DataTypeObject
 {
-
     public class DtoExtension
     {        
         public int id { get; set; }
@@ -36,6 +35,5 @@ namespace DataTypeObject
         public virtual ICollection<DtoAudio> audios { get; set; }
 
         public virtual ICollection<DtoGeoUbicacion> geo_ubicaciones { get; set; }
-
     }
 }

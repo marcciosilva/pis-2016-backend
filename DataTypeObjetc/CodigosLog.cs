@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace DataTypeObject
 {
-
     public class CodigosLog
     {
-        //LOG  - Codigos de error.
+        // LOG  - Codigos de error.
         public const int ErrorIniciarSesionCod = 1001;
         public const int ErrorCerrarSesionCod = 2001;
         public const int ErrorAlGenerarToken = 4001;
@@ -18,7 +17,6 @@ namespace DataTypeObject
         public const int LogLLamdosCod = 9998;
         public const int LogNotificacionesCod = 9997;
         public const int LogCapturarCambioEventoCod = 9997;
-
 
         /// <summary>
         /// Funcion interna para generar una descripcion amigable.
@@ -39,11 +37,11 @@ namespace DataTypeObject
         /// <summary>
         /// Metodo publico para obtener descripcion amigable de un error a partir de un codigo de error.
         /// </summary>
-        /// <param name="cod">Codigo de error, utilizar las constantes de CodigosLogs<./param>
-        /// <returns>Mensjae de error amigable.</returns>
-        public static string GetDesciptionError(int cod) {
+        /// <param name="cod">Codigo de error, utilizar las constantes de CodigosLogs.</param>
+        /// <returns>Mensaje de error amigable.</returns>
+        public static string GetDesciptionError(int cod)
+        {
             return cod + ": " + ObtenerDescripcionCodigo(cod);
         }
-        
     }
 }

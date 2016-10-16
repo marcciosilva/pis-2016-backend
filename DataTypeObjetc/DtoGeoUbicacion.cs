@@ -13,6 +13,5 @@ namespace DataTypeObject
         public double longitud { get; set; }
 
         public double latitud { get; set; }       
-
     }
 }
