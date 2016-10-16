@@ -13,7 +13,6 @@
 
     public class Program
     {
-
         private enum TablaMonitorar { Eventos, Extensiones }
         
         /// <summary>
@@ -22,7 +21,7 @@
         /// <param name="args">No utilizado.</param>
         public static void Main(string[] args)
         {
-            //para cada tabla a ser monitoreada hay que iniciar un thread.
+            // Para cada tabla a ser monitoreada hay que iniciar un thread.
             Thread workerThread = new Thread(new ThreadStart(ProcesoExtensiones.ProcesoMonitoreoExtensiones));
             workerThread.Start();
             ProcesoEventos.ProcesoMonitoreoEventos();
