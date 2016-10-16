@@ -28,7 +28,7 @@ namespace Test.UnitTesting
             try
             {
                 string[] entrada = new string[1];
-                Thread workerThread = new Thread(new ThreadStart(SqlDependecyProject.Program.Listener));
+                Thread workerThread = new Thread(new ThreadStart(SqlDependecyProject.ProcesoExtensiones.Listener));
                 workerThread.Start();
 
                 using (EmsysContext db = new EmsysContext())

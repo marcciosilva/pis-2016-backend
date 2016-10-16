@@ -59,7 +59,6 @@ namespace Utils.Notifications
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                 {
-
                     dbAL.AgregarLogError("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), CodigosLog.LogNotificacionesCod);
                     return;
                 }
