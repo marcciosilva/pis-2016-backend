@@ -13,6 +13,7 @@ namespace SqlDependecyProject
     public class Program
     {
         private static bool llamo = true;
+
         /// <summary>
         /// Metodo principal para el proyecto ObserverDatabase encargado de manejar las notificaciones de los cambios de la bd.
         /// </summary>
@@ -24,7 +25,8 @@ namespace SqlDependecyProject
                 // Para iniciar la bd si no esta creada.
                 EmsysContext db = new EmsysContext();
                 db.Evento.ToList();
-                //me quedo loopeando
+
+                // Me quedo loopeando.
                 while (true)
                 {
                     if (llamo)
@@ -41,6 +43,7 @@ namespace SqlDependecyProject
                 Console.WriteLine(e.Message);
             }
         }
+
         /// <summary>
         /// Implentacion con sql table dependency para noticiar los cambios en la bd.
         /// </summary>
@@ -103,9 +106,9 @@ namespace SqlDependecyProject
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, CodigosLog.LogCapturarCambioEventoCod);
-
             }
         }
+
         /// <summary>
         /// Metodo que se utiliza para enviar una notificaion a un evento.
         /// </summary>
@@ -116,7 +119,6 @@ namespace SqlDependecyProject
         {
             using (EmsysContext db = new EmsysContext())
             {
-
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Evento", evento.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla Eventos. Se inicia la secuencia de envio de notificaciones.", CodigosLog.LogCapturarCambioEventoCod);
                 var eventoBD = db.Evento.Find(evento.Entity.Id);
@@ -130,7 +132,6 @@ namespace SqlDependecyProject
                         }
                     }
                 }
-
             }
         }
     }

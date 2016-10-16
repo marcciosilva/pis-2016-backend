@@ -11,6 +11,7 @@ namespace Emsys.DataAccesLayer.Core
             //   Database.SetInitializer<EmsysContext>(new DropCreateDatabaseIfModelChanges<EmsysContext>());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<EmsysContext, Configuration>());
         }
+
         public DbSet<Evento> Evento { get; set; }
 
         public DbSet<ApplicationFile> ApplicationFiles { get; set; }
@@ -58,6 +59,4 @@ namespace Emsys.DataAccesLayer.Core
         //        Property(u => u.PasswordHash).HasColumnName("Password");
         //}
     }
-
-
 }

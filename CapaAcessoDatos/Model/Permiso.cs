@@ -6,8 +6,6 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-
-
     [Table("Permisos")]
     public partial class Permiso
     {
@@ -25,6 +23,5 @@
         public string Clave { get; set; }        
 
         public ICollection<Rol> Roles { get; set; }
-        
     }
 }

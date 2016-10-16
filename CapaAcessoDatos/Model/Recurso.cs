@@ -7,24 +7,21 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-
-
     public enum EstadoRecurso
     {
-        // Si no ha sido tomado por ningun usuario
+        // Si no ha sido tomado por ningun usuario.
         Disponible,
-        // Si ha sido tomado por ningun usuario
+        // Si ha sido tomado por ningun usuario.
         NoDisponible
     }
 
     public enum EstadoAsignacionRecurso
     {
-        // Si es posible asignarlo a un evento
+        // Si es posible asignarlo a un evento.
         Libre,
-        // Si ha sido asignado al maximo de eventos posible
+        // Si ha sido asignado al maximo de eventos posible.
         Operativo
     }
-
 
     [Table("Recursos")]
     public partial class Recurso
@@ -47,6 +44,5 @@
         public virtual ICollection<Grupo_Recurso> Grupos_Recursos { get; set; }
 
         public virtual Usuario Usuario { get; set; }
-        
     }
 }

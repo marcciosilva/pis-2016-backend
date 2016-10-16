@@ -10,7 +10,7 @@ namespace Emsys.ServiceLayer
     public class SwaggerConfig
     {
         /// <summary>
-        /// Metodo de congiguracion para swaagger
+        /// Metodo de configuracion para swaagger
         /// </summary>
         public static void Register()
         {

@@ -31,6 +31,7 @@ namespace Test.UnitTesting
                 try
                 {
                     con.Open();
+
                     // Se crea la BD y si existe una se borra.
                     CrearBD(con, nombreBD);
 
@@ -41,6 +42,7 @@ namespace Test.UnitTesting
                         db.Initialize(false);
                         context.SaveChanges();
                     }
+
                     EjecutarSQL(con, scriptInicial);
                 }
                 catch (Exception e)
@@ -78,6 +80,7 @@ namespace Test.UnitTesting
                 cmd.CommandType = CommandType.Text;
                 cmd.ExecuteNonQuery();
             }
+
             con.ChangeDatabase(nombreBD);
         }
 
@@ -94,6 +97,7 @@ namespace Test.UnitTesting
                 {
                     script = sql;
                 }
+
                 IEnumerable<string> commandString = Regex.Split(script, @"^\s*GO\s*$", RegexOptions.Multiline | RegexOptions.IgnoreCase);
 
                 foreach (var command in commandString)

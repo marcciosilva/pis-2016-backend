@@ -14,7 +14,6 @@ namespace ServidorExterno
     [System.ComponentModel.ToolboxItem(false)]
     public class Servicios : System.Web.Services.WebService
     {
-
         [WebMethod]
         public List<List<string>> Servicio1(string param1, string param2, string param3)
         {

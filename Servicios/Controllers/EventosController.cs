@@ -31,9 +31,10 @@ namespace Servicios.Controllers
                 if (token == null)
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
-                }                
+                }
+                                
                 ICollection<DtoEvento> lista = dbAL.listarEventos(token);
-                return  new DtoRespuesta(0, lista);
+                return new DtoRespuesta(0, lista);
             }
             catch (InvalidTokenException)
             {
@@ -45,7 +46,6 @@ namespace Servicios.Controllers
                 return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }       
         }
-
 
         /// <summary>
         /// Servicio que dado un evento se obtiene la informacion del mismo.
@@ -66,6 +66,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }
+
                 DtoEvento evento = dbAL.verInfoEvento(token, idEvento);
                 return new DtoRespuesta(0, evento);
             }

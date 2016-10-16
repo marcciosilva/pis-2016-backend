@@ -20,7 +20,7 @@ namespace Servicios.Controllers
         [HttpPost]
         [Route("users/authenticate")]
         [LogFilter]
-        public  DtoRespuesta Login([FromBody] DtoUser user)
+        public DtoRespuesta Login([FromBody] DtoUser user)
         {
             IMetodos dbAL = new Metodos();
             try
@@ -46,7 +46,7 @@ namespace Servicios.Controllers
         /// <summary>
         /// Servicio obtener roles.
         /// </summary>
-        /// <returns>Devulve los roles asociados a un usuario. En el header del request se recibe el token del usuario.</returns>
+        /// <returns>Devuelve los roles asociados a un usuario. En el header del request se recibe el token del usuario.</returns>
         [CustomAuthorizeAttribute()]
         [HttpPost]
         [LogFilter]
@@ -61,9 +61,9 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }
+
                 DtoRol rol = dbAL.getRolUsuario(token);
                 return new DtoRespuesta(0, rol);
-
             }
             catch (InvalidTokenException)
             {
@@ -95,6 +95,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }
+
                 if (dbAL.loguearUsuario(token, rol))
                 {
                     return new DtoRespuesta(0, null);
@@ -137,6 +138,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }
+
                 // TODO esto no se puede hacer hasta tener operaciones.
                 var usuarioOperacionesNoFinalizadas = false;
                 if (usuarioOperacionesNoFinalizadas)
@@ -157,7 +159,6 @@ namespace Servicios.Controllers
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorCerraSesion));
             }
         }
-
 
         [CustomAuthorizeAttribute()]
         [HttpPost]

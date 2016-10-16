@@ -9,7 +9,6 @@ using Servicios;
 
 namespace Emsys.ServiceLayer.Filtros
 {
-
     public class DelegateHandler : DelegatingHandler
     {
         /// <summary>
@@ -24,14 +23,15 @@ namespace Emsys.ServiceLayer.Filtros
             string token = ObtenerToken.GetToken(request);
             IMetodos dbAL = new Metodos();
             dbAL.AgregarLog(token, GetClientIp(request), "", "", 0, "", "Request body: " + requestBody.ToString(), CodigosLog.LogAccionesCod);
-            // let other handlers process the request
+            
+            // Let other handlers process the request.
             var result = await base.SendAsync(request, cancellationToken);
             if (result.Content != null)
             {
                 var responseBody = await result.Content.ReadAsStringAsync();
-
                 dbAL.AgregarLog(token, GetClientIp(request), "", "", 0, "", "Response body: " + responseBody.ToString(), CodigosLog.LogAccionesCod);
             }
+
             return result;
         }
 
@@ -51,6 +51,7 @@ namespace Emsys.ServiceLayer.Filtros
             {
                 ip = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
             }
+
             return ip;
         }
     }

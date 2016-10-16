@@ -1,18 +1,8 @@
 <StyleCopSettings Version="105">
   <Analyzers>
-    <Analyzer AnalyzerId="StyleCop.CSharp.DocumentationRules">
+    <Analyzer AnalyzerId="StyleCop.CSharp.MaintainabilityRules">
       <Rules>
-        <Rule Name="FileMustHaveHeader">
-          <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
-          </RuleSettings>
-        </Rule>
-        <Rule Name="ElementDocumentationMustBeSpelledCorrectly">
-          <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
-          </RuleSettings>
-        </Rule>
-        <Rule Name="ConstructorSummaryDocumentationMustBeginWithStandardText">
+        <Rule Name="StatementMustNotUseUnnecessaryParenthesis">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>
@@ -22,17 +12,17 @@
     </Analyzer>
     <Analyzer AnalyzerId="StyleCop.CSharp.OrderingRules">
       <Rules>
-        <Rule Name="ElementsMustAppearInTheCorrectOrder">
+        <Rule Name="StaticElementsMustAppearBeforeInstanceElements">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>
         </Rule>
-        <Rule Name="ElementsMustBeOrderedByAccess">
-          <RuleSettings>
-            <BooleanProperty Name="Enabled">False</BooleanProperty>
-          </RuleSettings>
-        </Rule>
-        <Rule Name="UsingDirectivesMustBePlacedWithinNamespace">
+      </Rules>
+      <AnalyzerSettings />
+    </Analyzer>
+    <Analyzer AnalyzerId="StyleCop.CSharp.NamingRules">
+      <Rules>
+        <Rule Name="FieldNamesMustNotBeginWithUnderscore">
           <RuleSettings>
             <BooleanProperty Name="Enabled">False</BooleanProperty>
           </RuleSettings>

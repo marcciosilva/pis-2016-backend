@@ -7,14 +7,12 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-
     public enum NombrePrioridad
     {
         Alta,
         Media,
         Baja
     }
-
 
     [Table("Categorias")]
     public partial class Categoria
@@ -39,6 +37,5 @@
         public virtual ICollection<Extension_Evento> Extensiones_Evento { get; set; }
 
         public virtual ICollection<Evento> Eventos { get; set; }
-
     }
 }

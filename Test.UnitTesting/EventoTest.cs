@@ -19,7 +19,6 @@ namespace Test.UnitTesting
     [TestFixture]
     class EventoTest
     {
-
         /// <summary>
         /// Se prueba que al realizar listar eventos se traigan todos los eventos 
         /// asociados al recurso con el que se logueo el usuario.
@@ -114,7 +113,8 @@ namespace Test.UnitTesting
                 try
                 {
                     context.SaveChanges();
-                } catch (DbEntityValidationException e)
+                }
+                catch (DbEntityValidationException e)
                 {
                     throw e;
                 }
@@ -126,7 +126,7 @@ namespace Test.UnitTesting
 
                 if (logica.loguearUsuario(token, rol))
                 {
-                    var listaEventos =  logica.listarEventos(token);
+                    var listaEventos = logica.listarEventos(token);
                     int cantExt = listaEventos.FirstOrDefault().extensiones.Count();
                     Assert.IsTrue(cantExt == 2);
                 }
@@ -260,12 +260,8 @@ namespace Test.UnitTesting
                                 break;
                         }
                     }
-                }
-                
+                }               
             }
-            
-
         }
-
     }
 }

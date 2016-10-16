@@ -6,8 +6,6 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-
-
     [Table("Origen_Eventos")]
     public partial class Origen_Evento
     {
@@ -23,6 +21,5 @@
         public string TipoOrigen { get; set; }
 
         public DateTime TimeStamp { get; set; }
-
     }
 }

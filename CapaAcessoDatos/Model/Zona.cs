@@ -7,7 +7,6 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-
     [Table("Zonas")]
     public partial class Zona
     {
@@ -16,7 +15,7 @@
 
         [Required]
         [MaxLength(200)]       
-        public  string Nombre { get; set; }
+        public string Nombre { get; set; }
         
         [Required]
         public virtual Unidad_Ejecutora UnidadEjecutora { get; set; }
@@ -24,6 +23,5 @@
         public virtual ICollection<Extension_Evento> Extensiones_Evento { get; set; }
 
         public virtual ICollection<Sector> Sectores { get; set; }
-   
     }
 }

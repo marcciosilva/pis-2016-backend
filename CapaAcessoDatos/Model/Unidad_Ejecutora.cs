@@ -6,7 +6,6 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-
     [Table("Unidades_Ejecutoras")]
     public partial class Unidad_Ejecutora
     {
@@ -20,6 +19,5 @@
         public virtual ICollection<Zona> Zonas { get; set; }
 
         public virtual ICollection<Usuario> Usuarios { get; set; }
-
     }
 }

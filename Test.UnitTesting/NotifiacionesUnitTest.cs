@@ -16,7 +16,6 @@ namespace Test.UnitTesting
         [Test]
         public void PruebaNotificar()
         {
-
             INotifications manejadorNotificaciones = FactoryNotifications.GetInstance();
             manejadorNotificaciones.SendMessage("Esto es una prueba", "#####", "Prueba");
             Assert.IsTrue(true);
@@ -40,8 +39,10 @@ namespace Test.UnitTesting
                         evento.Categoria = db.Categorias.FirstOrDefault();
                         evento.Sector = db.Sectores.FirstOrDefault();
                     }
+
                     db.SaveChanges();
                 }
+
                 Thread.Sleep(5000);
                 // workerThread.Abort();
                 workerThread.Join();

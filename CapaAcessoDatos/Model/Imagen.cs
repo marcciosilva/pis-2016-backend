@@ -6,7 +6,6 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
     
-
     [Table("Imagenes")]
     public partial class Imagen
     {

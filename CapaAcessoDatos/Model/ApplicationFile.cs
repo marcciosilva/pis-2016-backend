@@ -6,7 +6,6 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
     
-
     [Table("ApplicationFiles")]
     public partial class ApplicationFile
     {
@@ -16,6 +15,5 @@
         public string Nombre { get; set; }
 
         public byte[] FileData { get; set; }
-
     }
 }
