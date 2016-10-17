@@ -71,7 +71,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "GetRolUsuarioController", 0, "GetRoles", "Hubo un error al intentar obtener roles de un usuario, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "GetRoles", "Hubo un error al intentar obtener roles de un usuario, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorGetRoles));
             }
         }
@@ -114,7 +114,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoguearUsuarioController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "ElegirRoles", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
                 return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }
         }
@@ -153,6 +153,36 @@ namespace Servicios.Controllers
             catch (Exception e)
             {
                 dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "CerrarSesionController", 0, "Logout", "Hubo un error al intentar cerrar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorCerrarSesionCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "CerrarSesion", "Hubo un error al intentar cerrar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorCerrarSesionCod);
+                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorCerraSesion));
+            }
+        }
+
+
+        [CustomAuthorizeAttribute()]
+        [HttpPost]
+        [LogFilter]
+        [Route("users/keepmealive")]
+        public DtoRespuesta KeepMeAlive()
+        {
+            IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
+            try
+            {
+                if (token == null)
+                {
+                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                }
+                dbAL.keepMeAlive(token);
+                return new DtoRespuesta(0, null);
+            }
+            catch (InvalidTokenException)
+            {
+                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
+            }
+            catch (Exception e)
+            {
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "KeepMeAlive", "Hubo un error al intentar llaar al keepAlive: " + e.Message, CodigosLog.ErrorCerrarSesionCod);
                 return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorCerraSesion));
             }
         }

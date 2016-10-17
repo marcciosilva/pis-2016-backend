@@ -142,6 +142,10 @@
     <Compile Include="Migrations\201610151846089__Initial.Designer.cs">
       <DependentUpon>201610151846089__Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610151932475_keepAlive.cs" />
+    <Compile Include="Migrations\201610151932475_keepAlive.Designer.cs">
+      <DependentUpon>201610151932475_keepAlive.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\ApplicationFile.cs" />
     <Compile Include="Model\AsignacionRecursoDescripcion.cs" />
     <Compile Include="Model\Audio.cs" />
@@ -183,6 +187,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201610151846089__Initial.resx">
       <DependentUpon>201610151846089__Initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610151932475_keepAlive.resx">
+      <DependentUpon>201610151932475_keepAlive.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

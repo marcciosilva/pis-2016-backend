@@ -18,16 +18,27 @@
             };
         }
 
-        public static DtoAsignacionRecurso getDtoAsignacionesRecursos(AsignacionRecurso acciones)
+        public static DtoAsignacionRecurso getDtoAsignacionesRecursos(AsignacionRecurso asignacionRecurso)
         {
-            return new DtoAsignacionRecurso()
+            DtoAsignacionRecurso res =  new DtoAsignacionRecurso()
             {
-                id = acciones.Id,
-                recurso = acciones.Recurso.Codigo,
-                fecha_arribo = acciones.FechaArribo,
-                descripcion = acciones.Descripcion,
-                actualmente_asignado = acciones.ActualmenteAsignado
+                id = asignacionRecurso.Id,
+                recurso = asignacionRecurso.Recurso.Codigo,
+                fecha_arribo = asignacionRecurso.FechaArribo,
+                actualmente_asignado = asignacionRecurso.ActualmenteAsignado
             };
+            var desc = new List<DtoDescripcion>();
+            foreach (var item in asignacionRecurso.AsignacionRecursoDescripcion)
+            {
+                desc.Add(new DtoDescripcion
+                {
+                    descripcion = item.Descripcion,
+                    fecha = item.Fecha,
+                    origen = OrigenDescripcion.Despachador,
+                    texto = item.Descripcion,
+                });
+            }
+            return res;
         }
 
         public static DtoImagen getDtoImagen(Imagen img)
@@ -174,28 +185,15 @@
             foreach (GeoUbicacion g in ext.GeoUbicaciones)
                 geos.Add(getDtoGeoUbicacion(g));
 
-            var desc = new List<DtoDescripcion>();
-            //if (ext.DescripcionDespachador != null)
-            //{
-            //    res.descripcion_despachadores = parsearDesacripcion(ext.DescripcionDespachador, OrigenDescripcion.Despachador).ToList();
-            //}
-            //else
-            //{
-            //    res.descripcion_despachadores = new List<DtoDescripcion>();
-            //}
-            foreach (var item in ext.AccionesRecursos)
+            List<DtoDescripcion> descDespachadores;
+            if (ext.DescripcionDespachador != null)
             {
-                foreach (var item2 in item.AsignacionRecursoDescripcion)
-                {
-                    desc.Add(new DtoDescripcion {
-                        descripcion=item2.Descripcion,
-                        fecha= item2.Fecha,
-                        origen= OrigenDescripcion.Despachador,
-                        texto= item2.Descripcion,
-                    });
-                }
+                descDespachadores = parsearDesacripcion(ext.DescripcionDespachador, OrigenDescripcion.Despachador).ToList();
             }
-            
+            else
+            {
+                descDespachadores = new List<DtoDescripcion>();
+            }
 
             return new DtoExtension()
             {
@@ -212,11 +210,9 @@
                 videos = vids,
                 audios = auds,
                 geo_ubicaciones = geos,
-                descripcion_despachadores= desc,
+                descripcion_despachadores= descDespachadores,
             };
-
-
-            //return res;
+            
         }
 
 
@@ -228,15 +224,6 @@
                 extensiones.Add(getDtoExtension(e));
             }
 
-            DtoGeoUbicacion ubicacion = null;
-            if ((evento.Longitud != 0) && (evento.Latitud != 0))
-            {
-                ubicacion = new DtoGeoUbicacion()
-                {
-                    longitud = evento.Longitud,
-                    latitud = evento.Latitud
-                };
-            }
 
             string dep = "";
             if (evento.Departamento != null)
@@ -261,7 +248,7 @@
             return new DtoEvento()
             {
                 id = evento.Id,
-                informante = evento.NombreInformante,
+                informante = evento.NombreInformante,                
                 telefono = evento.TelefonoEvento,
                 categoria = getDtoCategoria(evento.Categoria),
                 estado = evento.Estado.ToString().ToLower(),
@@ -273,6 +260,8 @@
                 numero = evento.Numero,
                 departamento = dep,
                 sector = evento.Sector.Nombre,
+                longitud = evento.Longitud,
+                latitud = evento.Latitud,
                 descripcion = evento.Descripcion,
                 en_proceso = evento.EnProceso,
                 extensiones = extensiones,
