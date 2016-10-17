@@ -25,7 +25,6 @@ namespace Utils.Notifications
             sendNotification(cod, pk, topic);
         }
         
-     
         /// <summary>
         /// Implementacion para enviar de forma asyncronica.
         /// </summary>
@@ -41,8 +40,6 @@ namespace Utils.Notifications
                 {
                     RequestUri = new Uri("https://fcm.googleapis.com/fcm/send"),
                     Method = HttpMethod.Post,
-
-
                 };
                 string keyFireBase = WebConfigurationManager.AppSettings["KeyFireBase"];
 
@@ -59,16 +56,17 @@ namespace Utils.Notifications
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                 {
-
                     dbAL.AgregarLogError("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), CodigosLog.LogNotificacionesCod);
                     return;
                 }
+
                 string mensaje = responseString.Split(':')[0].ToString();
                 if (mensaje != "{\"message_id\"")
                 {
                     dbAL.AgregarLogError("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), CodigosLog.LogNotificacionesCod);
                     return;
                 }
+
                 dbAL.AgregarLog("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk, CodigosLog.LogNotificacionesCod);
             }
         }

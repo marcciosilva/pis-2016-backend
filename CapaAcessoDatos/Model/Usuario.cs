@@ -8,8 +8,6 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-
-
     public enum Estado
     {
         Activo,
@@ -25,7 +23,7 @@
 
         public string Contraseña { get; set; }
 
-        public string  Token { get; set; }
+        public string Token { get; set; }
 
         public DateTime? UltimoSignal { get; set; }
 
@@ -52,6 +50,5 @@
         public virtual ICollection<Recurso> Recurso { get; set; }
 
         public virtual ICollection<Rol> ApplicationRoles { get; set; }
-
     }
 }

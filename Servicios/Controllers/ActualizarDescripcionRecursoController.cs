@@ -13,8 +13,6 @@ namespace Servicios.Controllers
 {
     public class ActualizarDescripcionRecursoController : ApiController
     {
-
-
         /// <summary>
         /// Servicio para actualizar la descripcion de un recurso.
         /// </summary>
@@ -23,7 +21,7 @@ namespace Servicios.Controllers
         [HttpPost]
         [Route("events/actualizarDescripcionRecurso")]
         [LogFilter]
-        public DtoRespuesta ActualizarDescripcionRecurso([FromBody] DtoActualizarDescripcionParametro descParam )
+        public DtoRespuesta ActualizarDescripcionRecurso([FromBody] DtoActualizarDescripcionParametro descParam)
         {
             IMetodos dbAL = new Metodos();
             try
@@ -38,7 +36,7 @@ namespace Servicios.Controllers
             }
             catch (InvalidExtensionException)
             {
-                return new DtoRespuesta(Mensajes.IdentificadorExtensionIncorrecto, new Mensaje(Mensajes.GetDescription( Mensajes.IdentificadorExtensionIncorrecto)));
+                return new DtoRespuesta(Mensajes.IdentificadorExtensionIncorrecto, new Mensaje(Mensajes.GetDescription(Mensajes.IdentificadorExtensionIncorrecto)));
             }
             catch (InvalidExtensionForUserException)
             {

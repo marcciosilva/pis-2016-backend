@@ -6,7 +6,6 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
     
-
     [Table("GeoUbicaciones")]
     public partial class GeoUbicacion
     {
@@ -20,6 +19,5 @@
         public double Longitud { get; set; }
 
         public double Latitud { get; set; }
-
     }
 }

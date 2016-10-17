@@ -12,7 +12,7 @@ namespace DataTypeObject
 
         public Mensaje(string mensaje)
         {
-            msg = mensaje;
+            this.msg = mensaje;
         }
     }
 }

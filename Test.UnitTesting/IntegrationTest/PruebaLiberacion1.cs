@@ -23,10 +23,9 @@ namespace Test.UnitTesting
             {
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
 
-
-
                 var nombreUsuario = "A";
                 var contraseña = "A";
+
                 // LOGIN.
                 var controllerLogin = new LoginController();
                 var us = context.Evento.FirstOrDefault();
@@ -48,7 +47,6 @@ namespace Test.UnitTesting
                 var respuesta3 = controllerLogin.ElegirRoles(rolElegidoZona);
                 Assert.IsTrue(respuesta3.cod == 0);
 
-
                 // LISTAR EVENTOS.
                 var controllerListarEventos = new EventosController();
                 controllerListarEventos.Request = new HttpRequestMessage();
@@ -69,7 +67,6 @@ namespace Test.UnitTesting
                                 var esta = eventosRespuesta.Where(x => x.id == extensionEvento.Evento.Id).FirstOrDefault();
                                 Assert.IsNotNull(esta);
                             }
-
                         }
                     }
                 }

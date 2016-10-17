@@ -11,6 +11,7 @@ namespace Utils.Notifications
     {
         //void SubscribeChanel(string channelName);
         //void UnsubscribeChanel(string channelName);
+
         /// <summary>
         /// Metodo a sobreescribir por la clase concreta para enviar una notificacion push.
         /// </summary>

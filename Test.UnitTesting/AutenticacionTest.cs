@@ -91,7 +91,6 @@ namespace Test.UnitTesting
 
                 string[] etiqueta2 = { "pruebaPermiso" };
                 Assert.IsTrue(logica.autorizarUsuario(token, etiqueta2));
-
             }
         }
 
@@ -158,11 +157,11 @@ namespace Test.UnitTesting
                 try
                 {
                     Assert.IsTrue(logica.loguearUsuario(token, rol));
-                    // Compruebo si recurso quedo asignado al usuario (no esta quedando pero me parece que es problema de como el test maneja el context)
+                    // Compruebo si recurso quedo asignado al usuario (no esta quedando pero me parece que es problema de como el test maneja el context).
                     //var u = context.Users.Find(user.Id);
                     //Assert.IsTrue(u.Recurso.Contains(recursoDisponible));
                 }
-                catch(RecursoNoDisponibleException)
+                catch (RecursoNoDisponibleException)
                 {
                     Assert.Fail();
                 }
@@ -207,7 +206,7 @@ namespace Test.UnitTesting
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
 
                 // Se crea un usuario con zonas asociadas en la BD.
-                var user = new Usuario() { NombreLogin = "usuarioPruebaZonas", Nombre = "usuarioPruebaZonas", Contraseña = Passwords.GetSHA1("usuarioPruebaZonas"), Grupos_Recursos = new List<Grupo_Recurso>(),Unidades_Ejecutoras = new List<Unidad_Ejecutora>() };
+                var user = new Usuario() { NombreLogin = "usuarioPruebaZonas", Nombre = "usuarioPruebaZonas", Contraseña = Passwords.GetSHA1("usuarioPruebaZonas"), Grupos_Recursos = new List<Grupo_Recurso>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>() };
                 var zona1 = new Zona() { Nombre = "zona1" };
                 var zona2 = new Zona() { Nombre = "zona2" };
                 var zona3 = new Zona() { Nombre = "zona3" };
@@ -236,11 +235,11 @@ namespace Test.UnitTesting
                 try
                 {
                     context.SaveChanges();
-                }catch (DbEntityValidationException e)
+                }
+                catch (DbEntityValidationException e)
                 {
                     throw (e);
                 }
-                
 
                 IMetodos logica = new Metodos();
 
@@ -248,7 +247,7 @@ namespace Test.UnitTesting
                 var autent = logica.autenticarUsuario("usuarioPruebaZonas", "usuarioPruebaZonas");
                 string token = autent.access_token;
 
-                // Usuario pertenece a todas las unidades ejecutoras de las zonas
+                // Usuario pertenece a todas las unidades ejecutoras de las zonas.
                 List<DtoZona> lZonas = new List<DtoZona>();
                 DtoZona dtoZona1 = new DtoZona() { id = zona1.Id, nombre = "zona1" };
                 DtoZona dtoZona2 = new DtoZona() { id = zona2.Id, nombre = "zona2" };
@@ -257,12 +256,12 @@ namespace Test.UnitTesting
                 lZonas.Add(dtoZona1);
                 lZonas.Add(dtoZona2);
                 lZonas.Add(dtoZona3);
-                DtoRol rol = new DtoRol() { recursos = new List<DtoRecurso>(), zonas = lZonas};
+                DtoRol rol = new DtoRol() { recursos = new List<DtoRecurso>(), zonas = lZonas };
 
                 try
                 {
                     Assert.IsTrue(logica.loguearUsuario(token, rol));
-                    // Compruebo que las zonas se hayan asociado al usuario (no esta quedando pero me parece que es problema de como el test maneja el context)
+                    // Compruebo que las zonas se hayan asociado al usuario (no esta quedando pero me parece que es problema de como el test maneja el context).
                     //var u = context.Users.Find(user.Id);
                     //Assert.IsTrue(u.Zonas.Contains(zona1));
                     //Assert.IsTrue(u.Zonas.Contains(zona2));
@@ -289,10 +288,10 @@ namespace Test.UnitTesting
             }
         }
 
-        [Test]
         /// <summary>
         /// Test que prueba el metodo de cerrar sesión para usuarios que se hayan logueado como recurso.
         /// </summary>
+        [Test]
         public void CerrarSesionRecursoTest()
         {
             using (var context = new EmsysContext())
@@ -314,7 +313,7 @@ namespace Test.UnitTesting
                 var autent = logica.autenticarUsuario("usuarioPruebaCerrarSesion", "usuarioPruebaCerrarSesion");
                 string token = autent.access_token;
 
-                // Logueo al usuario
+                // Logueo al usuario.
                 List<DtoRecurso> lRecurso = new List<DtoRecurso>();
                 DtoRecurso dtoRecurso = new DtoRecurso() { id = recursoDisponible.Id, codigo = "recursoPruebaCerrarSesion" };
                 lRecurso.Add(dtoRecurso);
@@ -322,20 +321,22 @@ namespace Test.UnitTesting
                 if (logica.loguearUsuario(token, rol))
                 {
                     logica.cerrarSesion(token);
-                    // Compruebo que se haya liberado el recurso asignado
+
+                    // Compruebo que se haya liberado el recurso asignado.
                     var tieneRecurso = context.Users.Where(x => x.Id == user.Id).Select(x => x.Recurso.FirstOrDefault());
                     Assert.IsNull(tieneRecurso.FirstOrDefault());
-                    // Compruebo que el recurso haya quedado disponible
+
+                    // Compruebo que el recurso haya quedado disponible.
                     EstadoRecurso estaDisponible = context.Recursos.Where(x => x.Id == recursoDisponible.Id).Select(x => x.Estado).FirstOrDefault();
                     Assert.AreEqual(EstadoRecurso.Disponible, estaDisponible);
                 }            
             }
         }
 
-        [Test]
         /// <summary>
         /// Test que prueba el metodo de cerrar sesión para usuarios que se hayan logueado como zona.
         /// </summary>
+        [Test]
         public void CerrarSesionZonasTest()
         {
             using (var context = new EmsysContext())
@@ -373,7 +374,7 @@ namespace Test.UnitTesting
                 var autent = logica.autenticarUsuario("usuarioPruebaZonasCerrarSesion", "usuarioPruebaZonasCerrarSesion");
                 string token = autent.access_token;
 
-                // Usuario pertenece a todas las unidades ejecutoras de las zonas
+                // Usuario pertenece a todas las unidades ejecutoras de las zonas.
                 List<DtoZona> lZonas = new List<DtoZona>();
                 DtoZona dtoZona1 = new DtoZona() { id = zona1.Id, nombre = "zona1CerrarSesion" };
                 DtoZona dtoZona2 = new DtoZona() { id = zona2.Id, nombre = "zona2CerrarSesion" };
@@ -388,7 +389,8 @@ namespace Test.UnitTesting
                     if (logica.loguearUsuario(token, rol))
                     {
                         logica.cerrarSesion(token);
-                        // Compruebo que se hayan liberado las zonas asignadas
+
+                        // Compruebo que se hayan liberado las zonas asignadas.
                         var tieneZonasAsignadas = context.Users.Where(x => x.Id == user.Id).Select(x => x.Zonas.FirstOrDefault());
                         Assert.IsNull(tieneZonasAsignadas.FirstOrDefault());
                     }                    

@@ -412,7 +412,6 @@ namespace Emsys.DataAccesLayer.Core
                 .ForeignKey("dbo.Usuarios", t => t.Usuario_Id, cascadeDelete: true)
                 .Index(t => t.Unidad_Ejecutora_Id)
                 .Index(t => t.Usuario_Id);
-            
         }
         
         public override void Down()

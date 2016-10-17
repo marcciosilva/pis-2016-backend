@@ -7,20 +7,19 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-
-
     [Table("AsignacionRecursoDescripcion")]
     public partial class AsignacionRecursoDescripcion
     {
         public AsignacionRecursoDescripcion(string desc, DateTime fecha)
         {
-            Descripcion = desc;
-            Fecha = fecha;
+            this.Descripcion = desc;
+            this.Fecha = fecha;
         }
+
         public AsignacionRecursoDescripcion()
         {
-
         }
+
         [Key]
         public int Id { get; set; }
 

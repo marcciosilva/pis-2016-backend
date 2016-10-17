@@ -27,7 +27,5 @@ namespace Emsys.ServiceLayer
         {
             GlobalConfiguration.Configure(FilterConfig.Configure);
         }
-
-
     }
 }

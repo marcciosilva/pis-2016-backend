@@ -6,8 +6,6 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-
-
     [Table("Grupos_Recursos")]
     public partial class Grupo_Recurso
     {

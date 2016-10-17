@@ -26,6 +26,7 @@ namespace Servicios
                     token = headerValues.FirstOrDefault();
                     return token;
                 }
+
                 return null;
             }
             catch (Exception e)

@@ -35,6 +35,7 @@ namespace Test.UnitTesting
 
             var nombreUsuario = "A";
             var contraseña = "A";
+
             // LOGIN.
             var controllerLogin = new LoginController();
             var respuesta = controllerLogin.Login(new DtoUser() { username = nombreUsuario, password = contraseña });
@@ -46,7 +47,8 @@ namespace Test.UnitTesting
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             var respuestaAgregarDescripcion = controller.ActualizarDescripcionRecurso(param);
-            //pruebo que el codigo de respuesta sea 0
+
+            // Pruebo que el codigo de respuesta sea 0.
             Assert.IsTrue(respuestaAgregarDescripcion.cod == 0);
 
             var extension = db.Extensiones_Evento.Find(param.idExtension);

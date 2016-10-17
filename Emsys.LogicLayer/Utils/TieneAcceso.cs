@@ -27,6 +27,7 @@ namespace Emsys.LogicLayer.Utils
                             }
                         }
                     }
+
                     // Si el usuario esta conectado por zonas.
                     else if (user.Zonas.Count() > 0)
                     {
@@ -42,6 +43,7 @@ namespace Emsys.LogicLayer.Utils
                         }
                     }
                 }
+
                 return false;
             }
         }
@@ -62,6 +64,7 @@ namespace Emsys.LogicLayer.Utils
                             }
                         }
                     }
+
                     // Si el usuario esta conectado por zonas.
                     else if (user.Zonas.Count() > 0)
                     {
@@ -77,6 +80,7 @@ namespace Emsys.LogicLayer.Utils
                         }
                     }
                 }
+
                 return false;
             }
         }
@@ -97,6 +101,7 @@ namespace Emsys.LogicLayer.Utils
                             }
                         }
                     }
+
                     // Si el usuario esta conectado por zonas.
                     else if (user.Zonas.Count() > 0)
                     {
@@ -106,6 +111,7 @@ namespace Emsys.LogicLayer.Utils
                         }
                     }
                 }
+
                 return false;
             }
         }

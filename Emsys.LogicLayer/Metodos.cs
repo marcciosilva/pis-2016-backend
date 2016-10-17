@@ -61,6 +61,7 @@ namespace Emsys.LogicLayer
                     //return new DtoAutenticacion(token, Mensajes.Correcto, rol);
                     return new DtoAutenticacion(token, Mensajes.Correcto);
                 }
+
                 throw new InvalidCredentialsException();
             }
         }
@@ -74,6 +75,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -86,6 +88,7 @@ namespace Emsys.LogicLayer
                             zonas.Add(DtoGetters.getDtoZona(z));
                         }
                     }
+
                     // Agrega los recursos disponibles para el usuario mediante sus grupos_recursos.
                     ICollection<DtoRecurso> recursos = new List<DtoRecurso>();
                     foreach (Grupo_Recurso gr in user.Grupos_Recursos)
@@ -93,12 +96,16 @@ namespace Emsys.LogicLayer
                         foreach (Recurso r in gr.Recursos)
                         {
                             if (r.Estado == EstadoRecurso.Disponible)
+                            {
                                 recursos.Add(DtoGetters.getDtoRecurso(r));
+                            }       
                         }
                     }
+
                     DtoRol rol = new DtoRol() { zonas = zonas, recursos = recursos };
                     return rol;
                 }
+
                 throw new InvalidTokenException();
             }
         }
@@ -111,6 +118,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -129,10 +137,12 @@ namespace Emsys.LogicLayer
                         context.SaveChanges();
                         return false;
                     }
+
                     if (!etiquetas.Any())
                     {
                         return true;
                     }
+
                     foreach (var item in etiquetas)
                     {
                         foreach (Rol ar in user.ApplicationRoles)
@@ -147,6 +157,7 @@ namespace Emsys.LogicLayer
                         }
                     }
                 }
+
                 return false;
             }
         }
@@ -159,20 +170,25 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
-                    // Si el usuario se loguea por recurso
+                    // Si el usuario se loguea por recurso.
                     if ((rol.recursos.Count() == 1) && (rol.zonas.Count() == 0))
                     {
                         Recurso recurso = null;
+
                         // Verifica que el recurso seleccionado sea seleccionable por el usuario.
                         foreach (Grupo_Recurso gr in user.Grupos_Recursos)
                         {
                             recurso = gr.Recursos.FirstOrDefault(r => r.Id == rol.recursos.FirstOrDefault().id);
                             if (recurso != null)
+                            {
                                 break;
+                            }  
                         }
+
                         // Si es seleccionable y esta libre se lo asigna y lo marca como no disponible.
                         if ((recurso != null) && (recurso.Estado == EstadoRecurso.Disponible))
                         {
@@ -181,17 +197,20 @@ namespace Emsys.LogicLayer
                             context.SaveChanges();
                             return true;
                         }
+
                         // Si el recurso no se encuentra disponible se lanza una excepcion.
                         else if ((recurso != null) && (recurso.Estado == EstadoRecurso.NoDisponible))
                         {
                             throw new RecursoNoDisponibleException();
                         }
+
                         // Si el recurso no existe o el usuario no tiene acceso a este se retorna false.
                         else
                         {
                             return false;
                         }
                     }
+
                     // Si el usuario se loguea por zonas.
                     else if ((rol.recursos.Count() == 0) && (rol.zonas.Count() > 0))
                     {
@@ -203,26 +222,31 @@ namespace Emsys.LogicLayer
                             {
                                 user.Zonas.Add(zona);
                             }
+
                             // Si existe una zona que no le corresponda no agrega ninguna zona.
                             else
                             {
                                 return false;
                             }
                         }
+
                         context.SaveChanges();
                         return true;
                     }
+
                     // Si el usuario se loguea como visitante.
                     else if ((rol.recursos.Count() == 0) && (rol.zonas.Count() == 0))
                     {
                         return true;
                     }
+
                     // Si se recibe una combinacion de zonas y recursos o mas de un recurso retorna false.
                     else
                     {
                         return false;
                     }
                 }
+
                 throw new InvalidTokenException();
             }
         }
@@ -235,6 +259,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -253,6 +278,7 @@ namespace Emsys.LogicLayer
                             }
                         }
                     }
+
                     // Si el usuario esta conectado por zonas.
                     else if (user.Zonas.Count() > 0)
                     {
@@ -268,12 +294,13 @@ namespace Emsys.LogicLayer
                             }
                         }
                     }
+
                     return eventos;
                 }
+
                 throw new InvalidTokenException();
             }
         }
-
 
         public bool cerrarSesion(string token)
         {
@@ -283,6 +310,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -291,6 +319,7 @@ namespace Emsys.LogicLayer
                     {
                         r.Estado = EstadoRecurso.Disponible;
                     }
+
                     user.Recurso.Clear();
                     user.Token = null;
                     user.FechaInicioSesion = null;
@@ -298,29 +327,29 @@ namespace Emsys.LogicLayer
                     context.SaveChanges();
                     return true;
                 }
+
                 throw new InvalidTokenException();
             }
         }
 
-
         public string getNombreUsuario(string token)
         {
-
             using (var context = new EmsysContext())
             {
                 if (token == null)
                 {
-                    return "";
+                    return string.Empty;
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
                     return user.NombreLogin;
                 }
-                return "";
+
+                return string.Empty;
             }
         }
-
 
         public void AgregarLog(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo)
         {
@@ -328,12 +357,14 @@ namespace Emsys.LogicLayer
             {
                 using (EmsysContext context = new EmsysContext())
                 {
-                    string IdUsuario = "";
+                    string IdUsuario = string.Empty;
                     if (token != null)
                     {
                         var user = context.Users.FirstOrDefault(u => u.Token == token);
                         if (user != null)
+                        {
                             IdUsuario = user.NombreLogin;
+                        }    
                     }
 
                     Log log = new Log();
@@ -358,6 +389,7 @@ namespace Emsys.LogicLayer
                 {
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Errores");
                 }
+
                 string ruta = string.Format("{0}Errores\\{1}", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss").Replace(" ", "").Replace(":", "_") + ".txt");
 
                 StreamWriter fs = File.CreateText(ruta);
@@ -367,12 +399,10 @@ namespace Emsys.LogicLayer
                         "Innerexception: " + e.InnerException + "\n" +
                         "Source: " + e.Source + "\n" +
                         "StackTrace: " + e.StackTrace + "\n" +
-                        "TargetSite: " + e.TargetSite + "\n"
-                        );
+                        "TargetSite: " + e.TargetSite + "\n");
                 fs.Close();
             }
         }
-
 
         public void AgregarLogError(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo)
         {
@@ -385,7 +415,9 @@ namespace Emsys.LogicLayer
                     {
                         var user = context.Users.FirstOrDefault(u => u.Token == token);
                         if (user != null)
+                        {
                             IdUsuario = user.NombreLogin;
+                        }    
                     }
 
                     Log log = new Log();
@@ -401,7 +433,6 @@ namespace Emsys.LogicLayer
                     log.EsError = false;
                     context.Logs.Add(log);
                     context.SaveChanges();
-
                 }
             }
             catch (Exception e)
@@ -412,6 +443,7 @@ namespace Emsys.LogicLayer
                 {
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Errores");
                 }
+
                 string ruta = string.Format("{0}Errores\\{1}", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss").Replace(" ", "").Replace(":", "_") + ".txt");
 
                 StreamWriter fs = File.CreateText(ruta);
@@ -421,12 +453,10 @@ namespace Emsys.LogicLayer
                         "Innerexception: " + e.InnerException + "\n" +
                         "Source: " + e.Source + "\n" +
                         "StackTrace: " + e.StackTrace + "\n" +
-                        "TargetSite: " + e.TargetSite + "\n"
-                        );
+                        "TargetSite: " + e.TargetSite + "\n");
                 fs.Close();
             }
         }
-
 
         public DtoEvento verInfoEvento(string token, int idEvento)
         {
@@ -436,6 +466,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -444,12 +475,13 @@ namespace Emsys.LogicLayer
                     {
                         return DtoGetters.getDtoEvento(evento);
                     }
+
                     throw new EventoInvalidoException();
                 }
+
                 throw new InvalidTokenException();
             }
         }
-
 
         public bool adjuntarGeoUbicacion(string token, DtoGeoUbicacion ubicacion)
         {
@@ -459,6 +491,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -471,12 +504,13 @@ namespace Emsys.LogicLayer
                         context.SaveChanges();
                         return true;
                     }
+
                     return false;
                 }
+
                 throw new InvalidTokenException();
             }
         }
-
 
         public int agregarFileData(byte[] data, string extension)
         {
@@ -484,10 +518,14 @@ namespace Emsys.LogicLayer
             {
                 string nombre;
                 if (context.ApplicationFiles.Count() != 0)
+                {
                     nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extension;
+                }
                 else
+                {
                     nombre = "1" + extension;
-
+                }
+                    
                 var file = new ApplicationFile() { Nombre = nombre, FileData = data };
                 context.ApplicationFiles.Add(file);
                 context.SaveChanges();
@@ -503,6 +541,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -519,9 +558,11 @@ namespace Emsys.LogicLayer
                                 {
                                     return DtoGetters.GetDtoApplicationfile(img.ImagenData);
                                 }
+
                                 throw new UsuarioNoAutorizadoException();
                             }
                         }
+
                         // Si es la imagen de un evento.
                         else if (img.Evento != null)
                         {
@@ -532,17 +573,20 @@ namespace Emsys.LogicLayer
                                 {
                                     return DtoGetters.GetDtoApplicationfile(img.ImagenData);
                                 }
+
                                 throw new UsuarioNoAutorizadoException();
                             }
                         }
+
                         return null;
                     }
+
                     throw new ImagenInvalidaException();
                 }
+
                 throw new InvalidTokenException();
             }
         }
-
 
         public DtoApplicationFile getVideoData(string token, int idAdjunto)
         {
@@ -552,6 +596,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -568,9 +613,11 @@ namespace Emsys.LogicLayer
                                 {
                                     return DtoGetters.GetDtoApplicationfile(vid.VideoData);
                                 }
+
                                 throw new UsuarioNoAutorizadoException();
                             }
                         }
+
                         // Si el video es de un evento.
                         else if (vid.Evento != null)
                         {
@@ -581,17 +628,20 @@ namespace Emsys.LogicLayer
                                 {
                                     return DtoGetters.GetDtoApplicationfile(vid.VideoData);
                                 }
+
                                 throw new UsuarioNoAutorizadoException();
                             }
                         }
+
                         return null;
                     }
+
                     throw new VideoInvalidoException();
                 }
+
                 throw new InvalidTokenException();
             }
         }
-
 
         public DtoApplicationFile getAudioData(string token, int idAdjunto)
         {
@@ -601,6 +651,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -617,9 +668,11 @@ namespace Emsys.LogicLayer
                                 {
                                     return DtoGetters.GetDtoApplicationfile(aud.AudioData);
                                 }
+
                                 throw new UsuarioNoAutorizadoException();
                             }
                         }
+
                         // Si el video es de un evento.
                         else if (aud.Evento != null)
                         {
@@ -630,17 +683,20 @@ namespace Emsys.LogicLayer
                                 {
                                     return DtoGetters.GetDtoApplicationfile(aud.AudioData);
                                 }
+
                                 throw new UsuarioNoAutorizadoException();
                             }
                         }
+
                         return null;
                     }
+
                     throw new AudioInvalidoException();
                 }
+
                 throw new InvalidTokenException();
             }
         }
-
 
         public bool adjuntarImagen(string token, DtoImagen imagen)
         {
@@ -650,6 +706,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -672,12 +729,13 @@ namespace Emsys.LogicLayer
                             return false;
                         }
                     }
+
                     return false;
                 }
+
                 throw new InvalidTokenException();
             }
         }
-
 
         public bool adjuntarVideo(string token, DtoVideo video)
         {
@@ -687,6 +745,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -709,13 +768,13 @@ namespace Emsys.LogicLayer
                             return false;
                         }
                     }
+
                     return false;
                 }
+
                 throw new InvalidTokenException();
             }
         }
-
-
 
         public bool adjuntarAudio(string token, DtoAudio audio)
         {
@@ -725,6 +784,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -747,25 +807,27 @@ namespace Emsys.LogicLayer
                             return false;
                         }
                     }
+
                     return false;
                 }
+
                 throw new InvalidTokenException();
             }
         }
-
 
         /// <summary>
         /// Implementacion de ActualizarDescripcionRecurso, actualiza la descripcion segun los parametros.
         /// </summary>
         /// <param name="descParam">Data Type Object con la descripcion a agregar y la fecha.</param>
         /// <param name="token">Identificador unico del usuario.</param>
-        /// <returns></returns>
+        /// <returns>Mensaje de exito.</returns>
         public Mensaje ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token)
         {
             if (token == null)
             {
                 throw new InvalidTokenException();
             }
+
             using (var context = new EmsysContext())
             {
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
@@ -774,17 +836,19 @@ namespace Emsys.LogicLayer
                     var extension = context.Extensiones_Evento.Find(descParam.idExtension);
                     if (extension != null)
                     {
-                        //verifico que la extension sea del usuario
+                        // Verifico que la extension sea del usuario.
                         bool extensionAsociadaUsuario = ExtensionAsociadaUsuario(descParam.idExtension, user);
                         if (!extensionAsociadaUsuario)
                         {
                             throw new InvalidExtensionForUserException();
                         }
+
                         foreach (var item in extension.AccionesRecursos)
                         {
                             item.AsignacionRecursoDescripcion.Add(new AsignacionRecursoDescripcion(descParam.dtoDescripcion.descripcion, descParam.dtoDescripcion.fecha));
                             context.SaveChanges();
                         }
+
                         return new Mensaje("Exito.");
                     }
                     else
@@ -792,16 +856,18 @@ namespace Emsys.LogicLayer
                         throw new InvalidExtensionException();
                     }
                 }
+
                 throw new InvalidTokenException();
             }
         }
+
         /// <summary>
         /// Funcion interna que verifica si para algun recurso del usuario esta asociada a la extension.
         /// </summary>
         /// <param name="extensionId">Identificacion de la extension.</param>
-        /// <param name="user">Usuario.</param>
+        /// <param name="user">Usuario por el que se consulta.</param>
         /// <returns>Si la extension esta asociada al usuario o no.</returns>
-        private static bool ExtensionAsociadaUsuario(int  extensionId, Usuario user)
+        private static bool ExtensionAsociadaUsuario(int extensionId, Usuario user)
         {
             bool extensionAsociadaUsuario = false;
             foreach (var recursoUsuario in user.Grupos_Recursos)
@@ -809,26 +875,26 @@ namespace Emsys.LogicLayer
                 var recursos = recursoUsuario.Recursos; 
                 foreach (var item in recursos)
                 {
-                    var extensionUsuario= item.Extensiones_Eventos.FirstOrDefault(x => x.Id == extensionId);
+                    var extensionUsuario = item.Extensiones_Eventos.FirstOrDefault(x => x.Id == extensionId);
                     if (extensionUsuario != null)
                     {
                         extensionAsociadaUsuario = true;
                     }
-                }
-                
+                }  
             }
+
             return extensionAsociadaUsuario;
         }
 
-
         public bool keepMeAlive(string token)
         {
-            if (token == null)
-            {
-                throw new InvalidTokenException();
-            }
             using (var context = new EmsysContext())
             {
+                if (token == null)
+                {
+                    throw new InvalidTokenException();
+                }
+
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user != null)
                 {
@@ -836,6 +902,7 @@ namespace Emsys.LogicLayer
                     context.SaveChanges();
                     return true;
                 }
+
                 throw new InvalidTokenException();
             }
         }

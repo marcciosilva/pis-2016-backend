@@ -7,14 +7,12 @@
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-
     public enum EstadoExtension
     {
         FaltaDespachar,
         Despachado,
         Cerrado
     }
-
 
     [Table("Extensiones_Evento")]
     public partial class Extension_Evento

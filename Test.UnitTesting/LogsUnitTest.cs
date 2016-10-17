@@ -17,17 +17,16 @@ namespace Test.UnitTesting
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
 
-            var cantidadLogsPrevia = db.Logs.Count()+1;
+            var cantidadLogsPrevia = db.Logs.Count() + 1;
             int PruebaConstante = 12345678;
             string nombre = "A";
             IMetodos dbAL = new Metodos();
             dbAL.AgregarLog(nombre, "1:1:1:1", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);            
             var cantidadLogsDespues = db.Logs.Count();
-            Assert.True(cantidadLogsPrevia==cantidadLogsDespues);
+            Assert.True(cantidadLogsPrevia == cantidadLogsDespues);
             db.SaveChanges();
             var log = db.Logs.FirstOrDefault(x => x.Terminal == "1:1:1:1");
             Assert.NotNull(log);
-
         }
 
         [Test]

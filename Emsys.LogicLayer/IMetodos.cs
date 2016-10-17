@@ -9,7 +9,6 @@ namespace Emsys.LogicLayer
 {
     public interface IMetodos
     {
-
         /// <summary>
         /// Interfaz Autenticar usuario implentado por la capa de servicios.
         /// </summary>
@@ -21,7 +20,7 @@ namespace Emsys.LogicLayer
         /// <summary>
         /// Obtiene el rol del usuario dado un token.
         /// </summary>
-        /// <param name="token"></param>
+        /// <param name="token">Identificador unico del usuario.</param>
         /// <returns>Retorna los roles del usuario segun el token.</returns>
         DtoRol getRolUsuario(string token);
 
@@ -86,7 +85,6 @@ namespace Emsys.LogicLayer
         /// <param name="accion">Nombre del metodo o funcion que ejecuto una accion y guardo un log.</param>
         /// <param name="detalles">Informacion adicional.</param>
         /// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
-        /// <param name="codigo"></param>
         void AgregarLogError(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo);
         
         /// <summary>
@@ -173,9 +171,10 @@ namespace Emsys.LogicLayer
 
 
         /// <summary>
-        /// Interfaz Actualizar descripcion  implentado por la capa de servicios.
+        /// Interfaz Actualizar descripcion implentado por la capa de servicios.
         /// </summary>
         /// <param name="descParam">Contiene identificador de la extension y la descripcion que se quiere agregar.</param>
+        /// <param name="token">token del usuario que desea actualizar descripcion</param>
         /// <returns>Retorna la respuesta segun el documento de interfaz.</returns>
         Mensaje ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token);
 

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using System.Net.Http;
 using System.Threading;
 using System.Web.Http.Controllers;
@@ -23,6 +22,7 @@ namespace Servicios.Filtros
         {
             PermisosEtiqueta = permisos;
         }
+
         /// <summary>
         /// Sobreescritura del metodo de autorizacion de AuthorizeAtribute
         /// </summary>
@@ -30,7 +30,9 @@ namespace Servicios.Filtros
         public override void OnAuthorization(HttpActionContext actionContext)
         {
             if (IsAuthorized(actionContext))
+            {
                 base.OnAuthorization(actionContext);
+            }
             else
             {
                 HttpResponseMessage responseMessage = new HttpResponseMessage()
@@ -40,6 +42,7 @@ namespace Servicios.Filtros
                 actionContext.Response = responseMessage;
             }
         }
+
         /// <summary>
         /// Metodo que retorna si el usuario esta autorizdo a realizar la opreacion para la cual se utilizo la etiqueta.
         /// </summary>
@@ -52,6 +55,7 @@ namespace Servicios.Filtros
             {
                 return false;
             }
+
             IMetodos dbAL = new Metodos();
             return dbAL.autorizarUsuario(token, PermisosEtiqueta);            
         }

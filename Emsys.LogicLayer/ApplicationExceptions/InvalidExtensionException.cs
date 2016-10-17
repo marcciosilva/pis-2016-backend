@@ -12,7 +12,6 @@ namespace Emsys.LogicLayer.ApplicationExceptions
         {
         }
        
-
         public InvalidExtensionException(string message)
         : base(message)
         {

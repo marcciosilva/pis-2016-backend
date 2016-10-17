@@ -39,6 +39,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }
+
                 var request = HttpContext.Current.Request;
                 if (request.Files.Count > 0)
                 {
@@ -52,11 +53,14 @@ namespace Servicios.Controllers
                             postedFile.InputStream.CopyTo(ms);
                             bytesImagen = ms.ToArray();
                         }
+
                         int cod = dbAL.agregarFileData(bytesImagen, ext);
                         return new DtoRespuesta(0, cod);
-                    }        
+                    }   
+                         
                     return new DtoRespuesta(13, new Mensaje(Mensajes.FormatoNoSoportado));
                 }
+
                 return new DtoRespuesta(12, new Mensaje(Mensajes.ErrorEnviarArchivo));
             }
             catch (Exception e)
@@ -98,11 +102,14 @@ namespace Servicios.Controllers
                             postedFile.InputStream.CopyTo(ms);
                             bytesImagen = ms.ToArray();
                         }
+
                         int cod = dbAL.agregarFileData(bytesImagen, ext);
                         return new DtoRespuesta(0, cod);
                     }
+
                     return new DtoRespuesta(13, new Mensaje(Mensajes.FormatoNoSoportado));
                 }
+
                 return new DtoRespuesta(12, new Mensaje(Mensajes.ErrorEnviarArchivo));
             }
             catch (Exception e)
@@ -144,11 +151,14 @@ namespace Servicios.Controllers
                             postedFile.InputStream.CopyTo(ms);
                             bytesImagen = ms.ToArray();
                         }
+
                         int cod = dbAL.agregarFileData(bytesImagen, ext);
                         return new DtoRespuesta(0, cod);
                     }
+
                     return new DtoRespuesta(13, new Mensaje(Mensajes.FormatoNoSoportado));
                 }
+
                 return new DtoRespuesta(12, new Mensaje(Mensajes.ErrorEnviarArchivo));
             }
             catch (Exception e)
@@ -161,6 +171,7 @@ namespace Servicios.Controllers
         /// <summary>
         /// Permite enviar una geo ubicacion al servidor e indicar a que evento o extension le pertenece.
         /// </summary>
+        /// <param name="ubicacion">Ubicación a adjuntar</param>
         /// <returns>Un DtoRespuesta que indica si se agrego correctamente</returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
@@ -176,10 +187,12 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }
+
                 if (dbAL.adjuntarGeoUbicacion(token, ubicacion))
                 {
                     return new DtoRespuesta(0, null);
                 }
+
                 return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
             }
             catch (InvalidTokenException)
@@ -212,10 +225,12 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }
+
                 if (dbAL.adjuntarImagen(token, imagen))
                 {
                     return new DtoRespuesta(0, null);
                 }
+
                 return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
             }
             catch (InvalidTokenException)
@@ -228,7 +243,6 @@ namespace Servicios.Controllers
                 return new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }
         }
-
 
         /// <summary>
         /// Agrega un vdieo a un evento o extension.
@@ -249,10 +263,12 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }
+
                 if (dbAL.adjuntarVideo(token, video))
                 {
                     return new DtoRespuesta(0, null);
                 }
+
                 return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
             }
             catch (InvalidTokenException)
@@ -285,10 +301,12 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }
+
                 if (dbAL.adjuntarAudio(token, audio))
                 {
                     return new DtoRespuesta(0, null);
                 }
+
                 return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
             }
             catch (InvalidTokenException)
@@ -301,7 +319,6 @@ namespace Servicios.Controllers
                 return new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado));
             }
         }
-
 
         /// <summary>
         /// Retorna el archivo de imagen indicada.
@@ -324,12 +341,14 @@ namespace Servicios.Controllers
                     responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado))));
                     return responseMessage;
                 }
+
                 var img = dbAL.getImageData(token, idImagen);
-                if(img == null)
+                if (img == null)
                 {
                     responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.ImagenInvalida))));
                     return responseMessage;                   
                 }
+
                 var stream = new MemoryStream(img.file_data);
                 responseMessage.Content = new StreamContent(stream);
                 responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
@@ -337,7 +356,6 @@ namespace Servicios.Controllers
                 responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                 responseMessage.Content.Headers.ContentLength = stream.Length;
                 return responseMessage;
-
             }
             catch (ImagenInvalidaException)
             {
@@ -362,7 +380,6 @@ namespace Servicios.Controllers
             }
         }
 
-
         /// <summary>
         /// Retorna el archivo del video indicado.
         /// </summary>
@@ -384,12 +401,14 @@ namespace Servicios.Controllers
                     responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado))));
                     return responseMessage;
                 }
+
                 var vid = dbAL.getVideoData(token, idVideo);
                 if (vid == null)
                 {
                     responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.VideoInvalido))));
                     return responseMessage;
                 }
+
                 var stream = new MemoryStream(vid.file_data);
                 responseMessage.Content = new StreamContent(stream);
                 responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
@@ -397,7 +416,6 @@ namespace Servicios.Controllers
                 responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                 responseMessage.Content.Headers.ContentLength = stream.Length;
                 return responseMessage;
-
             }
             catch (VideoInvalidoException)
             {
@@ -422,7 +440,6 @@ namespace Servicios.Controllers
             }
         }
 
-
         /// <summary>
         /// Retorna el archivo de audio indicado.
         /// </summary>
@@ -444,12 +461,14 @@ namespace Servicios.Controllers
                     responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado))));
                     return responseMessage;
                 }
+
                 var aud = dbAL.getAudioData(token, idAudio);
                 if (aud == null)
                 {
                     responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.AudioInvalido))));
                     return responseMessage;
                 }
+
                 var stream = new MemoryStream(aud.file_data);
                 responseMessage.Content = new StreamContent(stream);
                 responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
@@ -457,7 +476,6 @@ namespace Servicios.Controllers
                 responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
                 responseMessage.Content.Headers.ContentLength = stream.Length;
                 return responseMessage;
-
             }
             catch (AudioInvalidoException)
             {

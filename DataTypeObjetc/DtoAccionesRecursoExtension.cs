@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 
 namespace DataTypeObject
 {
-
     public class DtoAccionesRecursoExtension
     {
         public int id { get; set; }
@@ -18,6 +17,5 @@ namespace DataTypeObject
         public DateTime fecha_arribo { get; set; }
 
         public bool actualmente_asignado { get; set; }
-
     }
 }

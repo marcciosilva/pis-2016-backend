@@ -16,7 +16,6 @@ namespace Test.UnitTesting
         [Test]
         public void PruebaNotificar()
         {
-
             INotifications manejadorNotificaciones = FactoryNotifications.GetInstance();
             manejadorNotificaciones.SendMessage("Esto es una prueba", "#####", "Prueba");
             Assert.IsTrue(true);
@@ -28,7 +27,7 @@ namespace Test.UnitTesting
             try
             {
                 string[] entrada = new string[1];
-                Thread workerThread = new Thread(new ThreadStart(SqlDependecyProject.Program.Listener));
+                Thread workerThread = new Thread(new ThreadStart(SqlDependecyProject.ProcesoExtensiones.Listener));
                 workerThread.Start();
 
                 using (EmsysContext db = new EmsysContext())
@@ -40,8 +39,10 @@ namespace Test.UnitTesting
                         evento.Categoria = db.Categorias.FirstOrDefault();
                         evento.Sector = db.Sectores.FirstOrDefault();
                     }
+
                     db.SaveChanges();
                 }
+
                 Thread.Sleep(5000);
                 // workerThread.Abort();
                 workerThread.Join();
@@ -56,7 +57,8 @@ namespace Test.UnitTesting
                     }
                 }
             }
-            //esto aca esta mal, pero como tengo un cliente de firebase en .net no puedo ver si la notificacion se hizo. Pro lo menos cubre codigo.
+
+            // Esto aca esta mal, pero como tengo un cliente de firebase en .net no puedo ver si la notificacion se hizo. Por lo menos cubre codigo.
             Assert.IsTrue(true);
         }
     }

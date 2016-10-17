@@ -9,9 +9,10 @@ namespace Emsys.DataAccesLayer.Core
     {
         public Configuration()
         {
-            AutomaticMigrationsEnabled = true;
+            this.AutomaticMigrationsEnabled = true;
             //AutomaticMigrationDataLossAllowed = true;
         }
+
         /// <summary>
         /// Este metodo sirve para ingresar contenido a la base de datos.
         /// </summary>
@@ -20,13 +21,12 @@ namespace Emsys.DataAccesLayer.Core
         {
             try
             {
-
-                //Agregar unidades ejecutoras.
+                // Agregar unidades ejecutoras.
                 Unidad_Ejecutora ue1 = new Unidad_Ejecutora() { Id = 1, Nombre = "ue1" };
                 Unidad_Ejecutora ue2 = new Unidad_Ejecutora() { Id = 2, Nombre = "ue2" };
                 Unidad_Ejecutora ue3 = new Unidad_Ejecutora() { Id = 3, Nombre = "ue3" };
 
-                //no va por que se agrega luego
+                // No va por que se agrega luego.
                 //context.Unidades_Ejecutoras.AddOrUpdate(x => x.Id, ue1);
                 //context.Unidades_Ejecutoras.AddOrUpdate(x => x.Id, ue2);
                 //context.Unidades_Ejecutoras.AddOrUpdate(x => x.Id, ue3);
@@ -37,7 +37,7 @@ namespace Emsys.DataAccesLayer.Core
                 Zona zona3 = new Zona() { Id = 3, Nombre = "zona3", UnidadEjecutora = ue2 };
                 Zona zona4 = new Zona() { Id = 4, Nombre = "zona4", UnidadEjecutora = ue3 };
 
-                //se agregan luego
+                // Se agregan luego.
                 //context.Zonas.AddOrUpdate(y => y.Id, zona1);
                 //context.Zonas.AddOrUpdate(y => y.Id, zona2);
                 //context.Zonas.AddOrUpdate(y => y.Id, zona3);
@@ -49,7 +49,7 @@ namespace Emsys.DataAccesLayer.Core
                 Sector sector3 = new Sector() { Id = 3, Nombre = "sector3", Zona = zona3 };
                 Sector sector4 = new Sector() { Id = 4, Nombre = "sector4", Zona = zona4 };
 
-                //se agregan luego
+                // Se agregan luego.
                 //context.Sectores.AddOrUpdate(m => m.Id, sector1);
                 //context.Sectores.AddOrUpdate(m => m.Id, sector2);
                 //context.Sectores.AddOrUpdate(m => m.Id, sector3);
@@ -58,7 +58,6 @@ namespace Emsys.DataAccesLayer.Core
                 // Agregar grupos recursos.
                 Grupo_Recurso gr1 = new Grupo_Recurso() { Id = 1, Nombre = "gr1" };
                 Grupo_Recurso gr2 = new Grupo_Recurso() { Id = 2, Nombre = "gr2" };
-
 
                 // Agregar categorias.
                 Categoria cat1 = new Categoria() { Id = 1, Codigo = "cod1", Clave = "Categoria de prueba 1", Prioridad = NombrePrioridad.Baja, Activo = true };
@@ -74,15 +73,13 @@ namespace Emsys.DataAccesLayer.Core
                 Recurso rec2 = new Recurso() { Id = 2, Codigo = "recurso2", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Grupos_Recursos = new List<Grupo_Recurso>(), Extensiones_Eventos = new List<Extension_Evento>() };
                 Recurso rec3 = new Recurso() { Id = 3, Codigo = "recurso3", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Grupos_Recursos = new List<Grupo_Recurso>(), Extensiones_Eventos = new List<Extension_Evento>() };
 
-
-                // Agregar recursos a grupos recursos. No se agregan directo
+                // Agregar recursos a grupos recursos. No se agregan directo.
                 rec1.Grupos_Recursos.Add(gr1);
                 rec2.Grupos_Recursos.Add(gr2);
 
                 context.Recursos.AddOrUpdate(m => m.Id, rec1);
                 context.Recursos.AddOrUpdate(m => m.Id, rec2);
                 context.Recursos.AddOrUpdate(m => m.Id, rec3);
-
 
                 // Agregar rol.
                 Rol rol1 = new Rol() { Id = 1, Nombre = "Admin", Permisos = new List<Permiso>() };
@@ -107,14 +104,13 @@ namespace Emsys.DataAccesLayer.Core
                 var user3 = new Usuario() { Id = 3, NombreLogin = "C", Contraseña = "32096c2e0eff33d844ee6d675407ace18289357d", Nombre = "Usuario3", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
                 var user4 = new Usuario() { Id = 4, NombreLogin = "D", Contraseña = "50c9e8d5fc98727b4bbc93cf5d64a68db647f04f", Nombre = "Usuario4", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
 
-
-                //se agregan luego
+                // Se agregan luego.
                 context.Users.AddOrUpdate(x => x.Id, user1);
                 context.Users.AddOrUpdate(x => x.Id, user2);
                 context.Users.AddOrUpdate(x => x.Id, user3);
                 context.Users.AddOrUpdate(x => x.Id, user4);
 
-                //    // Asignar rol a usuarios.
+                // Asignar rol a usuarios.
                 user1.ApplicationRoles.Add(rol1);
                 user2.ApplicationRoles.Add(rol1);
                 user3.ApplicationRoles.Add(rol1);
@@ -135,7 +131,6 @@ namespace Emsys.DataAccesLayer.Core
                 user4.Unidades_Ejecutoras.Add(ue1);
                 user4.Unidades_Ejecutoras.Add(ue2);
 
-
                 // Agregar eventos.
                 Evento evento1 = new Evento()
                 {
@@ -144,7 +139,7 @@ namespace Emsys.DataAccesLayer.Core
                     Estado = EstadoEvento.Enviado,
                     Usuario = user1,
                     Sector = sector1,
-                    Descripcion = "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
+                    Descripcion = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas semper mollis velit et euismod. Donec et fringilla risus. Praesent fermentum mi sit amet dui varius, et hendrerit ex congue. Cras consectetur vel ex sit amet consectetur. Curabitur ac tincidunt nisi, in dignissim dui. Fusce placerat arcu at leo dictum, ac rutrum massa ullamcorper. Proin ut ex est. Curabitur lectus libero, facilisis vitae lacus eget, auctor pulvinar ex. Vestibulum in ligula scelerisque, viverra purus sed, consectetur dui. Aenean ut nisl tellus. Aliquam at metus dolor. In eros ligula, accumsan ac dui eu, efficitur bibendum risus. Sed quam metus, malesuada quis placerat a, maximus vitae ipsum.",
                     EnProceso = true,
                     TimeStamp = DateTime.Now,
                     FechaCreacion = DateTime.Now,
@@ -182,7 +177,7 @@ namespace Emsys.DataAccesLayer.Core
                 Extension_Evento ext1 = new Extension_Evento()
                 {
                     Id = 1,
-                    DescripcionDespachador = "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
+                    DescripcionDespachador = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas semper mollis velit et euismod. Donec et fringilla risus. Praesent fermentum mi sit amet dui varius, et hendrerit ex congue. Cras consectetur vel ex sit amet consectetur. Curabitur ac tincidunt nisi, in dignissim dui. Fusce placerat arcu at leo dictum, ac rutrum massa ullamcorper. Proin ut ex est. Curabitur lectus libero, facilisis vitae lacus eget, auctor pulvinar ex. Vestibulum in ligula scelerisque, viverra purus sed, consectetur dui. Aenean ut nisl tellus. Aliquam at metus dolor. In eros ligula, accumsan ac dui eu, efficitur bibendum risus. Sed quam metus, malesuada quis placerat a, maximus vitae ipsum.",
                     Evento = evento1,
                     Zona = zona1,
                     Estado = EstadoExtension.FaltaDespachar,
@@ -198,12 +193,12 @@ namespace Emsys.DataAccesLayer.Core
                     Extension = ext1,
                     FechaArribo = DateTime.Now,
                     Recurso = rec1,
-                    Descripcion = ""
+                    Descripcion = string.Empty
                 });
                 Extension_Evento ext2 = new Extension_Evento()
                 {
                     Id = 2,
-                    DescripcionDespachador = "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
+                    DescripcionDespachador = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas semper mollis velit et euismod. Donec et fringilla risus. Praesent fermentum mi sit amet dui varius, et hendrerit ex congue. Cras consectetur vel ex sit amet consectetur. Curabitur ac tincidunt nisi, in dignissim dui. Fusce placerat arcu at leo dictum, ac rutrum massa ullamcorper. Proin ut ex est. Curabitur lectus libero, facilisis vitae lacus eget, auctor pulvinar ex. Vestibulum in ligula scelerisque, viverra purus sed, consectetur dui. Aenean ut nisl tellus. Aliquam at metus dolor. In eros ligula, accumsan ac dui eu, efficitur bibendum risus. Sed quam metus, malesuada quis placerat a, maximus vitae ipsum.",
                     Evento = evento2,
                     Zona = zona2,
                     Estado = EstadoExtension.FaltaDespachar,
@@ -212,7 +207,7 @@ namespace Emsys.DataAccesLayer.Core
                 Extension_Evento ext3 = new Extension_Evento()
                 {
                     Id = 3,
-                    DescripcionDespachador = "Lorem Ipsum es simplemente el texto de relleno de las imprentas y archivos de texto. Lorem Ipsum ha sido el texto de relleno estándar de las industrias desde el año 1500, cuando un impresor (N. del T. persona que se dedica a la imprenta) desconocido usó una galería de textos y los mezcló de tal manera que logró hacer un libro de textos especimen. No sólo sobrevivió 500 años, sino que tambien ingresó como texto de relleno en documentos electrónicos, quedando esencialmente igual al original. Fue popularizado en los 60s con la creación de las hojas las cuales contenian pasajes de Lorem Ipsum, y más recientemente con software de autoedición, como por ejemplo Aldus PageMaker, el cual incluye versiones de Lorem Ipsum.",
+                    DescripcionDespachador = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas semper mollis velit et euismod. Donec et fringilla risus. Praesent fermentum mi sit amet dui varius, et hendrerit ex congue. Cras consectetur vel ex sit amet consectetur. Curabitur ac tincidunt nisi, in dignissim dui. Fusce placerat arcu at leo dictum, ac rutrum massa ullamcorper. Proin ut ex est. Curabitur lectus libero, facilisis vitae lacus eget, auctor pulvinar ex. Vestibulum in ligula scelerisque, viverra purus sed, consectetur dui. Aenean ut nisl tellus. Aliquam at metus dolor. In eros ligula, accumsan ac dui eu, efficitur bibendum risus. Sed quam metus, malesuada quis placerat a, maximus vitae ipsum.",
                     Evento = evento3,
                     Zona = zona4,
                     Estado = EstadoExtension.FaltaDespachar,
@@ -236,12 +231,10 @@ namespace Emsys.DataAccesLayer.Core
                 context.Extensiones_Evento.AddOrUpdate(x => x.Id, ext1);
                 context.Extensiones_Evento.AddOrUpdate(x => x.Id, ext2);
                 context.Extensiones_Evento.AddOrUpdate(x => x.Id, ext3);
-
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
-
             }
         }
     }

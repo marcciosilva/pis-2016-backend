@@ -20,7 +20,7 @@
 
         public static DtoAsignacionRecurso getDtoAsignacionesRecursos(AsignacionRecurso asignacionRecurso)
         {
-            DtoAsignacionRecurso res =  new DtoAsignacionRecurso()
+            DtoAsignacionRecurso res = new DtoAsignacionRecurso()
             {
                 id = asignacionRecurso.Id,
                 recurso = asignacionRecurso.Recurso.Codigo,
@@ -38,6 +38,7 @@
                     texto = item.Descripcion,
                 });
             }
+
             return res;
         }
 
@@ -114,7 +115,6 @@
             };
         }
 
-
         public static DtoItemListar getDtoItemListar(Extension_Evento ext)
         {
             DtoCategoria cat = null;
@@ -129,7 +129,9 @@
 
             string desp = null;
             if (ext.Estado == EstadoExtension.Despachado)
+            {
                 desp = ext.Despachador.Nombre;
+            }    
 
             DtoGeoUbicacion geoU = null;
             if ((ext.Evento.Latitud != 0) && (ext.Evento.Longitud != 0))
@@ -150,40 +152,55 @@
             };
         }
 
-
         public static DtoExtension getDtoExtension(Extension_Evento ext)
         {
             List<string> recursos = new List<string>();
             foreach (Recurso r in ext.Recursos)
+            {
                 recursos.Add(r.Codigo);
+            }
 
             List<DtoAsignacionRecurso> asignaciones = new List<DtoAsignacionRecurso>();
             foreach (AsignacionRecurso a in ext.AccionesRecursos)
+            {
                 asignaciones.Add(getDtoAsignacionesRecursos(a));
+            }  
 
             DtoCategoria cat = null;
             if (ext.SegundaCategoria != null)
+            {
                 cat = getDtoCategoria(ext.SegundaCategoria);
+            }   
 
             string desp = null;
             if (ext.Despachador != null)
+            {
                 desp = ext.Despachador.Nombre;
+            }
 
             List<DtoImagen> imgs = new List<DtoImagen>();
             foreach (Imagen i in ext.Imagenes)
+            {
                 imgs.Add(getDtoImagen(i));
+            } 
 
             List<DtoVideo> vids = new List<DtoVideo>();
             foreach (Video v in ext.Videos)
+            {
                 vids.Add(getDtoVideo(v));
+            }    
 
             List<DtoAudio> auds = new List<DtoAudio>();
             foreach (Audio a in ext.Audios)
+            {
                 auds.Add(getDtoAudio(a));
+            }    
 
             List<DtoGeoUbicacion> geos = new List<DtoGeoUbicacion>();
             foreach (GeoUbicacion g in ext.GeoUbicaciones)
+            {
                 geos.Add(getDtoGeoUbicacion(g));
+            } 
 
             List<DtoDescripcion> descDespachadores;
             if (ext.DescripcionDespachador != null)
@@ -210,11 +227,9 @@
                 videos = vids,
                 audios = auds,
                 geo_ubicaciones = geos,
-                descripcion_despachadores= descDespachadores,
+                descripcion_despachadores = descDespachadores,
             };
-            
         }
-
 
         public static DtoEvento getDtoEvento(Evento evento)
         {
@@ -224,26 +239,35 @@
                 extensiones.Add(getDtoExtension(e));
             }
 
-
-            string dep = "";
+            string dep = string.Empty;
             if (evento.Departamento != null)
+            {
                 dep = evento.Departamento.Nombre;
+            }  
 
             List<DtoImagen> imgs = new List<DtoImagen>();
             foreach (Imagen i in evento.Imagenes)
+            {
                 imgs.Add(getDtoImagen(i));
+            }   
 
             List<DtoVideo> vids = new List<DtoVideo>();
             foreach (Video v in evento.Videos)
+            {
                 vids.Add(getDtoVideo(v));
+            }  
 
             List<DtoAudio> auds = new List<DtoAudio>();
             foreach (Audio a in evento.Audios)
+            {
                 auds.Add(getDtoAudio(a));
+            }
 
             string cread = null;
             if (evento.Usuario != null)
+            {
                 cread = evento.Usuario.Nombre;
+            }    
 
             return new DtoEvento()
             {
@@ -273,10 +297,11 @@
 
         /// <summary>
         /// Metodo auxiliar que convierte un string con formato hora1\\usuario1\\texto1\\hora2\\usuario2\\texto2....
-        /// en una colección de DtoDescripcion
+        /// en una colección de DtoDescripcion.
         /// </summary>
         /// <param name="descripcion"></param>
-        /// <returns></returns>
+        /// <param name="origen"></param>
+        /// <returns>Colección de DtoDescripcion</returns>
         private static IEnumerable<DtoDescripcion> parsearDesacripcion(string descripcion, OrigenDescripcion origen)
         {
             string[] separadores = { "\\" };

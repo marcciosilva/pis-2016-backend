@@ -13,7 +13,6 @@
         Enviado
     }
 
-
     [Table("Eventos")]
     public partial class Evento
     {
@@ -74,6 +73,5 @@
         public virtual ICollection<Audio> Audios { get; set; }
 
         public virtual ICollection<GeoUbicacion> GeoUbicaciones { get; set; }
-
     }
 }

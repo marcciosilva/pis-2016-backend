@@ -22,12 +22,14 @@ namespace Servicios.Filtros
                 var postData = actionContext.ActionArguments;
                 //do logging here
             }
+
             var actionName = actionContext.ActionDescriptor.ActionName;
             var controller = actionContext.ControllerContext.ControllerDescriptor.ControllerName;
             string token = ObtenerToken.GetToken(actionContext.Request);
             IMetodos dbAL = new Metodos();
             dbAL.AgregarLog(token, GetIp(actionContext.Request), "ServiceLayer", "", 0, controller + "Controller" + "/" + actionName, "Se llamo al metodo", CodigosLog.LogAccionesCod);
         }
+
         /// <summary>
         /// Metodo que devulve el identificador del dispositivo.
         /// </summary>
@@ -44,9 +46,8 @@ namespace Servicios.Filtros
             {
                 ip = HttpContext.Current.Request.ServerVariables["REMOTE_ADDR"];
             }
+
             return ip;
         }
     }
-
-
 }
