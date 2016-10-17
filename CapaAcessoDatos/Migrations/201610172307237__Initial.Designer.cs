@@ -7,18 +7,18 @@ namespace Emsys.DataAccesLayer.Core
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class keepAlive : IMigrationMetadata
+    public sealed partial class _Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(keepAlive));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(_Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201610151932475_keepAlive"; }
+            get { return "201610172307237__Initial"; }
         }
         
         string IMigrationMetadata.Source
         {
-            get { return Resources.GetString("Source"); }
+            get { return null; }
         }
         
         string IMigrationMetadata.Target

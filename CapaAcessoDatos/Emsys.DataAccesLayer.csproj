@@ -138,13 +138,9 @@
   <ItemGroup>
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
-    <Compile Include="Migrations\201610151846089__Initial.cs" />
-    <Compile Include="Migrations\201610151846089__Initial.Designer.cs">
-      <DependentUpon>201610151846089__Initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201610151932475_keepAlive.cs" />
-    <Compile Include="Migrations\201610151932475_keepAlive.Designer.cs">
-      <DependentUpon>201610151932475_keepAlive.cs</DependentUpon>
+    <Compile Include="Migrations\201610172307237__Initial.cs" />
+    <Compile Include="Migrations\201610172307237__Initial.Designer.cs">
+      <DependentUpon>201610172307237__Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\ApplicationFile.cs" />
     <Compile Include="Model\AsignacionRecursoDescripcion.cs" />
@@ -185,11 +181,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610151846089__Initial.resx">
-      <DependentUpon>201610151846089__Initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201610151932475_keepAlive.resx">
-      <DependentUpon>201610151932475_keepAlive.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610172307237__Initial.resx">
+      <DependentUpon>201610172307237__Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

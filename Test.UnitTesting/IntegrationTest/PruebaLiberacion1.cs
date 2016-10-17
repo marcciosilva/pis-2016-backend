@@ -23,8 +23,8 @@ namespace Test.UnitTesting
             {
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
 
-                var nombreUsuario = "A";
-                var contraseña = "A";
+                var nombreUsuario = "B";
+                var contraseña = "B";
 
                 // LOGIN.
                 var controllerLogin = new LoginController();
