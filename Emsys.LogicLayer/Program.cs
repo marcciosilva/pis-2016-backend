@@ -13,27 +13,17 @@ namespace Emsys.LogicLayer
     {
         public static void Main(string[] args)
         {
-            using (var context = new EmsysContext())
+            // Tiempo para el cual se desonectan usuarios (inactivos por mas de maxTime minutos). 
+            const int maxTime = 12;
+            // Tiempo cada el cual el servidor checkea por usuarios inactivos (cara refreshTime minutos).
+            const int refreshTime = 6;
+            Console.WriteLine("Started...");
+            IMetodos logica = new Metodos();
+            while (true)
             {
-                IMetodos logica = new Metodos();
-                DateTime ahora;
-                Console.WriteLine("Started...");
-                while (true)
-                {
-                    Console.WriteLine("Sleep...");
-                    Thread.Sleep(1 * 60 * 1000);
-                    ahora = DateTime.Now;
-                    foreach (Usuario user in context.Users)
-                    {
-                        if (user.Token != null && user.UltimoSignal != null)
-                        {
-                            if ((ahora.Subtract(user.UltimoSignal.Value)).Minutes > 1)
-                            {
-                                logica.cerrarSesion(user.Token);
-                            }
-                        }
-                    }
-                }
+                logica.desconectarAusentes(maxTime);
+                Console.WriteLine("Sleeping...");
+                Thread.Sleep(refreshTime * 60 * 1000);
             }
         }
     }

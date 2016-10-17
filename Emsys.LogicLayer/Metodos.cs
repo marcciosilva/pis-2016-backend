@@ -906,5 +906,36 @@ namespace Emsys.LogicLayer
                 throw new InvalidTokenException();
             }
         }
+
+        public void desconectarAusentes(int maxTime)
+        {
+            using (var context = new EmsysContext())
+            {
+                DateTime ahora = DateTime.Now;
+                foreach (Usuario user in context.Users)
+                {
+                    try
+                    {
+                        // Si el usuario cuenta con una sesion activa.
+                        if ((user.Token != null) && (user.UltimoSignal != null))
+                        {
+                            // Si el usuario esta inactivo.
+                            if ((ahora.Subtract(user.UltimoSignal.Value)).Minutes > maxTime)
+                            {
+                                cerrarSesion(user.Token);
+                                Console.WriteLine("Se desconecto al usuario <" + user.NombreLogin + ">");
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine("Ocurrio un error: " + e.ToString());
+                    }
+                }
+            }
+        }
+
+
+
     }
 }
