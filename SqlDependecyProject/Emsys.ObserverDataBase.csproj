@@ -104,6 +104,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="Emsys.ObserverDataBase_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Settings.StyleCop" />
   </ItemGroup>
