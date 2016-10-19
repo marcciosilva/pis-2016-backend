@@ -10,6 +10,7 @@ namespace SqlDependecyProject
     using System.Linq;
     using DataTypeObject;
     using Emsys.LogicLayer;
+    using System.Threading;
 
     public class ProcesoExtensiones
     {
@@ -29,20 +30,20 @@ namespace SqlDependecyProject
                 EmsysContext db = new EmsysContext();
                 db.Evento.ToList();
                 //me quedo loopeando
+
+                Console.WriteLine("ProcesoMonitoreoExtensiones- Observo la BD:\n");
+                Listener();
+
                 while (true)
                 {
-                    if (llamo)
-                    {
-                        Console.WriteLine("ProcesoMonitoreoExtensiones- Observo la BD:\n");
-                        Listener();
-                        llamo = false;
-                    }
+                    Thread.Sleep(10000);
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(" ProcesoMonitoreoExtensiones- Ocurrio un error: ");
-                Console.WriteLine(e.Message);
+                IMetodos dbAL = new Metodos();
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoExtensiones", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, CodigosLog.LogCapturarCambioEventoCod);
+                throw e;
             }
         }
 
@@ -110,8 +111,8 @@ namespace SqlDependecyProject
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, CodigosLog.LogCapturarCambioEventoCod);
-
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoExtensiones.ObserverDataBase", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, CodigosLog.LogCapturarCambioEventoCod);
+                throw e;
             }
         }
         /// <summary>

@@ -21,11 +21,20 @@
         /// <param name="args">No utilizado.</param>
         public static void Main(string[] args)
         {
-            // Para cada tabla a ser monitoreada hay que iniciar un thread.
-            Thread workerThread = new Thread(new ThreadStart(ProcesoExtensiones.ProcesoMonitoreoExtensiones));
-            workerThread.Start();
-            ProcesoEventos.ProcesoMonitoreoEventos();
-            workerThread.Join();
+            try
+            {
+                // Para cada tabla a ser monitoreada hay que iniciar un thread.
+                Thread workerThread = new Thread(new ThreadStart(ProcesoExtensiones.ProcesoMonitoreoExtensiones));
+                workerThread.Start();
+                ProcesoEventos.ProcesoMonitoreoEventos();
+                workerThread.Join();
+            }
+            catch (Exception e)
+            {
+
+                Console.WriteLine(e.ToString());
+                Console.ReadLine();
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ namespace SqlDependecyProject
     using System.Linq;
     using DataTypeObject;
     using Emsys.LogicLayer;
+    using System.Threading;
 
     public class ProcesoEventos
     {
@@ -28,21 +29,19 @@ namespace SqlDependecyProject
                 // Para iniciar la bd si no esta creada.
                 EmsysContext db = new EmsysContext();
                 db.Evento.ToList();
-                //me quedo loopeando
+                
+                Console.WriteLine("ProcesoMonitoreoEventos - Observo la BD:\n");
+                Listener();
                 while (true)
                 {
-                    if (llamo)
-                    {
-                        Console.WriteLine("ProcesoMonitoreoEventos - Observo la BD:\n");
-                        Listener();
-                        llamo = false;
-                    }
+                    Thread.Sleep(10000);
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine(" ProcesoMonitoreoEventos- Ocurrio un error: ");
-                Console.WriteLine(e.ToString());
+                IMetodos dbAL = new Metodos();
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase.ProcesoMonitoreoEventos", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, CodigosLog.LogCapturarCambioEventoCod);
+                throw e;
             }
         }
 
@@ -107,8 +106,8 @@ namespace SqlDependecyProject
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, CodigosLog.LogCapturarCambioEventoCod);
-
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase.ProcesoMonitoreoEventos", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, CodigosLog.LogCapturarCambioEventoCod);
+                throw e;
             }
         }
         /// <summary>
