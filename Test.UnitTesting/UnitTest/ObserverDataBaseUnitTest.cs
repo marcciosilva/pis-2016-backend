@@ -11,16 +11,11 @@ using System.Threading;
 namespace Test.UnitTesting
 {
     [TestFixture]
-    public class NotificacionesUnitTest
+    public class ObserverDataBaseUnitTest
     {
-        [Test]
-        public void PruebaNotificar()
-        {
-            INotifications manejadorNotificaciones = FactoryNotifications.GetInstance();
-            manejadorNotificaciones.SendMessage("Esto es una prueba", "#####", "Prueba");
-            Assert.IsTrue(true);
-        }
-
+        /// <summary>
+        /// prueba la logica de observer database
+        /// </summary>
         [Test]
         public void PruebaOberverDatabase()
         {

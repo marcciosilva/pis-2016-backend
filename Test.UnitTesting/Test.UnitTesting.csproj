@@ -92,14 +92,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AutenticacionTest.cs" />
     <Compile Include="Configuracion.cs" />
-    <Compile Include="DALTest.cs" />
-    <Compile Include="EventoTest.cs" />
+    <Compile Include="UnitTest\DataAccesLayerUnitTest.cs" />
     <Compile Include="IntegrationTest\PruebaLiberacion1.cs" />
-    <Compile Include="ActualizarDescripcionExtensionUnitTest.cs" />
-    <Compile Include="LogsUnitTest.cs" />
-    <Compile Include="NotifiacionesUnitTest.cs" />
+    <Compile Include="UnitTest\ServiceLayerUnitTest.cs" />
+    <Compile Include="UnitTest\LogicLayerUnitTest.cs" />
+    <Compile Include="UnitTest\ObserverDataBaseUnitTest.cs" />
+    <Compile Include="UnitTest\NotificationsUnitTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

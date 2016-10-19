@@ -11,7 +11,7 @@ using Emsys.DataAccesLayer.Model;
 namespace Test.UnitTesting
 {
     [TestFixture]
-    class DALTest
+    class DataAccesLayerUnitTest
     {
         /// <summary>
         /// Test que prueba que se pueda registrar un usuario a Identity.

@@ -11,7 +11,7 @@ using System.Net.Http;
 namespace Test.UnitTesting
 {
     [TestFixture]
-    public class ActualizarDescripcionExtensionUnitTest
+    public class ServiceLayerUnitTest
     {
         /// <summary>
         /// Este metodo es una una prueba positiva
