@@ -177,7 +177,7 @@ namespace Emsys.DataAccesLayer.Core
                 Extension_Evento ext1 = new Extension_Evento()
                 {
                     Id = 1,
-                    DescripcionDespachador = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas semper mollis velit et euismod. Donec et fringilla risus. Praesent fermentum mi sit amet dui varius, et hendrerit ex congue. Cras consectetur vel ex sit amet consectetur. Curabitur ac tincidunt nisi, in dignissim dui. Fusce placerat arcu at leo dictum, ac rutrum massa ullamcorper. Proin ut ex est. Curabitur lectus libero, facilisis vitae lacus eget, auctor pulvinar ex. Vestibulum in ligula scelerisque, viverra purus sed, consectetur dui. Aenean ut nisl tellus. Aliquam at metus dolor. In eros ligula, accumsan ac dui eu, efficitur bibendum risus. Sed quam metus, malesuada quis placerat a, maximus vitae ipsum.",
+                    DescripcionDespachador = "2016/07/23 21:30:00\\UsuarioDespachador\\descripcion de evento\\2016/07/23 21:37:00\\UsuarioDespachador2\\otra descripcion de evento\\2016/07/24 10:37:00\\UsuarioDespachador2\\otra mas",
                     Evento = evento1,
                     Zona = zona1,
                     Estado = EstadoExtension.FaltaDespachar,
@@ -198,7 +198,7 @@ namespace Emsys.DataAccesLayer.Core
                 Extension_Evento ext2 = new Extension_Evento()
                 {
                     Id = 2,
-                    DescripcionDespachador = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas semper mollis velit et euismod. Donec et fringilla risus. Praesent fermentum mi sit amet dui varius, et hendrerit ex congue. Cras consectetur vel ex sit amet consectetur. Curabitur ac tincidunt nisi, in dignissim dui. Fusce placerat arcu at leo dictum, ac rutrum massa ullamcorper. Proin ut ex est. Curabitur lectus libero, facilisis vitae lacus eget, auctor pulvinar ex. Vestibulum in ligula scelerisque, viverra purus sed, consectetur dui. Aenean ut nisl tellus. Aliquam at metus dolor. In eros ligula, accumsan ac dui eu, efficitur bibendum risus. Sed quam metus, malesuada quis placerat a, maximus vitae ipsum.",
+                    DescripcionDespachador = "2016/07/23 21:30:00\\UsuarioDespachador\\descripcion de evento\\2016/07/23 21:37:00\\UsuarioDespachador2\\otra descripcion de evento\\2016/07/24 10:37:00\\UsuarioDespachador2\\otra mas",
                     Evento = evento2,
                     Zona = zona2,
                     Estado = EstadoExtension.FaltaDespachar,
@@ -207,7 +207,7 @@ namespace Emsys.DataAccesLayer.Core
                 Extension_Evento ext3 = new Extension_Evento()
                 {
                     Id = 3,
-                    DescripcionDespachador = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Maecenas semper mollis velit et euismod. Donec et fringilla risus. Praesent fermentum mi sit amet dui varius, et hendrerit ex congue. Cras consectetur vel ex sit amet consectetur. Curabitur ac tincidunt nisi, in dignissim dui. Fusce placerat arcu at leo dictum, ac rutrum massa ullamcorper. Proin ut ex est. Curabitur lectus libero, facilisis vitae lacus eget, auctor pulvinar ex. Vestibulum in ligula scelerisque, viverra purus sed, consectetur dui. Aenean ut nisl tellus. Aliquam at metus dolor. In eros ligula, accumsan ac dui eu, efficitur bibendum risus. Sed quam metus, malesuada quis placerat a, maximus vitae ipsum.",
+                    DescripcionDespachador = "2016/07/23 21:30:00\\UsuarioDespachador\\descripcion de evento\\2016/07/23 21:37:00\\UsuarioDespachador2\\otra descripcion de evento\\2016/07/24 10:37:00\\UsuarioDespachador2\\otra mas",
                     Evento = evento3,
                     Zona = zona4,
                     Estado = EstadoExtension.FaltaDespachar,
