@@ -33,11 +33,15 @@
                 Thread WorkerThreadAudios = new Thread(new ThreadStart(ProcesoAudios.ProcesoMonitoreoAudios));
                 WorkerThreadAudios.Start();
 
+                Thread WorkerThreadImagenes = new Thread(new ThreadStart(ProcesoImagenes.ProcesoMonitoreoImagenes));
+                WorkerThreadImagenes.Start();
+
 
                 ProcesoEventos.ProcesoMonitoreoEventos();
                 WorkerThreadExtensiones.Join();
                 WorkerThreadVideos.Join();
                 WorkerThreadAudios.Join();
+                WorkerThreadImagenes.Join();
             }
             catch (Exception e)
             {
