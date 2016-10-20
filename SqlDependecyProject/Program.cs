@@ -19,7 +19,7 @@
         /// Metodo principal para el proyecto ObserverDatabase encargado de manejar las notificaciones de los cambios de la bd.
         /// </summary>
         /// <param name="args">No utilizado.</param>
-        public static void Main(string[] args)
+        public static void Main()
         {
             try
             {
@@ -33,11 +33,14 @@
                 Thread WorkerThreadAudios = new Thread(new ThreadStart(ProcesoAudios.ProcesoMonitoreoAudios));
                 WorkerThreadAudios.Start();
 
+                Thread WorkerThreadAsignacionRecursoDescripcion = new Thread(new ThreadStart(ProcesoAsignacionRecursoDescripcion.ProcesoMonitorearAsignacionRecursoDescripcion));
+                WorkerThreadAsignacionRecursoDescripcion.Start();                
 
                 ProcesoEventos.ProcesoMonitoreoEventos();
                 WorkerThreadExtensiones.Join();
                 WorkerThreadVideos.Join();
                 WorkerThreadAudios.Join();
+                WorkerThreadAsignacionRecursoDescripcion.Join();
             }
             catch (Exception e)
             {

@@ -22,24 +22,24 @@ namespace Test.UnitTesting
             try
             {
                 string[] entrada = new string[1];
-                Thread workerThread = new Thread(new ThreadStart(SqlDependecyProject.ProcesoExtensiones.Listener));
+                Thread workerThread = new Thread(new ThreadStart(SqlDependecyProject.Program.Main));
                 workerThread.Start();
 
-                using (EmsysContext db = new EmsysContext())
-                {
-                    var evento = db.Evento.FirstOrDefault();
-                    if (evento != null)
-                    {
-                        evento.Descripcion = DateTime.Now.ToString();
-                        evento.Categoria = db.Categorias.FirstOrDefault();
-                        evento.Sector = db.Sectores.FirstOrDefault();
-                    }
-
-                    db.SaveChanges();
-                }
-
-                Thread.Sleep(5000);
-                // workerThread.Abort();
+                //using (EmsysContext db = new EmsysContext())
+                //{
+                //    var evento = db.Evento.FirstOrDefault();
+                //    if (evento != null)
+                //    {
+                //        evento.Descripcion = DateTime.Now.ToString();
+                //        evento.Categoria = db.Categorias.FirstOrDefault();
+                //        evento.Sector = db.Sectores.FirstOrDefault();
+                //    }
+                //    db.SaveChanges();
+                //}
+                LogicLayerUnitTest test = new LogicLayerUnitTest();
+                test.getDescripcionEventoTest();
+                test.listarEventosTest();
+                Thread.Sleep(15000);
                 workerThread.Join();
             }
             catch (DbEntityValidationException ex)

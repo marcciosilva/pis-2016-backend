@@ -96,6 +96,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProcesoAsignacionRecursoDescripcion.cs" />
     <Compile Include="ProcesoVideos.cs" />
     <Compile Include="ProcesoAudios.cs" />
     <Compile Include="ProcesoExtensiones.cs" />
