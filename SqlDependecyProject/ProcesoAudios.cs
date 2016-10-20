@@ -43,7 +43,7 @@ namespace SqlDependecyProject
             }
         }
 
-        private static SqlTableDependency<Video> _dependency;
+        private static SqlTableDependency<Audio> _dependency;
         private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
 
