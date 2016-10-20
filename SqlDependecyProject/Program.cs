@@ -24,10 +24,16 @@
             try
             {
                 // Para cada tabla a ser monitoreada hay que iniciar un thread.
-                Thread workerThread = new Thread(new ThreadStart(ProcesoExtensiones.ProcesoMonitoreoExtensiones));
-                workerThread.Start();
+                Thread WorkerThreadExtensiones = new Thread(new ThreadStart(ProcesoExtensiones.ProcesoMonitoreoExtensiones));
+                WorkerThreadExtensiones.Start();
+
+                Thread WorkerThreadVideos = new Thread(new ThreadStart(ProcesoVideos.ProcesoMonitoreoVideos));
+                WorkerThreadVideos.Start();
+
+
                 ProcesoEventos.ProcesoMonitoreoEventos();
-                workerThread.Join();
+                WorkerThreadExtensiones.Join();
+                WorkerThreadVideos.Join();
             }
             catch (Exception e)
             {

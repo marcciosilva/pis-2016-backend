@@ -96,6 +96,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ProcesoVideos.cs" />
     <Compile Include="ProcesoExtensiones.cs" />
     <Compile Include="ProcesoEventos.cs" />
     <Compile Include="Program.cs" />
@@ -103,7 +104,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
-    <None Include="Emsys.ObserverDataBase_TemporaryKey.pfx" />
     <None Include="packages.config" />
     <None Include="Settings.StyleCop" />
   </ItemGroup>
