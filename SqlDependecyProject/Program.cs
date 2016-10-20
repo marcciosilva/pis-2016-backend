@@ -23,17 +23,21 @@
         {
             try
             {
-                // Para cada tabla a ser monitoreada hay que iniciar un thread.
+                // Para cada tabla a ser monitoreada inicio un thread.
                 Thread WorkerThreadExtensiones = new Thread(new ThreadStart(ProcesoExtensiones.ProcesoMonitoreoExtensiones));
                 WorkerThreadExtensiones.Start();
 
                 Thread WorkerThreadVideos = new Thread(new ThreadStart(ProcesoVideos.ProcesoMonitoreoVideos));
                 WorkerThreadVideos.Start();
 
+                Thread WorkerThreadAudios = new Thread(new ThreadStart(ProcesoAudios.ProcesoMonitoreoAudios));
+                WorkerThreadAudios.Start();
+
 
                 ProcesoEventos.ProcesoMonitoreoEventos();
                 WorkerThreadExtensiones.Join();
                 WorkerThreadVideos.Join();
+                WorkerThreadAudios.Join();
             }
             catch (Exception e)
             {
