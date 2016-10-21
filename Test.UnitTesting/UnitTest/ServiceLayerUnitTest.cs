@@ -17,7 +17,7 @@ namespace Test.UnitTesting
         /// Este metodo es una una prueba positiva
         /// </summary>
         [Test]
-        public void PossitiveTest()
+        public void PruebaAsignacionRecursoDescripcion()
         {
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));

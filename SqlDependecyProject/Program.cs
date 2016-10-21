@@ -38,6 +38,7 @@
                 
                 Thread WorkerThreadImagenes = new Thread(new ThreadStart(ProcesoImagenes.ProcesoMonitoreoImagenes));
                 WorkerThreadImagenes.Start();
+;
 
 
                 ProcesoEventos.ProcesoMonitoreoEventos();

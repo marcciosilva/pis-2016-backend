@@ -18,7 +18,7 @@ namespace SqlDependecyProject
         private static string proceso = "ProcesoAsignacionRecursoDescripcion";
 
         /// <summary>
-        /// Funcion que engloba el proceso de atender eventos de la BD para extensiones.
+        /// Funcion que engloba el proceso de atender evento de la BD para AsignacionRecursoDescripcion.
         /// </summary>
         public static void ProcesoMonitorearAsignacionRecursoDescripcion()
         {
@@ -76,7 +76,7 @@ namespace SqlDependecyProject
         /// Implementacion del metodo encargado de realizar la operativa de las notificaciones cuando se obtiene un cambvio en la bd.
         /// </summary>
         /// <param name="sender">no se usa</param>
-        /// <param name="eventoEnBD">Evento generado desde la bd.</param>
+        /// <param name="AsignacionRecursoDescripcionEnDb">evento en AsignacionRecursoDescripcion generado desde la bd.</param>
         private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<AsignacionRecursoDescripcion> AsignacionRecursoDescripcionEnDb)
         {
             try
@@ -110,23 +110,23 @@ namespace SqlDependecyProject
             }
         }
         /// <summary>
-        /// Metodo que se utiliza para enviar una notificaion a un evento.
+        /// Metodo que se utiliza para enviar una notificaion a un AsignacionRecursoDescripcion.
         /// </summary>
-        /// <param name="cod">Codigo que se desea notificar a la aplicacion dado el evento.</param>
-        /// <param name="extension">Identificador del evento que fue modificado/alta/baja.</param>
-        /// <param name="GestorNotificaciones">Instancia de INotification.</param>
+        /// <param name="cod">Codigo que se desea notificar a la aplicacion dado el AsignacionRecursoDescripcion.</param>
+        /// <param name="extension">Identificador del AsignacionRecursoDescripcion que fue modificado/alta/baja.</param>
+        /// <param name="asignacionRecursoDescripcion">Instancia de INotification.</param>
         private static void AtenderEvento(string cod, TableDependency.EventArgs.RecordChangedEventArgs<AsignacionRecursoDescripcion> asignacionRecursoDescripcion, Utils.Notifications.INotifications GestorNotificaciones)
         {
             using (EmsysContext db = new EmsysContext())
             {
 
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Evento", asignacionRecursoDescripcion.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", CodigosLog.LogCapturarCambioEventoCod);
+                dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "AsignacionRecursoDescripcion", asignacionRecursoDescripcion.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", CodigosLog.LogCapturarCambioEventoCod);
                 var asignacionRecursoDescripcionEnDB = db.AsignacionRecursoDescripcion.Find(asignacionRecursoDescripcion.Entity.Id);
                 if (asignacionRecursoDescripcionEnDB != null)
-                {                    
+                {
                     //para los recursos asociados a la extension genero una notificacion                   
-                    GestorNotificaciones.SendMessage(cod, asignacionRecursoDescripcion.Entity.Id.ToString(), "recurso-" + asignacionRecursoDescripcionEnDB.AsignacionRecurso.Recurso.Id);
+                    GestorNotificaciones.SendMessage(cod, asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Id.ToString(), "recurso-" + asignacionRecursoDescripcionEnDB.AsignacionRecurso.Recurso.Id);
                        
                     //para la zona asociada a la extensen le envia una notificacion
                    // GestorNotificaciones.SendMessage(cod, asignacionRecursoDescripcion.Entity.Id.ToString(), "zona-" + asignacionRecursoDescripcionEnDB.AsignacionRecurso.Recurso);

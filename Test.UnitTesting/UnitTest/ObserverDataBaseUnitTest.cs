@@ -24,23 +24,9 @@ namespace Test.UnitTesting
                 string[] entrada = new string[1];
                 Thread workerThread = new Thread(new ThreadStart(SqlDependecyProject.Program.Main));
                 workerThread.Start();
-
-                //using (EmsysContext db = new EmsysContext())
-                //{
-                //    var evento = db.Evento.FirstOrDefault();
-                //    if (evento != null)
-                //    {
-                //        evento.Descripcion = DateTime.Now.ToString();
-                //        evento.Categoria = db.Categorias.FirstOrDefault();
-                //        evento.Sector = db.Sectores.FirstOrDefault();
-                //    }
-                //    db.SaveChanges();
-                //}
-                LogicLayerUnitTest test = new LogicLayerUnitTest();
-                test.getDescripcionEventoTest();
-                test.listarEventosTest();
+                ModificarBaseDatos();
                 Thread.Sleep(15000);
-                workerThread.Join();
+                workerThread.Abort();
             }
             catch (DbEntityValidationException ex)
             {
@@ -55,6 +41,45 @@ namespace Test.UnitTesting
 
             // Esto aca esta mal, pero como tengo un cliente de firebase en .net no puedo ver si la notificacion se hizo. Por lo menos cubre codigo.
             Assert.IsTrue(true);
+        }
+
+        private static void ModificarBaseDatos()
+        {
+            using (EmsysContext db = new EmsysContext())
+            {
+
+                foreach (var item in db.Evento)
+                {
+                    item.Descripcion = "otro";
+                }
+                db.SaveChanges();
+                foreach (var item in db.Extensiones_Evento)
+                {
+                    item.DescripcionDespachador = "otro";
+                }
+                db.SaveChanges();
+                foreach (var item in db.Videos)
+                {
+                    item.FechaEnvio = DateTime.Now;
+                }
+                db.SaveChanges();
+                foreach (var item in db.Audios)
+                {
+                    item.FechaEnvio = DateTime.Now;
+                }
+                db.SaveChanges();
+                foreach (var item in db.GeoUbicaciones)
+                {
+                    item.FechaEnvio = DateTime.Now;
+                }
+                db.SaveChanges();
+                foreach (var item in db.AsignacionRecursoDescripcion)
+                {
+                    item.Fecha = DateTime.Now;
+                }
+                db.SaveChanges();
+
+            }
         }
     }
 }

@@ -14,13 +14,12 @@ namespace SqlDependecyProject
 
     public class ProcesoImagenes
     {
-        private enum TablaMonitorar { Eventos, Extensiones }
         private static bool llamo = true;
 
         private static string proceso= "ProcesoMonitoreoImagenes";
 
         /// <summary>
-        /// Funcion que engloba el proceso de atender eventos de la BD para extensiones.
+        /// Funcion que engloba el proceso de atender Imagenes de la BD para extensiones.
         /// </summary>
         public static void ProcesoMonitoreoImagenes()
         {
@@ -88,17 +87,17 @@ namespace SqlDependecyProject
                     Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
                     switch (imagenEnBD.ChangeType)
                     {
-                        // el caso no es util por que si se crea un evento no tiene asignados recursos probablemte
+                        // el caso no es util por que si se crea un Imagenes no tiene asignados recursos probablemte
                         case ChangeType.Delete:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del evento: " + imagenEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.CierreEvento, imagenEnBD, GestorNotificaciones);
+                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del Imagenes: " + imagenEnBD.Entity.Id);
+                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, imagenEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion Insert, Pk del evento: " + imagenEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.AltaEvento, imagenEnBD, GestorNotificaciones);
+                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion Insert, Pk del Imagenes: " + imagenEnBD.Entity.Id);
+                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, imagenEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion update, Pk del evento: " + imagenEnBD.Entity.Id);
+                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion update, Pk del Imagenes: " + imagenEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, imagenEnBD, GestorNotificaciones);
                             break;
                     }
@@ -112,10 +111,10 @@ namespace SqlDependecyProject
             }
         }
         /// <summary>
-        /// Metodo que se utiliza para enviar una notificaion a un evento.
+        /// Metodo que se utiliza para enviar una notificaion a un Imagenes.
         /// </summary>
-        /// <param name="cod">Codigo que se desea notificar a la aplicacion dado el evento.</param>
-        /// <param name="extension">Identificador del evento que fue modificado/alta/baja.</param>
+        /// <param name="cod">Codigo que se desea notificar a la aplicacion dado el imagen.</param>
+        /// <param name="imagen">Identificador del Imagenes que fue modificado/alta/baja.</param>
         /// <param name="GestorNotificaciones">Instancia de INotification.</param>
         private static void AtenderEvento(string cod, TableDependency.EventArgs.RecordChangedEventArgs<Imagen> imagen, Utils.Notifications.INotifications GestorNotificaciones)
         {
@@ -123,8 +122,8 @@ namespace SqlDependecyProject
             {
 
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Evento", imagen.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", CodigosLog.LogCapturarCambioEventoCod);
-                var videoDEBD = db.Videos.Find(imagen.Entity.Id);
+                dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Imagenes", imagen.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", CodigosLog.LogCapturarCambioEventoCod);
+                var videoDEBD = db.Imagenes.Find(imagen.Entity.Id);
                 if (videoDEBD != null)
                 {                    
                     //para los recursos asociados a la extension genero una notificacion
@@ -132,10 +131,10 @@ namespace SqlDependecyProject
                     {
                         foreach (var recurso in item.Recursos)
                         {
-                            GestorNotificaciones.SendMessage(cod, imagen.Entity.Id.ToString(), "recurso-" + item.Id);
+                            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + item.Id);
                         }
                         //para la zona asociada a la extensen le envia una notificacion
-                        GestorNotificaciones.SendMessage(cod, imagen.Entity.Id.ToString(), "zona-" + item.Zona.Id);
+                        GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
                     }
                 }
             }
