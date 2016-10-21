@@ -51,6 +51,16 @@ namespace Test.UnitTesting
                 foreach (var item in db.Evento)
                 {
                     item.Descripcion = "otro";
+                    item.Categoria = new Emsys.DataAccesLayer.Model.Categoria {
+
+                        Activo = true,
+                        Clave = "key",
+                        Codigo = "cod",
+                        Prioridad = new Emsys.DataAccesLayer.Model.NombrePrioridad (),
+                    };
+                    item.Sector = new Emsys.DataAccesLayer.Model.Sector {
+                        Nombre="sector",                        
+                    };
                 }
                 db.SaveChanges();
                 foreach (var item in db.Extensiones_Evento)
