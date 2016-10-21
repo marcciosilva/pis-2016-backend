@@ -658,12 +658,13 @@ namespace Test.UnitTesting
             int PruebaConstante = 12345678;
             string nombre = "A";
             IMetodos dbAL = new Metodos();
-            dbAL.AgregarLog(nombre, "1:1:1:1", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);            
+            dbAL.AgregarLog(nombre, "1:1:1:1", "PruebaUnitaria", "LogUnitTest", 1, "agregar log", "esto es una prueba", PruebaConstante);
             var cantidadLogsDespues = db.Logs.Count();
             Assert.True(cantidadLogsPrevia == cantidadLogsDespues);
             db.SaveChanges();
             var log = db.Logs.FirstOrDefault(x => x.Terminal == "1:1:1:1");
             Assert.NotNull(log);
+            
         }
 
         /// <summary>
@@ -685,6 +686,353 @@ namespace Test.UnitTesting
             Assert.True(cantidadLogsPrevia == cantidadLogsDespues);
             var log = db.Logs.FirstOrDefault(x => x.Terminal == "2:2:2:2");
             Assert.NotNull(log);
+        }
+
+
+        /// <summary>
+        /// Se prueba agregar una geoubicacion a una extension.
+        /// </summary>
+        [Test]
+        public void AdjuntarGeoUbicacion()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            db.Users.FirstOrDefault(u=>u.NombreLogin=="A").Token= null;
+            int cant = db.Extensiones_Evento.FirstOrDefault().GeoUbicaciones.Count();
+
+            IMetodos logica = new Metodos();
+
+            // Autenticar.
+            var result = logica.autenticarUsuario("A", "A");
+            string token = result.access_token;
+
+            // Elegir roles.
+            List<DtoRecurso> lRecursos = new List<DtoRecurso>();
+            DtoRecurso dtoRecurso1 = new DtoRecurso() { id = 1, codigo = "recurso1" };
+            lRecursos.Add(dtoRecurso1);
+            DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = lRecursos };
+
+
+            // Loguear.
+            var log = logica.loguearUsuario(token, rol);
+
+            // Sin token.
+            try
+            {
+                logica.adjuntarGeoUbicacion(null, new DtoGeoUbicacion() { idExtension = 1, latitud = 12, longitud = 120 });
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Token invalido.
+            try
+            {
+                logica.adjuntarGeoUbicacion("estoesuntokeninvalido", new DtoGeoUbicacion() { idExtension = 1, latitud = 12, longitud = 120 });
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Adjuntar geo ubicacion valida.
+            var ok = logica.adjuntarGeoUbicacion(token, new DtoGeoUbicacion() { idExtension = 1, latitud = 12, longitud = 120 });
+            Assert.IsTrue(ok);
+
+            var geo = db.GeoUbicaciones.FirstOrDefault(g => g.Id == 5);
+            var geo2 = db.Extensiones_Evento.FirstOrDefault().GeoUbicaciones.FirstOrDefault(g => g.Id == 5);
+
+            int cant2 = db.Extensiones_Evento.FirstOrDefault().GeoUbicaciones.Count();
+            Assert.IsTrue(cant2 == cant + 1);
+            Assert.IsTrue((geo2.Longitud == 120) && (geo2.Latitud == 12));
+        }
+
+
+        /// <summary>
+        /// Se prueba agregar un archivo de imagen y agregar la imagen a una extension.
+        /// </summary>
+        [Test]
+        public void AdjuntarImagenTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+
+
+            int cantAdjImagen = db.Extensiones_Evento.FirstOrDefault().Imagenes.Count();
+            int cantFiles = db.ApplicationFiles.Count();
+            IMetodos logica = new Metodos();
+
+            // Autenticar.
+            var result = logica.autenticarUsuario("A", "A");
+            string token = result.access_token;
+
+            // Elegir roles.
+            List<DtoRecurso> lRecursos = new List<DtoRecurso>();
+            DtoRecurso dtoRecurso1 = new DtoRecurso() { id = 1, codigo = "recurso1" };
+            lRecursos.Add(dtoRecurso1);
+            DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = lRecursos };
+
+
+            // Loguear.
+            var log = logica.loguearUsuario(token, rol);
+
+            // Agregar el archivo.
+            byte[] archivo = null;
+            string extArchivo = ".jpg";
+            int idFile = logica.agregarFileData(archivo, extArchivo);
+
+            DtoImagen img = new DtoImagen() { id_imagen = idFile, idExtension = 1 };
+
+            // Sin token.
+            try
+            {
+                logica.adjuntarImagen(null, img);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Token invalido.
+            try
+            {
+                logica.adjuntarImagen("tokenIncorrecto", img);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Adjuntar geo ubicacion valida.
+            var ok = logica.adjuntarImagen(token, img);
+
+            var c = db.Imagenes.Count();
+            var c2 = db.ApplicationFiles.Count();
+            var adj = db.Imagenes.FirstOrDefault();
+            var file = db.ApplicationFiles.Count();
+           
+            Assert.IsTrue(ok);
+            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().Imagenes.Count() == cantAdjImagen + 1);
+            Assert.IsTrue(db.ApplicationFiles.Count() == cantFiles + 1);
+
+
+            // Obtener data de la imagen.
+            try
+            {
+                logica.getImageData(null, 1);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Token invalido.
+            try
+            {
+                logica.getImageData("tokenIncorrecto", 1);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            DtoApplicationFile f = logica.getImageData(token, 1);
+            Assert.IsNotNull(f);
+            Assert.IsTrue(f.nombre == "1.jpg");
+        }
+
+
+        /// <summary>
+        /// Se prueba agregar un archivo de audio y agregar el audio a una extension.
+        /// </summary>
+        [Test]
+        public void AdjuntarAudioTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+
+            int cantAdjAudio = db.Extensiones_Evento.FirstOrDefault().Audios.Count();
+            int cantFiles = db.ApplicationFiles.Count();
+            IMetodos logica = new Metodos();
+
+            // Autenticar.
+            var result = logica.autenticarUsuario("A", "A");
+            string token = result.access_token;
+
+            // Elegir roles.
+            List<DtoRecurso> lRecursos = new List<DtoRecurso>();
+            DtoRecurso dtoRecurso1 = new DtoRecurso() { id = 1, codigo = "recurso1" };
+            lRecursos.Add(dtoRecurso1);
+            DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = lRecursos };
+
+
+            // Loguear.
+            var log = logica.loguearUsuario(token, rol);
+
+            // Agregar el archivo.
+            byte[] archivo = null;
+            string extArchivo = ".mp3";
+            int idFile = logica.agregarFileData(archivo, extArchivo);
+
+            DtoAudio aud = new DtoAudio() { id_audio = idFile, idExtension = 1 };
+
+            // Sin token.
+            try
+            {
+                logica.adjuntarAudio(null, aud);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Token invalido.
+            try
+            {
+                logica.adjuntarAudio("tokenIncorrecto", aud);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Adjuntar geo ubicacion valida.
+            var ok = logica.adjuntarAudio(token, aud);
+
+            var c = db.Audios.Count();
+            var c2 = db.ApplicationFiles.Count();
+            var adj = db.Audios.FirstOrDefault();
+            var file = db.ApplicationFiles.Count();
+
+            Assert.IsTrue(ok);
+            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().Audios.Count() == cantAdjAudio + 1);
+            Assert.IsTrue(db.ApplicationFiles.Count() == cantFiles + 1);
+
+
+            // Obtener data de la imagen.
+            try
+            {
+                logica.getAudioData(null, 1);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Token invalido.
+            try
+            {
+                logica.getAudioData("tokenIncorrecto", 1);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            DtoApplicationFile f = logica.getAudioData(token, 1);
+            Assert.IsNotNull(f);
+            Assert.IsTrue(f.nombre == "1.mp3");
+        }
+
+
+        /// <summary>
+        /// Se prueba agregar un archivo de video y agregar el video a una extension.
+        /// </summary>
+        [Test]
+        public void AdjuntarVideoTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+
+            int cantAdjVideo = db.Extensiones_Evento.FirstOrDefault().Videos.Count();
+            int cantFiles = db.ApplicationFiles.Count();
+            IMetodos logica = new Metodos();
+
+            // Autenticar.
+            var result = logica.autenticarUsuario("A", "A");
+            string token = result.access_token;
+
+            // Elegir roles.
+            List<DtoRecurso> lRecursos = new List<DtoRecurso>();
+            DtoRecurso dtoRecurso1 = new DtoRecurso() { id = 1, codigo = "recurso1" };
+            lRecursos.Add(dtoRecurso1);
+            DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = lRecursos };
+
+
+            // Loguear.
+            var log = logica.loguearUsuario(token, rol);
+
+            // Agregar el archivo.
+            byte[] archivo = null;
+            string extArchivo = ".mp4";
+            int idFile = logica.agregarFileData(archivo, extArchivo);
+
+            DtoVideo vid = new DtoVideo() { id_video = idFile, idExtension = 1 };
+
+            // Sin token.
+            try
+            {
+                logica.adjuntarVideo(null, vid);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Token invalido.
+            try
+            {
+                logica.adjuntarVideo("tokenIncorrecto", vid);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Adjuntar geo ubicacion valida.
+            var ok = logica.adjuntarVideo(token, vid);
+
+            var c = db.Videos.Count();
+            var c2 = db.ApplicationFiles.Count();
+            var adj = db.Videos.FirstOrDefault();
+            var file = db.ApplicationFiles.Count();
+
+            Assert.IsTrue(ok);
+            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().Videos.Count() == cantAdjVideo + 1);
+            Assert.IsTrue(db.ApplicationFiles.Count() == cantFiles + 1);
+
+
+            // Obtener data de la imagen.
+            try
+            {
+                logica.getVideoData(null, 1);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Token invalido.
+            try
+            {
+                logica.getVideoData("tokenIncorrecto", 1);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            DtoApplicationFile f = logica.getVideoData(token, 1);
+            Assert.IsNotNull(f);
+            Assert.IsTrue(f.nombre == "1.mp4");
         }
     }
 }
