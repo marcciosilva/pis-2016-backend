@@ -471,10 +471,12 @@ namespace Test.UnitTesting
                 };
 
                 IMetodos logica = new Metodos();
-
-                // Obtengo token de usuario. 
-                var autent = logica.autenticarUsuario("usuarioDE", "usuarioDE");
-                string token = autent.access_token;
+                var u =context.Users.Where(x=>x.NombreLogin== "usuarioDE").FirstOrDefault();
+                if (u != null && u.Token != null)
+                {
+                    u.Token = null;
+                }
+                
 
                 recursoDisponible.Extensiones_Eventos.Add(ext1);
                 try
@@ -485,6 +487,10 @@ namespace Test.UnitTesting
                 {
                     throw e;
                 }
+
+                // Obtengo token de usuario. 
+                var autent = logica.autenticarUsuario("usuarioDE", "usuarioDE");
+                string token = autent.access_token;
 
                 List<DtoRecurso> lRecurso = new List<DtoRecurso>();
                 DtoRecurso dtoRecurso = new DtoRecurso() { id = recursoDisponible.Id, codigo = "recursoListarEvento" };
@@ -613,7 +619,11 @@ namespace Test.UnitTesting
                     Despachador = user
                 };
                 IMetodos logica = new Metodos();
-
+                var u = context.Users.Where(x => x.NombreLogin == "usuarioListarEventoRecurso").FirstOrDefault();
+                if (u != null && u.Token != null)
+                {
+                    u.Token = null;
+                }
                 // Obtengo token de usuario. 
                 var autent = logica.autenticarUsuario("usuarioListarEventoRecurso", "usuarioListarEventoRecurso");
                 string token = autent.access_token;
