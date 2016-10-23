@@ -1,6 +1,5 @@
 namespace Emsys.DataAccesLayer.Core
 {
-    using System;
     using System.Data.Entity.Migrations;
     
     public partial class _Initial : DbMigration

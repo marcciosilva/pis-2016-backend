@@ -1,6 +1,5 @@
 namespace Emsys.DataAccesLayer.Core
 {
-    using System;
     using System.Data.Entity;
     using Model;
     
@@ -14,7 +13,6 @@ namespace Emsys.DataAccesLayer.Core
 
         public void borrarBase()
         {
-            
         }
 
         public DbSet<Evento> Evento { get; set; }
@@ -56,9 +54,8 @@ namespace Emsys.DataAccesLayer.Core
         public DbSet<Usuario> Users { get; set; }
 
         public DbSet<AsignacionRecurso> AsignacionRecurso { get; set; }
-        public DbSet<AsignacionRecursoDescripcion> AsignacionRecursoDescripcion { get; set; }
 
-        
+        public DbSet<AsignacionRecursoDescripcion> AsignacionRecursoDescripcion { get; set; }
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)
         //{
