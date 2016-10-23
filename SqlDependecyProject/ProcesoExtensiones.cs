@@ -1,5 +1,4 @@
-﻿
-namespace SqlDependecyProject
+﻿namespace SqlDependecyProject
 {
     using System;
     using TableDependency.Mappers;
@@ -7,17 +6,23 @@ namespace SqlDependecyProject
     using TableDependency.Enums;
     using Emsys.DataAccesLayer.Model;
     using Emsys.DataAccesLayer.Core;
-    using System.Linq;
     using DataTypeObject;
     using Emsys.LogicLayer;
     using System.Threading;
 
     public class ProcesoExtensiones
     {
-        private enum TablaMonitorar { Eventos, Extensiones }
+        private enum TablaMonitorar
+        {
+            Eventos,
+            Extensiones
+        }
+
         private static bool llamo = true;
 
+        private static SqlTableDependency<Extension_Evento> _dependency;
 
+        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         /// <summary>
         /// Funcion que engloba el proceso de atender eventos de la BD para extensiones.
@@ -42,8 +47,6 @@ namespace SqlDependecyProject
             }
         }
 
-        private static SqlTableDependency<Extension_Evento> _dependency;
-
         /// <summary>
         /// Implentacion con sql table dependency para noticiar los cambios en la bd.
         /// </summary>
@@ -58,10 +61,6 @@ namespace SqlDependecyProject
         }
 
         // private static IList<Model.Evento> _stocks;
-        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-
-
 
         /// <summary>
         /// Metodo que se dispara cuando ocurre un error al detectar los cambios en la base de datos.
@@ -110,6 +109,7 @@ namespace SqlDependecyProject
                 throw e;
             }
         }
+
         /// <summary>
         /// Metodo que se utiliza para enviar una notificaion a un evento.
         /// </summary>
@@ -120,22 +120,21 @@ namespace SqlDependecyProject
         {
             using (EmsysContext db = new EmsysContext())
             {
-
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Evento", extension.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla Eventos. Se inicia la secuencia de envio de notificaciones.", CodigosLog.LogCapturarCambioEventoCod);
                 var extensionEnBD = db.Extensiones_Evento.Find(extension.Entity.Id);
                 if (extensionEnBD != null)
                 {
-                    //para los recursos asociados a la extension genero una notificacion
+                    // Para los recursos asociados a la extension genero una notificacion.
                     foreach (var item in extensionEnBD.Recursos)
                     {
                         GestorNotificaciones.SendMessage(cod, extension.Entity.Id.ToString(), "recurso-" + item.Id);
                     }
-                    //para la zona asociada a la extensen le envia una notificacion
+
+                    // Para la zona asociada a la extensen le envia una notificacion.
                     GestorNotificaciones.SendMessage(cod, extension.Entity.Id.ToString(), "zona-" + extensionEnBD.Zona.Id);
                 }
             }
         }
     }
 }
-
