@@ -23,6 +23,10 @@
         {
             try
             {
+                // Para iniciar la bd si no esta creada.
+                EmsysContext db = new EmsysContext();
+                db.Evento.ToList();
+
                 // Para cada tabla a ser monitoreada inicio un thread.
                 Thread WorkerThreadExtensiones = new Thread(new ThreadStart(ProcesoExtensiones.ProcesoMonitoreoExtensiones));
                 WorkerThreadExtensiones.Start();
@@ -38,15 +42,19 @@
                 
                 Thread WorkerThreadImagenes = new Thread(new ThreadStart(ProcesoImagenes.ProcesoMonitoreoImagenes));
                 WorkerThreadImagenes.Start();
-;
+
+                Thread WorkerThreadAsignacionRecurso = new Thread(new ThreadStart(ProcesoAsignacionRecurso.ProcesoAsignacionRecursoMonitoreo));
+                WorkerThreadAsignacionRecurso.Start();
 
 
                 ProcesoEventos.ProcesoMonitoreoEventos();
+
                 WorkerThreadExtensiones.Join();
                 WorkerThreadVideos.Join();
                 WorkerThreadAudios.Join();
                 WorkerThreadAsignacionRecursoDescripcion.Join();
                 WorkerThreadImagenes.Join();
+                WorkerThreadAsignacionRecurso.Join();
             }
             catch (Exception e)
             {
