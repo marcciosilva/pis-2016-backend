@@ -255,53 +255,53 @@ namespace Test.UnitTesting
         }
 
 
-        /// <summary>
-        /// Test get evento.
-        /// </summary>
-        [Test]
-        public void AdjuntarImagenTest()
-        {
-            AppDomain.CurrentDomain.SetData(
-            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
-            EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
-            db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
-            db.SaveChanges();
+        ///// <summary>
+        ///// Test get evento.
+        ///// </summary>
+        //[Test]
+        //public void AdjuntarImagenTest()
+        //{
+        //    AppDomain.CurrentDomain.SetData(
+        //    "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+        //    EmsysContext db = new EmsysContext();
+        //    db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+        //    db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
+        //    db.SaveChanges();
 
-            var controller = new AdjuntosController();
-            var controller2 = new LoginController();
+        //    var controller = new AdjuntosController();
+        //    var controller2 = new LoginController();
 
-            var resp1 = controller.PostImageFile();
-            Assert.IsTrue(resp1.cod == 2);
+        //    var resp1 = controller.PostImageFile();
+        //    Assert.IsTrue(resp1.cod == 2);
 
-            controller.Request = new HttpRequestMessage();
-            controller.Request.Headers.Add("auth", "tokenInvalido");
-            controller.Request.Content = new MultipartFormDataContent();
+        //    controller.Request = new HttpRequestMessage();
+        //    controller.Request.Headers.Add("auth", "tokenInvalido");
+        //    controller.Request.Content = new MultipartFormDataContent();
 
-            var resp2 = controller.PostImageFile();
-            Assert.IsTrue(resp2.cod == 12);
+        //    var resp2 = controller.PostImageFile();
+        //    Assert.IsTrue(resp2.cod == 12);
 
-            DtoUser u = new DtoUser() { username = "A", password = "A" };
-            var resp3 = controller2.Login(u);
-            string token = ((DtoAutenticacion)resp3.response).access_token;
+        //    DtoUser u = new DtoUser() { username = "A", password = "A" };
+        //    var resp3 = controller2.Login(u);
+        //    string token = ((DtoAutenticacion)resp3.response).access_token;
 
-            DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = new List<DtoRecurso>() };
-            DtoRecurso r = new DtoRecurso() { id = 1 };
-            rol.recursos.Add(r);
-            controller2.Request = new HttpRequestMessage();
-            controller2.Request.Headers.Add("auth", token);
-            var ok = controller2.ElegirRoles(rol);
+        //    DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = new List<DtoRecurso>() };
+        //    DtoRecurso r = new DtoRecurso() { id = 1 };
+        //    rol.recursos.Add(r);
+        //    controller2.Request = new HttpRequestMessage();
+        //    controller2.Request.Headers.Add("auth", token);
+        //    var ok = controller2.ElegirRoles(rol);
 
-            controller.Request = new HttpRequestMessage();
-            controller.Request.Headers.Add("auth", token);
+        //    controller.Request = new HttpRequestMessage();
+        //    controller.Request.Headers.Add("auth", token);
 
-            HttpClient httpClient = new HttpClient();
-            MultipartFormDataContent form = new MultipartFormDataContent();
-            byte[] imagen = null;
-            form.Add(new ByteArrayContent(imagen),"img.jpg");
-            controller.Request.Content = form;
-            var resp4 = controller.PostImageFile();
-        }
+        //    HttpClient httpClient = new HttpClient();
+        //    MultipartFormDataContent form = new MultipartFormDataContent();
+        //    byte[] imagen = null;
+        //    form.Add(new ByteArrayContent(imagen),"img.jpg");
+        //    controller.Request.Content = form;
+        //    var resp4 = controller.PostImageFile();
+        //}
 
 
         ///// <summary>
