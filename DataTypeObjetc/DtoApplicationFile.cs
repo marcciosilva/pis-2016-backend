@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace DataTypeObject
+﻿namespace DataTypeObject
 {
     public class DtoApplicationFile
     {        

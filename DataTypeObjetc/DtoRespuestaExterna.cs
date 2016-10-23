@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace DataTypeObject
+﻿namespace DataTypeObject
 {
     public class DtoRespuestaExterna
     {
