@@ -11,15 +11,5 @@ namespace Emsys.LogicLayer.ApplicationExceptions
         public InvalidExtensionForUserException()
         {
         }
-       
-        public InvalidExtensionForUserException(string message)
-        : base(message)
-        {
-        }
-
-        public InvalidExtensionForUserException(string message, Exception inner)
-        : base(message, inner)
-        {
-        }
     }
 }

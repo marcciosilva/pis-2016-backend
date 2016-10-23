@@ -13,6 +13,10 @@ namespace Emsys.LogicLayer.Utils
     {
         public static bool tieneVisionEvento(Usuario user, Evento evento)
         {
+            if (evento == null)
+            {
+                return false;
+            }
             using (var context = new EmsysContext())
             {
                 if (user != null)

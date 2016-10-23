@@ -131,6 +131,15 @@ namespace Emsys.DataAccesLayer.Core
                 user4.Unidades_Ejecutoras.Add(ue1);
                 user4.Unidades_Ejecutoras.Add(ue2);
 
+                // Origen eventos.
+                //Origen_Evento oe1 = new Origen_Evento()
+                //{
+                //    Id = 1,
+                //    TimeStamp = DateTime.Now,
+                //    TipoOrigen = "test",
+                //    IdOrigen = 1
+                //};
+
                 // Agregar eventos.
                 Evento evento1 = new Evento()
                 {
@@ -145,7 +154,8 @@ namespace Emsys.DataAccesLayer.Core
                     FechaCreacion = DateTime.Now,
                     Latitud = 19.9,
                     Longitud = 20.5,
-                    GeoUbicaciones = new List<GeoUbicacion>()
+                    GeoUbicaciones = new List<GeoUbicacion>(),
+                    //Origen_Evento = oe1
                 };
 
                 Evento evento2 = new Evento()

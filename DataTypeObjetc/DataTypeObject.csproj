@@ -70,7 +70,6 @@
     <Compile Include="DtoDescripcion.cs" />
     <Compile Include="DtoOrigenEvento.cs" />
     <Compile Include="DtoVideo.cs" />
-    <Compile Include="DtoItemListar.cs" />
     <Compile Include="DtoImagen.cs" />
     <Compile Include="DtoGeoUbicacion.cs" />
     <Compile Include="DtoRespuestaExterna.cs" />

@@ -11,15 +11,5 @@ namespace Emsys.LogicLayer.ApplicationExceptions
         public EventoInvalidoException()
         {
         }
-
-        public EventoInvalidoException(string message)
-        : base(message)
-        {
-        }
-
-        public EventoInvalidoException(string message, Exception inner)
-        : base(message, inner)
-        {
-        }
     }
 }

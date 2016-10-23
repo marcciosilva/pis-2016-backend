@@ -10,16 +10,6 @@ namespace Emsys.LogicLayer.ApplicationExceptions
     {
         public AudioInvalidoException()
         {
-        }
-
-        public AudioInvalidoException(string message)
-        : base(message)
-        {
-        }
-
-        public AudioInvalidoException(string message, Exception inner)
-        : base(message, inner)
-        {
-        }
+        }        
     }
 }

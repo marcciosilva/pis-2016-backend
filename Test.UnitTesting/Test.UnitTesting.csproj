@@ -84,6 +84,7 @@
       <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Web.Services" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -95,6 +96,8 @@
     <Compile Include="Configuracion.cs" />
     <Compile Include="UnitTest\DataAccesLayerUnitTest.cs" />
     <Compile Include="IntegrationTest\PruebaLiberacion1.cs" />
+    <Compile Include="UnitTest\DtosUnitTest.cs" />
+    <Compile Include="UnitTest\ServidorExternoUnitTest.cs" />
     <Compile Include="UnitTest\ServiceLayerUnitTest.cs" />
     <Compile Include="UnitTest\LogicLayerUnitTest.cs" />
     <Compile Include="UnitTest\ObserverDataBaseUnitTest.cs" />
@@ -147,6 +150,10 @@
     <ProjectReference Include="..\Servicios\Emsys.ServiceLayer.csproj">
       <Project>{D2A66EC3-41A8-4577-A446-3FF3E5804161}</Project>
       <Name>Emsys.ServiceLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ServidorExterno\ServidorExterno.csproj">
+      <Project>{a1967c3a-93f9-4845-83f1-160dd268e158}</Project>
+      <Name>ServidorExterno</Name>
     </ProjectReference>
     <ProjectReference Include="..\SqlDependecyProject\Emsys.ObserverDataBase.csproj">
       <Project>{1ddb2c9b-93db-4962-8dcc-e8615fdb1068}</Project>

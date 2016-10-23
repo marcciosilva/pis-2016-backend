@@ -11,15 +11,5 @@ namespace Emsys.LogicLayer.ApplicationExceptions
         public VideoInvalidoException()
         {
         }
-
-        public VideoInvalidoException(string message)
-        : base(message)
-        {
-        }
-
-        public VideoInvalidoException(string message, Exception inner)
-        : base(message, inner)
-        {
-        }
     }
 }

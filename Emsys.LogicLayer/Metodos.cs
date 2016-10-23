@@ -332,24 +332,6 @@ namespace Emsys.LogicLayer
             }
         }
 
-        public string getNombreUsuario(string token)
-        {
-            using (var context = new EmsysContext())
-            {
-                if (token == null)
-                {
-                    return string.Empty;
-                }
-
-                var user = context.Users.FirstOrDefault(u => u.Token == token);
-                if (user != null)
-                {
-                    return user.NombreLogin;
-                }
-
-                return string.Empty;
-            }
-        }
 
         public void AgregarLog(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo)
         {
@@ -724,7 +706,7 @@ namespace Emsys.LogicLayer
                         }
                         else
                         {
-                            context.ApplicationFiles.Remove(file);
+                            //context.ApplicationFiles.Remove(file);
                             context.SaveChanges();
                             return false;
                         }
@@ -763,7 +745,7 @@ namespace Emsys.LogicLayer
                         }
                         else
                         {
-                            context.ApplicationFiles.Remove(file);
+                            //context.ApplicationFiles.Remove(file);
                             context.SaveChanges();
                             return false;
                         }
@@ -802,7 +784,7 @@ namespace Emsys.LogicLayer
                         }
                         else
                         {
-                            context.ApplicationFiles.Remove(file);
+                            //context.ApplicationFiles.Remove(file);
                             context.SaveChanges();
                             return false;
                         }
@@ -934,7 +916,6 @@ namespace Emsys.LogicLayer
                 }
             }
         }
-
 
 
     }

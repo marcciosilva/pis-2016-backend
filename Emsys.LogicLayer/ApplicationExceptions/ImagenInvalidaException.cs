@@ -10,16 +10,6 @@ namespace Emsys.LogicLayer.ApplicationExceptions
     {
         public ImagenInvalidaException()
         {
-        }
-
-        public ImagenInvalidaException(string message)
-        : base(message)
-        {
-        }
-
-        public ImagenInvalidaException(string message, Exception inner)
-        : base(message, inner)
-        {
-        }
+        }        
     }
 }

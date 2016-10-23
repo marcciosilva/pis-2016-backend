@@ -10,6 +10,7 @@ using Emsys.LogicLayer.Utils;
 using System.Data.Entity.Validation;
 using DataTypeObject;
 using Emsys.LogicLayer.ApplicationExceptions;
+using System.Threading;
 
 namespace Test.UnitTesting
 {
@@ -51,6 +52,15 @@ namespace Test.UnitTesting
                 {
                     Assert.Fail();
                 }
+
+                try
+                {
+                    var result = logica.autenticarUsuario("usuarioPruebaAutenticar", "usuarioPruebaAutenticar");
+                }
+                catch (SesionActivaException e)
+                {
+                    Assert.IsTrue(true);
+                }
             }
         }
 
@@ -89,6 +99,12 @@ namespace Test.UnitTesting
 
                 string[] etiqueta2 = { "pruebaPermiso" };
                 Assert.IsTrue(logica.autorizarUsuario(token, etiqueta2));
+
+                context.Users.FirstOrDefault(u => u.NombreLogin == "usuario").FechaInicioSesion = DateTime.Parse("2015/07/23 21:30:00");
+                context.SaveChanges();
+
+                logica.autorizarUsuario(token, new string[0]);
+                Assert.IsTrue(context.Users.FirstOrDefault(u => u.NombreLogin == "usuario").Token == null);
             }
         }
 
@@ -131,6 +147,23 @@ namespace Test.UnitTesting
                 DtoRecurso dtoRecurso = new DtoRecurso() { id = recursoDisponible.Id, codigo = "recursoPruebaDisponible" };
                 lRecurso.Add(dtoRecurso);
                 DtoRol rol = new DtoRol() { recursos = lRecurso, zonas = new List<DtoZona>() };
+
+                try
+                {
+                    logica.loguearUsuario(null, rol);
+                }
+                catch (InvalidTokenException e)
+                {
+                    Assert.IsTrue(true);
+                }
+                try
+                {
+                    logica.loguearUsuario("tokenIncorrecto", rol);
+                }
+                catch (InvalidTokenException e)
+                {
+                    Assert.IsTrue(true);
+                }
 
                 try
                 {
@@ -291,6 +324,23 @@ namespace Test.UnitTesting
                 var autent = logica.autenticarUsuario("usuarioPruebaCerrarSesion", "usuarioPruebaCerrarSesion");
                 string token = autent.access_token;
 
+                try
+                {
+                    logica.cerrarSesion(null);
+                }
+                catch (InvalidTokenException e)
+                {
+                    Assert.IsTrue(true);
+                }
+                try
+                {
+                    logica.cerrarSesion("tokenIncorrecto");
+                }
+                catch (InvalidTokenException e)
+                {
+                    Assert.IsTrue(true);
+                }
+
                 // Logueo al usuario.
                 List<DtoRecurso> lRecurso = new List<DtoRecurso>();
                 DtoRecurso dtoRecurso = new DtoRecurso() { id = recursoDisponible.Id, codigo = "recursoPruebaCerrarSesion" };
@@ -379,26 +429,7 @@ namespace Test.UnitTesting
                 }
             }
         }
-        /// <summary>
-        /// Agrega un usuario y luego ejecuta el metodo de autenticacion
-        /// con credenciales validas y credenciales invalidas.
-        /// </summary>
-        [Test]
-        public void GetNombreUsuarioTest()
-        {
-            using (var context = new EmsysContext())
-            {
-                AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
-                string pass = Passwords.GetSHA1("usuarioPruebaGetNombre");
-                Usuario usuarioPrueba = new Usuario { NombreLogin = "usuarioPruebaGetNombre", Contraseña = pass };
-                context.Users.Add(usuarioPrueba);
-                context.SaveChanges();
-                IMetodos logica = new Metodos();
-                var resp = logica.autenticarUsuario("usuarioPruebaGetNombre", "usuarioPruebaGetNombre");
-                var token = resp.access_token;
-                Assert.IsTrue(logica.getNombreUsuario(token) == "usuarioPruebaGetNombre");
-            }
-        }
+
 
         /// <summary>
         /// Crea un evento con una extension que tenga descripcion despachador
@@ -496,6 +527,23 @@ namespace Test.UnitTesting
                 DtoRecurso dtoRecurso = new DtoRecurso() { id = recursoDisponible.Id, codigo = "recursoListarEvento" };
                 lRecurso.Add(dtoRecurso);
                 DtoRol rol = new DtoRol() { recursos = lRecurso, zonas = new List<DtoZona>() };
+
+                try
+                {
+                    logica.verInfoEvento(null, 1);
+                }
+                catch (InvalidTokenException e)
+                {
+                    Assert.IsTrue(true);
+                }
+                try
+                {
+                    logica.verInfoEvento("tokenIncorrecto", 1);
+                }
+                catch (InvalidTokenException e)
+                {
+                    Assert.IsTrue(true);
+                }
 
                 if (logica.loguearUsuario(token, rol))
                 {
@@ -645,6 +693,23 @@ namespace Test.UnitTesting
                 lRecurso.Add(dtoRecurso);
                 DtoRol rol = new DtoRol() { recursos = lRecurso, zonas = new List<DtoZona>() };
 
+                try
+                {
+                    logica.listarEventos(null);
+                }
+                catch (InvalidTokenException e)
+                {
+                    Assert.IsTrue(true);
+                }
+                try
+                {
+                    logica.listarEventos("tokenIncorrecto");
+                }
+                catch (InvalidTokenException e)
+                {
+                    Assert.IsTrue(true);
+                }
+
                 if (logica.loguearUsuario(token, rol))
                 {
                     var listaEventos = logica.listarEventos(token);
@@ -708,9 +773,11 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(u=>u.NombreLogin=="A").Token= null;
-            int cant = db.Extensiones_Evento.FirstOrDefault().GeoUbicaciones.Count();
+            db.Users.FirstOrDefault(us=>us.NombreLogin=="A").Token= null;
+            db.SaveChanges();
 
+
+            int cant = db.Extensiones_Evento.FirstOrDefault().GeoUbicaciones.Count();
             IMetodos logica = new Metodos();
 
             // Autenticar.
@@ -757,6 +824,9 @@ namespace Test.UnitTesting
             int cant2 = db.Extensiones_Evento.FirstOrDefault().GeoUbicaciones.Count();
             Assert.IsTrue(cant2 == cant + 1);
             Assert.IsTrue((geo2.Longitud == 120) && (geo2.Latitud == 12));
+            
+
+            logica.cerrarSesion(token);
         }
 
 
@@ -770,8 +840,8 @@ namespace Test.UnitTesting
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
             db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
-
-
+            db.SaveChanges();
+            
             int cantAdjImagen = db.Extensiones_Evento.FirstOrDefault().Imagenes.Count();
             int cantFiles = db.ApplicationFiles.Count();
             IMetodos logica = new Metodos();
@@ -786,16 +856,18 @@ namespace Test.UnitTesting
             lRecursos.Add(dtoRecurso1);
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = lRecursos };
 
-
-            // Loguear.
-            var log = logica.loguearUsuario(token, rol);
-
             // Agregar el archivo.
             byte[] archivo = null;
             string extArchivo = ".jpg";
             int idFile = logica.agregarFileData(archivo, extArchivo);
 
             DtoImagen img = new DtoImagen() { id_imagen = idFile, idExtension = 1 };
+
+            Assert.IsFalse(logica.adjuntarImagen(token, img));
+
+            // Loguear.
+            var log = logica.loguearUsuario(token, rol);
+                       
 
             // Sin token.
             try
@@ -849,10 +921,21 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+            // Adjunto invalido.
+            try
+            {
+                logica.getImageData(token, -1);
+            }
+            catch (ImagenInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
 
             DtoApplicationFile f = logica.getImageData(token, 1);
             Assert.IsNotNull(f);
-            Assert.IsTrue(f.nombre == "1.jpg");
+            Assert.IsTrue(f.nombre == idFile.ToString() + ".jpg");
+
+            logica.cerrarSesion(token);
         }
 
 
@@ -866,7 +949,8 @@ namespace Test.UnitTesting
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
             db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
-
+            db.SaveChanges();
+            
             int cantAdjAudio = db.Extensiones_Evento.FirstOrDefault().Audios.Count();
             int cantFiles = db.ApplicationFiles.Count();
             IMetodos logica = new Metodos();
@@ -874,6 +958,14 @@ namespace Test.UnitTesting
             // Autenticar.
             var result = logica.autenticarUsuario("A", "A");
             string token = result.access_token;
+
+            // Agregar el archivo.
+            byte[] archivo = null;
+            string extArchivo = ".mp3";
+            int idFile = logica.agregarFileData(archivo, extArchivo);
+            DtoAudio aud = new DtoAudio() { id_audio = idFile, idExtension = 1 };
+
+            Assert.IsFalse(logica.adjuntarAudio(token, aud));
 
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
@@ -884,13 +976,7 @@ namespace Test.UnitTesting
 
             // Loguear.
             var log = logica.loguearUsuario(token, rol);
-
-            // Agregar el archivo.
-            byte[] archivo = null;
-            string extArchivo = ".mp3";
-            int idFile = logica.agregarFileData(archivo, extArchivo);
-
-            DtoAudio aud = new DtoAudio() { id_audio = idFile, idExtension = 1 };
+                      
 
             // Sin token.
             try
@@ -944,10 +1030,21 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+            // Adjunto invalido.
+            try
+            {
+                logica.getAudioData(token, -1);
+            }
+            catch (AudioInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
 
             DtoApplicationFile f = logica.getAudioData(token, 1);
             Assert.IsNotNull(f);
-            Assert.IsTrue(f.nombre == "1.mp3");
+            Assert.IsTrue(f.nombre == idFile.ToString() + ".mp3");
+
+            logica.cerrarSesion(token);
         }
 
 
@@ -961,6 +1058,7 @@ namespace Test.UnitTesting
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
             db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.SaveChanges();
 
             int cantAdjVideo = db.Extensiones_Evento.FirstOrDefault().Videos.Count();
             int cantFiles = db.ApplicationFiles.Count();
@@ -969,6 +1067,15 @@ namespace Test.UnitTesting
             // Autenticar.
             var result = logica.autenticarUsuario("A", "A");
             string token = result.access_token;
+
+            // Agregar el archivo.
+            byte[] archivo = null;
+            string extArchivo = ".mp4";
+            int idFile = logica.agregarFileData(archivo, extArchivo);
+            DtoVideo vid = new DtoVideo() { id_video = idFile, idExtension = 1 };
+
+            // No tengo autorizacion.
+            Assert.IsFalse(logica.adjuntarVideo(token, vid));
 
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
@@ -980,12 +1087,8 @@ namespace Test.UnitTesting
             // Loguear.
             var log = logica.loguearUsuario(token, rol);
 
-            // Agregar el archivo.
-            byte[] archivo = null;
-            string extArchivo = ".mp4";
-            int idFile = logica.agregarFileData(archivo, extArchivo);
+            
 
-            DtoVideo vid = new DtoVideo() { id_video = idFile, idExtension = 1 };
 
             // Sin token.
             try
@@ -1040,9 +1143,97 @@ namespace Test.UnitTesting
                 Assert.IsTrue(true);
             }
 
+            // Adjunto invalido.
+            try
+            {
+                logica.getVideoData(token, -1);
+            }
+            catch (VideoInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+
             DtoApplicationFile f = logica.getVideoData(token, 1);
             Assert.IsNotNull(f);
-            Assert.IsTrue(f.nombre == "1.mp4");
+            Assert.IsTrue(f.nombre == idFile.ToString() + ".mp4");
+
+            logica.cerrarSesion(token);
+        }
+
+
+        /// <summary>
+        /// Se prueba el metodo keepMeAlive.
+        /// </summary>
+        [Test]
+        public void KeepMeAliveTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.SaveChanges();
+
+            IMetodos dbAL = new Metodos();
+            var result = dbAL.autenticarUsuario("A", "A");
+            
+            try
+            {
+                dbAL.keepMeAlive(null);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+            try
+            {
+                dbAL.keepMeAlive("tokenIncorrecto");
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            db = new EmsysContext();
+            var time1 = db.Users.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal.Value;
+
+            Thread.Sleep(1000);
+
+            bool ok = dbAL.keepMeAlive(result.access_token);
+            db = new EmsysContext();
+            var time2 = db.Users.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal.Value;
+
+            Assert.IsTrue((time1 != null) && (time2 != null) && (DateTime.Compare(time1, time2) < 0));
+        }
+
+
+        /// <summary>
+        /// Se prueba el metodo desconectar inactivos.
+        /// </summary>
+        [Test]
+        public void DesconectarInactivosTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = "simuloEstarConectado";
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal = DateTime.Parse("2015/07/23 21:30:00");
+            db.SaveChanges();
+
+            IMetodos dbAL = new Metodos();
+            try
+            {
+                var result = dbAL.autenticarUsuario("A", "A");
+            }
+            catch (SesionActivaException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            dbAL.desconectarAusentes(10);
+            var result2 = dbAL.autenticarUsuario("A", "A");
+
+            Assert.IsTrue(result2.access_token != null);
         }
     }
 }

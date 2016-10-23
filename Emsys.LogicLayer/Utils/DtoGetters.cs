@@ -114,43 +114,7 @@
                 activo = categoria.Activo
             };
         }
-
-        public static DtoItemListar getDtoItemListar(Extension_Evento ext)
-        {
-            DtoCategoria cat = null;
-            if (ext.SegundaCategoria != null)
-            {
-                cat = getDtoCategoria(ext.SegundaCategoria);
-            }
-            else
-            {
-                cat = getDtoCategoria(ext.Evento.Categoria);
-            }
-
-            string desp = null;
-            if (ext.Estado == EstadoExtension.Despachado)
-            {
-                desp = ext.Despachador.Nombre;
-            }    
-
-            DtoGeoUbicacion geoU = null;
-            if ((ext.Evento.Latitud != 0) && (ext.Evento.Longitud != 0))
-            {
-                geoU = new DtoGeoUbicacion() { latitud = ext.Evento.Latitud, longitud = ext.Evento.Longitud };
-            }
-
-            return new DtoItemListar()
-            {
-                id_evento = ext.Evento.Id,
-                zona = getDtoZona(ext.Zona),
-                descripcion = ext.Evento.Descripcion,
-                despachador = desp,
-                estado = ext.Estado.ToString().ToLower(),
-                fecha_creacion = ext.Evento.FechaCreacion,
-                categoria = cat,
-                geoubicacion = geoU
-            };
-        }
+        
 
         public static DtoExtension getDtoExtension(Extension_Evento ext)
         {
@@ -200,7 +164,7 @@
             foreach (GeoUbicacion g in ext.GeoUbicaciones)
             {
                 geos.Add(getDtoGeoUbicacion(g));
-            } 
+            }
 
             List<DtoDescripcion> descDespachadores;
             if (ext.DescripcionDespachador != null)

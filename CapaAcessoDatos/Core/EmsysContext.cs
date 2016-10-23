@@ -12,6 +12,11 @@ namespace Emsys.DataAccesLayer.Core
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<EmsysContext, Configuration>());
         }
 
+        public void borrarBase()
+        {
+            
+        }
+
         public DbSet<Evento> Evento { get; set; }
 
         public DbSet<ApplicationFile> ApplicationFiles { get; set; }

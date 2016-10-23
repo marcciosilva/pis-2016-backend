@@ -11,15 +11,5 @@ namespace Emsys.LogicLayer.ApplicationExceptions
         public RecursoNoDisponibleException()
         {
         }
-
-        public RecursoNoDisponibleException(string message)
-        : base(message)
-        {
-        }
-
-        public RecursoNoDisponibleException(string message, Exception inner)
-        : base(message, inner)
-        {
-        }
     }
 }

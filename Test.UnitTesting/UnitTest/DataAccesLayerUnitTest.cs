@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 using Emsys.LogicLayer;
 using Emsys.DataAccesLayer.Core;
 using Emsys.DataAccesLayer.Model;
+using System.IO;
 
 namespace Test.UnitTesting
 {
     [TestFixture]
     class DataAccesLayerUnitTest
     {
+        
         /// <summary>
         /// Test que prueba que se pueda registrar un usuario a Identity.
         /// </summary>
@@ -74,6 +76,27 @@ namespace Test.UnitTesting
         }
 
         /// <summary>
+        /// Test que prueba que se pueda crear una Zona y agregarla a la base de datos.
+        /// </summary>
+        [Test]
+        public void CrearDepartamentoTest()
+        {
+            var context = new EmsysContext();
+            Departamento dep = new Departamento()
+            {
+                Nombre = "departamento",
+                Eventos = new List<Evento>()
+            };
+            context.Departamentos.Add(dep);
+            context.SaveChanges();
+
+            var d = context.Departamentos.FirstOrDefault();
+            Assert.AreEqual(d.Id, 1);
+            Assert.AreEqual(d.Nombre, "departamento");
+            Assert.AreEqual(d.Eventos.Count(), 0);
+        }
+
+        /// <summary>
         /// Test que prueba que se pueda crear un Sector y agregarlo a la base de datos.
         /// </summary>
         [Test]
@@ -111,8 +134,76 @@ namespace Test.UnitTesting
             }
         }
 
+        /// <summary>
+        /// Test que prueba que se pueda crear un Sector y agregarlo a la base de datos.
+        /// </summary>
+        [Test]
+        public void CrearOrigenEventoTest()
+        {
+            AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+
+            //using (var context = new EmsysContext())
+            //{
+            var context = new EmsysContext();
+                // Evento y extensiones
+                var sector = new Sector() { Nombre = "sectorDEPrueba", Zona = context.Zonas.FirstOrDefault() };
+                var catEvento = new Categoria() { Clave = "catPruebaDE", Activo = true, Codigo = "catDE", Prioridad = NombrePrioridad.Media };
+                var evento = new Evento()
+                {
+                    NombreInformante = "PruebaDE",
+                    TelefonoEvento = "PruebaDE",
+                    Estado = EstadoEvento.Enviado,
+                    Categoria = catEvento,
+                    TimeStamp = DateTime.Now,
+                    FechaCreacion = DateTime.Now,
+                    Sector = sector,
+                    EnProceso = true,
+                    Numero = "PruebaDE",
+                    Audios = new List<Audio>(),
+                    Calle = "PruebaDE",
+                    Esquina = "PruebaDE",
+                    GeoUbicaciones = new List<GeoUbicacion>(),
+                    Imagenes = new List<Imagen>(),
+                    Latitud = 0,
+                    Longitud = 0,
+                    //Origen_Evento = new Origen_Evento(),
+                    Videos = new List<Video>(),
+                    //Departamento = new Departamento(),
+                    Descripcion = "PruebaDE"
+                };
+
+                var ext1 = new Extension_Evento()
+                {
+                    Evento = evento,
+                    Zona = context.Zonas.FirstOrDefault(),
+                    Estado = EstadoExtension.Despachado,
+                    TimeStamp = DateTime.Now,
+                    Despachador = context.Users.FirstOrDefault(),
+                    DescripcionDespachador = "2016/07/23 21:30:00\\UsuarioDespachador\\descripcion de evento\\2016/07/23 21:37:00\\UsuarioDespachador2\\otra descripcion de evento\\2016/07/24 10:37:00\\UsuarioDespachador2\\otra mas"
+                };
+
+                Origen_Evento oe1 = new Origen_Evento()
+                {
+                    TimeStamp = DateTime.Now,
+                    TipoOrigen = "test",
+                    IdOrigen = 1,
+                    Evento = evento
+                };
+                context.Origen_Eventos.Add(oe1);
+                context.SaveChanges();
+
+                context = new EmsysContext();
+                var oe = context.Origen_Eventos.FirstOrDefault();
+                Assert.AreEqual(oe.Id, 4);
+                Assert.AreNotEqual(oe.TimeStamp, null);
+                Assert.AreEqual(oe.TipoOrigen, "test");
+                Assert.AreEqual(oe.IdOrigen, 1);
+                Assert.AreEqual(oe.Evento.Id, 4);
+            // }
+        }
+
         //[Test]
-        //static void CrearCategoria()
+        //public void CrearCategoria()
         //{
         //    using (var context = new EmsysContext())
         //    {

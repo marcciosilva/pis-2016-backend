@@ -11,15 +11,5 @@ namespace Emsys.LogicLayer.ApplicationExceptions
         public SesionActivaException()
         {
         }
-
-        public SesionActivaException(string message)
-        : base(message)
-        {
-        }
-
-        public SesionActivaException(string message, Exception inner)
-        : base(message, inner)
-        {
-        }
     }
 }

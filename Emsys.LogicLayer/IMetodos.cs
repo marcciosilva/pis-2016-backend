@@ -53,13 +53,7 @@ namespace Emsys.LogicLayer
         /// <param name="token">Identificador unico del usuario.</param>
         /// <returns>Retorna si puedo realizar la operacion de cerrar sesion.</returns>
         bool cerrarSesion(string token);
-
-        /// <summary>
-        /// Obtiene el nombre de usuario a partir de un identificador de usuario.
-        /// </summary>
-        /// <param name="token">Identificador unico del usuario.</param>
-        /// <returns>Retorna el nombre del usuario.</returns>
-        string getNombreUsuario(string token);
+        
 
         /// <summary>
         /// Metodo para agregar al log una nueva accion.
@@ -177,7 +171,7 @@ namespace Emsys.LogicLayer
         /// <param name="token">token del usuario que desea actualizar descripcion</param>
         /// <returns>Retorna la respuesta segun el documento de interfaz.</returns>
         Mensaje ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token);
-
+        
        
         void desconectarAusentes(int maxTime);
     }

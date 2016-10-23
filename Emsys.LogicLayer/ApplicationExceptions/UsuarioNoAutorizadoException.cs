@@ -11,15 +11,5 @@ namespace Emsys.LogicLayer.ApplicationExceptions
         public UsuarioNoAutorizadoException()
         {
         }
-
-        public UsuarioNoAutorizadoException(string message)
-        : base(message)
-        {
-        }
-
-        public UsuarioNoAutorizadoException(string message, Exception inner)
-        : base(message, inner)
-        {
-        }
     }
 }
