@@ -1,8 +1,6 @@
 ﻿using DataTypeObject;
 using Emsys.LogicLayer;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http.Controllers;
@@ -20,7 +18,7 @@ namespace Servicios.Filtros
             if (actionContext.Request.Method == HttpMethod.Post)
             {
                 var postData = actionContext.ActionArguments;
-                //do logging here
+                //// Do logging here.
             }
 
             var actionName = actionContext.ActionDescriptor.ActionName;
