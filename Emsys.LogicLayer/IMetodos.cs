@@ -1,9 +1,5 @@
 ﻿using DataTypeObject;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Emsys.LogicLayer
 {
@@ -54,7 +50,6 @@ namespace Emsys.LogicLayer
         /// <returns>Retorna si puedo realizar la operacion de cerrar sesion.</returns>
         bool cerrarSesion(string token);
         
-
         /// <summary>
         /// Metodo para agregar al log una nueva accion.
         /// </summary>

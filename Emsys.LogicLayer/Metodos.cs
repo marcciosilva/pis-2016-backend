@@ -332,7 +332,6 @@ namespace Emsys.LogicLayer
             }
         }
 
-
         public void AgregarLog(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo)
         {
             try
@@ -924,7 +923,5 @@ namespace Emsys.LogicLayer
                 }
             }
         }
-
-
     }
 }
