@@ -1,6 +1,9 @@
-﻿using Microsoft.Owin;
+﻿using Emsys.DataAccesLayer.Core;
+using Hangfire;
+using Microsoft.Owin;
 using Owin;
 using System;
+using System.Linq;
 
 [assembly: OwinStartup(typeof(Servicios.Startup))]
 
@@ -11,14 +14,35 @@ namespace Servicios
     /// </summary>
     public partial class Startup
     {
+        private static bool iniciado = false;
         /// <summary>
         /// Metodo de configuracion.
         /// </summary>
         /// <param name="app">Parametro.</param>
         public void Configuration(IAppBuilder app)
         {
-            Console.WriteLine("prueba");
-            // ConfigureOAuth(app);
+            try
+            {
+                if (!iniciado)
+                {
+                    // Para iniciar la bd si no esta creada.
+                    EmsysContext db = new EmsysContext();
+                    db.Evento.ToList();
+
+                    GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
+                    app.UseHangfireDashboard();
+                    app.UseHangfireServer();
+                    RecurringJob.AddOrUpdate("ObserverDatabase",() => SqlDependecyProject.Program.Main(), Cron.Yearly);
+                    RecurringJob.Trigger("ObserverDatabase");
+                    RecurringJob.AddOrUpdate("UserManager",() => Emsys.LogicLayer.Program.Main(), Cron.Yearly);
+                    RecurringJob.Trigger("UserManager");
+                    iniciado = true;
+                }
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

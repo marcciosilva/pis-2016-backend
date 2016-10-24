@@ -23,10 +23,7 @@
         {
             try
             {
-                // Para iniciar la bd si no esta creada.
-                EmsysContext db = new EmsysContext();
-                db.Evento.ToList();
-
+              
                 // Para cada tabla a ser monitoreada inicio un thread.
                 Thread WorkerThreadExtensiones = new Thread(new ThreadStart(ProcesoExtensiones.ProcesoMonitoreoExtensiones));
                 WorkerThreadExtensiones.Start();

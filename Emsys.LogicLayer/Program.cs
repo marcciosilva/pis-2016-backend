@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 
 namespace Emsys.LogicLayer
 {
-    class Program
+    public class Program
     {
-        public static void Main(string[] args)
+        public static void Main()
         {
             // Tiempo para el cual se desonectan usuarios (inactivos por mas de maxTime minutos). 
             const int maxTime = 12;

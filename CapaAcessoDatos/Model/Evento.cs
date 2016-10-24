@@ -23,7 +23,7 @@
         [MaxLength(50)]
         public string TelefonoEvento { get; set; }
 
-        [Required]
+        //[Required]
         public virtual Categoria Categoria { get; set; }
 
         [Required]
@@ -48,7 +48,7 @@
 
         public Departamento Departamento { get; set; }
 
-        [Required]
+       // [Required]
         public virtual Sector Sector { get; set; }
 
         public double Latitud { get; set; }

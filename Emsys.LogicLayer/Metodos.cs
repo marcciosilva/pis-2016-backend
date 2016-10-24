@@ -5,6 +5,7 @@ using Emsys.LogicLayer.ApplicationExceptions;
 using Emsys.LogicLayer.Utils;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
 
@@ -782,12 +783,25 @@ namespace Emsys.LogicLayer
                         Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == audio.idExtension);
                         if (TieneAcceso.tieneAccesoExtension(user, ext))
                         {
-                            Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file };
+                            Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file, ExtensionEvento=ext };
                             context.Audios.Add(aud);
                             ext.Audios.Add(aud);
                             ext.TimeStamp = DateTime.Now;
                             ext.Evento.TimeStamp = DateTime.Now;
-                            context.SaveChanges();
+                            try
+                            {
+                                context.SaveChanges();
+                            }
+                            catch (DbEntityValidationException ex)
+                            {
+                                foreach (var entityValidationErrors in ex.EntityValidationErrors)
+                                {
+                                    foreach (var validationError in entityValidationErrors.ValidationErrors)
+                                    {
+                                        //Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
+                                    }
+                                }
+                            }
                             return true;
                         }
                         else
