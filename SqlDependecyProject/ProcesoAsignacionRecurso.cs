@@ -1,5 +1,4 @@
-﻿
-namespace SqlDependecyProject
+﻿namespace SqlDependecyProject
 {
     using System;
     using TableDependency.Mappers;
@@ -7,7 +6,6 @@ namespace SqlDependecyProject
     using TableDependency.Enums;
     using Emsys.DataAccesLayer.Model;
     using Emsys.DataAccesLayer.Core;
-    using System.Linq;
     using DataTypeObject;
     using Emsys.LogicLayer;
     using System.Threading;
@@ -16,7 +14,11 @@ namespace SqlDependecyProject
     {
         private static bool llamo = true;
 
-        private static string proceso= "ProcesoMonitoreoAsignacionRecurso";
+        private static string proceso = "ProcesoMonitoreoAsignacionRecurso";
+
+        private static SqlTableDependency<AsignacionRecurso> _dependency;
+
+        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         /// <summary>
         /// Funcion que engloba el proceso de atender AsignacionRecurso de la BD para extensiones.
@@ -25,8 +27,7 @@ namespace SqlDependecyProject
         {
             try
             {
-
-                Console.WriteLine(proceso +"- Observo la BD:\n");
+                Console.WriteLine(proceso + "- Observo la BD:\n");
                 Listener();
 
                 while (true)
@@ -42,10 +43,6 @@ namespace SqlDependecyProject
             }
         }
 
-        private static SqlTableDependency<AsignacionRecurso> _dependency;
-        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-
         /// <summary>
         /// Implentacion con sql table dependency para noticiar los cambios en la bd.
         /// </summary>
@@ -58,10 +55,6 @@ namespace SqlDependecyProject
             _dependency.OnError += _dependency_OnError;
             _dependency.Start();
         }
-
-      
-
-
 
         /// <summary>
         /// Metodo que se dispara cuando ocurre un error al detectar los cambios en la base de datos.
@@ -87,7 +80,7 @@ namespace SqlDependecyProject
                     Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
                     switch (AsignacionRecursoDB.ChangeType)
                     {
-                        // el caso no es util por que si se crea un evento no tiene asignados recursos probablemte
+                        // El caso no es util por que si se crea un evento no tiene asignados recursos probablemte.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del evento: " + AsignacionRecursoDB.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AsignacionRecursoDB, GestorNotificaciones);
@@ -110,6 +103,7 @@ namespace SqlDependecyProject
                 throw e;
             }
         }
+
         /// <summary>
         /// Metodo que se utiliza para enviar una notificaion a un Video.
         /// </summary>
@@ -120,7 +114,6 @@ namespace SqlDependecyProject
         {
             using (EmsysContext db = new EmsysContext())
             {
-
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Video", asinacionRecurso.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", CodigosLog.LogCapturarCambioEventoCod);
                 var asgnacionRecursoEnDB = db.AsignacionRecurso.Find(asinacionRecurso.Entity.Id);
@@ -130,12 +123,11 @@ namespace SqlDependecyProject
                         {
                             GestorNotificaciones.SendMessage(cod, asgnacionRecursoEnDB.Extension.Id.ToString(), "recurso-" + recurso.Id);
                         }
-                        //para la zona asociada a la extensen le envia una notificacion
+
+                        // Para la zona asociada a la extensen le envia una notificacion.
                         GestorNotificaciones.SendMessage(cod, asgnacionRecursoEnDB.Extension.Id.ToString(), "zona-" + asgnacionRecursoEnDB.Extension.Zona.Id);
-                   
                 }
             }
         }
     }
 }
-

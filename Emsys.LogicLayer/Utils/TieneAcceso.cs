@@ -1,11 +1,6 @@
 ﻿using Emsys.DataAccesLayer.Core;
 using Emsys.DataAccesLayer.Model;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Emsys.LogicLayer.Utils
 {
@@ -17,6 +12,7 @@ namespace Emsys.LogicLayer.Utils
             {
                 return false;
             }
+
             using (var context = new EmsysContext())
             {
                 if (user != null)

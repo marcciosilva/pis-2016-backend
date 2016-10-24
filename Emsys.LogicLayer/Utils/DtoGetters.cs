@@ -4,7 +4,6 @@
     using DataTypeObject;
     using System;
     using System.Collections.Generic;
-    using System.Data.Entity.Migrations;
     using System.Linq;
 
     class DtoGetters
@@ -115,7 +114,6 @@
             };
         }
         
-
         public static DtoExtension getDtoExtension(Extension_Evento ext)
         {
             List<string> recursos = new List<string>();

@@ -1,5 +1,4 @@
-﻿
-namespace SqlDependecyProject
+﻿namespace SqlDependecyProject
 {
     using System;
     using TableDependency.Mappers;
@@ -7,17 +6,19 @@ namespace SqlDependecyProject
     using TableDependency.Enums;
     using Emsys.DataAccesLayer.Model;
     using Emsys.DataAccesLayer.Core;
-    using System.Linq;
     using DataTypeObject;
     using Emsys.LogicLayer;
     using System.Threading;
 
     public class ProcesoEventos
     {
-        private enum TablaMonitorar { Eventos, Extensiones }
+        private enum TablaMonitorar
+        {
+            Eventos,
+            Extensiones
+        }
+
         private static bool llamo = true;
-
-
 
         /// <summary>
         /// Funcion que engloba el proceso de atender eventos de la BD para Eventos.
@@ -25,8 +26,7 @@ namespace SqlDependecyProject
         public static void ProcesoMonitoreoEventos()
         {
             try
-            {
-                               
+            {            
                 Console.WriteLine("ProcesoMonitoreoEventos - Observo la BD:\n");
                 Listener();
                 while (true)
@@ -84,7 +84,7 @@ namespace SqlDependecyProject
                     Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
                     switch (evento.ChangeType)
                     {
-                        //// el caso no es util por que si se crea un evento no tiene asignados recursos probablemte
+                        //// el caso no es util por que si se crea un evento no tiene asignados recursos probablemente
                         ////case ChangeType.Delete:
                         ////    Console.WriteLine("ProcesoMonitoreoEventos - Accion: Borro, Pk del evento: " + evento.Entity.NombreInformante);
                         ////    AtenderEvento(DataNotificacionesCodigos.CierreEvento, evento, GestorNotificaciones);
@@ -107,6 +107,7 @@ namespace SqlDependecyProject
                 throw e;
             }
         }
+
         /// <summary>
         /// Metodo que se utiliza para enviar una notificaion a un evento.
         /// </summary>
@@ -117,7 +118,6 @@ namespace SqlDependecyProject
         {
             using (EmsysContext db = new EmsysContext())
             {
-
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Evento", evento.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla Eventos. Se inicia la secuencia de envio de notificaciones.", CodigosLog.LogCapturarCambioEventoCod);
                 var eventoBD = db.Evento.Find(evento.Entity.Id);
@@ -125,18 +125,17 @@ namespace SqlDependecyProject
                 {
                     foreach (var extension in eventoBD.ExtensionesEvento)
                     {
-                        //para cada recurso de las extensiones del evento genero una notificacion
+                        // Para cada recurso de las extensiones del evento genero una notificacion.
                         foreach (var recurso in extension.Recursos)
                         {
-                            GestorNotificaciones.SendMessage(cod, evento.Entity.Id.ToString(), "recurso-"+recurso.Id.ToString());
+                            GestorNotificaciones.SendMessage(cod, evento.Entity.Id.ToString(), "recurso-" + recurso.Id.ToString());
                         }
-                        //par las zonas de las extensiones envio una notificacion.
+
+                        // Para las zonas de las extensiones envio una notificacion.
                         GestorNotificaciones.SendMessage(cod, evento.Entity.Id.ToString(), "zona-" + extension.Zona.Id);
                     }
                 }
-
             }
         }
     }
 }
-
