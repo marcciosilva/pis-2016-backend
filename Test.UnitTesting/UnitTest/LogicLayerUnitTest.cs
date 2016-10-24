@@ -1363,6 +1363,34 @@ namespace Test.UnitTesting
             Assert.AreNotEqual(dto.fecha_envio, null);
         }
 
+        /// <summary>
+        /// Se pureba el get dto video.
+        /// </summary>
+        [Test]
+        public void ExceptionsTest()
+        {
+            try
+            {
+                throw new UsuarioNoAutorizadoException();
+            }
+            catch (UsuarioNoAutorizadoException e)
+            {
+            }
+            try
+            {
+                throw new InvalidExtensionForUserException();
+            }
+            catch (InvalidExtensionForUserException e)
+            {
+            }
+            try
+            {
+                throw new InvalidExtensionException();
+            }
+            catch (InvalidExtensionException e)
+            {
+            }
+        }
 
     }
 }

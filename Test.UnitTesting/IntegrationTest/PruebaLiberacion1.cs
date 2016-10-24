@@ -73,7 +73,7 @@ namespace Test.UnitTesting
             var respuesta5 = controllerLogin.CerrarSesion();
             Assert.IsTrue(respuesta5.cod == 0);
             context = new EmsysContext();
-            int cant = context.Users.FirstOrDefault(u => u.NombreLogin == "A").Zonas.Count();
+            int cant = context.Users.FirstOrDefault(u => u.NombreLogin == "B").Zonas.Count();
             Assert.IsTrue(cant == 0);
         }
         

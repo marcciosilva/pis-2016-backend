@@ -891,7 +891,8 @@ namespace Emsys.LogicLayer
                         if ((user.Token != null) && (user.UltimoSignal != null))
                         {
                             // Si el usuario esta inactivo.
-                            if ((ahora.Subtract(user.UltimoSignal.Value)).Minutes > maxTime)
+                            var a = (ahora.Subtract(user.UltimoSignal.Value)).TotalMinutes;
+                            if (a > maxTime)
                             {
                                 cerrarSesion(user.Token);
                                 Console.WriteLine("Se desconecto al usuario <" + user.NombreLogin + ">");

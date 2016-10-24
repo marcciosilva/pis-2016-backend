@@ -235,7 +235,7 @@ namespace Test.UnitTesting
             var controller2 = new LoginController();
             var resp3 = controller2.Login(u);
             string token = ((DtoAutenticacion)resp3.response).access_token;
-            
+
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             var resp4 = controller.getEvento(-1);
@@ -251,7 +251,7 @@ namespace Test.UnitTesting
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             var resp5 = controller.getEvento(1);
-            Assert.IsTrue(resp5.cod == 500);
+            Assert.IsTrue(resp5.cod == 0);
         }
 
 
@@ -270,7 +270,7 @@ namespace Test.UnitTesting
 
         //    var controller = new AdjuntosController();
         //    var controller2 = new LoginController();
-           
+
         //    //var resp1 = controller.PostImageFile();
         //    //Assert.IsTrue(resp1.cod == 2);
 
