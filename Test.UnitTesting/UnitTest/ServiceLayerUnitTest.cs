@@ -270,16 +270,15 @@ namespace Test.UnitTesting
 
         //    var controller = new AdjuntosController();
         //    var controller2 = new LoginController();
+           
+        //    //var resp1 = controller.PostImageFile();
+        //    //Assert.IsTrue(resp1.cod == 2);
 
-        //    var resp1 = controller.PostImageFile();
-        //    Assert.IsTrue(resp1.cod == 2);
-
-        //    controller.Request = new HttpRequestMessage();
-        //    controller.Request.Headers.Add("auth", "tokenInvalido");
-        //    controller.Request.Content = new MultipartFormDataContent();
-
-        //    var resp2 = controller.PostImageFile();
-        //    Assert.IsTrue(resp2.cod == 12);
+        //    //controller.Request = new HttpRequestMessage();
+        //    //controller.Request.Headers.Add("auth", "tokenInvalido");
+        //    //controller.Request.Content = new MultipartFormDataContent();
+        //    //var resp2 = controller.PostImageFile();
+        //    //Assert.IsTrue(resp2.cod == 12);
 
         //    DtoUser u = new DtoUser() { username = "A", password = "A" };
         //    var resp3 = controller2.Login(u);
@@ -291,16 +290,6 @@ namespace Test.UnitTesting
         //    controller2.Request = new HttpRequestMessage();
         //    controller2.Request.Headers.Add("auth", token);
         //    var ok = controller2.ElegirRoles(rol);
-
-        //    controller.Request = new HttpRequestMessage();
-        //    controller.Request.Headers.Add("auth", token);
-
-        //    HttpClient httpClient = new HttpClient();
-        //    MultipartFormDataContent form = new MultipartFormDataContent();
-        //    byte[] imagen = null;
-        //    form.Add(new ByteArrayContent(imagen),"img.jpg");
-        //    controller.Request.Content = form;
-        //    var resp4 = controller.PostImageFile();
         //}
 
 

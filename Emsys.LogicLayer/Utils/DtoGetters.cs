@@ -7,7 +7,7 @@
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    class DtoGetters
+    public class DtoGetters
     {
         public static DtoApplicationFile GetDtoApplicationfile(ApplicationFile file)
         {
@@ -125,7 +125,7 @@
             }
 
             List<DtoAsignacionRecurso> asignaciones = new List<DtoAsignacionRecurso>();
-            foreach (AsignacionRecurso a in ext.AccionesRecursos)
+            foreach (AsignacionRecurso a in ext.AsignacionesRecursos)
             {
                 asignaciones.Add(getDtoAsignacionesRecursos(a));
             }  

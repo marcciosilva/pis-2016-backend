@@ -170,7 +170,7 @@ namespace Emsys.LogicLayer
         /// <param name="descParam">Contiene identificador de la extension y la descripcion que se quiere agregar.</param>
         /// <param name="token">token del usuario que desea actualizar descripcion</param>
         /// <returns>Retorna la respuesta segun el documento de interfaz.</returns>
-        Mensaje ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token);
+        bool ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token);
         
        
         void desconectarAusentes(int maxTime);

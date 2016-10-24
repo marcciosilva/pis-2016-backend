@@ -53,7 +53,7 @@ namespace SqlDependecyProject
         {
             var mapper = new ModelToTableMapper<AsignacionRecurso>();
             mapper.AddMapping(model => model.Id, "Id");
-            _dependency = new SqlTableDependency<AsignacionRecurso>(_connectionString, "AsignacionRecurso", mapper);
+            _dependency = new SqlTableDependency<AsignacionRecurso>(_connectionString, "AsignacionesRecursos", mapper);
             _dependency.OnChanged += _dependency_OnChanged;
             _dependency.OnError += _dependency_OnError;
             _dependency.Start();

@@ -28,10 +28,10 @@ namespace Test.UnitTesting
         {
             DtoDescripcion desc = new DtoDescripcion() { descripcion = "desc", fecha = DateTime.Now, origen = OrigenDescripcion.Recurso, texto = "texto", usuario = "usuario"};
 
-            var dto = new DtoActualizarDescripcionParametro() {dtoDescripcion = desc, idExtension = 1 };
+            var dto = new DtoActualizarDescripcionParametro() {descripcion = "algo", idExtension = 1 };
 
             Assert.IsTrue(dto.idExtension == 1);
-            Assert.IsTrue((dto.dtoDescripcion.usuario == "usuario") && (dto.dtoDescripcion.descripcion == "desc") && (dto.dtoDescripcion.fecha != null) && (dto.dtoDescripcion.texto == "texto") && (dto.dtoDescripcion.origen == OrigenDescripcion.Recurso));
+            Assert.IsTrue(dto.descripcion == "algo");
         }
 
 
@@ -276,5 +276,6 @@ namespace Test.UnitTesting
             Assert.AreEqual(Mensajes.GetDescription(11), "Identificador de extension incorrecto.");
             Assert.AreEqual(Mensajes.GetDescription(-1), "Error.");
         }
+
     }
 }

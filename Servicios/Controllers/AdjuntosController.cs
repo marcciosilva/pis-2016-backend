@@ -39,7 +39,6 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
                 }
-
                 var request = HttpContext.Current.Request;
                 if (request.Files.Count > 0)
                 {

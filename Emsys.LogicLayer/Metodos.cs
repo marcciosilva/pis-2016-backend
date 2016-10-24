@@ -5,6 +5,7 @@ using Emsys.LogicLayer.ApplicationExceptions;
 using Emsys.LogicLayer.Utils;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity.Validation;
 using System.IO;
 using System.Linq;
 
@@ -483,8 +484,8 @@ namespace Emsys.LogicLayer
                         GeoUbicacion geoU = new GeoUbicacion() { Usuario = user, FechaEnvio = DateTime.Now, Latitud = ubicacion.latitud, Longitud = ubicacion.longitud };
                         context.GeoUbicaciones.Add(geoU);
                         ext.GeoUbicaciones.Add(geoU);
-                        ext.TimeStamp = DateTime.Now;
-                        ext.Evento.TimeStamp = DateTime.Now;
+                        //ext.TimeStamp = DateTime.Now;
+                        //ext.Evento.TimeStamp = DateTime.Now;
                         context.SaveChanges();
                         return true;
                     }
@@ -703,8 +704,8 @@ namespace Emsys.LogicLayer
                             Imagen img = new Imagen() { Usuario = user, FechaEnvio = DateTime.Now, ImagenData = file };
                             context.Imagenes.Add(img);
                             ext.Imagenes.Add(img);
-                            ext.TimeStamp = DateTime.Now;
-                            ext.Evento.TimeStamp = DateTime.Now;
+                            //ext.TimeStamp = DateTime.Now;
+                            //ext.Evento.TimeStamp = DateTime.Now;
                             context.SaveChanges();
                             return true;
                         }
@@ -744,8 +745,8 @@ namespace Emsys.LogicLayer
                             Video vid = new Video() { Usuario = user, FechaEnvio = DateTime.Now, VideoData = file };
                             context.Videos.Add(vid);
                             ext.Videos.Add(vid);
-                            ext.TimeStamp = DateTime.Now;
-                            ext.Evento.TimeStamp = DateTime.Now;
+                            //ext.TimeStamp = DateTime.Now;
+                            //ext.Evento.TimeStamp = DateTime.Now;
                             context.SaveChanges();
                             return true;
                         }
@@ -785,8 +786,8 @@ namespace Emsys.LogicLayer
                             Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file };
                             context.Audios.Add(aud);
                             ext.Audios.Add(aud);
-                            ext.TimeStamp = DateTime.Now;
-                            ext.Evento.TimeStamp = DateTime.Now;
+                            //ext.TimeStamp = DateTime.Now;
+                            //ext.Evento.TimeStamp = DateTime.Now;
                             context.SaveChanges();
                             return true;
                         }
@@ -811,71 +812,47 @@ namespace Emsys.LogicLayer
         /// <param name="descParam">Data Type Object con la descripcion a agregar y la fecha.</param>
         /// <param name="token">Identificador unico del usuario.</param>
         /// <returns>Mensaje de exito.</returns>
-        public Mensaje ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token)
+        public bool ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token)
         {
-            if (token == null)
-            {
-                throw new InvalidTokenException();
-            }
-
             using (var context = new EmsysContext())
             {
-                var user = context.Users.FirstOrDefault(u => u.Token == token);
-                if (user != null)
+                if (token == null)
                 {
-                    var extension = context.Extensiones_Evento.Find(descParam.idExtension);
-                    if (extension != null)
-                    {
-                        // Verifico que la extension sea del usuario.
-                        bool extensionAsociadaUsuario = ExtensionAsociadaUsuario(descParam.idExtension, user);
-                        if (!extensionAsociadaUsuario)
-                        {
-                            throw new InvalidExtensionForUserException();
-                        }
-
-                        foreach (var item in extension.AccionesRecursos)
-                        {
-                            item.AsignacionRecursoDescripcion.Add(new AsignacionRecursoDescripcion(descParam.dtoDescripcion.descripcion, descParam.dtoDescripcion.fecha));
-                            context.SaveChanges();
-                        }
-
-                        return new Mensaje("Exito.");
-                    }
-                    else
-                    {
-                        throw new InvalidExtensionException();
-                    }
+                    throw new InvalidTokenException();
                 }
 
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user != null && user.Recurso.Count() > 0)
+                {
+                    Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == descParam.idExtension);
+                    if (ext != null)
+                    {
+                        if (TieneAcceso.tieneAccesoExtension(user, ext))
+                        {
+                            foreach (var item in ext.AsignacionesRecursos)
+                            {
+                                if (item.Recurso == user.Recurso.FirstOrDefault())
+                                {
+                                    item.AsignacionRecursoDescripcion.Add(new AsignacionRecursoDescripcion(descParam.descripcion, DateTime.Now));
+                                    context.SaveChanges();
+                                    return true;
+                                }                                
+                            }
+                            return false;
+                        }
+                        throw new InvalidExtensionForUserException();
+                    }
+                    return false;
+                }
                 throw new InvalidTokenException();
             }
         }
 
         /// <summary>
-        /// Funcion interna que verifica si para algun recurso del usuario esta asociada a la extension.
+        /// Indica al servidor que un usuario esta activo.
         /// </summary>
-        /// <param name="extensionId">Identificacion de la extension.</param>
-        /// <param name="user">Usuario por el que se consulta.</param>
-        /// <returns>Si la extension esta asociada al usuario o no.</returns>
-        private static bool ExtensionAsociadaUsuario(int extensionId, Usuario user)
-        {
-            bool extensionAsociadaUsuario = false;
-            foreach (var recursoUsuario in user.Grupos_Recursos)
-            {
-                var recursos = recursoUsuario.Recursos; 
-                foreach (var item in recursos)
-                {
-                    var extensionUsuario = item.Extensiones_Eventos.FirstOrDefault(x => x.Id == extensionId);
-                    if (extensionUsuario != null)
-                    {
-                        extensionAsociadaUsuario = true;
-                    }
-                }  
-            }
-
-            return extensionAsociadaUsuario;
-        }
-
+        /// <param name="token">Token del usuario</param>
+        /// <returns>Exito o no</returns>
         public bool keepMeAlive(string token)
         {
             using (var context = new EmsysContext())
@@ -897,6 +874,11 @@ namespace Emsys.LogicLayer
             }
         }
 
+
+        /// <summary>
+        /// Desconecta a los usuarios ausentes.
+        /// </summary>
+        /// <param name="maxTime">Tiempo minimo para considerar a un usuario como ausente</param>
         public void desconectarAusentes(int maxTime)
         {
             using (var context = new EmsysContext())
