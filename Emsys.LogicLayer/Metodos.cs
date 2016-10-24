@@ -27,7 +27,10 @@ namespace Emsys.LogicLayer
                     }
 
                     // Quita posibles logins previos.
-                    user.Recurso.ToList().ForEach(x => x.Estado = EstadoRecurso.Disponible);
+                    foreach (Recurso r in user.Recurso)
+                    {
+                        r.Estado = EstadoRecurso.Disponible;
+                    }
                     user.Zonas.Clear();
                     user.Recurso.Clear();
                     context.SaveChanges();
@@ -92,13 +95,15 @@ namespace Emsys.LogicLayer
 
                     // Agrega los recursos disponibles para el usuario mediante sus grupos_recursos.
                     ICollection<DtoRecurso> recursos = new List<DtoRecurso>();
+                    List<int> recursosAgregados = new List<int>();
                     foreach (Grupo_Recurso gr in user.Grupos_Recursos)
                     {
                         foreach (Recurso r in gr.Recursos)
                         {
-                            if (r.Estado == EstadoRecurso.Disponible)
+                            if ((r.Estado == EstadoRecurso.Disponible) && (!recursosAgregados.Contains(r.Id)))
                             {
                                 recursos.Add(DtoGetters.getDtoRecurso(r));
+                                recursosAgregados.Add(r.Id);
                             }       
                         }
                     }
@@ -272,7 +277,7 @@ namespace Emsys.LogicLayer
                     {
                         foreach (Extension_Evento ext in user.Recurso.FirstOrDefault().Extensiones_Eventos)
                         {
-                            if (ext.Estado != EstadoExtension.Cerrado && !eventosAgregados.Contains(ext.Evento.Id))
+                            if ((ext.Estado != EstadoExtension.Cerrado) && (!eventosAgregados.Contains(ext.Evento.Id)))
                             {
                                 eventos.Add(DtoGetters.getDtoEvento(ext.Evento));
                                 eventosAgregados.Add(ext.Evento.Id);
@@ -287,7 +292,7 @@ namespace Emsys.LogicLayer
                         {
                             foreach (Extension_Evento ext in z.Extensiones_Evento)
                             {
-                                if (ext.Estado != EstadoExtension.Cerrado && !eventosAgregados.Contains(ext.Evento.Id))
+                                if ((ext.Estado != EstadoExtension.Cerrado) && (!eventosAgregados.Contains(ext.Evento.Id)))
                                 {
                                     eventos.Add(DtoGetters.getDtoEvento(ext.Evento));
                                     eventosAgregados.Add(ext.Evento.Id);
@@ -821,7 +826,7 @@ namespace Emsys.LogicLayer
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
-                if (user != null && user.Recurso.Count() > 0)
+                if ((user != null) && (user.Recurso.Count() > 0))
                 {
                     Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == descParam.idExtension);
                     if (ext != null)
