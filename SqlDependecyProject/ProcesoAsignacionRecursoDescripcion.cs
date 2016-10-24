@@ -81,15 +81,15 @@
                     {
                         // el caso no es util por que si se crea un evento no tiene asignados recursos probablemte
                         case ChangeType.Delete:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.CierreEvento, AsignacionRecursoDescripcionEnDb, GestorNotificaciones);
+                            Console.WriteLine("ProcesoMonitorearAsignacionRecursoDescripcion - Accion: Borro, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
+                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AsignacionRecursoDescripcionEnDb, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion Insert, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.AltaEvento, AsignacionRecursoDescripcionEnDb, GestorNotificaciones);
+                            Console.WriteLine("ProcesoMonitorearAsignacionRecursoDescripcion - Accion Insert, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
+                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AsignacionRecursoDescripcionEnDb, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion update, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
+                            Console.WriteLine("ProcesoMonitorearAsignacionRecursoDescripcion - Accion update, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AsignacionRecursoDescripcionEnDb, GestorNotificaciones);
                             break;
                     }
@@ -118,22 +118,13 @@
                 var asignacionRecursoDescripcionEnDB = db.AsignacionRecursoDescripcion.Find(asignacionRecursoDescripcion.Entity.Id);
                 if (asignacionRecursoDescripcionEnDB != null)
                 {
-                    var asignacionRec = db.AsignacionRecurso.Where(x => x.Id == asignacionRecursoDescripcionEnDB.AsignacionRecurso.Id).FirstOrDefault();
-
-                    if (asignacionRec != null)
-                    {
-                        var ext = db.Extensiones_Evento.Where(x => x.Id == asignacionRec.Extension.Id).FirstOrDefault();
-                        if (ext != null)
-                        {
-                            GestorNotificaciones.SendMessage(cod, ext.Id.ToString(), "recurso-" + asignacionRecursoDescripcionEnDB.AsignacionRecurso.Recurso.Id);
-                        }
-                    }
-                    
-                    //para los recursos asociados a la extension genero una notificacion                   
-                     
-                    //para la zona asociada a la extensen le envia una notificacion
-                   // GestorNotificaciones.SendMessage(cod, asignacionRecursoDescripcion.Entity.Id.ToString(), "zona-" + asignacionRecursoDescripcionEnDB.AsignacionRecurso.Recurso);
+                    GestorNotificaciones.SendMessage(cod, asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Id.ToString(), "recurso-" + asignacionRecursoDescripcionEnDB.AsignacionRecurso.Recurso.Id);
                 }
+
+                //para los recursos asociados a la extension genero una notificacion                   
+
+                //para la zona asociada a la extensen le envia una notificacion
+                // GestorNotificaciones.SendMessage(cod, asignacionRecursoDescripcion.Entity.Id.ToString(), "zona-" + asignacionRecursoDescripcionEnDB.AsignacionRecurso.Recurso);
             }
         }
     }

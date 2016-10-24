@@ -82,15 +82,15 @@
                     {
                         // el caso no es util por que si se crea un Audios no tiene asignados recursos probablemte
                         case ChangeType.Delete:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del Audios: " + AudioEnBD.Entity.Id);
+                            Console.WriteLine("ProcesoMonitoreoAudios - Accion: Borro, Pk del Audios: " + AudioEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AudioEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion Insert, Pk del Audios: " + AudioEnBD.Entity.Id);
+                            Console.WriteLine("ProcesoMonitoreoAudios - Accion Insert, Pk del Audios: " + AudioEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AudioEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion update, Pk del Audios: " + AudioEnBD.Entity.Id);
+                            Console.WriteLine("ProcesoMonitoreoAudios - Accion update, Pk del Audios: " + AudioEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AudioEnBD, GestorNotificaciones);
                             break;
                     }

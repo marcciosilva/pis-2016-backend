@@ -82,15 +82,15 @@
                     {
                         // El caso no es util por que si se crea un evento no tiene asignados recursos probablemente.
                         case ChangeType.Delete:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del evento: " + videoEnBD.Entity.Id);
+                            Console.WriteLine("ProcesoMonitoreoVideos - Accion: Borro, Pk del evento: " + videoEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, videoEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion Insert, Pk del evento: " + videoEnBD.Entity.Id);
+                            Console.WriteLine("ProcesoMonitoreoVideos - Accion Insert, Pk del evento: " + videoEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, videoEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion update, Pk del evento: " + videoEnBD.Entity.Id);
+                            Console.WriteLine("ProcesoMonitoreoVideos - Accion update, Pk del evento: " + videoEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, videoEnBD, GestorNotificaciones);
                             break;
                     }

@@ -14,7 +14,7 @@
         [Required]
         public virtual Recurso Recurso { get; set; }
 
-        public Extension_Evento Extension { get; set; }
+        public virtual Extension_Evento Extension { get; set; }
         
         public string Descripcion { get; set; }
 

@@ -82,16 +82,16 @@
                     {
                         // El caso no es util por que si se crea un evento no tiene asignados recursos probablemte.
                         case ChangeType.Delete:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del evento: " + AsignacionRecursoDB.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AsignacionRecursoDB, GestorNotificaciones);
+                            Console.WriteLine("ProcesoAsignacionRecursoMonitoreo - Accion: Borro, Pk del evento: " + AsignacionRecursoDB.Entity.Id);
+                            AtenderEvento(DataNotificacionesCodigos.AsignacionEvento, AsignacionRecursoDB, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion Insert, Pk del evento: " + AsignacionRecursoDB.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AsignacionRecursoDB, GestorNotificaciones);
+                            Console.WriteLine("ProcesoAsignacionRecursoMonitoreo - Accion Insert, Pk del evento: " + AsignacionRecursoDB.Entity.Id);
+                            AtenderEvento(DataNotificacionesCodigos.AsignacionEvento, AsignacionRecursoDB, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion update, Pk del evento: " + AsignacionRecursoDB.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AsignacionRecursoDB, GestorNotificaciones);
+                            Console.WriteLine("ProcesoAsignacionRecursoMonitoreo - Accion update, Pk del evento: " + AsignacionRecursoDB.Entity.Id);
+                            AtenderEvento(DataNotificacionesCodigos.AsignacionEvento, AsignacionRecursoDB, GestorNotificaciones);
                             break;
                     }
                 }

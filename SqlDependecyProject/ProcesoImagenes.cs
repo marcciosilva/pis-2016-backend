@@ -82,15 +82,15 @@
                     {
                         // El caso no es util por que si se crea un Imagenes no tiene asignados recursos probablemte.
                         case ChangeType.Delete:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del Imagenes: " + imagenEnBD.Entity.Id);
+                            Console.WriteLine("ProcesoMonitoreoImagenes - Accion: Borro, Pk del Imagenes: " + imagenEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, imagenEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion Insert, Pk del Imagenes: " + imagenEnBD.Entity.Id);
+                            Console.WriteLine("ProcesoMonitoreoImagenes - Accion Insert, Pk del Imagenes: " + imagenEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, imagenEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion update, Pk del Imagenes: " + imagenEnBD.Entity.Id);
+                            Console.WriteLine("ProcesoMonitoreoImagenes - Accion update, Pk del Imagenes: " + imagenEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, imagenEnBD, GestorNotificaciones);
                             break;
                     }

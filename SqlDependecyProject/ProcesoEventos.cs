@@ -26,7 +26,7 @@
         public static void ProcesoMonitoreoEventos()
         {
             try
-            {            
+            {
                 Console.WriteLine("ProcesoMonitoreoEventos - Observo la BD:\n");
                 Listener();
                 while (true)
@@ -84,11 +84,11 @@
                     Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
                     switch (evento.ChangeType)
                     {
-                        //// el caso no es util por que si se crea un evento no tiene asignados recursos probablemente
-                        ////case ChangeType.Delete:
-                        ////    Console.WriteLine("ProcesoMonitoreoEventos - Accion: Borro, Pk del evento: " + evento.Entity.NombreInformante);
-                        ////    AtenderEvento(DataNotificacionesCodigos.CierreEvento, evento, GestorNotificaciones);
-                        ////    break;
+                        // el caso no es util por que si se crea un evento no tiene asignados recursos probablemente
+                        case ChangeType.Delete:
+                            Console.WriteLine("ProcesoMonitoreoEventos - Accion: Borro, Pk del evento: " + evento.Entity.NombreInformante);
+                            AtenderEvento(DataNotificacionesCodigos.CierreEvento, evento, GestorNotificaciones);
+                            break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoEventos - Accion Insert, Pk del evento: " + evento.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.AltaEvento, evento, GestorNotificaciones);
