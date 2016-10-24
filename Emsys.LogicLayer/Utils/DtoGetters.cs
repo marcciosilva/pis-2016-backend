@@ -79,7 +79,8 @@
             return new DtoGeoUbicacion()
             {
                 longitud = ubicacion.Longitud,
-                latitud = ubicacion.Latitud
+                latitud = ubicacion.Latitud,
+                fecha_envio=ubicacion.FechaEnvio                
             };
         }
 

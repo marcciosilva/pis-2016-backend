@@ -184,10 +184,11 @@ namespace Emsys.DataAccesLayer.Core
                 //context.Evento.AddOrUpdate(x => x.Id, evento1);
                 //context.Evento.AddOrUpdate(x => x.Id, evento2);
                 //context.Evento.AddOrUpdate(x => x.Id, evento3);
+                string formato = "yyyy-MM-dd'T'hh:mm:ss.FFF";
                 Extension_Evento ext1 = new Extension_Evento()
                 {
                     Id = 1,
-                    DescripcionDespachador = "2016/07/23 21:30:00\\UsuarioDespachador\\descripcion de evento\\2016/07/23 21:37:00\\UsuarioDespachador2\\otra descripcion de evento\\2016/07/24 10:37:00\\UsuarioDespachador2\\otra mas",
+                    DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
                     Evento = evento1,
                     Zona = zona1,
                     Estado = EstadoExtension.FaltaDespachar,
@@ -208,7 +209,7 @@ namespace Emsys.DataAccesLayer.Core
                 Extension_Evento ext2 = new Extension_Evento()
                 {
                     Id = 2,
-                    DescripcionDespachador = "2016/07/23 21:30:00\\UsuarioDespachador\\descripcion de evento\\2016/07/23 21:37:00\\UsuarioDespachador2\\otra descripcion de evento\\2016/07/24 10:37:00\\UsuarioDespachador2\\otra mas",
+                    DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
                     Evento = evento2,
                     Zona = zona2,
                     Estado = EstadoExtension.FaltaDespachar,
@@ -217,7 +218,7 @@ namespace Emsys.DataAccesLayer.Core
                 Extension_Evento ext3 = new Extension_Evento()
                 {
                     Id = 3,
-                    DescripcionDespachador = "2016/07/23 21:30:00\\UsuarioDespachador\\descripcion de evento\\2016/07/23 21:37:00\\UsuarioDespachador2\\otra descripcion de evento\\2016/07/24 10:37:00\\UsuarioDespachador2\\otra mas",
+                    DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
                     Evento = evento3,
                     Zona = zona4,
                     Estado = EstadoExtension.FaltaDespachar,

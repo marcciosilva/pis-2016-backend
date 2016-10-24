@@ -32,10 +32,10 @@ namespace Servicios
                     GlobalConfiguration.Configuration.UseSqlServerStorage("DefaultConnection");
                     app.UseHangfireDashboard();
                     app.UseHangfireServer();
-                    RecurringJob.AddOrUpdate("ObserverDatabase",() => SqlDependecyProject.Program.Main(), Cron.Yearly);
-                    RecurringJob.Trigger("ObserverDatabase");
-                    RecurringJob.AddOrUpdate("UserManager",() => Emsys.LogicLayer.Program.Main(), Cron.Yearly);
-                    RecurringJob.Trigger("UserManager");
+                    //RecurringJob.AddOrUpdate("ObserverDatabase",() => SqlDependecyProject.Program.Main(), Cron.Yearly);
+                    //RecurringJob.Trigger("ObserverDatabase");
+                    //RecurringJob.AddOrUpdate("UserManager",() => Emsys.LogicLayer.Program.Main(), Cron.Yearly);
+                    //RecurringJob.Trigger("UserManager");
                     iniciado = true;
                 }
             }
