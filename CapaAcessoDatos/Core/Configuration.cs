@@ -195,9 +195,9 @@ namespace Emsys.DataAccesLayer.Core
                     TimeStamp = DateTime.Now,
                     GeoUbicaciones = new List<GeoUbicacion>(),
                     Recursos = new List<Recurso>(),
-                    AccionesRecursos = new LinkedList<AsignacionRecurso>(),
+                    AsignacionesRecursos = new LinkedList<AsignacionRecurso>(),
                 };
-                ext1.AccionesRecursos.Add(new AsignacionRecurso
+                ext1.AsignacionesRecursos.Add(new AsignacionRecurso
                 {
                     ActualmenteAsignado = true,
                     AsignacionRecursoDescripcion = new List<AsignacionRecursoDescripcion>(),

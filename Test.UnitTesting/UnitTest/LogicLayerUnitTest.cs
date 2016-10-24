@@ -606,6 +606,7 @@ namespace Test.UnitTesting
                 var unidadEjecutora1 = new Unidad_Ejecutora() { Nombre = "uePrueba", Zonas = new List<Zona>() };
                 var unidadEjecutora2 = new Unidad_Ejecutora() { Nombre = "uePrueba2", Zonas = new List<Zona>() };
                 var unidadEjecutora3 = new Unidad_Ejecutora() { Nombre = "uePrueba3", Zonas = new List<Zona>() };
+                var departamento1 = new Departamento() { Nombre = "dep1" };
                 unidadEjecutora1.Zonas.Add(zona1);
                 unidadEjecutora1.Zonas.Add(zona2);
                 unidadEjecutora2.Zonas.Add(zona3);
@@ -628,11 +629,18 @@ namespace Test.UnitTesting
                 context.Recursos.Add(recursoDisponible);
                 context.Grupos_Recursos.Add(gr);
                 context.Users.Add(user);
+                context.Departamentos.Add(departamento1);
                 context.SaveChanges();
 
                 // Evento y extensiones
                 var sector = new Sector() { Nombre = "sectorPruebaLE", Zona = zona1 };
                 var catEvento = new Categoria() { Clave = "catPruebaListarEvento", Activo = true, Codigo = "catPrueba", Prioridad = NombrePrioridad.Media };
+                List<Imagen> imgs = new List<Imagen>();
+                imgs.Add(new Imagen() { FechaEnvio = DateTime.Now, ImagenData = new ApplicationFile() { FileData = new byte[0], Nombre = "img.jpg" }, Usuario = user });
+                List<Audio> auds = new List<Audio>();
+                auds.Add(new Audio() { FechaEnvio = DateTime.Now, AudioData = new ApplicationFile() { FileData = new byte[0], Nombre = "aud.mp3" }, Usuario = user });
+                List<Video> vids = new List<Video>();
+                vids.Add(new Video() { FechaEnvio = DateTime.Now, VideoData = new ApplicationFile() { FileData = new byte[0], Nombre = "vid.mp4" }, Usuario = user });
                 var evento = new Evento()
                 {
                     Estado = EstadoEvento.Enviado,
@@ -640,7 +648,12 @@ namespace Test.UnitTesting
                     TimeStamp = DateTime.Now,
                     FechaCreacion = DateTime.Now,
                     Sector = sector,
-                    EnProceso = true
+                    EnProceso = true,
+                    Imagenes = imgs,
+                    Videos = vids,
+                    Audios = auds,
+                    Usuario = user,
+                    Departamento = departamento1
                 };
                 var ext1 = new Extension_Evento()
                 {
@@ -688,6 +701,13 @@ namespace Test.UnitTesting
                 {
                     throw e;
                 }
+
+                // Agrego Multimedia.
+                int idF = logica.agregarFileData(new byte[0], "algo.ext");
+                var res1 = logica.adjuntarImagen(token, new DtoImagen() { idExtension = ext1.Id, id_imagen = 1 });
+                var res2 = logica.adjuntarAudio(token, new DtoAudio() { idExtension = ext1.Id, id_audio = 1 });
+                var res3 = logica.adjuntarVideo(token, new DtoVideo() { idExtension = ext1.Id, id_video = 1 });
+
 
                 List<DtoRecurso> lRecurso = new List<DtoRecurso>();
                 DtoRecurso dtoRecurso = new DtoRecurso() { id = recursoDisponible.Id, codigo = "recursoListarEvento" };
@@ -1222,5 +1242,155 @@ namespace Test.UnitTesting
 
             Assert.IsTrue(result2.access_token != null);
         }
+
+
+        /// <summary>
+        /// Probar tiene acceso.
+        /// </summary>
+        [Test]
+        public void TieneAccesoTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.SaveChanges();
+
+
+            int cant = db.Extensiones_Evento.FirstOrDefault().GeoUbicaciones.Count();
+            IMetodos logica = new Metodos();
+
+            // Autenticar.
+            var result = logica.autenticarUsuario("A", "A");
+            string token = result.access_token;
+
+            // Elegir roles.
+            List<DtoZona> lZonas = new List<DtoZona>();
+            DtoZona zona = new DtoZona() { id = 1 };
+            lZonas.Add(zona);
+            DtoRol rol = new DtoRol() { zonas = lZonas, recursos = new List<DtoRecurso>() };
+
+            // Loguear.
+            var log = logica.loguearUsuario(token, rol);
+
+            Assert.IsTrue(TieneAcceso.tieneVisionEvento(db.Users.FirstOrDefault(u=>u.NombreLogin == "A"), db.Evento.FirstOrDefault()));
+            Assert.IsTrue(TieneAcceso.tieneVisionExtension(db.Users.FirstOrDefault(u=>u.NombreLogin == "A"), db.Extensiones_Evento.FirstOrDefault()));
+            Assert.IsFalse(TieneAcceso.tieneVisionExtension(null, db.Extensiones_Evento.FirstOrDefault()));
+            Assert.IsFalse(TieneAcceso.tieneVisionEvento(null, db.Evento.FirstOrDefault()));
+            Assert.IsFalse(TieneAcceso.tieneAccesoExtension(null, db.Extensiones_Evento.FirstOrDefault()));
+
+            var user = db.Users.FirstOrDefault(u => u.NombreLogin == "A");
+            user.Recurso.Clear();
+            user.Despachando.Add(db.Extensiones_Evento.FirstOrDefault());
+            db.SaveChanges();
+            Assert.IsTrue(TieneAcceso.tieneAccesoExtension(user, db.Extensiones_Evento.FirstOrDefault()));
+        }
+
+
+        /// <summary>
+        /// Se pureba el get dto imagen.
+        /// </summary>
+        [Test]
+        public void GetDtoImagenTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+
+            db.ApplicationFiles.Add(new ApplicationFile() { FileData = new byte[0], Nombre = "algo.jpg"});
+            db.SaveChanges();
+            db = new EmsysContext();    
+            Imagen img = new Imagen() { Evento = db.Evento.FirstOrDefault(), ExtensionEvento = db.Extensiones_Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, ImagenData = db.ApplicationFiles.FirstOrDefault(), Usuario = db.Users.FirstOrDefault() };
+            db.Imagenes.Add(img);
+            db.SaveChanges();
+
+            db = new EmsysContext();
+            DtoImagen dto = DtoGetters.getDtoImagen(db.Imagenes.FirstOrDefault());
+            Assert.AreEqual(dto.id, 1);
+            Assert.AreNotEqual(dto.id_imagen,0);
+            Assert.AreEqual(dto.usuario, db.Users.FirstOrDefault().Nombre);
+            Assert.AreNotEqual(dto.fecha_envio, null);
+        }
+
+        /// <summary>
+        /// Se pureba el get dto audio.
+        /// </summary>
+        [Test]
+        public void GetDtoAudioTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+
+            db.ApplicationFiles.Add(new ApplicationFile() { FileData = new byte[0], Nombre = "algo.mp3" });
+            db.SaveChanges();
+            db = new EmsysContext();
+            Audio aud = new Audio() { Evento = db.Evento.FirstOrDefault(), ExtensionEvento = db.Extensiones_Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, AudioData = db.ApplicationFiles.FirstOrDefault(), Usuario = db.Users.FirstOrDefault() };
+            db.Audios.Add(aud);
+            db.SaveChanges();
+
+            db = new EmsysContext();
+            DtoAudio dto = DtoGetters.getDtoAudio(db.Audios.FirstOrDefault());
+            Assert.AreEqual(dto.id, 1);
+            Assert.AreNotEqual(dto.id_audio,0);
+            Assert.AreEqual(dto.usuario, db.Users.FirstOrDefault().Nombre);
+            Assert.AreNotEqual(dto.fecha_envio, null);
+        }
+
+
+        /// <summary>
+        /// Se pureba el get dto video.
+        /// </summary>
+        [Test]
+        public void GetDtoVideoTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+
+            db.ApplicationFiles.Add(new ApplicationFile() { FileData = new byte[0], Nombre = "algo.mp4" });
+            db.SaveChanges();
+            db = new EmsysContext();
+            Video vid = new Video() { Evento = db.Evento.FirstOrDefault(), ExtensionEvento = db.Extensiones_Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, VideoData = db.ApplicationFiles.FirstOrDefault(), Usuario = db.Users.FirstOrDefault() };
+            db.Videos.Add(vid);
+            db.SaveChanges();
+
+            db = new EmsysContext();
+            DtoVideo dto = DtoGetters.getDtoVideo(db.Videos.FirstOrDefault());
+            Assert.AreEqual(dto.id, 1);
+            Assert.AreNotEqual(dto.id_video, 0);
+            Assert.AreEqual(dto.usuario, db.Users.FirstOrDefault().Nombre);
+            Assert.AreNotEqual(dto.fecha_envio, null);
+        }
+
+        /// <summary>
+        /// Se pureba el get dto video.
+        /// </summary>
+        [Test]
+        public void ExceptionsTest()
+        {
+            try
+            {
+                throw new UsuarioNoAutorizadoException();
+            }
+            catch (UsuarioNoAutorizadoException e)
+            {
+            }
+            try
+            {
+                throw new InvalidExtensionForUserException();
+            }
+            catch (InvalidExtensionForUserException e)
+            {
+            }
+            try
+            {
+                throw new InvalidExtensionException();
+            }
+            catch (InvalidExtensionException e)
+            {
+            }
+        }
+
     }
 }

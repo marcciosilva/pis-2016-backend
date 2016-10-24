@@ -27,8 +27,11 @@ namespace Servicios.Controllers
             try
             {
                 string token = ObtenerToken.GetToken(Request);
-                Mensaje mensaje = dbAL.ActualizarDescripcionRecurso(descParam, token);
-                return new DtoRespuesta(0, mensaje);
+                if (dbAL.ActualizarDescripcionRecurso(descParam, token))
+                {
+                    return new DtoRespuesta(0, new Mensaje(Mensajes.Correcto));
+                }
+                return new DtoRespuesta(500, "Ocurrio un error.");
             }
             catch (InvalidTokenException)
             {

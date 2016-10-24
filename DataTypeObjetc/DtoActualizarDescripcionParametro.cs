@@ -2,7 +2,7 @@
 {
     public class DtoActualizarDescripcionParametro
     {
-        public DtoDescripcion dtoDescripcion { get; set; }
+        public string descripcion { get; set; }
 
         public int idExtension { get; set; }
     }
