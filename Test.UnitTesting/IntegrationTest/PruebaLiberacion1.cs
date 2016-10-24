@@ -1,15 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using DataTypeObject;
 using NUnit.Framework;
 using Servicios.Controllers;
 using System.Net.Http;
 using Emsys.DataAccesLayer.Core;
 using System.IO;
-using Emsys.DataAccesLayer.Model;
 
 namespace Test.UnitTesting
 {

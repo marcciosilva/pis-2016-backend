@@ -2,9 +2,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Emsys.LogicLayer;
 using Emsys.DataAccesLayer.Core;
 using Emsys.DataAccesLayer.Model;
 using System.IO;
@@ -145,7 +142,7 @@ namespace Test.UnitTesting
             //using (var context = new EmsysContext())
             //{
             var context = new EmsysContext();
-                // Evento y extensiones
+                // Evento y extensiones.
                 var sector = new Sector() { Nombre = "sectorDEPrueba", Zona = context.Zonas.FirstOrDefault() };
                 var catEvento = new Categoria() { Clave = "catPruebaDE", Activo = true, Codigo = "catDE", Prioridad = NombrePrioridad.Media };
                 var evento = new Evento()

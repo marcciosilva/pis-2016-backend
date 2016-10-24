@@ -333,7 +333,6 @@ namespace Emsys.LogicLayer
             }
         }
 
-
         public void AgregarLog(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo)
         {
             try
@@ -783,7 +782,7 @@ namespace Emsys.LogicLayer
                         Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == audio.idExtension);
                         if (TieneAcceso.tieneAccesoExtension(user, ext))
                         {
-                            Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file };
+                            Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file, ExtensionEvento=ext };
                             context.Audios.Add(aud);
                             ext.Audios.Add(aud);
                             //ext.TimeStamp = DateTime.Now;
@@ -906,7 +905,5 @@ namespace Emsys.LogicLayer
                 }
             }
         }
-
-
     }
 }

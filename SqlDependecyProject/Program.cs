@@ -1,24 +1,21 @@
 ﻿namespace SqlDependecyProject
 {
     using System;
-    using TableDependency.Mappers;
-    using TableDependency.SqlClient;
-    using TableDependency.Enums;
-    using Emsys.DataAccesLayer.Model;
     using Emsys.DataAccesLayer.Core;
     using System.Linq;
-    using DataTypeObject;
-    using Emsys.LogicLayer;
     using System.Threading;
 
     public class Program
     {
-        private enum TablaMonitorar { Eventos, Extensiones }
+        private enum TablaMonitorar
+        {
+            Eventos,
+            Extensiones
+        }
         
         /// <summary>
         /// Metodo principal para el proyecto ObserverDatabase encargado de manejar las notificaciones de los cambios de la bd.
         /// </summary>
-        /// <param name="args">No utilizado.</param>
         public static void Main()
         {
             try
@@ -26,6 +23,7 @@
                 // Para iniciar la bd si no esta creada.
                 EmsysContext db = new EmsysContext();
                 db.Evento.ToList();
+
 
                 // Para cada tabla a ser monitoreada inicio un thread.
                 Thread WorkerThreadExtensiones = new Thread(new ThreadStart(ProcesoExtensiones.ProcesoMonitoreoExtensiones));
@@ -46,7 +44,6 @@
                 Thread WorkerThreadAsignacionRecurso = new Thread(new ThreadStart(ProcesoAsignacionRecurso.ProcesoAsignacionRecursoMonitoreo));
                 WorkerThreadAsignacionRecurso.Start();
 
-
                 ProcesoEventos.ProcesoMonitoreoEventos();
 
                 WorkerThreadExtensiones.Join();
@@ -58,7 +55,6 @@
             }
             catch (Exception e)
             {
-
                 Console.WriteLine(e.ToString());
                 Console.ReadLine();
             }

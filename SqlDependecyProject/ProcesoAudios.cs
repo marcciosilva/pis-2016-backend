@@ -1,5 +1,4 @@
-﻿
-namespace SqlDependecyProject
+﻿namespace SqlDependecyProject
 {
     using System;
     using TableDependency.Mappers;
@@ -7,7 +6,6 @@ namespace SqlDependecyProject
     using TableDependency.Enums;
     using Emsys.DataAccesLayer.Model;
     using Emsys.DataAccesLayer.Core;
-    using System.Linq;
     using DataTypeObject;
     using Emsys.LogicLayer;
     using System.Threading;
@@ -16,7 +14,11 @@ namespace SqlDependecyProject
     {
         private static bool llamo = true;
 
-        private static string proceso= "ProcesoMonitoreoAudios";
+        private static string proceso = "ProcesoMonitoreoAudios";
+
+        private static SqlTableDependency<Audio> _dependency;
+
+        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         /// <summary>
         /// Funcion que engloba el proceso de atender Audios de la BD para extensiones.
@@ -25,8 +27,7 @@ namespace SqlDependecyProject
         {
             try
             {
-
-                Console.WriteLine(proceso +"- Observo la BD:\n");
+                Console.WriteLine(proceso + "- Observo la BD:\n");
                 Listener();
 
                 while (true)
@@ -42,10 +43,6 @@ namespace SqlDependecyProject
             }
         }
 
-        private static SqlTableDependency<Audio> _dependency;
-        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-
         /// <summary>
         /// Implentacion con sql table dependency para noticiar los cambios en la bd.
         /// </summary>
@@ -58,10 +55,6 @@ namespace SqlDependecyProject
             _dependency.OnError += _dependency_OnError;
             _dependency.Start();
         }
-
-      
-
-
 
         /// <summary>
         /// Metodo que se dispara cuando ocurre un error al detectar los cambios en la base de datos.
@@ -89,15 +82,15 @@ namespace SqlDependecyProject
                     {
                         // el caso no es util por que si se crea un Audios no tiene asignados recursos probablemte
                         case ChangeType.Delete:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del Audios: " + AudioEnBD.Entity.Id);
+                            Console.WriteLine("ProcesoMonitoreoAudios - Accion: Borro, Pk del Audios: " + AudioEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AudioEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion Insert, Pk del Audios: " + AudioEnBD.Entity.Id);
+                            Console.WriteLine("ProcesoMonitoreoAudios - Accion Insert, Pk del Audios: " + AudioEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AudioEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion update, Pk del Audios: " + AudioEnBD.Entity.Id);
+                            Console.WriteLine("ProcesoMonitoreoAudios - Accion update, Pk del Audios: " + AudioEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AudioEnBD, GestorNotificaciones);
                             break;
                     }
@@ -110,30 +103,31 @@ namespace SqlDependecyProject
                 throw e;
             }
         }
+
         /// <summary>
         /// Metodo que se utiliza para enviar una notificaion a un Audios.
         /// </summary>
         /// <param name="cod">Codigo que se desea notificar a la aplicacion dado el evento.</param>
-        /// <param name="extension">Identificador del Audios que fue modificado/alta/baja.</param>
+        /// <param name="audio">Identificador del Audios que fue modificado/alta/baja.</param>
         /// <param name="GestorNotificaciones">Instancia de INotification.</param>
         private static void AtenderEvento(string cod, TableDependency.EventArgs.RecordChangedEventArgs<Audio> audio, Utils.Notifications.INotifications GestorNotificaciones)
         {
             using (EmsysContext db = new EmsysContext())
             {
-
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBaseAudio", "Audio", audio.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla Audio. Se inicia la secuencia de envio de notificaciones.", CodigosLog.LogCapturarCambioEventoCod);
                 var videoDEBD = db.Audios.Find(audio.Entity.Id);
                 if (videoDEBD != null)
                 {                    
-                    //para los recursos asociados a la extension genero una notificacion
+                    // Para los recursos asociados a la extension genero una notificacion.
                     foreach (var item in videoDEBD.Evento.ExtensionesEvento)
                     {
                         foreach (var recurso in item.Recursos)
                         {
                             GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + item.Id);
                         }
-                        //para la zona asociada a la extensen le envia una notificacion
+
+                        // Para la zona asociada a la extensen le envia una notificacion.
                         GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
                     }
                 }
@@ -141,4 +135,3 @@ namespace SqlDependecyProject
         }
     }
 }
-

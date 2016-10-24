@@ -14,11 +14,10 @@ namespace Test.UnitTesting
         [Test]
         public void DtoAccionesRecursoTest()
         {
-            var dto = new DtoAccionesRecursoExtension() { id = 1, recurso = "recurso1", descripcion = "desc1", fecha_arribo = DateTime.Now, actualmente_asignado = false};
+            var dto = new DtoAccionesRecursoExtension() { id = 1, recurso = "recurso1", descripcion = "desc1", fecha_arribo = DateTime.Now, actualmente_asignado = false };
 
-            Assert.IsTrue((dto.id == 1) && (dto. recurso == "recurso1") && (dto.descripcion == "desc1") && (dto.fecha_arribo != null) && (dto.actualmente_asignado == false));
+            Assert.IsTrue((dto.id == 1) && (dto.recurso == "recurso1") && (dto.descripcion == "desc1") && (dto.fecha_arribo != null) && (dto.actualmente_asignado == false));
         }
-
 
         /// <summary>
         /// Prueba dto.
@@ -26,14 +25,13 @@ namespace Test.UnitTesting
         [Test]
         public void DtoActualizarDescripcionParametroTest()
         {
-            DtoDescripcion desc = new DtoDescripcion() { descripcion = "desc", fecha = DateTime.Now, origen = OrigenDescripcion.Recurso, texto = "texto", usuario = "usuario"};
+            DtoDescripcion desc = new DtoDescripcion() { descripcion = "desc", fecha = DateTime.Now, origen = OrigenDescripcion.Recurso, texto = "texto", usuario = "usuario" };
 
             var dto = new DtoActualizarDescripcionParametro() {descripcion = "algo", idExtension = 1 };
 
             Assert.IsTrue(dto.idExtension == 1);
             Assert.IsTrue(dto.descripcion == "algo");
         }
-
 
         /// <summary>
         /// Prueba dto.
@@ -45,7 +43,6 @@ namespace Test.UnitTesting
 
             Assert.IsTrue((dto.id == 1) && (dto.recurso == "recurso1") && (dto.descripcion.Count == 0) && (dto.fecha_arribo != null) && (dto.actualmente_asignado == false));
         }
-
 
         /// <summary>
         /// Prueba dto.
@@ -80,7 +77,6 @@ namespace Test.UnitTesting
             Assert.IsTrue((dto.param1 == "uno") && (dto.param2 == "dos") && (dto.param3 == "tres"));
         }
 
-
         /// <summary>
         /// Prueba dto.
         /// </summary>
@@ -91,7 +87,6 @@ namespace Test.UnitTesting
 
             Assert.IsTrue((dto.usuario == "usuario") && (dto.texto == "texto") && (dto.origen == OrigenDescripcion.Recurso));
         }
-
 
         /// <summary>
         /// Prueba dto.
@@ -147,7 +142,6 @@ namespace Test.UnitTesting
             Assert.AreEqual(dto.extensiones.Count, 0);
         }
 
-
         /// <summary>
         /// Prueba dto.
         /// </summary>
@@ -199,7 +193,6 @@ namespace Test.UnitTesting
             Assert.IsTrue((dto.usuario == "usuario") && (dto.fecha_envio != null));
         }
 
-
         /// <summary>
         /// Prueba dto.
         /// </summary>
@@ -243,7 +236,6 @@ namespace Test.UnitTesting
 
             Assert.IsTrue((dto.id == 1) && (dto.nombre == "nombre") && (dto.nombre_ue == "ue"));
         }
-
 
         /// <summary>
         /// Prueba dto.

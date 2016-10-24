@@ -3,7 +3,7 @@ namespace Emsys.DataAccesLayer.Core
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class _Initial : DbMigration
+    public partial class _Inicio : DbMigration
     {
         public override void Up()
         {
@@ -168,15 +168,15 @@ namespace Emsys.DataAccesLayer.Core
                         Longitud = c.Double(nullable: false),
                         Descripcion = c.String(),
                         EnProceso = c.Boolean(nullable: false),
-                        Categoria_Id = c.Int(nullable: false),
+                        Categoria_Id = c.Int(),
                         Departamento_Id = c.Int(),
-                        Sector_Id = c.Int(nullable: false),
+                        Sector_Id = c.Int(),
                         Usuario_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Categorias", t => t.Categoria_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Categorias", t => t.Categoria_Id)
                 .ForeignKey("dbo.Departamentos", t => t.Departamento_Id)
-                .ForeignKey("dbo.Sectores", t => t.Sector_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Sectores", t => t.Sector_Id)
                 .ForeignKey("dbo.Usuarios", t => t.Usuario_Id)
                 .Index(t => t.Categoria_Id)
                 .Index(t => t.Departamento_Id)
@@ -418,121 +418,121 @@ namespace Emsys.DataAccesLayer.Core
         
         public override void Down()
         {
-            //DropForeignKey("dbo.Zonas", "Usuario_Id", "dbo.Usuarios");
-            //DropForeignKey("dbo.Logs", "Usuario_Id", "dbo.Usuarios");
-            //DropForeignKey("dbo.GeoUbicaciones", "Extension_Evento_Id", "dbo.Extensiones_Evento");
-            //DropForeignKey("dbo.Extensiones_Evento", "Despachador_Id", "dbo.Usuarios");
-            //DropForeignKey("dbo.Audios", "Usuario_Id", "dbo.Usuarios");
-            //DropForeignKey("dbo.Audios", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
-            //DropForeignKey("dbo.Videos", "VideoData_Id", "dbo.ApplicationFiles");
-            //DropForeignKey("dbo.Videos", "Usuario_Id", "dbo.Usuarios");
-            //DropForeignKey("dbo.Videos", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
-            //DropForeignKey("dbo.Videos", "Evento_Id", "dbo.Eventos");
-            //DropForeignKey("dbo.Eventos", "Usuario_Id", "dbo.Usuarios");
-            //DropForeignKey("dbo.Eventos", "Sector_Id", "dbo.Sectores");
-            //DropForeignKey("dbo.Zonas", "UnidadEjecutora_Id", "dbo.Unidades_Ejecutoras");
-            //DropForeignKey("dbo.Unidad_EjecutoraUsuario", "Usuario_Id", "dbo.Usuarios");
-            //DropForeignKey("dbo.Unidad_EjecutoraUsuario", "Unidad_Ejecutora_Id", "dbo.Unidades_Ejecutoras");
-            //DropForeignKey("dbo.Sectores", "Zona_Id", "dbo.Zonas");
-            //DropForeignKey("dbo.Extensiones_Evento", "Zona_Id", "dbo.Zonas");
-            //DropForeignKey("dbo.Origen_Eventos", "Id", "dbo.Eventos");
-            //DropForeignKey("dbo.Imagenes", "Usuario_Id", "dbo.Usuarios");
-            //DropForeignKey("dbo.Imagenes", "ImagenData_Id", "dbo.ApplicationFiles");
-            //DropForeignKey("dbo.Imagenes", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
-            //DropForeignKey("dbo.Imagenes", "Evento_Id", "dbo.Eventos");
-            //DropForeignKey("dbo.GeoUbicaciones", "Evento_Id", "dbo.Eventos");
-            //DropForeignKey("dbo.GeoUbicaciones", "Usuario_Id", "dbo.Usuarios");
-            //DropForeignKey("dbo.Extensiones_Evento", "Evento_Id", "dbo.Eventos");
-            //DropForeignKey("dbo.Eventos", "Departamento_Id", "dbo.Departamentos");
-            //DropForeignKey("dbo.Eventos", "Categoria_Id", "dbo.Categorias");
-            //DropForeignKey("dbo.Extensiones_Evento", "SegundaCategoria_Id", "dbo.Categorias");
-            //DropForeignKey("dbo.Audios", "Evento_Id", "dbo.Eventos");
-            //DropForeignKey("dbo.Audios", "AudioData_Id", "dbo.ApplicationFiles");
-            //DropForeignKey("dbo.AsignacionesRecursos", "Recurso_Id", "dbo.Recursos");
-            //DropForeignKey("dbo.Recursos", "Usuario_Id", "dbo.Usuarios");
-            //DropForeignKey("dbo.Grupo_RecursoUsuario", "Usuario_Id", "dbo.Usuarios");
-            //DropForeignKey("dbo.Grupo_RecursoUsuario", "Grupo_Recurso_Id", "dbo.Grupos_Recursos");
-            //DropForeignKey("dbo.Grupo_RecursoRecurso", "Recurso_Id", "dbo.Recursos");
-            //DropForeignKey("dbo.Grupo_RecursoRecurso", "Grupo_Recurso_Id", "dbo.Grupos_Recursos");
-            //DropForeignKey("dbo.RecursoExtension_Evento", "Extension_Evento_Id", "dbo.Extensiones_Evento");
-            //DropForeignKey("dbo.RecursoExtension_Evento", "Recurso_Id", "dbo.Recursos");
-            //DropForeignKey("dbo.AsignacionesRecursos", "Extension_Id", "dbo.Extensiones_Evento");
-            //DropForeignKey("dbo.AsignacionRecursoDescripcion", "AsignacionRecurso_Id", "dbo.AsignacionesRecursos");
-            //DropForeignKey("dbo.UsuarioRols", "Rol_Id", "dbo.ApplicationRoles");
-            //DropForeignKey("dbo.UsuarioRols", "Usuario_Id", "dbo.Usuarios");
-            //DropForeignKey("dbo.PermisoRols", "Rol_Id", "dbo.ApplicationRoles");
-            //DropForeignKey("dbo.PermisoRols", "Permiso_Id", "dbo.Permisos");
-            //DropIndex("dbo.Unidad_EjecutoraUsuario", new[] { "Usuario_Id" });
-            //DropIndex("dbo.Unidad_EjecutoraUsuario", new[] { "Unidad_Ejecutora_Id" });
-            //DropIndex("dbo.Grupo_RecursoUsuario", new[] { "Usuario_Id" });
-            //DropIndex("dbo.Grupo_RecursoUsuario", new[] { "Grupo_Recurso_Id" });
-            //DropIndex("dbo.Grupo_RecursoRecurso", new[] { "Recurso_Id" });
-            //DropIndex("dbo.Grupo_RecursoRecurso", new[] { "Grupo_Recurso_Id" });
-            //DropIndex("dbo.RecursoExtension_Evento", new[] { "Extension_Evento_Id" });
-            //DropIndex("dbo.RecursoExtension_Evento", new[] { "Recurso_Id" });
-            //DropIndex("dbo.UsuarioRols", new[] { "Rol_Id" });
-            //DropIndex("dbo.UsuarioRols", new[] { "Usuario_Id" });
-            //DropIndex("dbo.PermisoRols", new[] { "Rol_Id" });
-            //DropIndex("dbo.PermisoRols", new[] { "Permiso_Id" });
-            //DropIndex("dbo.Logs", new[] { "Usuario_Id" });
-            //DropIndex("dbo.Videos", new[] { "VideoData_Id" });
-            //DropIndex("dbo.Videos", new[] { "Usuario_Id" });
-            //DropIndex("dbo.Videos", new[] { "ExtensionEvento_Id" });
-            //DropIndex("dbo.Videos", new[] { "Evento_Id" });
-            //DropIndex("dbo.Zonas", new[] { "Usuario_Id" });
-            //DropIndex("dbo.Zonas", new[] { "UnidadEjecutora_Id" });
-            //DropIndex("dbo.Sectores", new[] { "Zona_Id" });
-            //DropIndex("dbo.Origen_Eventos", new[] { "Id" });
-            //DropIndex("dbo.Imagenes", new[] { "Usuario_Id" });
-            //DropIndex("dbo.Imagenes", new[] { "ImagenData_Id" });
-            //DropIndex("dbo.Imagenes", new[] { "ExtensionEvento_Id" });
-            //DropIndex("dbo.Imagenes", new[] { "Evento_Id" });
-            //DropIndex("dbo.GeoUbicaciones", new[] { "Extension_Evento_Id" });
-            //DropIndex("dbo.GeoUbicaciones", new[] { "Evento_Id" });
-            //DropIndex("dbo.GeoUbicaciones", new[] { "Usuario_Id" });
-            //DropIndex("dbo.Eventos", new[] { "Usuario_Id" });
-            //DropIndex("dbo.Eventos", new[] { "Sector_Id" });
-            //DropIndex("dbo.Eventos", new[] { "Departamento_Id" });
-            //DropIndex("dbo.Eventos", new[] { "Categoria_Id" });
-            //DropIndex("dbo.Audios", new[] { "Usuario_Id" });
-            //DropIndex("dbo.Audios", new[] { "ExtensionEvento_Id" });
-            //DropIndex("dbo.Audios", new[] { "Evento_Id" });
-            //DropIndex("dbo.Audios", new[] { "AudioData_Id" });
-            //DropIndex("dbo.Recursos", new[] { "Usuario_Id" });
-            //DropIndex("dbo.AsignacionRecursoDescripcion", new[] { "AsignacionRecurso_Id" });
-            //DropIndex("dbo.AsignacionesRecursos", new[] { "Recurso_Id" });
-            //DropIndex("dbo.AsignacionesRecursos", new[] { "Extension_Id" });
-            //DropIndex("dbo.Extensiones_Evento", new[] { "Despachador_Id" });
-            //DropIndex("dbo.Extensiones_Evento", new[] { "Zona_Id" });
-            //DropIndex("dbo.Extensiones_Evento", new[] { "Evento_Id" });
-            //DropIndex("dbo.Extensiones_Evento", new[] { "SegundaCategoria_Id" });
-            //DropTable("dbo.Unidad_EjecutoraUsuario");
-            //DropTable("dbo.Grupo_RecursoUsuario");
-            //DropTable("dbo.Grupo_RecursoRecurso");
-            //DropTable("dbo.RecursoExtension_Evento");
-            //DropTable("dbo.UsuarioRols");
-            //DropTable("dbo.PermisoRols");
-            //DropTable("dbo.Logs");
-            //DropTable("dbo.Videos");
-            //DropTable("dbo.Unidades_Ejecutoras");
-            //DropTable("dbo.Zonas");
-            //DropTable("dbo.Sectores");
-            //DropTable("dbo.Origen_Eventos");
-            //DropTable("dbo.Imagenes");
-            //DropTable("dbo.GeoUbicaciones");
-            //DropTable("dbo.Departamentos");
-            //DropTable("dbo.Categorias");
-            //DropTable("dbo.Eventos");
-            //DropTable("dbo.Audios");
-            //DropTable("dbo.Grupos_Recursos");
-            //DropTable("dbo.Recursos");
-            //DropTable("dbo.AsignacionRecursoDescripcion");
-            //DropTable("dbo.AsignacionesRecursos");
-            //DropTable("dbo.Extensiones_Evento");
-            //DropTable("dbo.Usuarios");
-            //DropTable("dbo.Permisos");
-            //DropTable("dbo.ApplicationRoles");
-            //DropTable("dbo.ApplicationFiles");
+            DropForeignKey("dbo.Zonas", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.Logs", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.GeoUbicaciones", "Extension_Evento_Id", "dbo.Extensiones_Evento");
+            DropForeignKey("dbo.Extensiones_Evento", "Despachador_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.Audios", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.Audios", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
+            DropForeignKey("dbo.Videos", "VideoData_Id", "dbo.ApplicationFiles");
+            DropForeignKey("dbo.Videos", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.Videos", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
+            DropForeignKey("dbo.Videos", "Evento_Id", "dbo.Eventos");
+            DropForeignKey("dbo.Eventos", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.Zonas", "UnidadEjecutora_Id", "dbo.Unidades_Ejecutoras");
+            DropForeignKey("dbo.Unidad_EjecutoraUsuario", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.Unidad_EjecutoraUsuario", "Unidad_Ejecutora_Id", "dbo.Unidades_Ejecutoras");
+            DropForeignKey("dbo.Sectores", "Zona_Id", "dbo.Zonas");
+            DropForeignKey("dbo.Extensiones_Evento", "Zona_Id", "dbo.Zonas");
+            DropForeignKey("dbo.Eventos", "Sector_Id", "dbo.Sectores");
+            DropForeignKey("dbo.Origen_Eventos", "Id", "dbo.Eventos");
+            DropForeignKey("dbo.Imagenes", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.Imagenes", "ImagenData_Id", "dbo.ApplicationFiles");
+            DropForeignKey("dbo.Imagenes", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
+            DropForeignKey("dbo.Imagenes", "Evento_Id", "dbo.Eventos");
+            DropForeignKey("dbo.GeoUbicaciones", "Evento_Id", "dbo.Eventos");
+            DropForeignKey("dbo.GeoUbicaciones", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.Extensiones_Evento", "Evento_Id", "dbo.Eventos");
+            DropForeignKey("dbo.Eventos", "Departamento_Id", "dbo.Departamentos");
+            DropForeignKey("dbo.Extensiones_Evento", "SegundaCategoria_Id", "dbo.Categorias");
+            DropForeignKey("dbo.Eventos", "Categoria_Id", "dbo.Categorias");
+            DropForeignKey("dbo.Audios", "Evento_Id", "dbo.Eventos");
+            DropForeignKey("dbo.Audios", "AudioData_Id", "dbo.ApplicationFiles");
+            DropForeignKey("dbo.AsignacionesRecursos", "Recurso_Id", "dbo.Recursos");
+            DropForeignKey("dbo.Recursos", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.Grupo_RecursoUsuario", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.Grupo_RecursoUsuario", "Grupo_Recurso_Id", "dbo.Grupos_Recursos");
+            DropForeignKey("dbo.Grupo_RecursoRecurso", "Recurso_Id", "dbo.Recursos");
+            DropForeignKey("dbo.Grupo_RecursoRecurso", "Grupo_Recurso_Id", "dbo.Grupos_Recursos");
+            DropForeignKey("dbo.RecursoExtension_Evento", "Extension_Evento_Id", "dbo.Extensiones_Evento");
+            DropForeignKey("dbo.RecursoExtension_Evento", "Recurso_Id", "dbo.Recursos");
+            DropForeignKey("dbo.AsignacionesRecursos", "Extension_Id", "dbo.Extensiones_Evento");
+            DropForeignKey("dbo.AsignacionRecursoDescripcion", "AsignacionRecurso_Id", "dbo.AsignacionesRecursos");
+            DropForeignKey("dbo.UsuarioRols", "Rol_Id", "dbo.ApplicationRoles");
+            DropForeignKey("dbo.UsuarioRols", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.PermisoRols", "Rol_Id", "dbo.ApplicationRoles");
+            DropForeignKey("dbo.PermisoRols", "Permiso_Id", "dbo.Permisos");
+            DropIndex("dbo.Unidad_EjecutoraUsuario", new[] { "Usuario_Id" });
+            DropIndex("dbo.Unidad_EjecutoraUsuario", new[] { "Unidad_Ejecutora_Id" });
+            DropIndex("dbo.Grupo_RecursoUsuario", new[] { "Usuario_Id" });
+            DropIndex("dbo.Grupo_RecursoUsuario", new[] { "Grupo_Recurso_Id" });
+            DropIndex("dbo.Grupo_RecursoRecurso", new[] { "Recurso_Id" });
+            DropIndex("dbo.Grupo_RecursoRecurso", new[] { "Grupo_Recurso_Id" });
+            DropIndex("dbo.RecursoExtension_Evento", new[] { "Extension_Evento_Id" });
+            DropIndex("dbo.RecursoExtension_Evento", new[] { "Recurso_Id" });
+            DropIndex("dbo.UsuarioRols", new[] { "Rol_Id" });
+            DropIndex("dbo.UsuarioRols", new[] { "Usuario_Id" });
+            DropIndex("dbo.PermisoRols", new[] { "Rol_Id" });
+            DropIndex("dbo.PermisoRols", new[] { "Permiso_Id" });
+            DropIndex("dbo.Logs", new[] { "Usuario_Id" });
+            DropIndex("dbo.Videos", new[] { "VideoData_Id" });
+            DropIndex("dbo.Videos", new[] { "Usuario_Id" });
+            DropIndex("dbo.Videos", new[] { "ExtensionEvento_Id" });
+            DropIndex("dbo.Videos", new[] { "Evento_Id" });
+            DropIndex("dbo.Zonas", new[] { "Usuario_Id" });
+            DropIndex("dbo.Zonas", new[] { "UnidadEjecutora_Id" });
+            DropIndex("dbo.Sectores", new[] { "Zona_Id" });
+            DropIndex("dbo.Origen_Eventos", new[] { "Id" });
+            DropIndex("dbo.Imagenes", new[] { "Usuario_Id" });
+            DropIndex("dbo.Imagenes", new[] { "ImagenData_Id" });
+            DropIndex("dbo.Imagenes", new[] { "ExtensionEvento_Id" });
+            DropIndex("dbo.Imagenes", new[] { "Evento_Id" });
+            DropIndex("dbo.GeoUbicaciones", new[] { "Extension_Evento_Id" });
+            DropIndex("dbo.GeoUbicaciones", new[] { "Evento_Id" });
+            DropIndex("dbo.GeoUbicaciones", new[] { "Usuario_Id" });
+            DropIndex("dbo.Eventos", new[] { "Usuario_Id" });
+            DropIndex("dbo.Eventos", new[] { "Sector_Id" });
+            DropIndex("dbo.Eventos", new[] { "Departamento_Id" });
+            DropIndex("dbo.Eventos", new[] { "Categoria_Id" });
+            DropIndex("dbo.Audios", new[] { "Usuario_Id" });
+            DropIndex("dbo.Audios", new[] { "ExtensionEvento_Id" });
+            DropIndex("dbo.Audios", new[] { "Evento_Id" });
+            DropIndex("dbo.Audios", new[] { "AudioData_Id" });
+            DropIndex("dbo.Recursos", new[] { "Usuario_Id" });
+            DropIndex("dbo.AsignacionRecursoDescripcion", new[] { "AsignacionRecurso_Id" });
+            DropIndex("dbo.AsignacionesRecursos", new[] { "Recurso_Id" });
+            DropIndex("dbo.AsignacionesRecursos", new[] { "Extension_Id" });
+            DropIndex("dbo.Extensiones_Evento", new[] { "Despachador_Id" });
+            DropIndex("dbo.Extensiones_Evento", new[] { "Zona_Id" });
+            DropIndex("dbo.Extensiones_Evento", new[] { "Evento_Id" });
+            DropIndex("dbo.Extensiones_Evento", new[] { "SegundaCategoria_Id" });
+            DropTable("dbo.Unidad_EjecutoraUsuario");
+            DropTable("dbo.Grupo_RecursoUsuario");
+            DropTable("dbo.Grupo_RecursoRecurso");
+            DropTable("dbo.RecursoExtension_Evento");
+            DropTable("dbo.UsuarioRols");
+            DropTable("dbo.PermisoRols");
+            DropTable("dbo.Logs");
+            DropTable("dbo.Videos");
+            DropTable("dbo.Unidades_Ejecutoras");
+            DropTable("dbo.Zonas");
+            DropTable("dbo.Sectores");
+            DropTable("dbo.Origen_Eventos");
+            DropTable("dbo.Imagenes");
+            DropTable("dbo.GeoUbicaciones");
+            DropTable("dbo.Departamentos");
+            DropTable("dbo.Categorias");
+            DropTable("dbo.Eventos");
+            DropTable("dbo.Audios");
+            DropTable("dbo.Grupos_Recursos");
+            DropTable("dbo.Recursos");
+            DropTable("dbo.AsignacionRecursoDescripcion");
+            DropTable("dbo.AsignacionesRecursos");
+            DropTable("dbo.Extensiones_Evento");
+            DropTable("dbo.Usuarios");
+            DropTable("dbo.Permisos");
+            DropTable("dbo.ApplicationRoles");
+            DropTable("dbo.ApplicationFiles");
         }
     }
 }

@@ -17,7 +17,6 @@ namespace Test.UnitTesting
     [TestFixture]
     public class LogicLayerUnitTest
     {
-
         /// <summary>
         /// Agrega un usuario y luego ejecuta el metodo de autenticacion
         /// con credenciales validas y credenciales invalidas.
@@ -108,7 +107,6 @@ namespace Test.UnitTesting
             }
         }
 
-
         /// <summary>
         /// Test que prueba el logueo del usuario mediante un recurso teniendo en cuenta las posibilidades
         /// si el recurso es accesible o no para el usuario y si este se encuentra o no disponible.
@@ -156,6 +154,7 @@ namespace Test.UnitTesting
                 {
                     Assert.IsTrue(true);
                 }
+
                 try
                 {
                     logica.loguearUsuario("tokenIncorrecto", rol);
@@ -332,6 +331,7 @@ namespace Test.UnitTesting
                 {
                     Assert.IsTrue(true);
                 }
+
                 try
                 {
                     logica.cerrarSesion("tokenIncorrecto");
@@ -430,7 +430,6 @@ namespace Test.UnitTesting
             }
         }
 
-
         /// <summary>
         /// Crea un evento con una extension que tenga descripcion despachador
         /// y se verifica que se devuelvan los DtoDescripcion correctamente armados
@@ -502,13 +501,12 @@ namespace Test.UnitTesting
                 };
 
                 IMetodos logica = new Metodos();
-                var u =context.Users.Where(x=>x.NombreLogin== "usuarioDE").FirstOrDefault();
+                var u = context.Users.Where(x => x.NombreLogin == "usuarioDE").FirstOrDefault();
                 if (u != null && u.Token != null)
                 {
                     u.Token = null;
                 }
                 
-
                 recursoDisponible.Extensiones_Eventos.Add(ext1);
                 try
                 {
@@ -536,6 +534,7 @@ namespace Test.UnitTesting
                 {
                     Assert.IsTrue(true);
                 }
+
                 try
                 {
                     logica.verInfoEvento("tokenIncorrecto", 1);
@@ -584,6 +583,7 @@ namespace Test.UnitTesting
                 }
             }
         }
+
         /// <summary>
         /// Se prueba que al realizar listar eventos se traigan todos los eventos 
         /// asociados al recurso con el que se logueo el usuario.
@@ -685,6 +685,7 @@ namespace Test.UnitTesting
                 {
                     u.Token = null;
                 }
+
                 // Obtengo token de usuario. 
                 var autent = logica.autenticarUsuario("usuarioListarEventoRecurso", "usuarioListarEventoRecurso");
                 string token = autent.access_token;
@@ -721,6 +722,7 @@ namespace Test.UnitTesting
                 {
                     Assert.IsTrue(true);
                 }
+
                 try
                 {
                     logica.listarEventos("tokenIncorrecto");
@@ -759,7 +761,6 @@ namespace Test.UnitTesting
             db.SaveChanges();
             var log = db.Logs.FirstOrDefault(x => x.Terminal == "1:1:1:1");
             Assert.NotNull(log);
-            
         }
 
         /// <summary>
@@ -783,7 +784,6 @@ namespace Test.UnitTesting
             Assert.NotNull(log);
         }
 
-
         /// <summary>
         /// Se prueba agregar una geoubicacion a una extension.
         /// </summary>
@@ -793,9 +793,8 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us=>us.NombreLogin=="A").Token= null;
+            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.SaveChanges();
-
 
             int cant = db.Extensiones_Evento.FirstOrDefault().GeoUbicaciones.Count();
             IMetodos logica = new Metodos();
@@ -809,7 +808,6 @@ namespace Test.UnitTesting
             DtoRecurso dtoRecurso1 = new DtoRecurso() { id = 1, codigo = "recurso1" };
             lRecursos.Add(dtoRecurso1);
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = lRecursos };
-
 
             // Loguear.
             var log = logica.loguearUsuario(token, rol);
@@ -845,10 +843,8 @@ namespace Test.UnitTesting
             Assert.IsTrue(cant2 == cant + 1);
             Assert.IsTrue((geo2.Longitud == 120) && (geo2.Latitud == 12));
             
-
             logica.cerrarSesion(token);
         }
-
 
         /// <summary>
         /// Se prueba agregar un archivo de imagen y agregar la imagen a una extension.
@@ -888,7 +884,6 @@ namespace Test.UnitTesting
             // Loguear.
             var log = logica.loguearUsuario(token, rol);
                        
-
             // Sin token.
             try
             {
@@ -921,7 +916,6 @@ namespace Test.UnitTesting
             Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().Imagenes.Count() == cantAdjImagen + 1);
             Assert.IsTrue(db.ApplicationFiles.Count() == cantFiles + 1);
 
-
             // Obtener data de la imagen.
             try
             {
@@ -941,6 +935,7 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+
             // Adjunto invalido.
             try
             {
@@ -957,7 +952,6 @@ namespace Test.UnitTesting
 
             logica.cerrarSesion(token);
         }
-
 
         /// <summary>
         /// Se prueba agregar un archivo de audio y agregar el audio a una extension.
@@ -993,11 +987,9 @@ namespace Test.UnitTesting
             lRecursos.Add(dtoRecurso1);
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = lRecursos };
 
-
             // Loguear.
             var log = logica.loguearUsuario(token, rol);
                       
-
             // Sin token.
             try
             {
@@ -1030,7 +1022,6 @@ namespace Test.UnitTesting
             Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().Audios.Count() == cantAdjAudio + 1);
             Assert.IsTrue(db.ApplicationFiles.Count() == cantFiles + 1);
 
-
             // Obtener data de la imagen.
             try
             {
@@ -1050,6 +1041,7 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+
             // Adjunto invalido.
             try
             {
@@ -1066,7 +1058,6 @@ namespace Test.UnitTesting
 
             logica.cerrarSesion(token);
         }
-
 
         /// <summary>
         /// Se prueba agregar un archivo de video y agregar el video a una extension.
@@ -1103,12 +1094,8 @@ namespace Test.UnitTesting
             lRecursos.Add(dtoRecurso1);
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = lRecursos };
 
-
             // Loguear.
             var log = logica.loguearUsuario(token, rol);
-
-            
-
 
             // Sin token.
             try
@@ -1204,6 +1191,7 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+
             try
             {
                 dbAL.keepMeAlive("tokenIncorrecto");
@@ -1224,7 +1212,6 @@ namespace Test.UnitTesting
 
             Assert.IsTrue((time1 != null) && (time2 != null) && (DateTime.Compare(time1, time2) < 0));
         }
-
 
         /// <summary>
         /// Se prueba el metodo desconectar inactivos.

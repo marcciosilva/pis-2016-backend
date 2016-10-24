@@ -1,5 +1,4 @@
-﻿
-namespace SqlDependecyProject
+﻿namespace SqlDependecyProject
 {
     using System;
     using TableDependency.Mappers;
@@ -14,8 +13,11 @@ namespace SqlDependecyProject
 
     public class ProcesoAsignacionRecursoDescripcion
     {
-
         private static string proceso = "ProcesoAsignacionRecursoDescripcion";
+
+        private static SqlTableDependency<AsignacionRecursoDescripcion> _dependency;
+
+        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
         /// <summary>
         /// Funcion que engloba el proceso de atender evento de la BD para AsignacionRecursoDescripcion.
@@ -24,8 +26,7 @@ namespace SqlDependecyProject
         {
             try
             {
-
-                Console.WriteLine(proceso +"- Observo la BD:\n");
+                Console.WriteLine(proceso + "- Observo la BD:\n");
                 Listener();
 
                 while (true)
@@ -41,10 +42,6 @@ namespace SqlDependecyProject
             }
         }
 
-        private static SqlTableDependency<AsignacionRecursoDescripcion> _dependency;
-        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-
-
         /// <summary>
         /// Implentacion con sql table dependency para noticiar los cambios en la bd.
         /// </summary>
@@ -57,10 +54,6 @@ namespace SqlDependecyProject
             _dependency.OnError += _dependency_OnError;
             _dependency.Start();
         }
-
-      
-
-
 
         /// <summary>
         /// Metodo que se dispara cuando ocurre un error al detectar los cambios en la base de datos.
@@ -88,15 +81,15 @@ namespace SqlDependecyProject
                     {
                         // el caso no es util por que si se crea un evento no tiene asignados recursos probablemte
                         case ChangeType.Delete:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.CierreEvento, AsignacionRecursoDescripcionEnDb, GestorNotificaciones);
+                            Console.WriteLine("ProcesoMonitorearAsignacionRecursoDescripcion - Accion: Borro, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
+                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AsignacionRecursoDescripcionEnDb, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion Insert, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.AltaEvento, AsignacionRecursoDescripcionEnDb, GestorNotificaciones);
+                            Console.WriteLine("ProcesoMonitorearAsignacionRecursoDescripcion - Accion Insert, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
+                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AsignacionRecursoDescripcionEnDb, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
-                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion update, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
+                            Console.WriteLine("ProcesoMonitorearAsignacionRecursoDescripcion - Accion update, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AsignacionRecursoDescripcionEnDb, GestorNotificaciones);
                             break;
                     }
@@ -109,40 +102,30 @@ namespace SqlDependecyProject
                 throw e;
             }
         }
+
         /// <summary>
         /// Metodo que se utiliza para enviar una notificaion a un AsignacionRecursoDescripcion.
         /// </summary>
         /// <param name="cod">Codigo que se desea notificar a la aplicacion dado el AsignacionRecursoDescripcion.</param>
-        /// <param name="extension">Identificador del AsignacionRecursoDescripcion que fue modificado/alta/baja.</param>
         /// <param name="asignacionRecursoDescripcion">Instancia de INotification.</param>
+        /// <param name="GestorNotificaciones">Instancia de GestorNotificaciones.</param>
         private static void AtenderEvento(string cod, TableDependency.EventArgs.RecordChangedEventArgs<AsignacionRecursoDescripcion> asignacionRecursoDescripcion, Utils.Notifications.INotifications GestorNotificaciones)
         {
             using (EmsysContext db = new EmsysContext())
             {
-
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "AsignacionRecursoDescripcion", asignacionRecursoDescripcion.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", CodigosLog.LogCapturarCambioEventoCod);
                 var asignacionRecursoDescripcionEnDB = db.AsignacionRecursoDescripcion.Find(asignacionRecursoDescripcion.Entity.Id);
                 if (asignacionRecursoDescripcionEnDB != null)
                 {
-                    var asignacionRec = db.AsignacionRecurso.Where(x=>x.Id== asignacionRecursoDescripcionEnDB.AsignacionRecurso.Id).FirstOrDefault();
-
-                    if (asignacionRec!=null) {
-                        var ext = db.Extensiones_Evento.Where(x=>x.Id==asignacionRec.Extension.Id).FirstOrDefault();
-                        if(ext!=null)
-                        {
-                            GestorNotificaciones.SendMessage(cod, ext.Id.ToString(), "recurso-" + asignacionRecursoDescripcionEnDB.AsignacionRecurso.Recurso.Id);
-
-                        }
-                    }
-                    //para los recursos asociados a la extension genero una notificacion                   
-                     
-                    //para la zona asociada a la extensen le envia una notificacion
-                   // GestorNotificaciones.SendMessage(cod, asignacionRecursoDescripcion.Entity.Id.ToString(), "zona-" + asignacionRecursoDescripcionEnDB.AsignacionRecurso.Recurso);
-                   
+                    GestorNotificaciones.SendMessage(cod, asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Id.ToString(), "recurso-" + asignacionRecursoDescripcionEnDB.AsignacionRecurso.Recurso.Id);
                 }
+
+                //para los recursos asociados a la extension genero una notificacion                   
+
+                //para la zona asociada a la extensen le envia una notificacion
+                // GestorNotificaciones.SendMessage(cod, asignacionRecursoDescripcion.Entity.Id.ToString(), "zona-" + asignacionRecursoDescripcionEnDB.AsignacionRecurso.Recurso);
             }
         }
     }
 }
-

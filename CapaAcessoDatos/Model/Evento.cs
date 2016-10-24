@@ -1,11 +1,9 @@
 ﻿namespace Emsys.DataAccesLayer.Model
 {
-    using DataTypeObject;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     public enum EstadoEvento
     {
@@ -25,7 +23,7 @@
         [MaxLength(50)]
         public string TelefonoEvento { get; set; }
 
-        [Required]
+        //[Required]
         public virtual Categoria Categoria { get; set; }
 
         [Required]
@@ -50,7 +48,7 @@
 
         public Departamento Departamento { get; set; }
 
-        [Required]
+       // [Required]
         public virtual Sector Sector { get; set; }
 
         public double Latitud { get; set; }
