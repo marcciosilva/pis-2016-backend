@@ -468,27 +468,6 @@ namespace Emsys.LogicLayer
             }
         }
 
-        public int agregarFileData(byte[] data, string extension)
-        {
-            using (var context = new EmsysContext())
-            {
-                string nombre;
-                // Si es el primer archivo.
-                if (context.ApplicationFiles.Count() == 0)
-                {
-                    nombre = "1" + extension;
-                }
-                else
-                {
-                    nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extension;
-                }
-                var file = new ApplicationFile() { Nombre = nombre, FileData = data };
-                context.ApplicationFiles.Add(file);
-                context.SaveChanges();
-                return file.Id;
-            }
-        }
-
         public DtoApplicationFile getImageData(string token, int idAdjunto)
         {
             using (var context = new EmsysContext())
@@ -643,7 +622,7 @@ namespace Emsys.LogicLayer
         }
 
 
-        public bool adjuntarImagen(string token, DtoImagen imagen)
+        public bool adjuntarImagen(string token, byte[] imagenData, string extArchivo, int idExtension)
         {
             using (var context = new EmsysContext())
             {
@@ -651,24 +630,29 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
-
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
                     throw new InvalidTokenException();                   
                 }
-                ApplicationFile file = context.ApplicationFiles.FirstOrDefault(f => f.Id == imagen.id_imagen);
-                if (file == null)
-                {
-                    return false;                    
-                }
-                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == imagen.idExtension);
+                string nombre;
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
                 if (!TieneAcceso.tieneAccesoExtension(user, ext))
-                {                    
+                {
                     return false;
                 }
+
+                // Si es el primer archivo.
+                if (context.ApplicationFiles.Count() == 0)
+                {
+                    nombre = "1" + extArchivo;
+                }
+                else
+                {
+                    nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
+                }
+                var file = new ApplicationFile() { Nombre = nombre, FileData = imagenData };                
                 Imagen img = new Imagen() { Usuario = user, FechaEnvio = DateTime.Now, ImagenData = file };
-                context.Imagenes.Add(img);
                 ext.Imagenes.Add(img);
                 ext.TimeStamp = DateTime.Now;
                 ext.Evento.TimeStamp = DateTime.Now;
@@ -677,7 +661,8 @@ namespace Emsys.LogicLayer
             }
         }
 
-        public bool adjuntarVideo(string token, DtoVideo video)
+
+        public bool adjuntarVideo(string token, byte[] videoData, string extArchivo, int idExtension)
         {
             using (var context = new EmsysContext())
             {
@@ -688,20 +673,26 @@ namespace Emsys.LogicLayer
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();                    
+                    throw new InvalidTokenException();
                 }
-                ApplicationFile file = context.ApplicationFiles.FirstOrDefault(f => f.Id == video.id_video);
-                if (file == null)
-                {
-                    return false;                    
-                }
-                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == video.idExtension);
+                string nombre;
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
                 if (!TieneAcceso.tieneAccesoExtension(user, ext))
-                {                    
+                {
                     return false;
                 }
+
+                // Si es el primer archivo.
+                if (context.ApplicationFiles.Count() == 0)
+                {
+                    nombre = "1" + extArchivo;
+                }
+                else
+                {
+                    nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
+                }
+                var file = new ApplicationFile() { Nombre = nombre, FileData = videoData };
                 Video vid = new Video() { Usuario = user, FechaEnvio = DateTime.Now, VideoData = file };
-                context.Videos.Add(vid);
                 ext.Videos.Add(vid);
                 ext.TimeStamp = DateTime.Now;
                 ext.Evento.TimeStamp = DateTime.Now;
@@ -710,7 +701,8 @@ namespace Emsys.LogicLayer
             }
         }
 
-        public bool adjuntarAudio(string token, DtoAudio audio)
+        
+        public bool adjuntarAudio(string token, byte[] audioData, string extArchivo, int idExtension)
         {
             using (var context = new EmsysContext())
             {
@@ -721,21 +713,26 @@ namespace Emsys.LogicLayer
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();                    
+                    throw new InvalidTokenException();
                 }
-                ApplicationFile file = context.ApplicationFiles.FirstOrDefault(f => f.Id == audio.id_audio);
-                if (file == null)
-                {
-                    return false;                    
-                }
-                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == audio.idExtension);
+                string nombre;
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
                 if (!TieneAcceso.tieneAccesoExtension(user, ext))
                 {
-                    
                     return false;
                 }
-                Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file, ExtensionEvento = ext };
-                context.Audios.Add(aud);
+
+                // Si es el primer archivo.
+                if (context.ApplicationFiles.Count() == 0)
+                {
+                    nombre = "1" + extArchivo;
+                }
+                else
+                {
+                    nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
+                }
+                var file = new ApplicationFile() { Nombre = nombre, FileData = audioData };
+                Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file };
                 ext.Audios.Add(aud);
                 ext.TimeStamp = DateTime.Now;
                 ext.Evento.TimeStamp = DateTime.Now;

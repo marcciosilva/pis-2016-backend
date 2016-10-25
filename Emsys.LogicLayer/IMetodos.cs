@@ -92,13 +92,6 @@ namespace Emsys.LogicLayer
         /// <returns>Retorna su pudo realizar la persistencia de la  geoubicacion o no.</returns>
         bool adjuntarGeoUbicacion(string token, DtoGeoUbicacion ubicacion);
         
-        /// <summary>
-        /// Agrega un arhivo a la tabla ApplicationFile.
-        /// </summary>
-        /// <param name="data">Bytes del archivo</param>
-        /// <param name="extension">Extension del nombre del archivo, Ej: ".jpg"</param>
-        /// <returns>El identificador del archivo agregado</returns>
-        int agregarFileData(byte[] data, string extension);
 
         /// <summary>
         /// Devuelve el nombre y datos de el archivo de imagen indicado.
@@ -125,28 +118,34 @@ namespace Emsys.LogicLayer
         DtoApplicationFile getAudioData(string token, int idAdjunto);
 
         /// <summary>
-        /// Agrega una imagen a una extension de evento, el archivo de la imagen debe haber sido enviado previamente con "agregarFileData".
+        /// Adjunta un archivo de imagen a una extension
         /// </summary>
-        /// <param name="token">Token del usuario que desea adjuntar la imagen</param>
-        /// <param name="imagen">DtoImagen con el id de la extension a la cual agregar, y el id del archivo de imagen</param>
-        /// <returns>Si se agrego correctamente</returns>
-        bool adjuntarImagen(string token, DtoImagen imagen);
+        /// <param name="token">Token del usuario</param>
+        /// <param name="imagenData">Bytes de la imagen</param>
+        /// <param name="extArchivo">Extension de la imagen (ej: ".jpg")</param>
+        /// <param name="idExtension">Extension a la cual se desea agregar la imagen</param>
+        /// <returns></returns>
+        bool adjuntarImagen(string token, byte[] imagenData, string extArchivo, int idExtension);
 
         /// <summary>
-        /// Agrega un video a una extension de evento, el archivo del video debe haber sido enviado previamente con "agregarFileData".
+        /// Adjunta un archivo de imagen a una extension
         /// </summary>
-        /// <param name="token">Token del usuario que desea adjuntar el video</param>
-        /// <param name="video">DtoVideo con el id de la extension a la cual agregar, y el id del archivo de video</param>
-        /// <returns>Si se agrego correctamente</returns>
-        bool adjuntarVideo(string token, DtoVideo video);
+        /// <param name="token">Token del usuario</param>
+        /// <param name="imagenData">Bytes de la imagen</param>
+        /// <param name="extArchivo">Extension de la imagen (ej: ".jpg")</param>
+        /// <param name="idExtension">Extension a la cual se desea agregar la imagen</param>
+        /// <returns></returns>
+        bool adjuntarVideo(string token, byte[] videoData, string extArchivo, int idExtension);
 
         /// <summary>
-        /// Agrega un audio a una extension de evento, el archivo del audio debe haber sido enviado previamente con "agregarFileData".
+        /// Adjunta un archivo de imagen a una extension
         /// </summary>
-        /// <param name="token">Token del usuario que desea adjuntar el audio</param>
-        /// <param name="audio">DtoAudio con el id de la extension a la cual agregar, y el id del archivo de video</param>
-        /// <returns>Si se agrego correctamente</returns>
-        bool adjuntarAudio(string token, DtoAudio audio);
+        /// <param name="token">Token del usuario</param>
+        /// <param name="imagenData">Bytes de la imagen</param>
+        /// <param name="extArchivo">Extension de la imagen (ej: ".jpg")</param>
+        /// <param name="idExtension">Extension a la cual se desea agregar la imagen</param>
+        /// <returns></returns>
+        bool adjuntarAudio(string token, byte[] audioData, string extArchivo, int idExtension);
 
         /// <summary>
         /// Indica al servidor que el usuario esta conectado.

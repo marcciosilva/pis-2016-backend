@@ -20,149 +20,8 @@ using System.Web.Http;
 namespace Servicios.Controllers
 {
     public class AdjuntosController : ApiController
-    {
-        /// <summary>
-        /// Permite enviar en archivo de imagen al servidor.
-        /// </summary>
-        /// <returns>Un DtoRespuesta que contiene un int, necesario para asociar el archivo enviado a un evento o extension</returns>
-        [CustomAuthorizeAttribute("adjuntarMultimedia")]
-        [LogFilter]
-        [HttpPost]
-        [Route("adjuntos/postimagefile")]
-        public DtoRespuesta PostImageFile()
-        {
-            IMetodos dbAL = new Metodos();
-            string token = ObtenerToken.GetToken(Request);
-            try
-            {
-                if (token == null)
-                {
-                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
-                }
-                var request = HttpContext.Current.Request;
-                if (request.Files.Count > 0)
-                {
-                    var postedFile = request.Files[0];
-                    string ext = Path.GetExtension(postedFile.FileName);
-                    if ((ext == ".jpg") || (ext == ".png"))
-                    {
-                        byte[] bytesImagen;
-                        using (MemoryStream ms = new MemoryStream())
-                        {
-                            postedFile.InputStream.CopyTo(ms);
-                            bytesImagen = ms.ToArray();
-                        }
-
-                        int cod = dbAL.agregarFileData(bytesImagen, ext);
-                        return new DtoRespuesta(MensajesParaFE.CorrectoCod, cod);
-                    }                         
-                    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
-                }
-                return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
-            }
-            catch (Exception e)
-            {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostImageFile", "Hubo un error al intentar enviar un archivo de imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorEnviarArchivoCod);
-                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
-            }
-        }
-
-        /// <summary>
-        /// Permite enviar en archivo de video al servidor.
-        /// </summary>
-        /// <returns>Un DtoRespuesta que contiene un int, necesario para asociar el archivo enviado a un evento o extension</returns>
-        [CustomAuthorizeAttribute("adjuntarMultimedia")]
-        [LogFilter]
-        [HttpPost]
-        [Route("adjuntos/postvideofile")]
-        public DtoRespuesta PostVideoFile()
-        {
-            IMetodos dbAL = new Metodos();
-            string token = ObtenerToken.GetToken(Request);
-            try
-            {
-                if (token == null)
-                {
-                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
-                }
-
-                var request = HttpContext.Current.Request;
-                if (request.Files.Count > 0)
-                {
-                    var postedFile = request.Files[0];
-                    string ext = Path.GetExtension(postedFile.FileName);
-                    if ((ext == ".avi") || (ext == ".mp4"))
-                    {
-                        byte[] bytesImagen;
-                        using (MemoryStream ms = new MemoryStream())
-                        {
-                            postedFile.InputStream.CopyTo(ms);
-                            bytesImagen = ms.ToArray();
-                        }
-
-                        int cod = dbAL.agregarFileData(bytesImagen, ext);
-                        return new DtoRespuesta(MensajesParaFE.CorrectoCod, cod);
-                    }
-
-                    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
-                }
-
-                return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
-            }
-            catch (Exception e)
-            {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostVideoFile", "Hubo un error al intentar enviar un archivo de video, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorEnviarArchivoCod);
-                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
-            }
-        }
-
-        /// <summary>
-        /// Permite enviar en archivo de audio al servidor.
-        /// </summary>
-        /// <returns>Un DtoRespuesta que contiene un int, necesario para asociar el archivo enviado a un evento o extension</returns>
-        [CustomAuthorizeAttribute("adjuntarMultimedia")]
-        [LogFilter]
-        [HttpPost]
-        [Route("adjuntos/postaudiofile")]
-        public DtoRespuesta PostAudioFile()
-        {
-            IMetodos dbAL = new Metodos();
-            string token = ObtenerToken.GetToken(Request);
-            try
-            {
-                if (token == null)
-                {
-                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
-                }
-                var request = HttpContext.Current.Request;
-                if (request.Files.Count > 0)
-                {
-                    var postedFile = request.Files[0];
-                    string ext = Path.GetExtension(postedFile.FileName);
-                    if ((ext == ".mp3") || (ext == ".wav"))
-                    {
-                        byte[] bytesImagen;
-                        using (MemoryStream ms = new MemoryStream())
-                        {
-                            postedFile.InputStream.CopyTo(ms);
-                            bytesImagen = ms.ToArray();
-                        }
-
-                        int cod = dbAL.agregarFileData(bytesImagen, ext);
-                        return new DtoRespuesta(MensajesParaFE.CorrectoCod, cod);
-                    }
-
-                    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
-                }
-
-                return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
-            }
-            catch (Exception e)
-            {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostAudioFile", "Hubo un error al intentar enviar un archivo de audio, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorEnviarArchivoCod);
-                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
-            }
-        }
+    {      
+       
 
         /// <summary>
         /// Permite enviar una geo ubicacion al servidor e indicar a que evento o extension le pertenece.
@@ -202,16 +61,16 @@ namespace Servicios.Controllers
             }
         }
 
+
         /// <summary>
-        /// Agrega un vdieo a un evento o extension.
+        /// Agrega un archivo de imagen a una extension del servidor, recibe la imagen y el id de la extension como multipart form data.
         /// </summary>
-        /// <param name="imagen">DtoImagen que indica a que evento o extension agregar la imagen, y el id de imagen, agregado previamente con "PostImageFile"</param>
-        /// <returns>Un DtoRespuesta que indica si se agrego correctamente</returns>
+        /// <returns></returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
-        [Route("adjuntos/adjuntarImagen")]
         [HttpPost]
-        public DtoRespuesta AdjuntarImagen([FromBody] DtoImagen imagen)
+        [Route("adjuntos/adjuntarimagen")]
+        public DtoRespuesta AdjuntarImagen()
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
@@ -221,17 +80,33 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-
-                if (dbAL.adjuntarImagen(token, imagen))
+                var request = HttpContext.Current.Request;
+                if (request.Files.Count == 0)
                 {
-                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, null);
+                    return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
                 }
-
+                var postedFile = request.Files[0];
+                string ext = Path.GetExtension(postedFile.FileName);
+                if ((ext != ".jpg") && (ext != ".png"))
+                {
+                    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
+                }
+                string[] idExtension = request.Params.GetValues("idExtension");
+                if (idExtension.Count() == 0)
+                {
+                    return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+                }
+                byte[] bytesImagen;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    postedFile.InputStream.CopyTo(ms);
+                    bytesImagen = ms.ToArray();
+                }
+                if (dbAL.adjuntarImagen(token, bytesImagen, ext, Int32.Parse(idExtension[0])))
+                {
+                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+                }
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
-            }
-            catch (InvalidTokenException)
-            {
-                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
@@ -240,16 +115,16 @@ namespace Servicios.Controllers
             }
         }
 
+
         /// <summary>
-        /// Agrega un vdieo a un evento o extension.
+        /// Agrega un archivo de audio a una extension del servidor, recibe el audio y el id de la extension como multipart form data.
         /// </summary>
-        /// <param name="video">DtoVideo que indica a que evento o extension agregar el video, y el id del archivo de video, agregado previamente con "PostVideoFile"</param>
-        /// <returns>Un DtoRespuesta que indica si se agrego correctamente</returns>
+        /// <returns></returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
-        [Route("adjuntos/adjuntarVideo")]
         [HttpPost]
-        public DtoRespuesta AdjuntarVideo([FromBody] DtoVideo video)
+        [Route("adjuntos/adjuntaraudio")]
+        public DtoRespuesta AdjuntarAudio()
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
@@ -259,17 +134,87 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-
-                if (dbAL.adjuntarVideo(token, video))
+                var request = HttpContext.Current.Request;
+                if (request.Files.Count == 0)
                 {
-                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, null);
+                    return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
                 }
-
+                var postedFile = request.Files[0];
+                string ext = Path.GetExtension(postedFile.FileName);
+                if ((ext != ".mp3") && (ext != ".wav"))
+                {
+                    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
+                }
+                string[] idExtension = request.Params.GetValues("idExtension");
+                if (idExtension.Count() == 0)
+                {
+                    return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+                }
+                byte[] bytesAudio;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    postedFile.InputStream.CopyTo(ms);
+                    bytesAudio = ms.ToArray();
+                }
+                if (dbAL.adjuntarAudio(token, bytesAudio, ext, Int32.Parse(idExtension[0])))
+                {
+                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+                }
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (InvalidTokenException)
+            catch (Exception e)
             {
-                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarAudio", "Hubo un error al intentar adjuntar un audio, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarAudioCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorAdjuntarAudio));
+            }
+        }
+
+
+        /// <summary>
+        /// Agrega un archivo de video a una extension del servidor, recibe el video y el id de la extension como multipart form data.
+        /// </summary>
+        /// <returns></returns>
+        [CustomAuthorizeAttribute("adjuntarMultimedia")]
+        [LogFilter]
+        [HttpPost]
+        [Route("adjuntos/adjuntarvideo")]
+        public DtoRespuesta AdjuntarVideo()
+        {
+            IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
+            try
+            {
+                if (token == null)
+                {
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                }
+                var request = HttpContext.Current.Request;
+                if (request.Files.Count == 0)
+                {
+                    return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
+                }
+                var postedFile = request.Files[0];
+                string ext = Path.GetExtension(postedFile.FileName);
+                if ((ext != ".mp4") && (ext != ".avi"))
+                {
+                    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
+                }
+                string[] idExtension = request.Params.GetValues("idExtension");
+                if (idExtension.Count() == 0)
+                {
+                    return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+                }
+                byte[] bytesVideo;
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    postedFile.InputStream.CopyTo(ms);
+                    bytesVideo = ms.ToArray();
+                }
+                if (dbAL.adjuntarVideo(token, bytesVideo, ext, Int32.Parse(idExtension[0])))
+                {
+                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+                }
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
             catch (Exception e)
             {
@@ -278,43 +223,6 @@ namespace Servicios.Controllers
             }
         }
 
-        /// <summary>
-        /// Agrega un audio a un evento o extension.
-        /// </summary>
-        /// <param name="audio">DtoAudio que indica a que evento o extension agregar el audio, y el id del archivo de audio, agregado previamente con "PostVideoFile"</param>
-        /// <returns>Un DtoRespuesta que indica si se agrego correctamente</returns>
-        [CustomAuthorizeAttribute("adjuntarMultimedia")]
-        [LogFilter]
-        [Route("adjuntos/adjuntarAudio")]
-        [HttpPost]
-        public DtoRespuesta AdjuntarAudio([FromBody] DtoAudio audio)
-        {
-            IMetodos dbAL = new Metodos();
-            string token = ObtenerToken.GetToken(Request);
-            try
-            {
-                if (token == null)
-                {
-                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
-                }
-
-                if (dbAL.adjuntarAudio(token, audio))
-                {
-                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, null);
-                }
-
-                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
-            }
-            catch (InvalidTokenException)
-            {
-                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
-            }
-            catch (Exception e)
-            {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarAudio", "Hubo un error al intentar adjuntar un audio, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarAudioCod);
-                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorAdjuntarAudio));
-            }
-        }
 
         /// <summary>
         /// Retorna el archivo de imagen indicada.

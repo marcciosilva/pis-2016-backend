@@ -703,10 +703,9 @@ namespace Test.UnitTesting
                 }
 
                 // Agrego Multimedia.
-                int idF = logica.agregarFileData(new byte[0], "algo.ext");
-                var res1 = logica.adjuntarImagen(token, new DtoImagen() { idExtension = ext1.Id, id_imagen = 1 });
-                var res2 = logica.adjuntarAudio(token, new DtoAudio() { idExtension = ext1.Id, id_audio = 1 });
-                var res3 = logica.adjuntarVideo(token, new DtoVideo() { idExtension = ext1.Id, id_video = 1 });
+                var res1 = logica.adjuntarImagen(token, new byte[0], ".jpg", 1);
+                var res2 = logica.adjuntarAudio(token, new byte[0], ".mp3", 1);
+                var res3 = logica.adjuntarVideo(token, new byte[0], ".mp4", 1);
 
 
                 List<DtoRecurso> lRecurso = new List<DtoRecurso>();
@@ -871,15 +870,9 @@ namespace Test.UnitTesting
             DtoRecurso dtoRecurso1 = new DtoRecurso() { id = 1, codigo = "recurso1" };
             lRecursos.Add(dtoRecurso1);
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = lRecursos };
-
-            // Agregar el archivo.
-            byte[] archivo = null;
-            string extArchivo = ".jpg";
-            int idFile = logica.agregarFileData(archivo, extArchivo);
-
-            DtoImagen img = new DtoImagen() { id_imagen = idFile, idExtension = 1 };
-
-            Assert.IsFalse(logica.adjuntarImagen(token, img));
+                        
+            // Sin autorizacion.
+            Assert.IsFalse(logica.adjuntarImagen(token, new byte[0], ".jpg", 1));
 
             // Loguear.
             var log = logica.loguearUsuario(token, rol);
@@ -887,7 +880,7 @@ namespace Test.UnitTesting
             // Sin token.
             try
             {
-                logica.adjuntarImagen(null, img);
+                logica.adjuntarImagen(null, new byte[0], ".jpg", 1);
             }
             catch (InvalidTokenException e)
             {
@@ -897,7 +890,7 @@ namespace Test.UnitTesting
             // Token invalido.
             try
             {
-                logica.adjuntarImagen("tokenIncorrecto", img);
+                logica.adjuntarImagen("tokenIncorrecto", new byte[0], ".jpg", 1);
             }
             catch (InvalidTokenException e)
             {
@@ -905,7 +898,7 @@ namespace Test.UnitTesting
             }
 
             // Adjuntar geo ubicacion valida.
-            var ok = logica.adjuntarImagen(token, img);
+            var ok = logica.adjuntarImagen(token, new byte[0], ".jpg", 1);
 
             var c = db.Imagenes.Count();
             var c2 = db.ApplicationFiles.Count();
@@ -948,7 +941,7 @@ namespace Test.UnitTesting
 
             DtoApplicationFile f = logica.getImageData(token, 1);
             Assert.IsNotNull(f);
-            Assert.IsTrue(f.nombre == idFile.ToString() + ".jpg");
+            Assert.IsTrue(f.nombre == db.Imagenes.FirstOrDefault().ImagenData.Id.ToString() + ".jpg");
 
             logica.cerrarSesion(token);
         }
@@ -973,13 +966,8 @@ namespace Test.UnitTesting
             var result = logica.autenticarUsuario("A", "A");
             string token = result.access_token;
 
-            // Agregar el archivo.
-            byte[] archivo = null;
-            string extArchivo = ".mp3";
-            int idFile = logica.agregarFileData(archivo, extArchivo);
-            DtoAudio aud = new DtoAudio() { id_audio = idFile, idExtension = 1 };
-
-            Assert.IsFalse(logica.adjuntarAudio(token, aud));
+            // Sin autorizacion.
+            Assert.IsFalse(logica.adjuntarAudio(token, new byte[0], ".mp3", 1));
 
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
@@ -993,7 +981,7 @@ namespace Test.UnitTesting
             // Sin token.
             try
             {
-                logica.adjuntarAudio(null, aud);
+                logica.adjuntarAudio(null, new byte[0], ".mp3", 1);
             }
             catch (InvalidTokenException e)
             {
@@ -1003,7 +991,7 @@ namespace Test.UnitTesting
             // Token invalido.
             try
             {
-                logica.adjuntarAudio("tokenIncorrecto", aud);
+                logica.adjuntarAudio("tokenIncorrecto", new byte[0], ".mp3", 1);
             }
             catch (InvalidTokenException e)
             {
@@ -1011,7 +999,7 @@ namespace Test.UnitTesting
             }
 
             // Adjuntar geo ubicacion valida.
-            var ok = logica.adjuntarAudio(token, aud);
+            var ok = logica.adjuntarAudio(token, new byte[0], ".mp3", 1);
 
             var c = db.Audios.Count();
             var c2 = db.ApplicationFiles.Count();
@@ -1054,7 +1042,7 @@ namespace Test.UnitTesting
 
             DtoApplicationFile f = logica.getAudioData(token, 1);
             Assert.IsNotNull(f);
-            Assert.IsTrue(f.nombre == idFile.ToString() + ".mp3");
+            Assert.IsTrue(f.nombre == db.Audios.FirstOrDefault().AudioData.Id.ToString() + ".mp3");
 
             logica.cerrarSesion(token);
         }
@@ -1078,15 +1066,10 @@ namespace Test.UnitTesting
             // Autenticar.
             var result = logica.autenticarUsuario("A", "A");
             string token = result.access_token;
-
-            // Agregar el archivo.
-            byte[] archivo = null;
-            string extArchivo = ".mp4";
-            int idFile = logica.agregarFileData(archivo, extArchivo);
-            DtoVideo vid = new DtoVideo() { id_video = idFile, idExtension = 1 };
+            
 
             // No tengo autorizacion.
-            Assert.IsFalse(logica.adjuntarVideo(token, vid));
+            Assert.IsFalse(logica.adjuntarVideo(token, new byte[0], ".mp4", 1));
 
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
@@ -1100,7 +1083,7 @@ namespace Test.UnitTesting
             // Sin token.
             try
             {
-                logica.adjuntarVideo(null, vid);
+                logica.adjuntarVideo(null, new byte[0], ".mp4", 1);
             }
             catch (InvalidTokenException e)
             {
@@ -1110,7 +1093,7 @@ namespace Test.UnitTesting
             // Token invalido.
             try
             {
-                logica.adjuntarVideo("tokenIncorrecto", vid);
+                logica.adjuntarVideo("tokenIncorrecto", new byte[0], ".mp4", 1);
             }
             catch (InvalidTokenException e)
             {
@@ -1118,7 +1101,7 @@ namespace Test.UnitTesting
             }
 
             // Adjuntar geo ubicacion valida.
-            var ok = logica.adjuntarVideo(token, vid);
+            var ok = logica.adjuntarVideo(token, new byte[0], ".mp4", 1);
 
             var c = db.Videos.Count();
             var c2 = db.ApplicationFiles.Count();
@@ -1162,7 +1145,7 @@ namespace Test.UnitTesting
 
             DtoApplicationFile f = logica.getVideoData(token, 1);
             Assert.IsNotNull(f);
-            Assert.IsTrue(f.nombre == idFile.ToString() + ".mp4");
+            Assert.IsTrue(f.nombre == db.Videos.FirstOrDefault().VideoData.Id.ToString() + ".mp4");
 
             logica.cerrarSesion(token);
         }

@@ -124,7 +124,7 @@ namespace Servicios.Controllers
 
 
         [HttpPost]
-        [Route("eventos/reportarhorarribo")]
+        [Route("eventos/reportarhoraarribo")]
         [LogFilter]
         public DtoRespuesta ReportarHoraArribo(int idExtension)
         {
