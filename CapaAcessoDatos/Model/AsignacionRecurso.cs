@@ -18,7 +18,7 @@
         
         public string Descripcion { get; set; }
 
-        public DateTime FechaArribo { get; set; }
+        public DateTime? HoraArribo { get; set; }
 
         public bool ActualmenteAsignado { get; set; }
 

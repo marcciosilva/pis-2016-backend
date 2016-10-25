@@ -116,7 +116,7 @@
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Video", asinacionRecurso.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", MensajesParaFE.LogCapturarCambioEventoCod);
-                var asgnacionRecursoEnDB = db.AsignacionRecurso.Find(asinacionRecurso.Entity.Id);
+                var asgnacionRecursoEnDB = db.AsignacionesRecursos.Find(asinacionRecurso.Entity.Id);
                 if (asgnacionRecursoEnDB != null)
                 {
                         foreach (var recurso in asgnacionRecursoEnDB.Extension.Recursos)

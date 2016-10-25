@@ -30,7 +30,7 @@ namespace Servicios.Filtros
             {
                 HttpResponseMessage responseMessage = new HttpResponseMessage()
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))))
+                    Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado))))
                 };
                 actionContext.Response = responseMessage;
             }

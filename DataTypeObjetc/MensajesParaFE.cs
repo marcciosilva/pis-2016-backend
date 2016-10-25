@@ -36,6 +36,7 @@
         public const string ErrorDescargarArchivo = "Ocurrio un error al intentar descargar el archivo.";
         public const string ErrorElegirRoles = "Ocurrio un error al intentar elegir los roles.";
         public const string ErrorKeepMeAlive = "Ocurrio un error al intentar indicarle actividad al servidor.";
+        public const string ErrorReportarHoraArribo = "Ocurrio un error al intentar reportar la hora de arribo.";
 
         // Codigos.
         public const int CorrectoCod = 0;
@@ -75,13 +76,12 @@
         public const int ErrorCerrarSesionCod = -1;
         public const int ErrorKeepMeAliveCod = -1;
         public const int ErrorAlGenerarTokenCod = -1;
+        public const int ErrorReportarHoraArriboCod = -1;
 
         // Codigos Logs.
         public const int LogNotificacionesCod = -1;
         public const int LogCapturarCambioEventoCod = -1;
         public const int LogAccionesCod = -1;
-        
-
 
     }
 }

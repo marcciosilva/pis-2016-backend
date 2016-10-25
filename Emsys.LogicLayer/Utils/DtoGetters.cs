@@ -23,7 +23,7 @@
             {
                 id = asignacionRecurso.Id,
                 recurso = asignacionRecurso.Recurso.Codigo,
-                fecha_arribo = asignacionRecurso.FechaArribo,
+                fecha_arribo = asignacionRecurso.HoraArribo,
                 actualmente_asignado = asignacionRecurso.ActualmenteAsignado
             };
             var desc = new List<DtoDescripcion>();

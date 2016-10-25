@@ -84,5 +84,74 @@ namespace Servicios.Controllers
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorObtenerEvento));
             }
         }
+
+
+        /// <summary>
+        /// Servicio para actualizar la descripcion de un recurso.
+        /// </summary>
+        /// <param name="descParam">Entension y descripcion a agregar.</param>
+        /// <returns>Respuesta definida en el documento de interfaz.</returns>
+        [HttpPost]
+        [Route("eventos/actualizardescripcionrecurso")]
+        [LogFilter]
+        public DtoRespuesta ActualizarDescripcionRecurso([FromBody] DtoActualizarDescripcionParametro descParam)
+        {
+            IMetodos dbAL = new Metodos();
+            try
+            {
+                string token = ObtenerToken.GetToken(Request);
+                if (dbAL.ActualizarDescripcionRecurso(descParam, token))
+                {
+                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+                }
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+            }
+            catch (InvalidTokenException)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+            }
+            catch (UsuarioNoAutorizadoException)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
+            }
+            catch (Exception e)
+            {
+                string token = ObtenerToken.GetToken(Request);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "ActualizarDescripcionRecurso", "Hubo un error al intentar actualizar la descripcion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorActualizarDescripcionCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorActualizarDescripcion));
+            }
+        }
+
+
+        [HttpPost]
+        [Route("eventos/reportarhorarribo")]
+        [LogFilter]
+        public DtoRespuesta ReportarHoraArribo(int idExtension)
+        {
+            IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
+            try
+            {
+                if (token == null)
+                {
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                }
+                if (dbAL.reportarHoraArribo(token, idExtension))
+                {
+                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+                }
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+            }
+            catch (InvalidTokenException)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+            }
+            catch (Exception e)
+            {
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "ReportarHoraArribo", "Hubo un error al intentar reportar la hora de arribo, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorReportarHoraArriboCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorReportarHoraArribo));
+            }
+        }
+
     }
 }

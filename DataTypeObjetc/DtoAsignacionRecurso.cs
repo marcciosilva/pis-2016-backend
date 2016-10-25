@@ -11,7 +11,7 @@ namespace DataTypeObject
         
         public List<DtoDescripcion> descripcion { get; set; }
 
-        public DateTime fecha_arribo { get; set; }
+        public DateTime? fecha_arribo { get; set; }
 
         public bool actualmente_asignado { get; set; }
     }

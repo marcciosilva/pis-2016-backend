@@ -138,9 +138,9 @@
   <ItemGroup>
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
-    <Compile Include="Migrations\201610240045330__Inicio.cs" />
-    <Compile Include="Migrations\201610240045330__Inicio.Designer.cs">
-      <DependentUpon>201610240045330__Inicio.cs</DependentUpon>
+    <Compile Include="Migrations\201610251814489__Inicial.cs" />
+    <Compile Include="Migrations\201610251814489__Inicial.Designer.cs">
+      <DependentUpon>201610251814489__Inicial.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\ApplicationFile.cs" />
     <Compile Include="Model\AsignacionRecursoDescripcion.cs" />
@@ -181,8 +181,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610240045330__Inicio.resx">
-      <DependentUpon>201610240045330__Inicio.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610251814489__Inicial.resx">
+      <DependentUpon>201610251814489__Inicial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -153,11 +153,7 @@ namespace Emsys.LogicLayer
         /// </summary>
         /// <param name="token">token del usuario</param>
         /// <returns>Si se realizo correctamente</returns>
-        bool keepMeAlive(string token);
-
-
-        //string getDataImagen(string token, int idImagen);
-
+        bool keepMeAlive(string token);        
 
         /// <summary>
         /// Interfaz Actualizar descripcion implentado por la capa de servicios.
@@ -167,7 +163,19 @@ namespace Emsys.LogicLayer
         /// <returns>Retorna la respuesta segun el documento de interfaz.</returns>
         bool ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token);
         
-       
+       /// <summary>
+       /// Desconecta a los usuarios inactivos (que no han enviado keep alive) por mas de maxTime minutos.
+       /// </summary>
+       /// <param name="maxTime">Tiempo en minutos minimo para considerar inactivo a un usuario</param>
         void desconectarAusentes(int maxTime);
+
+        /// <summary>
+        /// Indica al servidor que un recurso ha arribado a un evento.
+        /// </summary>
+        /// <param name="token">Token del usuario recurso</param>
+        /// <param name="idExtension">Id de la extension del evento que atiende</param>
+        /// <returns></returns>
+        bool reportarHoraArribo(string token, int idExtension);
+
     }
 }

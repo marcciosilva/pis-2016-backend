@@ -194,15 +194,15 @@ namespace Emsys.DataAccesLayer.Core
                     TimeStamp = DateTime.Now,
                     GeoUbicaciones = new List<GeoUbicacion>(),
                     Recursos = new List<Recurso>(),
-                    AsignacionesRecursos = new LinkedList<AsignacionRecurso>(),
+                    AsignacionesRecursos = new List<AsignacionRecurso>(),
                 };
                 ext1.AsignacionesRecursos.Add(new AsignacionRecurso
                 {
                     ActualmenteAsignado = true,
                     AsignacionRecursoDescripcion = new List<AsignacionRecursoDescripcion>(),
                     Extension = ext1,
-                    FechaArribo = DateTime.Now,
                     Recurso = rec1,
+                    HoraArribo = null,
                     Descripcion = string.Empty
                 });
                 Extension_Evento ext2 = new Extension_Evento()
