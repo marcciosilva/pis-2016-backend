@@ -91,6 +91,12 @@ namespace Test.UnitTesting
                 }
                 db.SaveChanges();
 
+                LogicLayerUnitTest test= new LogicLayerUnitTest();
+                test.AdjuntarAudioTest();
+                test.AdjuntarVideoTest();
+                test.AdjuntarImagenTest();
+                test.AdjuntarGeoUbicacion();
+
             }
         }
     }
