@@ -41,7 +41,7 @@ namespace Test.UnitTesting
             Assert.IsTrue(resp2.cod == 0);
 
             var resp3 = controller.Login(u2);
-            Assert.IsTrue(resp3.cod == 1);
+            Assert.IsTrue(resp3.cod == 6);
         }
 
         /// <summary>
