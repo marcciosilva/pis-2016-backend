@@ -26,20 +26,20 @@ namespace Servicios.Controllers
             try
             {
                 DtoAutenticacion autenticacion = dbAL.autenticarUsuario(user.username, user.password);
-                return new DtoRespuesta(0, autenticacion);
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, autenticacion);
             }
             catch (SesionActivaException)
             {
-                return new DtoRespuesta(1, new Mensaje(Mensajes.SesionActiva));
+                return new DtoRespuesta(MensajesParaFE.SesionActivaCod, new Mensaje(MensajesParaFE.SesionActiva));
             }
             catch (InvalidCredentialsException)
             {
-                return new DtoRespuesta(1, new Mensaje(Mensajes.UsuarioContraseñaInvalidos));
+                return new DtoRespuesta(MensajesParaFE.UsuarioContraseñaInvalidosCod, new Mensaje(MensajesParaFE.UsuarioContraseñaInvalidos));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(user.username, "", "Emsys.ServiceLayer", "LoginController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorIniciarSesion));
+                dbAL.AgregarLogError(user.username, "", "Emsys.ServiceLayer", "LoginController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorIniciarSesionCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorIniciarSesion));
             }          
         }
 
@@ -59,20 +59,20 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
 
                 DtoRol rol = dbAL.getRolUsuario(token);
-                return new DtoRespuesta(0, rol);
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, rol);
             }
             catch (InvalidTokenException)
             {
-                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "GetRoles", "Hubo un error al intentar obtener roles de un usuario, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorGetRoles));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "GetRoles", "Hubo un error al intentar obtener roles de un usuario, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorGetRolesCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorGetRoles));
             }
         }
 
@@ -93,30 +93,30 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
 
                 if (dbAL.loguearUsuario(token, rol))
                 {
-                    return new DtoRespuesta(0, null);
+                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
                 }
                 else
                 {
-                    return new DtoRespuesta(3, new Mensaje(Mensajes.SeleccionZonasRecursosInvalida));
+                    return new DtoRespuesta(MensajesParaFE.SeleccionZonasRecursosInvalidaCod, new Mensaje(MensajesParaFE.SeleccionZonasRecursosInvalida));
                 }
             }
             catch (RecursoNoDisponibleException)
             {
-                return new DtoRespuesta(4, new Mensaje(Mensajes.RecursoNoDisponible));
+                return new DtoRespuesta(MensajesParaFE.RecursoNoDisponibleCod, new Mensaje(MensajesParaFE.RecursoNoDisponible));
             }
             catch (InvalidTokenException)
             {
-                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "ElegirRoles", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "ElegirRoles", "Hubo un error al intentar elegir los roles de un usuario, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorElegirRolesCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorElegirRoles));
             }
         }
 
@@ -136,27 +136,26 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
 
                 // TODO esto no se puede hacer hasta tener operaciones.
                 var usuarioOperacionesNoFinalizadas = false;
                 if (usuarioOperacionesNoFinalizadas)
                 {
-                    return new DtoRespuesta(5, new Mensaje(Mensajes.UsuarioTieneOperacionesNoFinalizadas));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioTieneOperacionesNoFinalizadasCod, new Mensaje(MensajesParaFE.UsuarioTieneOperacionesNoFinalizadas));
                 }
                 dbAL.cerrarSesion(token);
-                return new DtoRespuesta(0, null);
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
             catch (InvalidTokenException)
             {
-                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "CerrarSesionController", 0, "Logout", "Hubo un error al intentar cerrar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorCerrarSesionCod);
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "CerrarSesion", "Hubo un error al intentar cerrar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorCerrarSesionCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorCerraSesion));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "CerrarSesion", "Hubo un error al intentar cerrar sesion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorCerrarSesionCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorCerraSesion));
             }
         }
 
@@ -172,49 +171,20 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
                 dbAL.keepMeAlive(token);
-                return new DtoRespuesta(0, null);
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
             catch (InvalidTokenException)
             {
-                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "KeepMeAlive", "Hubo un error al intentar llaar al keepAlive: " + e.Message, CodigosLog.ErrorCerrarSesionCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorCerraSesion));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "KeepMeAlive", "Hubo un error al intentar llaar al keepAlive: " + e.Message, MensajesParaFE.ErrorKeepMeAliveCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorKeepMeAlive));
             }
         }
-
-
-        ////[CustomAuthorizeAttribute()]
-        ////[HttpPost]
-        ////[LogFilter]
-        ////[Route("users/keepmealive")]
-        ////public DtoRespuesta KeepMeAlive()
-        ////{
-        ////    IMetodos dbAL = new Metodos();
-        ////    string token = ObtenerToken.GetToken(Request);
-        ////    try
-        ////    {
-        ////        if (token == null)
-        ////        {
-        ////            return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
-        ////        }                
-        ////        dbAL.keepMeAlive(token);
-        ////        return new DtoRespuesta(0, null);
-        ////    }
-        ////    catch (InvalidTokenException)
-        ////    {
-        ////        return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
-        ////    }
-        ////    catch (Exception e)
-        ////    {
-        ////        dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "CerrarSesionController", 0, "Logout", "Hubo un error al intentar cerrar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorCerrarSesionCod);
-        ////        return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorCerraSesion));
-        ////    }
-        ////}
     }
 }

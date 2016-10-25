@@ -37,7 +37,7 @@
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoAsignacionRecursoDescripcion", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un AsignacionRecursoDescripcion en la bd. Excepcion: " + e.Message, CodigosLog.LogCapturarCambioEventoCod);
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoAsignacionRecursoDescripcion", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un AsignacionRecursoDescripcion en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
                 throw e;
             }
         }
@@ -98,7 +98,7 @@
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys._dependency_OnChangedAsignacionRecursoDescripcion", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un AsignacionRecursoDescripcion en la bd. Excepcion: " + e.Message, CodigosLog.LogCapturarCambioEventoCod);
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys._dependency_OnChangedAsignacionRecursoDescripcion", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un AsignacionRecursoDescripcion en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
                 throw e;
             }
         }
@@ -114,7 +114,7 @@
             using (EmsysContext db = new EmsysContext())
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "AsignacionRecursoDescripcion", asignacionRecursoDescripcion.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", CodigosLog.LogCapturarCambioEventoCod);
+                dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "AsignacionRecursoDescripcion", asignacionRecursoDescripcion.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", MensajesParaFE.LogCapturarCambioEventoCod);
                 var asignacionRecursoDescripcionEnDB = db.AsignacionRecursoDescripcion.Find(asignacionRecursoDescripcion.Entity.Id);
                 if (asignacionRecursoDescripcionEnDB != null)
                 {

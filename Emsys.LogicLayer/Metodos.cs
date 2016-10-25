@@ -63,7 +63,7 @@ namespace Emsys.LogicLayer
                     context.SaveChanges();
 
                     //return new DtoAutenticacion(token, Mensajes.Correcto, rol);
-                    return new DtoAutenticacion(token, Mensajes.Correcto);
+                    return new DtoAutenticacion(token, MensajesParaFE.Correcto);
                 }
 
                 throw new InvalidCredentialsException();
@@ -462,10 +462,8 @@ namespace Emsys.LogicLayer
                     {
                         return DtoGetters.getDtoEvento(evento);
                     }
-
                     throw new EventoInvalidoException();
                 }
-
                 throw new InvalidTokenException();
             }
         }
@@ -488,8 +486,8 @@ namespace Emsys.LogicLayer
                         GeoUbicacion geoU = new GeoUbicacion() { Usuario = user, FechaEnvio = DateTime.Now, Latitud = ubicacion.latitud, Longitud = ubicacion.longitud };
                         context.GeoUbicaciones.Add(geoU);
                         ext.GeoUbicaciones.Add(geoU);
-                        //ext.TimeStamp = DateTime.Now;
-                        //ext.Evento.TimeStamp = DateTime.Now;
+                        ext.TimeStamp = DateTime.Now;
+                        ext.Evento.TimeStamp = DateTime.Now;
                         context.SaveChanges();
                         return true;
                     }
@@ -708,8 +706,8 @@ namespace Emsys.LogicLayer
                             Imagen img = new Imagen() { Usuario = user, FechaEnvio = DateTime.Now, ImagenData = file };
                             context.Imagenes.Add(img);
                             ext.Imagenes.Add(img);
-                            //ext.TimeStamp = DateTime.Now;
-                            //ext.Evento.TimeStamp = DateTime.Now;
+                            ext.TimeStamp = DateTime.Now;
+                            ext.Evento.TimeStamp = DateTime.Now;
                             context.SaveChanges();
                             return true;
                         }
@@ -749,8 +747,8 @@ namespace Emsys.LogicLayer
                             Video vid = new Video() { Usuario = user, FechaEnvio = DateTime.Now, VideoData = file };
                             context.Videos.Add(vid);
                             ext.Videos.Add(vid);
-                            //ext.TimeStamp = DateTime.Now;
-                            //ext.Evento.TimeStamp = DateTime.Now;
+                            ext.TimeStamp = DateTime.Now;
+                            ext.Evento.TimeStamp = DateTime.Now;
                             context.SaveChanges();
                             return true;
                         }
@@ -790,8 +788,8 @@ namespace Emsys.LogicLayer
                             Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file, ExtensionEvento=ext };
                             context.Audios.Add(aud);
                             ext.Audios.Add(aud);
-                            //ext.TimeStamp = DateTime.Now;
-                            //ext.Evento.TimeStamp = DateTime.Now;
+                            ext.TimeStamp = DateTime.Now;
+                            ext.Evento.TimeStamp = DateTime.Now;
                             context.SaveChanges();
                             return true;
                         }
@@ -838,13 +836,15 @@ namespace Emsys.LogicLayer
                                 if (item.Recurso == user.Recurso.FirstOrDefault())
                                 {
                                     item.AsignacionRecursoDescripcion.Add(new AsignacionRecursoDescripcion(descParam.descripcion, DateTime.Now));
+                                    ext.TimeStamp = DateTime.Now;
+                                    ext.Evento.TimeStamp = DateTime.Now;
                                     context.SaveChanges();
                                     return true;
                                 }                                
                             }
                             return false;
                         }
-                        throw new InvalidExtensionForUserException();
+                        throw new UsuarioNoAutorizadoException();
                     }
                     return false;
                 }

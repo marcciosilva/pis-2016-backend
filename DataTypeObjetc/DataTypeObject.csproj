@@ -73,7 +73,6 @@
     <Compile Include="DtoImagen.cs" />
     <Compile Include="DtoGeoUbicacion.cs" />
     <Compile Include="DtoRespuestaExterna.cs" />
-    <Compile Include="CodigosLog.cs" />
     <Compile Include="Notificacion.Data.cs" />
     <Compile Include="Notificaciones.Data.Codigos.cs" />
     <Compile Include="DtoRespuesta.cs" />

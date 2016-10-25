@@ -29,27 +29,23 @@ namespace Servicios.Controllers
                 string token = ObtenerToken.GetToken(Request);
                 if (dbAL.ActualizarDescripcionRecurso(descParam, token))
                 {
-                    return new DtoRespuesta(0, new Mensaje(Mensajes.Correcto));
+                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
                 }
-                return new DtoRespuesta(500, "Ocurrio un error.");
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
             catch (InvalidTokenException)
             {
-                return new DtoRespuesta(1, new Mensaje(Mensajes.TokenInvalido));
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (InvalidExtensionException)
+            catch (UsuarioNoAutorizadoException)
             {
-                return new DtoRespuesta(Mensajes.IdentificadorExtensionIncorrecto, new Mensaje(Mensajes.GetDescription(Mensajes.IdentificadorExtensionIncorrecto)));
-            }
-            catch (InvalidExtensionForUserException)
-            {
-                return new DtoRespuesta(Mensajes.ExtensionNoAsignadaAlRecurso, new Mensaje(Mensajes.GetDescription(Mensajes.ExtensionNoAsignadaAlRecurso)));
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
             catch (Exception e)
             {
                 string token = ObtenerToken.GetToken(Request);
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "Login", "Hubo un error al intentar iniciar sesion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorIniciarSesion));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "ActualizarDescripcionRecursoController", 0, "ActualizarDescripcionRecurso", "Hubo un error al intentar actualizar la descripcion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorActualizarDescripcionCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorActualizarDescripcion));
             }
         }
     }

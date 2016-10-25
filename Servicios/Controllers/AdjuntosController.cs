@@ -37,7 +37,7 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
                 var request = HttpContext.Current.Request;
                 if (request.Files.Count > 0)
@@ -54,18 +54,16 @@ namespace Servicios.Controllers
                         }
 
                         int cod = dbAL.agregarFileData(bytesImagen, ext);
-                        return new DtoRespuesta(0, cod);
-                    }   
-                         
-                    return new DtoRespuesta(13, new Mensaje(Mensajes.FormatoNoSoportado));
+                        return new DtoRespuesta(MensajesParaFE.CorrectoCod, cod);
+                    }                         
+                    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
                 }
-
-                return new DtoRespuesta(12, new Mensaje(Mensajes.ErrorEnviarArchivo));
+                return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostFile", "Hubo un error al intentar enviar un archivo, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorEnviarArchivo));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostImageFile", "Hubo un error al intentar enviar un archivo de imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorEnviarArchivoCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
             }
         }
 
@@ -85,7 +83,7 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
 
                 var request = HttpContext.Current.Request;
@@ -103,18 +101,18 @@ namespace Servicios.Controllers
                         }
 
                         int cod = dbAL.agregarFileData(bytesImagen, ext);
-                        return new DtoRespuesta(0, cod);
+                        return new DtoRespuesta(MensajesParaFE.CorrectoCod, cod);
                     }
 
-                    return new DtoRespuesta(13, new Mensaje(Mensajes.FormatoNoSoportado));
+                    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
                 }
 
-                return new DtoRespuesta(12, new Mensaje(Mensajes.ErrorEnviarArchivo));
+                return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostFile", "Hubo un error al intentar enviar un archivo, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorEnviarArchivo));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostVideoFile", "Hubo un error al intentar enviar un archivo de video, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorEnviarArchivoCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
             }
         }
 
@@ -134,9 +132,8 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-
                 var request = HttpContext.Current.Request;
                 if (request.Files.Count > 0)
                 {
@@ -152,18 +149,18 @@ namespace Servicios.Controllers
                         }
 
                         int cod = dbAL.agregarFileData(bytesImagen, ext);
-                        return new DtoRespuesta(0, cod);
+                        return new DtoRespuesta(MensajesParaFE.CorrectoCod, cod);
                     }
 
-                    return new DtoRespuesta(13, new Mensaje(Mensajes.FormatoNoSoportado));
+                    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
                 }
 
-                return new DtoRespuesta(12, new Mensaje(Mensajes.ErrorEnviarArchivo));
+                return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostFile", "Hubo un error al intentar enviar un archivo, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorEnviarArchivo));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "PostAudioFile", "Hubo un error al intentar enviar un archivo de audio, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorEnviarArchivoCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
             }
         }
 
@@ -184,24 +181,24 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
 
                 if (dbAL.adjuntarGeoUbicacion(token, ubicacion))
                 {
-                    return new DtoRespuesta(0, null);
+                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, null);
                 }
 
-                return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
             catch (InvalidTokenException)
             {
-                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarGeoUbicacion", "Hubo un error al intentar adjuntar una geo ubicacion, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarGeoUbicacion", "Hubo un error al intentar adjuntar una geo ubicacion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarGeoUbicacionCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorAdjuntarGeoUbicacion));
             }
         }
 
@@ -222,24 +219,24 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
 
                 if (dbAL.adjuntarImagen(token, imagen))
                 {
-                    return new DtoRespuesta(0, null);
+                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, null);
                 }
 
-                return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
             catch (InvalidTokenException)
             {
-                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarImagenCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorAdjuntarImagen));
             }
         }
 
@@ -260,24 +257,24 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
 
                 if (dbAL.adjuntarVideo(token, video))
                 {
-                    return new DtoRespuesta(0, null);
+                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, null);
                 }
 
-                return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
             catch (InvalidTokenException)
             {
-                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarVideo", "Hubo un error al intentar adjuntar un video, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarVideoCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorAdjuntarVideo));
             }
         }
 
@@ -298,24 +295,24 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
 
                 if (dbAL.adjuntarAudio(token, audio))
                 {
-                    return new DtoRespuesta(0, null);
+                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, null);
                 }
 
-                return new DtoRespuesta(10, new Mensaje(Mensajes.ExtensionInvalida));
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
             catch (InvalidTokenException)
             {
-                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarAudio", "Hubo un error al intentar adjuntar un audio, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarAudioCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorAdjuntarAudio));
             }
         }
 
@@ -337,14 +334,14 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado))));
+                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
                     return responseMessage;
                 }
 
                 var img = dbAL.getImageData(token, idImagen);
                 if (img == null)
                 {
-                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.ImagenInvalida))));
+                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida))));
                     return responseMessage;                   
                 }
 
@@ -358,23 +355,23 @@ namespace Servicios.Controllers
             }
             catch (ImagenInvalidaException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.ImagenInvalida))));
+                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida))));
                 return responseMessage;
             }
             catch (UsuarioNoAutorizadoException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(14, new Mensaje(Mensajes.UsuarioNoAutorizado))));
+                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado))));
                 return responseMessage;
             }
             catch (InvalidTokenException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
+                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
                 return responseMessage;
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
+                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo))));
                 return responseMessage;
             }
         }
@@ -397,14 +394,14 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado))));
+                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
                     return responseMessage;
                 }
 
                 var vid = dbAL.getVideoData(token, idVideo);
                 if (vid == null)
                 {
-                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.VideoInvalido))));
+                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.VideoInvalidoCod, new Mensaje(MensajesParaFE.VideoInvalido))));
                     return responseMessage;
                 }
 
@@ -418,23 +415,23 @@ namespace Servicios.Controllers
             }
             catch (VideoInvalidoException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.VideoInvalido))));
+                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.VideoInvalidoCod, new Mensaje(MensajesParaFE.VideoInvalido))));
                 return responseMessage;
             }
             catch (UsuarioNoAutorizadoException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(14, new Mensaje(Mensajes.UsuarioNoAutorizado))));
+                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado))));
                 return responseMessage;
             }
             catch (InvalidTokenException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
+                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
                 return responseMessage;
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetVideoData", "Hubo un error al intentar obtener los datos de un video, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
+                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo))));
                 return responseMessage;
             }
         }
@@ -457,14 +454,14 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado))));
+                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
                     return responseMessage;
                 }
 
                 var aud = dbAL.getAudioData(token, idAudio);
                 if (aud == null)
                 {
-                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.AudioInvalido))));
+                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.AudioInvalidoCod, new Mensaje(MensajesParaFE.AudioInvalido))));
                     return responseMessage;
                 }
 
@@ -478,23 +475,23 @@ namespace Servicios.Controllers
             }
             catch (AudioInvalidoException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(15, new Mensaje(Mensajes.AudioInvalido))));
+                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.AudioInvalidoCod, new Mensaje(MensajesParaFE.AudioInvalido))));
                 return responseMessage;
             }
             catch (UsuarioNoAutorizadoException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(14, new Mensaje(Mensajes.UsuarioNoAutorizado))));
+                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado))));
                 return responseMessage;
             }
             catch (InvalidTokenException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
+                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
                 return responseMessage;
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(500, new Mensaje(Mensajes.UsuarioNoAutenticado))));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetAudioData", "Hubo un error al intentar obtener los datos de un audio, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
+                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo))));
                 return responseMessage;
             }
         }

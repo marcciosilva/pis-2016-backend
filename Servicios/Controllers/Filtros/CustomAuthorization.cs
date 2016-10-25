@@ -30,7 +30,7 @@ namespace Servicios.Filtros
             {
                 HttpResponseMessage responseMessage = new HttpResponseMessage()
                 {
-                    Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado))))
+                    Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))))
                 };
                 actionContext.Response = responseMessage;
             }
@@ -48,7 +48,6 @@ namespace Servicios.Filtros
             {
                 return false;
             }
-
             IMetodos dbAL = new Metodos();
             return dbAL.autorizarUsuario(token, PermisosEtiqueta);            
         }

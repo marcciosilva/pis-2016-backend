@@ -30,20 +30,20 @@ namespace Servicios.Controllers
             {                
                 if (token == null)
                 {
-                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
                                 
                 ICollection<DtoEvento> lista = dbAL.listarEventos(token);
-                return new DtoRespuesta(0, lista);
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, lista);
             }
             catch (InvalidTokenException)
             {
-                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                return new DtoRespuesta(500, new Mensaje("Error"));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorListarEventosCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorListarEventos));
             }
         }
 
@@ -64,24 +64,24 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(2, new Mensaje(Mensajes.UsuarioNoAutenticado));
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
 
                 DtoEvento evento = dbAL.verInfoEvento(token, idEvento);
-                return new DtoRespuesta(0, evento);
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, evento);
             }
             catch (EventoInvalidoException)
             {
-                return new DtoRespuesta(9, new Mensaje(Mensajes.EventoInvalido));
+                return new DtoRespuesta(MensajesParaFE.EventoInvalidoCod, new Mensaje(MensajesParaFE.EventoInvalido));
             }
             catch (InvalidTokenException)
             {
-                return new DtoRespuesta(2, new Mensaje(Mensajes.TokenInvalido));
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "ListarEventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, CodigosLog.ErrorIniciarSesionCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorObtenerEvento));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "getEvento", "Hubo un error al intentar obtener un evento, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorObtenerEventoCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorObtenerEvento));
             }
         }
     }

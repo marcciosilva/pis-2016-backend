@@ -38,20 +38,19 @@ namespace Servicios.Controllers
                         result.Add(itemResp);
                     }
                 }
-
-                return new DtoRespuesta(0, result);
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, result);
             }
             catch (SoapException e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError(ObtenerToken.GetToken(Request), "", "Emsys.ServiceLayer", "CerrarSesionController", 0, "ConsumirServicioExterno", "Hubo un error al intentar consumir el servicio externo, se adjunta excepcion: " + e.Message, CodigosLog.ErrorConsumirServicioExternoCod);
-                return new DtoRespuesta(8, new Mensaje(Mensajes.ServicioExternoNoDisponible));
+                dbAL.AgregarLogError(ObtenerToken.GetToken(Request), "", "Emsys.ServiceLayer", "ServicioExternoController", 0, "ConsumirServicioExterno", "Hubo un error al intentar consumir comunicarse con el servidor externo, se adjunta excepcion: " + e.Message, MensajesParaFE.ServicioExternoNoDisponibleCod);
+                return new DtoRespuesta(MensajesParaFE.ServicioExternoNoDisponibleCod, new Mensaje(MensajesParaFE.ServicioExternoNoDisponible));
             }
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError(ObtenerToken.GetToken(Request), "", "Emsys.ServiceLayer", "ServicioExternoController", 0, "ConsumirServicioExterno", "Hubo un error al intentar consumir el servicio externo, se adjunta excepcion: " + e.Message, CodigosLog.ErrorConsumirServicioExternoCod);
-                return new DtoRespuesta(500, new Mensaje(Mensajes.ErrorCerraSesion));
+                dbAL.AgregarLogError(ObtenerToken.GetToken(Request), "", "Emsys.ServiceLayer", "ServicioExternoController", 0, "ConsumirServicioExterno", "Hubo un error al intentar consumir el servicio externo, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorConsumirServicioExternoCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorConsumirServicioExterno));
             }
         }
     }

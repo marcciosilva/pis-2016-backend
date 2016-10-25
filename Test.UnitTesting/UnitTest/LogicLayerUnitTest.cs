@@ -1378,13 +1378,6 @@ namespace Test.UnitTesting
             }
             try
             {
-                throw new InvalidExtensionForUserException();
-            }
-            catch (InvalidExtensionForUserException e)
-            {
-            }
-            try
-            {
                 throw new InvalidExtensionException();
             }
             catch (InvalidExtensionException e)

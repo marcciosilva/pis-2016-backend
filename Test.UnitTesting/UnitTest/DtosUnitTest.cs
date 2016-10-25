@@ -254,20 +254,6 @@ namespace Test.UnitTesting
             Assert.AreEqual(dto.field8, "HHH");
             Assert.AreEqual(dto.field9, "III");
             Assert.AreEqual(dto.field10, "JJJ");
-        }
-
-        /// <summary>
-        /// Prueba dto.
-        /// </summary>
-        [Test]
-        public void DtoMensajesTest()
-        {
-            Assert.AreEqual(Mensajes.GetDescription(0), "Exito.");
-            Assert.AreEqual(Mensajes.GetDescription(9), "Extensión no asignada al recurso.");
-            Assert.AreEqual(Mensajes.GetDescription(10), "Usuario no autenticado como recurso.");
-            Assert.AreEqual(Mensajes.GetDescription(11), "Identificador de extension incorrecto.");
-            Assert.AreEqual(Mensajes.GetDescription(-1), "Error.");
-        }
-
+        }        
     }
 }

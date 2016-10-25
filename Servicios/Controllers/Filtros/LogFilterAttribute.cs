@@ -25,7 +25,7 @@ namespace Servicios.Filtros
             var controller = actionContext.ControllerContext.ControllerDescriptor.ControllerName;
             string token = ObtenerToken.GetToken(actionContext.Request);
             IMetodos dbAL = new Metodos();
-            dbAL.AgregarLog(token, GetIp(actionContext.Request), "ServiceLayer", "", 0, controller + "Controller" + "/" + actionName, "Se llamo al metodo", CodigosLog.LogAccionesCod);
+            dbAL.AgregarLog(token, GetIp(actionContext.Request), "ServiceLayer", "", 0, controller + "Controller" + "/" + actionName, "Se llamo al metodo", MensajesParaFE.LogAccionesCod);
         }
 
         /// <summary>
