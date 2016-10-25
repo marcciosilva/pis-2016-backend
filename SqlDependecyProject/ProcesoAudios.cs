@@ -116,11 +116,11 @@
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBaseAudio", "Audio", audio.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla Audio. Se inicia la secuencia de envio de notificaciones.", CodigosLog.LogCapturarCambioEventoCod);
-                var videoDEBD = db.Audios.Find(audio.Entity.Id);
-                if (videoDEBD != null)
+                var audioEnDb = db.Audios.Find(audio.Entity.Id);
+                if (audioEnDb != null)
                 {                    
                     // Para los recursos asociados a la extension genero una notificacion.
-                    foreach (var item in videoDEBD.Evento.ExtensionesEvento)
+                    foreach (var item in audioEnDb.Evento.ExtensionesEvento)
                     {
                         foreach (var recurso in item.Recursos)
                         {

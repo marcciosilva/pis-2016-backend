@@ -223,6 +223,7 @@
     <Content Include="scripts\ai.0.22.19-build00125.min.js" />
     <None Include="Properties\PublishProfiles\pis-Liberacion2-api - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\pis-Liberacion2-api - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\pis-liberacion203-api - Web Deploy.pubxml" />
     <None Include="Service References\ServicioExterno\configuration91.svcinfo" />
     <None Include="Service References\ServicioExterno\configuration.svcinfo" />
     <None Include="Service References\ServicioExterno\Reference.svcmap">
@@ -298,10 +299,6 @@
     <ProjectReference Include="..\Emsys.LogicLayer\Emsys.LogicLayer.csproj">
       <Project>{ee8bc402-8fc4-4d4c-889a-210fc71dfc0a}</Project>
       <Name>Emsys.LogicLayer</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\SqlDependecyProject\Emsys.ObserverDataBase.csproj">
-      <Project>{1ddb2c9b-93db-4962-8dcc-e8615fdb1068}</Project>
-      <Name>Emsys.ObserverDataBase</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

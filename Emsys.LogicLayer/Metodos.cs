@@ -480,7 +480,8 @@ namespace Emsys.LogicLayer
                     Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == ubicacion.idExtension);
                     if (TieneAcceso.tieneAccesoExtension(user, ext))
                     {
-                        GeoUbicacion geoU = new GeoUbicacion() { Usuario = user, FechaEnvio = DateTime.Now, Latitud = ubicacion.latitud, Longitud = ubicacion.longitud };
+                        //var evento = context.Evento.Find(ext.Evento.Id);
+                        GeoUbicacion geoU = new GeoUbicacion() { Usuario = user, FechaEnvio = DateTime.Now, Latitud = ubicacion.latitud, Longitud = ubicacion.longitud  };
                         context.GeoUbicaciones.Add(geoU);
                         ext.GeoUbicaciones.Add(geoU);
                         //ext.TimeStamp = DateTime.Now;
@@ -510,7 +511,7 @@ namespace Emsys.LogicLayer
                     nombre = "1" + extension;
                 }
                     
-                var file = new ApplicationFile() { Nombre = nombre, FileData = data };
+                var file = new ApplicationFile() { Nombre = nombre, FileData = data  };
                 context.ApplicationFiles.Add(file);
                 context.SaveChanges();
                 return file.Id;
@@ -700,7 +701,8 @@ namespace Emsys.LogicLayer
                         Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == imagen.idExtension);
                         if (TieneAcceso.tieneAccesoExtension(user, ext))
                         {
-                            Imagen img = new Imagen() { Usuario = user, FechaEnvio = DateTime.Now, ImagenData = file };
+                            var evento = context.Evento.Find(ext.Evento.Id);
+                            Imagen img = new Imagen() { Usuario = user, FechaEnvio = DateTime.Now, ImagenData = file, Evento = evento };
                             context.Imagenes.Add(img);
                             ext.Imagenes.Add(img);
                             //ext.TimeStamp = DateTime.Now;
@@ -741,7 +743,8 @@ namespace Emsys.LogicLayer
                         Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == video.idExtension);
                         if (TieneAcceso.tieneAccesoExtension(user, ext))
                         {
-                            Video vid = new Video() { Usuario = user, FechaEnvio = DateTime.Now, VideoData = file };
+                            var evento = context.Evento.Find(ext.Evento.Id);
+                            Video vid = new Video() { Usuario = user, FechaEnvio = DateTime.Now, VideoData = file, Evento = evento};
                             context.Videos.Add(vid);
                             ext.Videos.Add(vid);
                             //ext.TimeStamp = DateTime.Now;
@@ -782,7 +785,8 @@ namespace Emsys.LogicLayer
                         Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == audio.idExtension);
                         if (TieneAcceso.tieneAccesoExtension(user, ext))
                         {
-                            Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file, ExtensionEvento=ext };
+                            var evento = context.Evento.Find(ext.Evento.Id);
+                            Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file, ExtensionEvento=ext, Evento = evento };
                             context.Audios.Add(aud);
                             ext.Audios.Add(aud);
                             //ext.TimeStamp = DateTime.Now;
