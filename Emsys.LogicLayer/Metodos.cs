@@ -351,17 +351,17 @@ namespace Emsys.LogicLayer
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Errores");
                 }
 
-                //string ruta = string.Format("{0}Errores\\{1}", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss").Replace(" ", "").Replace(":", "_") + ".txt");
+                ////string ruta = string.Format("{0}Errores\\{1}", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss").Replace(" ", "").Replace(":", "_") + ".txt");
 
-                //StreamWriter fs = File.CreateText(ruta);
-                //fs.Write("Mensaje: " + " error al registrar un log " + e.Message + "\n" +
-                //        "HelpLink: " + e.HelpLink + "\n" +
-                //        "Hresult: " + e.HResult + "\n" +
-                //        "Innerexception: " + e.InnerException + "\n" +
-                //        "Source: " + e.Source + "\n" +
-                //        "StackTrace: " + e.StackTrace + "\n" +
-                //        "TargetSite: " + e.TargetSite + "\n");
-                //fs.Close();
+                ////StreamWriter fs = File.CreateText(ruta);
+                ////fs.Write("Mensaje: " + " error al registrar un log " + e.Message + "\n" +
+                ////        "HelpLink: " + e.HelpLink + "\n" +
+                ////        "Hresult: " + e.HResult + "\n" +
+                ////        "Innerexception: " + e.InnerException + "\n" +
+                ////        "Source: " + e.Source + "\n" +
+                ////        "StackTrace: " + e.StackTrace + "\n" +
+                ////        "TargetSite: " + e.TargetSite + "\n");
+                ////fs.Close();
             }
         }
 
@@ -391,8 +391,115 @@ namespace Emsys.LogicLayer
                     log.Accion = accion;
                     log.Detalles = detalles;
                     log.Codigo = codigo;
-                    log.EsError = false;
+                    log.EsError = true;
                     context.Logs.Add(log);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                Console.WriteLine(e.Message);
+                if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "Errores"))
+                {
+                    Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Errores");
+                }
+
+                //string ruta = string.Format("{0}Errores\\{1}", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss").Replace(" ", "").Replace(":", "_") + ".txt");
+
+                //StreamWriter fs = File.CreateText(ruta);
+                //fs.Write("Mensaje: " + " error al registrar un log " + e.Message + "\n" +
+                //        "HelpLink: " + e.HelpLink + "\n" +
+                //        "Hresult: " + e.HResult + "\n" +
+                //        "Innerexception: " + e.InnerException + "\n" +
+                //        "Source: " + e.Source + "\n" +
+                //        "StackTrace: " + e.StackTrace + "\n" +
+                //        "TargetSite: " + e.TargetSite + "\n");
+                //fs.Close();
+            }
+        }
+
+        public void AgregarLogNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo)
+        {
+            try
+            {
+                using (EmsysContext context = new EmsysContext())
+                {
+                    string IdUsuario = string.Empty;
+                    if (token != null)
+                    {
+                        var user = context.Users.FirstOrDefault(u => u.Token == token);
+                        if (user != null)
+                        {
+                            IdUsuario = user.NombreLogin;
+                        }
+                    }
+
+                    LogNotification log = new LogNotification();
+                    log.Usuario = IdUsuario;
+                    log.TimeStamp = DateTime.Now;
+                    log.Terminal = terminal;
+                    log.Modulo = modulo;
+                    log.Entidad = Entidad;
+                    log.idEntidad = idEntidad;
+                    log.Accion = accion;
+                    log.Detalles = detalles;
+                    log.Codigo = codigo;
+                    log.EsError = false;
+                    context.LogNotification.Add(log);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                if (!Directory.Exists(AppDomain.CurrentDomain.BaseDirectory + "Errores"))
+                {
+                    Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Errores");
+                }
+
+                ////string ruta = string.Format("{0}Errores\\{1}", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss").Replace(" ", "").Replace(":", "_") + ".txt");
+
+                ////StreamWriter fs = File.CreateText(ruta);
+                ////fs.Write("Mensaje: " + " error al registrar un log " + e.Message + "\n" +
+                ////        "HelpLink: " + e.HelpLink + "\n" +
+                ////        "Hresult: " + e.HResult + "\n" +
+                ////        "Innerexception: " + e.InnerException + "\n" +
+                ////        "Source: " + e.Source + "\n" +
+                ////        "StackTrace: " + e.StackTrace + "\n" +
+                ////        "TargetSite: " + e.TargetSite + "\n");
+                ////fs.Close();
+            }
+        }
+
+        public void AgregarLogErrorNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo)
+        {
+            try
+            {
+                using (EmsysContext context = new EmsysContext())
+                {
+                    string IdUsuario = null;
+                    if (token != null)
+                    {
+                        var user = context.Users.FirstOrDefault(u => u.Token == token);
+                        if (user != null)
+                        {
+                            IdUsuario = user.NombreLogin;
+                        }
+                    }
+
+                    LogNotification log = new LogNotification();
+                    log.Usuario = IdUsuario;
+                    log.TimeStamp = DateTime.Now;
+                    log.Terminal = terminal;
+                    log.Modulo = modulo;
+                    log.Entidad = Entidad;
+                    log.idEntidad = idEntidad;
+                    log.Accion = accion;
+                    log.Detalles = detalles;
+                    log.Codigo = codigo;
+                    log.EsError = true;
+                    context.LogNotification.Add(log);
                     context.SaveChanges();
                 }
             }
@@ -692,7 +799,7 @@ namespace Emsys.LogicLayer
                     nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
                 }
                 var file = new ApplicationFile() { Nombre = nombre, FileData = videoData };
-                Video vid = new Video() { Usuario = user, FechaEnvio = DateTime.Now, VideoData = file };
+                Video vid = new Video() { Usuario = user, FechaEnvio = DateTime.Now, VideoData = file};
                 ext.Videos.Add(vid);
                 ext.TimeStamp = DateTime.Now;
                 ext.Evento.TimeStamp = DateTime.Now;

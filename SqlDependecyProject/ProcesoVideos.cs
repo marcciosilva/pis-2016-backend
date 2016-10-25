@@ -118,17 +118,29 @@
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Video", video.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", MensajesParaFE.LogCapturarCambioEventoCod);
                 var videoDEBD = db.Videos.Find(video.Entity.Id);
                 if (videoDEBD != null)
-                {                    
-                    // Para los recursos asociados a la extension genero una notificacion.
-                    foreach (var item in videoDEBD.Evento.ExtensionesEvento)
-                    {
-                        foreach (var recurso in item.Recursos)
+                {
+                    if (videoDEBD.Evento!=null) {
+                        // Para los recursos asociados a la extension genero una notificacion.
+                        foreach (var item in videoDEBD.Evento.ExtensionesEvento)
                         {
-                            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + recurso.Id);
+                            foreach (var recurso in item.Recursos)
+                            {
+                                GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + recurso.Id);
+                            }
+
+                            // Para la zona asociada a la extensen le envia una notificacion.
+                            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var recurso in videoDEBD.ExtensionEvento.Recursos)
+                        {
+                            GestorNotificaciones.SendMessage(cod, videoDEBD.ExtensionEvento.Id.ToString(), "recurso-" + videoDEBD.ExtensionEvento.Id);
                         }
 
                         // Para la zona asociada a la extensen le envia una notificacion.
-                        GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
+                        GestorNotificaciones.SendMessage(cod, videoDEBD.ExtensionEvento.Id.ToString(), "zona-" + videoDEBD.ExtensionEvento.Zona.Id);
                     }
                 }
             }

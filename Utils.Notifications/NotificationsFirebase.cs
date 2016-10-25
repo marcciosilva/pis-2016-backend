@@ -9,11 +9,14 @@ using System.Web.Configuration;
 using DataTypeObject;
 using Newtonsoft.Json;
 using Emsys.LogicLayer;
+using System.Threading;
 
 namespace Utils.Notifications
 {
     class NotificationsFirebase : INotifications
     {
+        private Semaphore _pool = new Semaphore(1, 1);
+        private int _seconds = Convert.ToInt32( WebConfigurationManager.AppSettings["TiempoEsperaEnvioNotificaciones"]);
         /// <summary>
         /// Implementacion on FireBase del metodo Send para enviar notificaciones push.
         /// </summary>
@@ -21,10 +24,13 @@ namespace Utils.Notifications
         /// <param name="pk">Primary Key del elemento que se realizo la notificacion y se desea enviar.</param>
         /// <param name="topic">Topic/Channel al que se desea enviar una notificacion.</param>
         public void SendMessage(string cod, string pk, string topic)
-        {
-            sendNotification(cod, pk, topic);
+       {
+            _pool.WaitOne();
+            sendNotification(cod, pk, topic);           
+            Thread.Sleep(_seconds*1000);
+            _pool.Release();
         }
-        
+
         /// <summary>
         /// Implementacion para enviar de forma asyncronica.
         /// </summary>
@@ -56,19 +62,19 @@ namespace Utils.Notifications
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                 {
-                    dbAL.AgregarLogError("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), MensajesParaFE.LogNotificacionesCod);
+                    dbAL.AgregarLogErrorNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + " con el codigo: " + cod + " y la pk: " + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), MensajesParaFE.LogNotificacionesCod);
                     throw new Exception("Al enviar una notifiacion la respuesta del servidor NO fue positiva.");
-                   
+
                 }
 
                 string mensaje = responseString.Split(':')[0].ToString();
                 if (mensaje != "{\"message_id\"")
                 {
-                    dbAL.AgregarLogError("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), MensajesParaFE.LogNotificacionesCod);
+                    dbAL.AgregarLogErrorNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + " con el codigo: " + cod + " y la pk: " + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), MensajesParaFE.LogNotificacionesCod);
                     throw new Exception("Al enviar una notifiacion la respuesta del servidor NO contiene el id del mensjae, entonces la respuesta es negativa.");
                 }
 
-                dbAL.AgregarLog("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk, MensajesParaFE.LogNotificacionesCod);
+                dbAL.AgregarLogNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk, MensajesParaFE.LogNotificacionesCod);
             }
         }
     }

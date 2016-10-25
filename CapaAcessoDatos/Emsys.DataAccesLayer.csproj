@@ -138,15 +138,16 @@
   <ItemGroup>
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
-    <Compile Include="Migrations\201610251814489__Inicial.cs" />
-    <Compile Include="Migrations\201610251814489__Inicial.Designer.cs">
-      <DependentUpon>201610251814489__Inicial.cs</DependentUpon>
+    <Compile Include="Migrations\201610252143277__initial.cs" />
+    <Compile Include="Migrations\201610252143277__initial.Designer.cs">
+      <DependentUpon>201610252143277__initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\ApplicationFile.cs" />
     <Compile Include="Model\AsignacionRecursoDescripcion.cs" />
     <Compile Include="Model\Audio.cs" />
     <Compile Include="Model\AsignacionRecurso.cs" />
     <Compile Include="Model\GeoUbicacion.cs" />
+    <Compile Include="Model\LogNotification.cs" />
     <Compile Include="Model\Video.cs" />
     <Compile Include="Model\Imagen.cs" />
     <Compile Include="Model\Usuario.cs" />
@@ -181,8 +182,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610251814489__Inicial.resx">
-      <DependentUpon>201610251814489__Inicial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201610252143277__initial.resx">
+      <DependentUpon>201610252143277__initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
