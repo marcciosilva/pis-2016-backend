@@ -1,4 +1,5 @@
-﻿using System.Web.Http;
+﻿using Newtonsoft.Json.Converters;
+using System.Web.Http;
 
 namespace Emsys.ServiceLayer
 {
@@ -10,8 +11,10 @@ namespace Emsys.ServiceLayer
         /// <param name="config">Parametro de configuracion.</param>
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-
+            //config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(
+            //new IsoDateTimeConverter());
+            config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(
+             new IsoDateTimeConverter());
             // Web API routes
             config.MapHttpAttributeRoutes();
             config.MessageHandlers.Add(new Emsys.ServiceLayer.Filtros.DelegateHandler());

@@ -221,6 +221,7 @@
     <Content Include="Global.asax" />
     <Content Include="scripts\ai.0.22.19-build00125.js" />
     <Content Include="scripts\ai.0.22.19-build00125.min.js" />
+    <None Include="Properties\PublishProfiles\pis-Liberacion2-api - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\pis-Liberacion2-api - Web Deploy.pubxml" />
     <None Include="Service References\ServicioExterno\configuration91.svcinfo" />
     <None Include="Service References\ServicioExterno\configuration.svcinfo" />
@@ -234,6 +235,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\FilterConfig.cs" />
+    <Compile Include="App_Start\MyDateTimeConverter.cs" />
     <Compile Include="App_Start\Startup.OAuth.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
