@@ -856,6 +856,7 @@ namespace Emsys.LogicLayer
                     if (item.Recurso == rec)
                     {
                         item.HoraArribo = DateTime.Now;
+                        context.SaveChanges();
                         return true;
                     }
                 }
