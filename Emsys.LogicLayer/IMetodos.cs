@@ -75,7 +75,33 @@ namespace Emsys.LogicLayer
         /// <param name="detalles">Informacion adicional.</param>
         /// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
         void AgregarLogError(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo);
-        
+
+        /// <summary>
+        /// Metodo para agregar al log una nueva accion.
+        /// </summary>
+        /// <param name="token">Identificador unico del usuario.</param>
+        /// <param name="terminal">Identificacion de la terminal del usuario que realizo el resquest.</param>
+        /// <param name="modulo">Identificacion del modulo/proyecto que realizo la operacion de agregar un log.</param>
+        /// <param name="Entidad">Identificacion de la entidad que realiza la operacion de agregar un log.</param>
+        /// <param name="idEntidad">Idnetificador de la entidad que resulto afectada en la accion al agregar un log.</param>
+        /// <param name="accion">Nombre del metodo o funcion que ejecuto una accion y guardo un log.</param>
+        /// <param name="detalles">Informacion adicional.</param>
+        /// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
+        void AgregarLogNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo);
+
+        /// <summary>
+        /// Metodo para agregar al log  de error.
+        /// </summary>
+        /// <param name="token">Identificador unico del usuario.</param>
+        /// <param name="terminal">Identificacion de la terminal del usuario que realizo el resquest.</param>
+        /// <param name="modulo">Identificacion del modulo/proyecto que realizo la operacion de agregar un log.</param>
+        /// <param name="Entidad">Identificacion de la entidad que realiza la operacion de agregar un log.</param>
+        /// <param name="idEntidad">Idnetificador de la entidad que resulto afectada en la accion al agregar un log.</param>
+        /// <param name="accion">Nombre del metodo o funcion que ejecuto una accion y guardo un log.</param>
+        /// <param name="detalles">Informacion adicional.</param>
+        /// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
+        void AgregarLogErrorNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo);
+
         /// <summary>
         /// Metodo que dado un evento y un identificador de usuario devuelve la informacion del evento.
         /// </summary>

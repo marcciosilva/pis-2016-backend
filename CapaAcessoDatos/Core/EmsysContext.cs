@@ -55,6 +55,7 @@ namespace Emsys.DataAccesLayer.Core
 
         public DbSet<AsignacionRecurso> AsignacionesRecursos { get; set; }
 
+        public DbSet<LogNotification> LogNotification { get; set; }
         public DbSet<AsignacionRecursoDescripcion> AsignacionRecursoDescripcion { get; set; }
 
         //protected override void OnModelCreating(DbModelBuilder modelBuilder)

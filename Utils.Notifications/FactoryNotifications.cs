@@ -18,6 +18,7 @@ namespace Utils.Notifications
         // Determina qué sistema se utiliza para push notifications.
         private static PushNotificationsSystem _currentNotificationSystem = PushNotificationsSystem.Firebase;
 
+        private static INotifications SingleNotificationInstance = null;
         /// <summary>
         /// Obtiene la clase concreta para la Factory de notificaciones.
         /// </summary>
@@ -35,7 +36,15 @@ namespace Utils.Notifications
             ////else
             if (_currentNotificationSystem == PushNotificationsSystem.Firebase)
             {
-                return new NotificationsFirebase();
+                if (SingleNotificationInstance != null)
+                {
+                    return SingleNotificationInstance;
+                }
+                else {
+                    SingleNotificationInstance = new NotificationsFirebase();
+                    return SingleNotificationInstance;
+                    // return new NotificationsFirebase(); 
+                }
             }
             else
             {

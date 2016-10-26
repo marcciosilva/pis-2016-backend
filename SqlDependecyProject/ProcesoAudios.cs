@@ -118,17 +118,30 @@
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBaseAudio", "Audio", audio.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla Audio. Se inicia la secuencia de envio de notificaciones.", MensajesParaFE.LogCapturarCambioEventoCod);
                 var audioEnDb = db.Audios.Find(audio.Entity.Id);
                 if (audioEnDb != null)
-                {                    
-                    // Para los recursos asociados a la extension genero una notificacion.
-                    foreach (var item in audioEnDb.Evento.ExtensionesEvento)
+                {
+                    if (audioEnDb.Evento != null)
                     {
-                        foreach (var recurso in item.Recursos)
+                        // Para los recursos asociados a la extension genero una notificacion.
+                        foreach (var item in audioEnDb.Evento.ExtensionesEvento)
                         {
-                            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + item.Id);
+                            foreach (var recurso in item.Recursos)
+                            {
+                                GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + item.Id);
+                            }
+
+                            // Para la zona asociada a la extensen le envia una notificacion.
+                            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var recurso in audioEnDb.ExtensionEvento.Recursos)
+                        {
+                            GestorNotificaciones.SendMessage(cod, audioEnDb.ExtensionEvento.Id.ToString(), "recurso-" + audioEnDb.ExtensionEvento.Id);
                         }
 
                         // Para la zona asociada a la extensen le envia una notificacion.
-                        GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
+                        GestorNotificaciones.SendMessage(cod, audioEnDb.ExtensionEvento.Id.ToString(), "zona-" + audioEnDb.ExtensionEvento.Zona.Id);
                     }
                 }
             }

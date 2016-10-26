@@ -116,19 +116,32 @@
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Imagenes", imagen.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", MensajesParaFE.LogCapturarCambioEventoCod);
-                var videoDEBD = db.Imagenes.Find(imagen.Entity.Id);
-                if (videoDEBD != null)
-                {                    
-                    // Para los recursos asociados a la extension genero una notificacion.
-                    foreach (var item in videoDEBD.Evento.ExtensionesEvento)
+                var imagenEnBD = db.Imagenes.Find(imagen.Entity.Id);
+                if (imagenEnBD != null)
+                {
+                    if (imagenEnBD.Evento!=null)
                     {
-                        foreach (var recurso in item.Recursos)
+                        // Para los recursos asociados a la extension genero una notificacion.
+                        foreach (var item in imagenEnBD.Evento.ExtensionesEvento)
                         {
-                            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + item.Id);
+                            foreach (var recurso in item.Recursos)
+                            {
+                                GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + item.Id);
+                            }
+
+                            // Para la zona asociada a la extensen le envia una notificacion.
+                            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
+                        }
+                    }
+                    else
+                    {
+                        foreach (var recurso in imagenEnBD.ExtensionEvento.Recursos)
+                        {
+                            GestorNotificaciones.SendMessage(cod, imagenEnBD.ExtensionEvento.Id.ToString(), "recurso-" + imagenEnBD.ExtensionEvento.Id);
                         }
 
                         // Para la zona asociada a la extensen le envia una notificacion.
-                        GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
+                        GestorNotificaciones.SendMessage(cod, imagenEnBD.ExtensionEvento.Id.ToString(), "zona-" + imagenEnBD.ExtensionEvento.Zona.Id);
                     }
                 }
             }
