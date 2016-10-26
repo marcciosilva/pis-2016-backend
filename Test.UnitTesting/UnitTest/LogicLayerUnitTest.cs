@@ -1249,8 +1249,19 @@ namespace Test.UnitTesting
 
             dbAL.desconectarAusentes(10);
             var result2 = dbAL.autenticarUsuario("A", "A");
-
             Assert.IsTrue(result2.access_token != null);
+
+            db = new EmsysContext();
+
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = "simuloEstarConectado";
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal = DateTime.Parse("2015/07/23 21:30:00");
+            db.SaveChanges();
+
+            Thread workerThread = new Thread(new ThreadStart(Emsys.LogicLayer.Program.Main));
+            workerThread.Start();
+            Thread.Sleep(1000);
+            var result3 = dbAL.autenticarUsuario("A", "A");
+            Assert.IsTrue(result3.access_token != null);
         }
 
 
@@ -1497,6 +1508,28 @@ namespace Test.UnitTesting
 
             logica.cerrarSesion(token);
         }
+
+
+        /// <summary>
+        /// Se prueba agregar un archivo de video y agregar el video a una extension.
+        /// </summary>
+        [Test]
+        public void AgregarLogErrorNotificationTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            int cantLogs = db.LogNotification.Count();
+            IMetodos logic = new Metodos();
+            db.Users.FirstOrDefault().Token = "hola";
+            db.SaveChanges();
+            logic.AgregarLogErrorNotification("hola", "hola", "hola", "hola", 1, "hola", "hola", 1);
+            db = new EmsysContext();
+            int cant2 = db.LogNotification.Count();
+            Assert.IsTrue(cant2 == cantLogs + 1);
+            db.Users.FirstOrDefault().Token = null;
+        }
+
 
         /// <summary>
         /// Se pureba el get dto video.
