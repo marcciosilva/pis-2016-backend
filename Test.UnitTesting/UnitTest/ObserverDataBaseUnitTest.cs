@@ -8,6 +8,8 @@ using Utils.Notifications;
 using System.Data.Entity.Validation;
 using System.Threading;
 using System.Web.Configuration;
+using Emsys.DataAccesLayer.Model;
+using System.Collections.Generic;
 
 namespace Test.UnitTesting
 {
@@ -31,11 +33,10 @@ namespace Test.UnitTesting
                 Thread.Sleep(5000);
                 ModificarBaseDatos();
                 Thread.Sleep(30* _seconds * 1000+10000);
-                workerThread.Abort();
-               
+                workerThread.Abort();               
             }
             catch (Exception)
-            {//
+            {
                 using (EmsysContext db = new EmsysContext())
                 {
                     Assert.IsTrue(db.LogNotification.Where(x => x.EsError == false).Count() == 30);
@@ -44,7 +45,7 @@ namespace Test.UnitTesting
 
             using (EmsysContext db = new EmsysContext())
             {
-                Assert.IsTrue(db.LogNotification.Where(x => x.EsError == false).Count() == 30);
+                Assert.IsTrue(db.LogNotification.Where(x => x.EsError == false).Count() == 34);
             }
         }
 
@@ -52,7 +53,6 @@ namespace Test.UnitTesting
         {
             using (EmsysContext db = new EmsysContext())
             {
-
                 foreach (var item in db.Evento)
                 {
                     item.Descripcion = "otro";
@@ -95,13 +95,28 @@ namespace Test.UnitTesting
                     item.Fecha = DateTime.Now;
                 }
                 db.SaveChanges();
+
+                AsignacionRecurso ar = new AsignacionRecurso
+                {
+                    ActualmenteAsignado = true,
+                    AsignacionRecursoDescripcion = new List<AsignacionRecursoDescripcion>(),
+                    Descripcion = "",
+                    Extension = db.Extensiones_Evento.FirstOrDefault(),
+                    HoraArribo = DateTime.Now,
+                    Recurso = db.Recursos.FirstOrDefault(),
+                };
+                db.AsignacionesRecursos.Add(ar);
+                db.SaveChanges();
+                ar.Descripcion = "nueva";
+                db.SaveChanges();
+
                 ////Thread.Sleep(10000);
                 LogicLayerUnitTest test = new LogicLayerUnitTest();
                 test.AdjuntarAudioTest();
                 test.AdjuntarVideoTest();
                 test.AdjuntarImagenTest();
                 test.AdjuntarGeoUbicacion();
-
+                test.ActualizarDescripcionRecursoTest();
             }
         }
     }
