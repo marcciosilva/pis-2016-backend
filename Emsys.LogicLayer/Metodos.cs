@@ -505,7 +505,7 @@ namespace Emsys.LogicLayer
                 // Si es la imagen de un evento.
                 else if (img.Evento != null)
                 {
-                    Evento ev = context.Evento.FirstOrDefault(e => e == img.Evento);
+                    Evento ev = context.Evento.FirstOrDefault(e => e.Id == img.Evento.Id);
                     if (ev != null)
                     {
                         if (TieneAcceso.tieneVisionEvento(user, ev))
@@ -557,7 +557,7 @@ namespace Emsys.LogicLayer
                 // Si el video es de un evento.
                 else if (vid.Evento != null)
                 {
-                    Evento ev = context.Evento.FirstOrDefault(e => e == vid.Evento);
+                    Evento ev = context.Evento.FirstOrDefault(e => e.Id == vid.Evento.Id);
                     if (ev != null)
                     {
                         if (TieneAcceso.tieneVisionEvento(user, ev))
@@ -607,7 +607,7 @@ namespace Emsys.LogicLayer
                 // Si el video es de un evento.
                 else if (aud.Evento != null)
                 {
-                    Evento ev = context.Evento.FirstOrDefault(e => e == aud.Evento);
+                    Evento ev = context.Evento.FirstOrDefault(e => e.Id == aud.Evento.Id);
                     if (ev != null)
                     {
                         if (TieneAcceso.tieneVisionEvento(user, ev))
