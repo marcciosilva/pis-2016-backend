@@ -32,22 +32,20 @@ namespace Test.UnitTesting
                 ModificarBaseDatos();
                 Thread.Sleep(30* _seconds * 1000+10000);
                 workerThread.Abort();
-                using (EmsysContext db= new EmsysContext()) {
-                    Assert.IsTrue(db.LogNotification.Where(x=>x.EsError==false).Count()==30 );
-                }
+               
             }
-            catch (DbEntityValidationException ex)
-            {
-                foreach (var entityValidationErrors in ex.EntityValidationErrors)
+            catch (Exception)
+            {//
+                using (EmsysContext db = new EmsysContext())
                 {
-                    foreach (var validationError in entityValidationErrors.ValidationErrors)
-                    {
-                        //Response.Write("Property: " + validationError.PropertyName + " Error: " + validationError.ErrorMessage);
-                    }
+                    Assert.IsTrue(db.LogNotification.Where(x => x.EsError == false).Count() == 30);
                 }
             }
 
-           
+            using (EmsysContext db = new EmsysContext())
+            {
+                Assert.IsTrue(db.LogNotification.Where(x => x.EsError == false).Count() == 30);
+            }
         }
 
         private static void ModificarBaseDatos()
@@ -97,7 +95,7 @@ namespace Test.UnitTesting
                     item.Fecha = DateTime.Now;
                 }
                 db.SaveChanges();
-                //Thread.Sleep(10000);
+                ////Thread.Sleep(10000);
                 LogicLayerUnitTest test = new LogicLayerUnitTest();
                 test.AdjuntarAudioTest();
                 test.AdjuntarVideoTest();
