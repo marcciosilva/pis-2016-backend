@@ -564,17 +564,14 @@ namespace Test.UnitTesting
                             case 0:
                                 Assert.AreEqual(dtoDesc.fecha, fecha1);
                                 Assert.AreEqual(dtoDesc.usuario, "UsuarioDespachador");
-                                Assert.AreEqual(dtoDesc.texto, "descripcion de evento");
                                 break;
                             case 1:
                                 Assert.AreEqual(dtoDesc.fecha, fecha2);
                                 Assert.AreEqual(dtoDesc.usuario, "UsuarioDespachador2");
-                                Assert.AreEqual(dtoDesc.texto, "otra descripcion de evento");
                                 break;
                             case 2:
                                 Assert.AreEqual(dtoDesc.fecha, fecha3);
                                 Assert.AreEqual(dtoDesc.usuario, "UsuarioDespachador2");
-                                Assert.AreEqual(dtoDesc.texto, "otra mas");
                                 break;
                             default:
                                 break;

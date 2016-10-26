@@ -11,9 +11,7 @@ namespace DataTypeObject
     public class DtoDescripcion
     {
         public string usuario { get; set; }
-
-        public string texto { get; set; }
-
+        
         public DateTime fecha { get; set; }
 
         public string descripcion { get; set; }

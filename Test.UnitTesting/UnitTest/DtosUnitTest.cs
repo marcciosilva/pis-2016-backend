@@ -25,7 +25,7 @@ namespace Test.UnitTesting
         [Test]
         public void DtoActualizarDescripcionParametroTest()
         {
-            DtoDescripcion desc = new DtoDescripcion() { descripcion = "desc", fecha = DateTime.Now, origen = OrigenDescripcion.Recurso, texto = "texto", usuario = "usuario" };
+            DtoDescripcion desc = new DtoDescripcion() { descripcion = "desc", fecha = DateTime.Now, origen = OrigenDescripcion.Recurso, usuario = "usuario" };
 
             var dto = new DtoActualizarDescripcionParametro() {descripcion = "algo", idExtension = 1 };
 
@@ -83,9 +83,9 @@ namespace Test.UnitTesting
         [Test]
         public void DtoDescripcionTest()
         {
-            var dto = new DtoDescripcion() { usuario = "usuario", texto = "texto", origen = OrigenDescripcion.Recurso };
+            var dto = new DtoDescripcion() { usuario = "usuario", descripcion = "texto", origen = OrigenDescripcion.Recurso };
 
-            Assert.IsTrue((dto.usuario == "usuario") && (dto.texto == "texto") && (dto.origen == OrigenDescripcion.Recurso));
+            Assert.IsTrue((dto.usuario == "usuario") && (dto.descripcion == "texto") && (dto.origen == OrigenDescripcion.Recurso));
         }
 
         /// <summary>

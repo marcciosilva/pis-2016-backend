@@ -60,28 +60,31 @@
 
         // Codigos de error.
         public const int ErrorCod = 500;
-        public const int ErrorEnviarArchivoCod = -1;
-        public const int ErrorListarEventosCod = -1;
-        public const int ErrorObtenerEventoCod = -1;
-        public const int ErrorActualizarDescripcionCod = -1;
-        public const int ErrorConsumirServicioExternoCod = -1;
-        public const int ErrorAdjuntarGeoUbicacionCod = -1;
-        public const int ErrorAdjuntarImagenCod = -1;
-        public const int ErrorAdjuntarVideoCod = -1;
-        public const int ErrorAdjuntarAudioCod = -1;
-        public const int ErrorDescargarArchivoCod = -1;
-        public const int ErrorIniciarSesionCod = -1;
-        public const int ErrorGetRolesCod = -1;
-        public const int ErrorElegirRolesCod = -1;
-        public const int ErrorCerrarSesionCod = -1;
-        public const int ErrorKeepMeAliveCod = -1;
-        public const int ErrorAlGenerarTokenCod = -1;
-        public const int ErrorReportarHoraArriboCod = -1;
-
+        // Servicio externo.
+        public const int ErrorConsumirServicioExternoCod = 3000;
+        // Login.
+        public const int ErrorIniciarSesionCod = 1001;
+        public const int ErrorGetRolesCod = 1002;
+        public const int ErrorElegirRolesCod = 1003;
+        public const int ErrorKeepMeAliveCod = 1004;
+        public const int ErrorCerrarSesionCod = 1005;
+        public const int ErrorAlGenerarTokenCod = 1000;
+        // Adjuntos.
+        public const int ErrorAdjuntarGeoUbicacionCod = 2001;
+        public const int ErrorAdjuntarImagenCod = 2002;
+        public const int ErrorAdjuntarVideoCod = 2003;
+        public const int ErrorAdjuntarAudioCod = 2004;
+        public const int ErrorDescargarArchivoCod = 2005;
+        public const int ErrorEnviarArchivoCod = 2000;        
+        // Eventos.
+        public const int ErrorListarEventosCod = 3000;
+        public const int ErrorObtenerEventoCod = 3001;
+        public const int ErrorActualizarDescripcionCod = 3002;
+        public const int ErrorReportarHoraArriboCod = 3003;
         // Codigos Logs.
-        public const int LogNotificacionesCod = -1;
-        public const int LogCapturarCambioEventoCod = -1;
-        public const int LogAccionesCod = -1;
+        public const int LogNotificacionesCod = 901;
+        public const int LogCapturarCambioEventoCod = 902;
+        public const int LogAccionesCod = 903;
 
     }
 }

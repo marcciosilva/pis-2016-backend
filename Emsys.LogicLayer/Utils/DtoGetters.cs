@@ -33,11 +33,10 @@
                 {
                     descripcion = item.Descripcion,
                     fecha = item.Fecha,
-                    origen = OrigenDescripcion.Despachador,
-                    texto = item.Descripcion,
+                    origen = OrigenDescripcion.Despachador
                 });
             }
-
+            res.descripcion = desc;
             return res;
         }
 
@@ -279,7 +278,6 @@
                 {
                     fecha = DateTime.Parse(textoParseado[i]),
                     usuario = textoParseado[i + 1],
-                    texto = textoParseado[i + 2],
                     origen = origen
                 };
                 resultado.Add(d);

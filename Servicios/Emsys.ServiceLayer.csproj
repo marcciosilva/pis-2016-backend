@@ -224,6 +224,7 @@
     <None Include="Properties\PublishProfiles\pis-Liberacion2-api - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\pis-Liberacion2-api - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\pis-liberacion203-api - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\pis205.pubxml" />
     <None Include="Service References\ServicioExterno\configuration91.svcinfo" />
     <None Include="Service References\ServicioExterno\configuration.svcinfo" />
     <None Include="Service References\ServicioExterno\Reference.svcmap">
