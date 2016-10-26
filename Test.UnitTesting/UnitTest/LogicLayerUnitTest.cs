@@ -1462,6 +1462,7 @@ namespace Test.UnitTesting
             lRecursos.Add(dtoRecurso1);
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = lRecursos };
 
+         
             // Loguear.
             var log = logica.loguearUsuario(token, rol);
 
