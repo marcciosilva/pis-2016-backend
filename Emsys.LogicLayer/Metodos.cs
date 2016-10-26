@@ -859,7 +859,7 @@ namespace Emsys.LogicLayer
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
-                if ((user == null) || (user.Recurso.Count() != 1))
+                if (user == null)
                 {
                     throw new InvalidTokenException();                   
                 }
@@ -924,6 +924,8 @@ namespace Emsys.LogicLayer
                             {
                                 cerrarSesion(user.Token);
                                 Console.WriteLine("Se desconecto al usuario <" + user.NombreLogin + ">");
+                                string hora = user.UltimoSignal.Value.ToString();
+                                AgregarLog(user.NombreLogin, "Servidor", "Emsys.LogicLayer", "Usuarios", user.Id, "Se desconecta al usuario indicado.", "Ultimo signal a las " + hora, MensajesParaFE.LogDesconectarUsuarioCod);
                             }
                         }
                     }

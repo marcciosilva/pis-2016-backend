@@ -97,9 +97,13 @@ namespace Servicios.Controllers
         public DtoRespuesta ActualizarDescripcionRecurso([FromBody] DtoActualizarDescripcionParametro descParam)
         {
             IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
             try
             {
-                string token = ObtenerToken.GetToken(Request);
+                if (token == null)
+                {
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                }
                 if (dbAL.ActualizarDescripcionRecurso(descParam, token))
                 {
                     return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
@@ -116,7 +120,6 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                string token = ObtenerToken.GetToken(Request);
                 dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "ActualizarDescripcionRecurso", "Hubo un error al intentar actualizar la descripcion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorActualizarDescripcionCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorActualizarDescripcion));
             }

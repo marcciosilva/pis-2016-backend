@@ -85,6 +85,8 @@
         public const int LogNotificacionesCod = 901;
         public const int LogCapturarCambioEventoCod = 902;
         public const int LogAccionesCod = 903;
+        // Desconectar inactivos
+        public const int LogDesconectarUsuarioCod = 904;
 
     }
 }
