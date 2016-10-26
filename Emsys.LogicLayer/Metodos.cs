@@ -390,17 +390,17 @@ namespace Emsys.LogicLayer
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Errores");
                 }
 
-                string ruta = string.Format("{0}Errores\\{1}", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss").Replace(" ", "").Replace(":", "_") + ".txt");
+                //string ruta = string.Format("{0}Errores\\{1}", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss").Replace(" ", "").Replace(":", "_") + ".txt");
 
-                StreamWriter fs = File.CreateText(ruta);
-                fs.Write("Mensaje: " + " error al registrar un log " + e.Message + "\n" +
-                        "HelpLink: " + e.HelpLink + "\n" +
-                        "Hresult: " + e.HResult + "\n" +
-                        "Innerexception: " + e.InnerException + "\n" +
-                        "Source: " + e.Source + "\n" +
-                        "StackTrace: " + e.StackTrace + "\n" +
-                        "TargetSite: " + e.TargetSite + "\n");
-                fs.Close();
+                //StreamWriter fs = File.CreateText(ruta);
+                //fs.Write("Mensaje: " + " error al registrar un log " + e.Message + "\n" +
+                //        "HelpLink: " + e.HelpLink + "\n" +
+                //        "Hresult: " + e.HResult + "\n" +
+                //        "Innerexception: " + e.InnerException + "\n" +
+                //        "Source: " + e.Source + "\n" +
+                //        "StackTrace: " + e.StackTrace + "\n" +
+                //        "TargetSite: " + e.TargetSite + "\n");
+                //fs.Close();
             }
         }
 

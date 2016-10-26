@@ -50,6 +50,7 @@ namespace Emsys.DataAccesLayer.Core
 
         public DbSet<Usuario> Users { get; set; }
 
+        public DbSet<AsignacionRecurso> AsignacionRecurso { get; set; }
         public DbSet<AsignacionRecursoDescripcion> AsignacionRecursoDescripcion { get; set; }
 
         

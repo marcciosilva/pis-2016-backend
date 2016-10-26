@@ -93,10 +93,10 @@ namespace SqlDependecyProject
                     switch (eventoEnBD.ChangeType)
                     {
                         //// el caso no es util por que si se crea un evento no tiene asignados recursos probablemte
-                        ////case ChangeType.Delete:
-                        ////    Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del evento: " + evento.Entity.NombreInformante);
-                        ////    AtenderEvento(DataNotificacionesCodigos.CierreEvento, evento, GestorNotificaciones);
-                        ////    break;
+                        case ChangeType.Delete:
+                            Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del evento: " + eventoEnBD.Entity.Id);
+                            AtenderEvento(DataNotificacionesCodigos.CierreEvento, eventoEnBD, GestorNotificaciones);
+                            break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoExtensiones - Accion Insert, Pk del evento: " + eventoEnBD.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.AltaEvento, eventoEnBD, GestorNotificaciones);
