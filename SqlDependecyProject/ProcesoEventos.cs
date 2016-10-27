@@ -26,10 +26,7 @@ namespace SqlDependecyProject
         {
             try
             {
-                // Para iniciar la bd si no esta creada.
-                EmsysContext db = new EmsysContext();
-                db.Evento.ToList();
-                
+                               
                 Console.WriteLine("ProcesoMonitoreoEventos - Observo la BD:\n");
                 Listener();
                 while (true)
