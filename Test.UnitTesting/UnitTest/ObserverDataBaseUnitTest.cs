@@ -32,20 +32,20 @@ namespace Test.UnitTesting
                 //espero a que se disparen todos los hilos y luego empiezo a modificar la base
                 Thread.Sleep(5000);
                 ModificarBaseDatos();
-                Thread.Sleep(30* _seconds * 1000+10000);
+                Thread.Sleep(240* _seconds * 1000+10000);
                 workerThread.Abort();               
             }
             catch (Exception)
             {
                 using (EmsysContext db = new EmsysContext())
                 {
-                    Assert.IsTrue(db.LogNotification.Where(x => x.EsError == false).Count() == 30);
+                    Assert.IsTrue(db.LogNotification.Where(x => x.EsError == false).Count() == 83);
                 }
             }
 
             using (EmsysContext db = new EmsysContext())
             {
-                Assert.IsTrue(db.LogNotification.Where(x => x.EsError == false).Count() == 34);
+                Assert.IsTrue(db.LogNotification.Where(x => x.EsError == false).Count() == 83);
             }
         }
 
