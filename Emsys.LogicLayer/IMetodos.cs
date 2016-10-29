@@ -202,5 +202,94 @@ namespace Emsys.LogicLayer
         /// <returns></returns>
         bool reportarHoraArribo(string token, int idExtension);
 
+        /// <summary>
+        /// Devuelve la informacin de zonas, sectores, categorias y departamentos necesaria para crear un evento.
+        /// </summary>
+        /// <returns></returns>
+        DtoInfoCreacionEvento getInfoCreacionEvento();
+
+        /// <summary>
+        /// Crea un evento en el servidor.
+        /// </summary>
+        /// <param name="token">Token del usuario que crea el evento</param>
+        /// <param name="ev">DtoEvento con la info del evento a crear</param>
+        /// <returns>Si el evento se creo correctamente</returns>
+        bool crearEvento(string token, DtoEvento ev);
+
+        /// <summary>
+        /// Permite a un despachador despachar una extension.
+        /// </summary>
+        /// <param name="token">Token del usuario</param>
+        /// <param name="idExtension">Id de la extension a despachar</param>
+        /// <returns></returns>
+        bool tomarExtension(string token, int idExtension);
+
+        /// <summary>
+        /// Permite a un despachador liberar una extension que se encuentra despachando.
+        /// </summary>
+        /// <param name="token">Token del usuario</param>
+        /// <param name="idExtension">Id de la extension a liberar</param>
+        /// <returns></returns>
+        bool liberarExtension(string token, int idExtension);
+
+        /// <summary>
+        /// Permite a un despachador de una extension obtener los recursos asignados a la extension y los recursos disponibles.
+        /// </summary>
+        /// <param name="token">Token del usuario</param>
+        /// <param name="idExtension">Id de la extension a consultar recursos</param>
+        /// <returns></returns>
+        DtoRecursosExtension getRecursosExtension(string token, int idExtension);
+
+        /// <summary>
+        /// Permite a un despachador gestionar los recursos de una extesnion.
+        /// </summary>
+        /// <param name="token">Token del despachador</param>
+        /// <param name="recursos">El dto cuenta con el id de la extension a gestionar</param> 
+        /// <param>En la lista "recursosAsignados" se indica los recursos a agregar y en la lista "recursosNoAsignados" se listan los recursos a eliminar de la extension</param>
+        /// <returns>Si se realizo correctamente</returns>
+        bool gestionarRecursos(string token, DtoRecursosExtension recursos);
+
+        /// <summary>
+        /// Permite a un despachador actualizar la segunda categoria de una extension.
+        /// </summary>
+        /// <param name="token">Token del despachador</param>
+        /// <param name="idExtension">Id de la extension a actualizar (debe estar despachandola)</param>
+        /// <param name="idCategoria">Id de la categoria nueva (-1 indica eliminar segudna categoria)</param>
+        /// <returns>Si se realizo correctamente</returns>
+        bool actualizarSegundaCategoria(string token, int idExtension, int idCategoria);
+
+        /// <summary>
+        /// Permite a un despachador cerrar una extension de un evento enviado.
+        /// </summary>
+        /// <param name="token">Token del despachador</param>
+        /// <param name="idExtension">Id de la extension a cerrar</param>
+        /// <returns>Resultado</returns>
+        bool cerrarExtension(string token, int idExtension);
+
+        /// <summary>
+        /// Retorna las zonas para las cuales es posible agregar una extension a un evento (usuario debe despachar ext. de ese evento).
+        /// </summary>
+        /// <param name="token">Token del despachador que solicita la informacion</param>
+        /// <param name="idExtension">Extension del evento que despacha</param>
+        /// <returns>Lista de DtoZona de las zonas posibles</returns>
+        ICollection<DtoZona> getZonasLibresEvento(string token, int idExtension);
+
+        /// <summary>
+        /// Permite a un despachador abrir una extension nueva para un evento que despacha.
+        /// </summary>
+        /// <param name="token">Token del despachador</param>
+        /// <param name="idExtension">Extension que despacha</param>
+        /// <param name="idZona">Id de la zona para la cual desea abrir una extension</param>
+        /// <returns>Si se realizo correctamente</returns>
+        bool abrirExtension(string token, int idExtension, int idZona);
+
+        /// <summary>
+        /// Permite a un despachador actualizar la descripcion de una extension que despacha.
+        /// </summary>
+        /// <param name="token">Token del despachador</param>
+        /// <param name="descr">Dto con el id de la extension y la descripcion a agregar</param>
+        /// <returns>Resultado</returns>
+        bool actualizarDescripcionDespachador(string token, DtoActualizarDescripcionParametro descr);
+
     }
 }

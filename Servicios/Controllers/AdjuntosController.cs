@@ -233,7 +233,7 @@ namespace Servicios.Controllers
         [LogFilter]
         [Route("adjuntos/getimagedata")]
         [HttpGet]
-        public HttpResponseMessage GetImageData(int idImagen)
+        public DtoRespuesta GetImageData(int idImagen)
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
@@ -242,45 +242,53 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
-                    return responseMessage;
+                    //responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
+                    //return responseMessage;
+                    return new DtoRespuesta(1, "1");
                 }
 
                 var img = dbAL.getImageData(token, idImagen);
                 if (img == null)
                 {
-                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida))));
-                    return responseMessage;                   
+                    //responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida))));
+                    //return responseMessage;      
+                    return new DtoRespuesta(2, "2");
                 }
 
-                var stream = new MemoryStream(img.file_data);
-                responseMessage.Content = new StreamContent(stream);
-                responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                responseMessage.Content.Headers.ContentDisposition.FileName = img.nombre;
-                responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                responseMessage.Content.Headers.ContentLength = stream.Length;
-                return responseMessage;
+                //var stream = new MemoryStream(img.file_data);
+                //responseMessage.Content = new StreamContent(stream);
+                //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                //responseMessage.Content.Headers.ContentDisposition.FileName = img.nombre;
+                //responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                //responseMessage.Content.Headers.ContentLength = stream.Length;
+                //return responseMessage;
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, img);
             }
             catch (ImagenInvalidaException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida))));
-                return responseMessage;
+                //responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida))));
+                //return responseMessage;
+                return new DtoRespuesta(3, "3");
+
             }
             catch (UsuarioNoAutorizadoException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado))));
-                return responseMessage;
+                //responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado))));
+                //return responseMessage;
+                return new DtoRespuesta(4, "4");
             }
             catch (InvalidTokenException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
-                return responseMessage;
+                //responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
+                //return responseMessage;
+                return new DtoRespuesta(5, "5");
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo))));
-                return responseMessage;
+                //dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
+                //responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo))));
+                //return responseMessage;
+                return new DtoRespuesta(6, "6");
             }
         }
 

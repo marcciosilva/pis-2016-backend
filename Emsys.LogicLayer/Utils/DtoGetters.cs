@@ -83,6 +83,24 @@
             };
         }
 
+        public static DtoDepartamento getDtoDepartamento(Departamento dep)
+        {
+            return new DtoDepartamento()
+            {
+                id = dep.Id,
+                nombre = dep.Nombre
+            };
+        }
+
+        public static DtoSector getDtoSector(Sector sector)
+        {
+            return new DtoSector()
+            {
+                id = sector.Id,
+                nombre = sector.Nombre
+            };
+        }
+
         public static DtoZona getDtoZona(Zona zona)
         {
             return new DtoZona()
@@ -93,12 +111,36 @@
             };
         }
 
+        public static DtoZona getDtoZonaCompleto(Zona zona)
+        {
+            ICollection<DtoSector> sects = new List<DtoSector>();
+            foreach (Sector s in zona.Sectores)
+            {
+                sects.Add(getDtoSector(s));
+            }
+            return new DtoZona()
+            {
+                id = zona.Id,
+                nombre = zona.Nombre,
+                nombre_ue = zona.UnidadEjecutora.Nombre,
+                sectores = sects
+            };
+        }
+
         public static DtoRecurso getDtoRecurso(Recurso recurso)
         {
+            string user = null;
+            if ((recurso.Estado == EstadoRecurso.NoDisponible) && (recurso.Usuario != null))
+            {
+                user = recurso.Usuario.Nombre;
+            }
             return new DtoRecurso()
             {
                 id = recurso.Id,
-                codigo = recurso.Codigo
+                codigo = recurso.Codigo,
+                estado = recurso.Estado.ToString().ToLower(),
+                estadoAsignacion = recurso.EstadoAsignacion.ToString().ToLower(),
+                usuario = user
             };
         }
 
@@ -278,6 +320,7 @@
                 {
                     fecha = DateTime.Parse(textoParseado[i]),
                     usuario = textoParseado[i + 1],
+                    descripcion = textoParseado[i + 2],
                     origen = origen
                 };
                 resultado.Add(d);

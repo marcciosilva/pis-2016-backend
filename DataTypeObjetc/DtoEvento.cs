@@ -47,8 +47,13 @@ namespace DataTypeObject
 
         public virtual ICollection<DtoVideo> videos { get; set; }
 
-        public virtual ICollection<DtoAudio> audios { get; set; }
+        public virtual ICollection<DtoAudio> audios { get; set; }        
 
-        //public virtual ICollection<DtoGeoUbicacion> geo_ubicaciones { get; set; }
+        public ICollection<int> id_zonas { get; set; }
+
+        public int id_departamento { get; set; }
+
+        public int id_sector { get; set; }
+
     }
 }

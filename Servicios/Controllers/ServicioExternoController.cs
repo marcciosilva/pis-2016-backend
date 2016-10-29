@@ -20,6 +20,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="consulta">Datos para realizar la consulta al servicio externo.</param>
         /// <returns>Retorna la respuesta definida en el documento de interfaz.</returns>
+        [CustomAuthorizeAttribute()]
         [HttpPost]
         [LogFilter]
         [Route("servicioexterno")]

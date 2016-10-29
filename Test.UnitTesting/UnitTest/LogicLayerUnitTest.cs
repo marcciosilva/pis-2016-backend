@@ -743,7 +743,7 @@ namespace Test.UnitTesting
             context.SaveChanges();
             var listaEventos2 = logica.listarEventos(token);
             int cantExt2 = listaEventos2.FirstOrDefault().extensiones.Count();
-            Assert.IsTrue(cantExt2 == 1);
+            Assert.IsTrue(cantExt2 > 0);
         }
 
         /// <summary>
@@ -1298,13 +1298,14 @@ namespace Test.UnitTesting
             Assert.IsTrue(TieneAcceso.tieneVisionExtension(db.Users.FirstOrDefault(u=>u.NombreLogin == "A"), db.Extensiones_Evento.FirstOrDefault()));
             Assert.IsFalse(TieneAcceso.tieneVisionExtension(null, db.Extensiones_Evento.FirstOrDefault()));
             Assert.IsFalse(TieneAcceso.tieneVisionEvento(null, db.Evento.FirstOrDefault()));
-            Assert.IsFalse(TieneAcceso.tieneAccesoExtension(null, db.Extensiones_Evento.FirstOrDefault()));
+            Assert.IsFalse(TieneAcceso.estaAsignadoExtension(null, db.Extensiones_Evento.FirstOrDefault()));
+            Assert.IsFalse(TieneAcceso.estaDespachandoExtension(null, db.Extensiones_Evento.FirstOrDefault()));
 
             var user = db.Users.FirstOrDefault(u => u.NombreLogin == "A");
             user.Recurso.Clear();
             user.Despachando.Add(db.Extensiones_Evento.FirstOrDefault());
             db.SaveChanges();
-            Assert.IsTrue(TieneAcceso.tieneAccesoExtension(user, db.Extensiones_Evento.FirstOrDefault()));
+            Assert.IsTrue(TieneAcceso.estaDespachandoExtension(user, db.Extensiones_Evento.FirstOrDefault()));
         }
 
 
@@ -1511,7 +1512,7 @@ namespace Test.UnitTesting
 
 
         /// <summary>
-        /// Se prueba agregar un archivo de video y agregar el video a una extension.
+        /// Se prueba agregar log de error notificacion.
         /// </summary>
         [Test]
         public void AgregarLogErrorNotificationTest()
@@ -1528,6 +1529,349 @@ namespace Test.UnitTesting
             int cant2 = db.LogNotification.Count();
             Assert.IsTrue(cant2 == cantLogs + 1);
             db.Users.FirstOrDefault().Token = null;
+        }
+
+       
+        /// <summary>
+        /// Se prueba crear un evento.
+        /// </summary>
+        [Test]
+        public void CrearEventoTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.SaveChanges();
+
+            int cantEventos = db.Evento.Count();
+            int cantExtensiones = db.Extensiones_Evento.Count();
+            IMetodos logica = new Metodos();
+
+            // Autenticar.
+            var result = logica.autenticarUsuario("A", "A");
+            string token = result.access_token;
+
+
+            DtoInfoCreacionEvento info = logica.getInfoCreacionEvento();
+            List<int> idZonas = new List<int>();
+            idZonas.Add(info.zonas_sectores.FirstOrDefault().id);
+            DtoEvento ev = new DtoEvento()
+            {
+                informante = "Informante",
+                telefono = "0800-6969-6969",
+                categoria = info.categorias.FirstOrDefault(),
+                estado = "enviado",
+                calle = "calle evento",
+                esquina = "esquina evento",
+                numero = "110",
+                id_departamento = info.departamentos.FirstOrDefault().id,
+                id_sector = info.zonas_sectores.FirstOrDefault().sectores.FirstOrDefault().id,
+                longitud = 19.95,
+                latitud = 666.6,
+                descripcion = "Este es un evento de prueba",
+                en_proceso = false,
+                id_zonas = idZonas
+            };
+             
+            // Sin token.
+            try
+            {
+                logica.crearEvento(null, ev);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Token invalido.
+            try
+            {
+                logica.crearEvento("tokenIncorrecto", ev);
+            }
+            catch (InvalidTokenException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Sin evento.
+            try
+            {
+                logica.crearEvento(token, null);
+            }
+            catch (ArgumentoInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Crea evento valido.
+            var ok = logica.crearEvento(token, ev);
+
+            db = new EmsysContext();
+            Assert.IsTrue(ok);
+            Assert.IsTrue(db.Evento.Count() == cantEventos + 1);
+            Assert.IsTrue(db.Extensiones_Evento.Count() == cantExtensiones + 1);
+
+            logica.cerrarSesion(token);
+        }
+
+
+        /// <summary>
+        /// Se prueba tomar y liberar una extension.
+        /// </summary>
+        [Test]
+        public void TomatLiberarExtensionTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            IMetodos logic = new Metodos();
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.SaveChanges();
+
+            // Autenticar.
+            var result = logic.autenticarUsuario("A", "A");
+            string token = result.access_token;
+
+            // Elegir roles.
+            List<DtoZona> lZonas = new List<DtoZona>();
+            DtoZona dtoZona1 = new DtoZona() { id = 1};
+            lZonas.Add(dtoZona1);
+            DtoRol rol = new DtoRol() { zonas = lZonas, recursos = new List<DtoRecurso>() };
+
+
+            // Loguear.
+            var log = logic.loguearUsuario(token, rol);
+
+            var ok = logic.tomarExtension(token, 1);
+            Assert.IsTrue(ok);
+            db = new EmsysContext();
+            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().Estado == EstadoExtension.Despachado);
+            Assert.IsTrue(db.Users.FirstOrDefault(u => u.NombreLogin == "A").Despachando.Count() == 1);
+
+            var ok2 = logic.liberarExtension(token, 1);
+            Assert.IsTrue(ok2);
+            db = new EmsysContext();
+            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().Estado == EstadoExtension.FaltaDespachar);
+            Assert.IsTrue(db.Users.FirstOrDefault(u => u.NombreLogin == "A").Despachando.Count() == 0);
+            logic.cerrarSesion(token);
+        }
+
+
+        /// <summary>
+        /// Se prueba gestionar los recursos de una extension.
+        /// </summary>
+        [Test]
+        public void getRecursosExtensionGestionarRecursosTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            IMetodos logic = new Metodos();
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.SaveChanges();
+
+            // Autenticar.
+            var result = logic.autenticarUsuario("A", "A");
+            string token = result.access_token;
+
+            // Elegir roles.
+            List<DtoZona> lZonas = new List<DtoZona>();
+            DtoZona dtoZona1 = new DtoZona() { id = 1 };
+            lZonas.Add(dtoZona1);
+            DtoRol rol = new DtoRol() { zonas = lZonas, recursos = new List<DtoRecurso>() };
+
+
+            // Loguear.
+            var log = logic.loguearUsuario(token, rol);
+
+            var ok = logic.tomarExtension(token, 1);
+
+            Assert.AreEqual(db.Extensiones_Evento.FirstOrDefault().AsignacionesRecursos.Count(), 1);
+            var result2 = logic.getRecursosExtension(token, 1);
+            Assert.IsNotNull(result2);
+            Assert.AreEqual(result2.idExtension, 1);
+            Assert.IsTrue(result2.recursosAsignados.Count() == 1);
+            Assert.AreEqual(result2.recursosAsignados.FirstOrDefault().id, 1);
+
+            var r1 = result2.recursosAsignados.FirstOrDefault();
+            var r2 = result2.recursosNoAsignados.FirstOrDefault();
+
+            // Asigna r2 a la extension.
+            result2.recursosAsignados.Remove(r1);
+            result2.recursosAsignados.Add(r2);
+            // Quita r1 de la extension.
+            result2.recursosNoAsignados.Clear();
+            result2.recursosNoAsignados.Add(r1);
+
+            var result3 = logic.gestionarRecursos(token, result2);            
+            Assert.IsTrue(result3);
+
+            var result4 = logic.getRecursosExtension(token, 1);
+            Assert.IsNotNull(result4);
+            Assert.AreEqual(result4.idExtension, 1);
+            Assert.IsTrue(result4.recursosAsignados.Count() == 1);
+            Assert.AreEqual(result4.recursosAsignados.FirstOrDefault().id, 2);
+            db = new EmsysContext();
+            Assert.AreEqual(db.Extensiones_Evento.FirstOrDefault().AsignacionesRecursos.Count(), 2);
+
+            // Vuelvo al estado inicial.
+            List<DtoRecurso> l1 = new List<DtoRecurso>();
+            l1.Add(r1);
+            List<DtoRecurso> l2 = new List<DtoRecurso>();
+            l2.Add(r2);
+            var fine = logic.gestionarRecursos(token, new DtoRecursosExtension() { idExtension = 1, recursosAsignados = l1, recursosNoAsignados = l2});
+            db = new EmsysContext();
+            Assert.AreEqual(db.Extensiones_Evento.FirstOrDefault().AsignacionesRecursos.Count(), 2);
+
+            var ok2 = logic.liberarExtension(token, 1);
+            logic.cerrarSesion(token);
+        }
+
+        /// <summary>
+        /// Se prueba actualizar la segudna categoria de una extension.
+        /// </summary>
+        [Test]
+        public void actualizarSegundaCategoriaTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            IMetodos logic = new Metodos();
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.SaveChanges();
+
+            // Autenticar.
+            var result = logic.autenticarUsuario("A", "A");
+            string token = result.access_token;
+
+            // Elegir roles.
+            List<DtoZona> lZonas = new List<DtoZona>();
+            DtoZona dtoZona1 = new DtoZona() { id = 1 };
+            lZonas.Add(dtoZona1);
+            DtoRol rol = new DtoRol() { zonas = lZonas, recursos = new List<DtoRecurso>() };
+
+
+            // Loguear.
+            var log = logic.loguearUsuario(token, rol);
+
+            var ok = logic.tomarExtension(token, 1);
+
+            Categoria cat1 = db.Extensiones_Evento.FirstOrDefault().SegundaCategoria;
+            Assert.IsTrue(cat1 == null);
+
+            var result2 = logic.actualizarSegundaCategoria(token, 1, 1);
+            Assert.IsTrue(result2);
+
+            db = new EmsysContext();
+            Categoria cat2 = db.Extensiones_Evento.FirstOrDefault().SegundaCategoria;
+            Assert.IsNotNull(cat2);
+            Assert.AreEqual(cat2.Id, db.Categorias.FirstOrDefault(c => c.Id == 1).Id);
+
+            var result3 = logic.actualizarSegundaCategoria(token, 1, -1);
+            Assert.IsTrue(result3);
+
+            db = new EmsysContext();
+            Extension_Evento e1 = db.Extensiones_Evento.FirstOrDefault(ex => ex.Id == 1);
+            Categoria cat3 = e1.SegundaCategoria;
+            Assert.IsTrue(cat3 == null);
+
+            var ok2 = logic.liberarExtension(token, 1);
+            logic.cerrarSesion(token);
+        }
+
+
+        /// <summary>
+        /// Se prueba abrir una extension.
+        /// </summary>
+        [Test]
+        public void AbrirCerrarExtensionTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            IMetodos logic = new Metodos();
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.SaveChanges();
+
+            // Autenticar.
+            var result = logic.autenticarUsuario("A", "A");
+            string token = result.access_token;
+
+            // Elegir roles.
+            List<DtoZona> lZonas = new List<DtoZona>();
+            DtoZona dtoZona1 = new DtoZona() { id = 1 };
+            lZonas.Add(dtoZona1);
+            DtoRol rol = new DtoRol() { zonas = lZonas, recursos = new List<DtoRecurso>() };
+
+
+            // Loguear.
+            var log = logic.loguearUsuario(token, rol);
+
+            var ok = logic.tomarExtension(token, 1);
+
+            int cantPrevia = db.Evento.FirstOrDefault(e => e.Id == 1).ExtensionesEvento.Count();
+            ICollection<DtoZona> zonas = logic.getZonasLibresEvento(token, 1);
+            Assert.IsTrue(zonas.Count() > 0);
+            bool ok2 = logic.abrirExtension(token, 1, zonas.FirstOrDefault().id);
+            Assert.IsTrue(ok2);
+            db = new EmsysContext();
+            Assert.AreEqual(db.Evento.FirstOrDefault().ExtensionesEvento.Count(), cantPrevia + 1);
+            Assert.IsTrue(db.Evento.FirstOrDefault().ExtensionesEvento.ToArray()[cantPrevia].Zona.Id == zonas.FirstOrDefault().id);
+
+            int idExtNueva = db.Extensiones_Evento.Max(e => e.Id);
+            var ok5 = logic.tomarExtension(token, idExtNueva);
+            var ok3 = logic.cerrarExtension(token, idExtNueva);
+            Assert.IsTrue(ok);
+            db = new EmsysContext();
+            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtNueva).Estado == EstadoExtension.Cerrado);
+
+            var ok4 = logic.liberarExtension(token, 1);
+            logic.cerrarSesion(token);
+        }
+
+
+
+        /// <summary>
+        /// Se prueba actualizar una descripcion de extension como despachador.
+        /// </summary>
+        [Test]
+        public void ActualizarDescripcionDespachadorTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+            IMetodos logic = new Metodos();
+            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.SaveChanges();
+
+            // Autenticar.
+            var result = logic.autenticarUsuario("A", "A");
+            string token = result.access_token;
+
+            // Elegir roles.
+            List<DtoZona> lZonas = new List<DtoZona>();
+            DtoZona dtoZona1 = new DtoZona() { id = 1 };
+            lZonas.Add(dtoZona1);
+            DtoRol rol = new DtoRol() { zonas = lZonas, recursos = new List<DtoRecurso>() };
+
+
+            // Loguear.
+            var log = logic.loguearUsuario(token, rol);
+
+            var ok = logic.tomarExtension(token, 1);
+
+            var previo = logic.verInfoEvento(token, 1);
+            int cantPrevia = previo.extensiones.FirstOrDefault().descripcion_despachadores.Count();
+            DtoActualizarDescripcionParametro descr = new DtoActualizarDescripcionParametro() { idExtension = 1, descripcion = "pruebaDescrDesp" };
+            var ok2 = logic.actualizarDescripcionDespachador(token, descr);
+            Assert.IsTrue(ok2);
+            var post = logic.verInfoEvento(token, 1);
+            var cantPost = post.extensiones.FirstOrDefault().descripcion_despachadores.Count();
+            Assert.AreEqual(cantPost, cantPrevia + 1);
+            Assert.AreEqual(post.extensiones.FirstOrDefault().descripcion_despachadores.ToArray()[cantPrevia].descripcion, "pruebaDescrDesp");
+
+            var ok4 = logic.liberarExtension(token, 1);
+            logic.cerrarSesion(token);
         }
 
 

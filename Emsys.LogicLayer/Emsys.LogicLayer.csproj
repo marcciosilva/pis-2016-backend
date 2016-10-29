@@ -56,9 +56,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApplicationExceptions\ArgumentoInvalidoException.cs" />
+    <Compile Include="ApplicationExceptions\EventoNoEnviadoException.cs" />
     <Compile Include="ApplicationExceptions\InvalidExtensionException.cs" />
     <Compile Include="ApplicationExceptions\UsuarioNoAutorizadoException.cs" />
     <Compile Include="ApplicationExceptions\AudioInvalidoException .cs" />
+    <Compile Include="ApplicationExceptions\SeleccionZonasInvalidaException.cs" />
+    <Compile Include="ApplicationExceptions\ZonaInvalidaException.cs" />
     <Compile Include="ApplicationExceptions\VideoInvalidoException.cs" />
     <Compile Include="ApplicationExceptions\ImagenInvalidaException.cs" />
     <Compile Include="ApplicationExceptions\EventoInvalidoException.cs" />
