@@ -28,7 +28,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="ubicacion">Ubicación a adjuntar</param>
         /// <returns>Un DtoRespuesta que indica si se agrego correctamente</returns>
-        [CustomAuthorizeAttribute("adjuntarMultimedia")]
+        [CustomAuthorizeAttribute("adjuntarGeoUbicacion")]
         [LogFilter]
         [Route("adjuntos/postgeoubicacion")]
         [HttpPost]
@@ -70,7 +70,7 @@ namespace Servicios.Controllers
         [LogFilter]
         [HttpPost]
         [Route("adjuntos/adjuntarimagen")]
-        public DtoRespuesta AdjuntarImagen()
+        public DtoRespuesta AdjuntarImagen([FromBody] DtoApplicationFile img)
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
@@ -80,33 +80,46 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-                var request = HttpContext.Current.Request;
-                if (request.Files.Count == 0)
+                if (img == null)
                 {
                     return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
                 }
-                var postedFile = request.Files[0];
-                string ext = Path.GetExtension(postedFile.FileName);
-                if ((ext != ".jpg") && (ext != ".png"))
-                {
-                    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
-                }
-                string[] idExtension = request.Params.GetValues("idExtension");
-                if (idExtension.Count() == 0)
-                {
-                    return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
-                }
-                byte[] bytesImagen;
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    postedFile.InputStream.CopyTo(ms);
-                    bytesImagen = ms.ToArray();
-                }
-                if (dbAL.adjuntarImagen(token, bytesImagen, ext, Int32.Parse(idExtension[0])))
+                if (dbAL.adjuntarImagen(token, img))
                 {
                     return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
                 }
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+                //var request = HttpContext.Current.Request;
+                //if (request.Files.Count == 0)
+                //{
+                //    return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
+                //}
+                //var postedFile = request.Files[0];
+                //string ext = Path.GetExtension(postedFile.FileName);
+                //if ((ext != ".jpg") && (ext != ".png"))
+                //{
+                //    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
+                //}
+                //string[] idExtension = request.Params.GetValues("idExtension");
+                //if (idExtension.Count() == 0)
+                //{
+                //    return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+                //}
+                //byte[] bytesImagen;
+                //using (MemoryStream ms = new MemoryStream())
+                //{
+                //    postedFile.InputStream.CopyTo(ms);
+                //    bytesImagen = ms.ToArray();
+                //}
+                //if (dbAL.adjuntarImagen(token, bytesImagen, ext, Int32.Parse(idExtension[0])))
+                //{
+                //    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+                //}
+                //return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+            }
+            catch (FormatoInvalidoException e)
+            {
+                return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
             }
             catch (Exception e)
             {
@@ -124,7 +137,7 @@ namespace Servicios.Controllers
         [LogFilter]
         [HttpPost]
         [Route("adjuntos/adjuntaraudio")]
-        public DtoRespuesta AdjuntarAudio()
+        public DtoRespuesta AdjuntarAudio([FromBody] DtoApplicationFile aud)
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
@@ -134,33 +147,46 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-                var request = HttpContext.Current.Request;
-                if (request.Files.Count == 0)
+                if (aud == null)
                 {
                     return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
                 }
-                var postedFile = request.Files[0];
-                string ext = Path.GetExtension(postedFile.FileName);
-                if ((ext != ".mp3") && (ext != ".wav"))
-                {
-                    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
-                }
-                string[] idExtension = request.Params.GetValues("idExtension");
-                if (idExtension.Count() == 0)
-                {
-                    return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
-                }
-                byte[] bytesAudio;
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    postedFile.InputStream.CopyTo(ms);
-                    bytesAudio = ms.ToArray();
-                }
-                if (dbAL.adjuntarAudio(token, bytesAudio, ext, Int32.Parse(idExtension[0])))
+                if (dbAL.adjuntarAudio(token, aud))
                 {
                     return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
                 }
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+                //var request = HttpContext.Current.Request;
+                //if (request.Files.Count == 0)
+                //{
+                //    return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
+                //}
+                //var postedFile = request.Files[0];
+                //string ext = Path.GetExtension(postedFile.FileName);
+                //if ((ext != ".mp3") && (ext != ".wav"))
+                //{
+                //    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
+                //}
+                //string[] idExtension = request.Params.GetValues("idExtension");
+                //if (idExtension.Count() == 0)
+                //{
+                //    return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+                //}
+                //byte[] bytesAudio;
+                //using (MemoryStream ms = new MemoryStream())
+                //{
+                //    postedFile.InputStream.CopyTo(ms);
+                //    bytesAudio = ms.ToArray();
+                //}
+                //if (dbAL.adjuntarAudio(token, bytesAudio, ext, Int32.Parse(idExtension[0])))
+                //{
+                //    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+                //}
+                //return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+            }
+            catch (FormatoInvalidoException e)
+            {
+                return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
             }
             catch (Exception e)
             {
@@ -178,7 +204,7 @@ namespace Servicios.Controllers
         [LogFilter]
         [HttpPost]
         [Route("adjuntos/adjuntarvideo")]
-        public DtoRespuesta AdjuntarVideo()
+        public DtoRespuesta AdjuntarVideo([FromBody] DtoApplicationFile vid)
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
@@ -188,33 +214,46 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-                var request = HttpContext.Current.Request;
-                if (request.Files.Count == 0)
+                if (vid == null)
                 {
                     return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
                 }
-                var postedFile = request.Files[0];
-                string ext = Path.GetExtension(postedFile.FileName);
-                if ((ext != ".mp4") && (ext != ".avi"))
-                {
-                    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
-                }
-                string[] idExtension = request.Params.GetValues("idExtension");
-                if (idExtension.Count() == 0)
-                {
-                    return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
-                }
-                byte[] bytesVideo;
-                using (MemoryStream ms = new MemoryStream())
-                {
-                    postedFile.InputStream.CopyTo(ms);
-                    bytesVideo = ms.ToArray();
-                }
-                if (dbAL.adjuntarVideo(token, bytesVideo, ext, Int32.Parse(idExtension[0])))
+                if (dbAL.adjuntarVideo(token, vid))
                 {
                     return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
                 }
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+                //var request = HttpContext.Current.Request;
+                //if (request.Files.Count == 0)
+                //{
+                //    return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
+                //}
+                //var postedFile = request.Files[0];
+                //string ext = Path.GetExtension(postedFile.FileName);
+                //if ((ext != ".mp4") && (ext != ".avi"))
+                //{
+                //    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
+                //}
+                //string[] idExtension = request.Params.GetValues("idExtension");
+                //if (idExtension.Count() == 0)
+                //{
+                //    return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+                //}
+                //byte[] bytesVideo;
+                //using (MemoryStream ms = new MemoryStream())
+                //{
+                //    postedFile.InputStream.CopyTo(ms);
+                //    bytesVideo = ms.ToArray();
+                //}
+                //if (dbAL.adjuntarVideo(token, bytesVideo, ext, Int32.Parse(idExtension[0])))
+                //{
+                //    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+                //}
+                //return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+            }
+            catch (FormatoInvalidoException e)
+            {
+                return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
             }
             catch (Exception e)
             {
@@ -225,11 +264,11 @@ namespace Servicios.Controllers
 
 
         /// <summary>
-        /// Retorna el archivo de imagen indicada.
+        /// Servicio para obtener un archivo de imagen.
         /// </summary>
-        /// <param name="idImagen">Id de la imagen seleccionada</param>
-        /// <returns>Un stream con la imagen selecionada</returns>
-        [CustomAuthorizeAttribute("adjuntarMultimedia")]
+        /// <param name="idImagen">id de la imagen solicitada</param>
+        /// <returns>Dto con el nombre y los bytes del archivo</returns>
+        [CustomAuthorizeAttribute("verMultimedia")]
         [LogFilter]
         [Route("adjuntos/getimagedata")]
         [HttpGet]
@@ -242,19 +281,14 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    //responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
-                    //return responseMessage;
-                    return new DtoRespuesta(1, "1");
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
 
                 var img = dbAL.getImageData(token, idImagen);
                 if (img == null)
-                {
-                    //responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida))));
-                    //return responseMessage;      
-                    return new DtoRespuesta(2, "2");
+                {    
+                    return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
                 }
-
                 //var stream = new MemoryStream(img.file_data);
                 //responseMessage.Content = new StreamContent(stream);
                 //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
@@ -266,42 +300,33 @@ namespace Servicios.Controllers
             }
             catch (ImagenInvalidaException)
             {
-                //responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida))));
-                //return responseMessage;
-                return new DtoRespuesta(3, "3");
-
+                return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
             }
             catch (UsuarioNoAutorizadoException)
             {
-                //responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado))));
-                //return responseMessage;
-                return new DtoRespuesta(4, "4");
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
             catch (InvalidTokenException)
             {
-                //responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
-                //return responseMessage;
-                return new DtoRespuesta(5, "5");
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
-                //dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
-                //responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo))));
-                //return responseMessage;
-                return new DtoRespuesta(6, "6");
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo));
             }
         }
 
         /// <summary>
-        /// Retorna el archivo del video indicado.
+        /// Servicio para obtener un archivo de video.
         /// </summary>
-        /// <param name="idVideo">id del video seleccinado</param>
-        /// <returns>Un stream con el video seleccionado</returns>
-        [CustomAuthorizeAttribute("adjuntarMultimedia")]
+        /// <param name="idVideo">Id del video solicitado</param>
+        /// <returns>Dto con el nombre y los bytes del archivo</returns>
+        [CustomAuthorizeAttribute("verMultimedia")]
         [LogFilter]
         [Route("adjuntos/getvideodata")]
         [HttpGet]
-        public HttpResponseMessage GetVideoData(int idVideo)
+        public DtoRespuesta GetVideoData(int idVideo)
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
@@ -310,58 +335,51 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
-                    return responseMessage;
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
 
                 var vid = dbAL.getVideoData(token, idVideo);
                 if (vid == null)
                 {
-                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.VideoInvalidoCod, new Mensaje(MensajesParaFE.VideoInvalido))));
-                    return responseMessage;
+                    return new DtoRespuesta(MensajesParaFE.VideoInvalidoCod, new Mensaje(MensajesParaFE.VideoInvalido));
                 }
-
-                var stream = new MemoryStream(vid.file_data);
-                responseMessage.Content = new StreamContent(stream);
-                responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                responseMessage.Content.Headers.ContentDisposition.FileName = vid.nombre;
-                responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                responseMessage.Content.Headers.ContentLength = stream.Length;
-                return responseMessage;
+                //var stream = new MemoryStream(vid.file_data);
+                //responseMessage.Content = new StreamContent(stream);
+                //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                //responseMessage.Content.Headers.ContentDisposition.FileName = vid.nombre;
+                //responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                //responseMessage.Content.Headers.ContentLength = stream.Length;
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, vid);
             }
             catch (VideoInvalidoException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.VideoInvalidoCod, new Mensaje(MensajesParaFE.VideoInvalido))));
-                return responseMessage;
+                return new DtoRespuesta(MensajesParaFE.VideoInvalidoCod, new Mensaje(MensajesParaFE.VideoInvalido));
             }
             catch (UsuarioNoAutorizadoException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado))));
-                return responseMessage;
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
             catch (InvalidTokenException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
-                return responseMessage;
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
                 dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetVideoData", "Hubo un error al intentar obtener los datos de un video, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo))));
-                return responseMessage;
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo));
             }
         }
 
         /// <summary>
-        /// Retorna el archivo de audio indicado.
+        /// Servicio para obtener un archivo de audio.
         /// </summary>
-        /// <param name="idAudio">Id del audio seleccionado</param>
-        /// <returns>Un stream con el audio seleccionado</returns>
-        [CustomAuthorizeAttribute("adjuntarMultimedia")]
+        /// <param name="idAudio">Id del audio solicitado</param>
+        /// <returns>Dto con el nombre y los bytes del archivo</returns>
+        [CustomAuthorizeAttribute("verMultimedia")]
         [LogFilter]
         [Route("adjuntos/getaduiodata")]
         [HttpGet]
-        public HttpResponseMessage GetAudioData(int idAudio)
+        public DtoRespuesta GetAudioData(int idAudio)
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
@@ -370,45 +388,39 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
-                    return responseMessage;
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
 
                 var aud = dbAL.getAudioData(token, idAudio);
                 if (aud == null)
                 {
-                    responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.AudioInvalidoCod, new Mensaje(MensajesParaFE.AudioInvalido))));
-                    return responseMessage;
+                    return new DtoRespuesta(MensajesParaFE.AudioInvalidoCod, new Mensaje(MensajesParaFE.AudioInvalido));
                 }
-
-                var stream = new MemoryStream(aud.file_data);
-                responseMessage.Content = new StreamContent(stream);
-                responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                responseMessage.Content.Headers.ContentDisposition.FileName = aud.nombre;
-                responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                responseMessage.Content.Headers.ContentLength = stream.Length;
-                return responseMessage;
+                //var stream = new MemoryStream(aud.file_data);
+                //responseMessage.Content = new StreamContent(stream);
+                //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                //responseMessage.Content.Headers.ContentDisposition.FileName = aud.nombre;
+                //responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                //responseMessage.Content.Headers.ContentLength = stream.Length;
+                //return responseMessage;
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, aud);
             }
             catch (AudioInvalidoException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.AudioInvalidoCod, new Mensaje(MensajesParaFE.AudioInvalido))));
-                return responseMessage;
+                return new DtoRespuesta(MensajesParaFE.AudioInvalidoCod, new Mensaje(MensajesParaFE.AudioInvalido));
             }
             catch (UsuarioNoAutorizadoException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado))));
-                return responseMessage;
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
             catch (InvalidTokenException)
             {
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado))));
-                return responseMessage;
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
                 dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetAudioData", "Hubo un error al intentar obtener los datos de un audio, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
-                responseMessage.Content = new StringContent(JsonConvert.SerializeObject(new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo))));
-                return responseMessage;
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo));
             }
         }
     }

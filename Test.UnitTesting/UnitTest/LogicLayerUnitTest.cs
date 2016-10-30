@@ -34,7 +34,7 @@ namespace Test.UnitTesting
                 IMetodos logica = new Metodos();
                 try
                 {
-                    logica.autenticarUsuario("usuarioPruebaAutenticar", "incorrecto");
+                    logica.autenticarUsuario("usuarioPruebaAutenticar", "incorrecto", null);
                     Assert.Fail();
                 }
                 catch (InvalidCredentialsException)
@@ -44,7 +44,7 @@ namespace Test.UnitTesting
 
                 try
                 {
-                    var result = logica.autenticarUsuario("usuarioPruebaAutenticar", "usuarioPruebaAutenticar");
+                    var result = logica.autenticarUsuario("usuarioPruebaAutenticar", "usuarioPruebaAutenticar", null);
                     Assert.IsNotNull(result);
                 }
                 catch (InvalidCredentialsException)
@@ -54,7 +54,7 @@ namespace Test.UnitTesting
 
                 try
                 {
-                    var result = logica.autenticarUsuario("usuarioPruebaAutenticar", "usuarioPruebaAutenticar");
+                    var result = logica.autenticarUsuario("usuarioPruebaAutenticar", "usuarioPruebaAutenticar", null);
                 }
                 catch (SesionActivaException e)
                 {
@@ -90,7 +90,7 @@ namespace Test.UnitTesting
 
                 context.SaveChanges();
 
-                var autent = logica.autenticarUsuario("usuario", "pruebapass");
+                var autent = logica.autenticarUsuario("usuario", "pruebapass", null);
                 string token = autent.access_token;
 
                 string[] etiqueta1 = { "permisoFalso" };
@@ -137,7 +137,7 @@ namespace Test.UnitTesting
                 IMetodos logica = new Metodos();
 
                 // Obtengo token de usuario. 
-                var autent = logica.autenticarUsuario("usuarioPruebaRecurso", "usuarioPruebaRecurso");
+                var autent = logica.autenticarUsuario("usuarioPruebaRecurso", "usuarioPruebaRecurso", null);
                 string token = autent.access_token;
 
                 // Recurso seleccionable por el usuario y disponible.
@@ -177,7 +177,7 @@ namespace Test.UnitTesting
                 }
 
                 // Pruebo loguearme con otro usuario que tenga el mismo recurso asignado
-                var autent2 = logica.autenticarUsuario("usuarioPruebaRecursoNoDisponible", "usuarioPruebaRecursoNoDisponible");
+                var autent2 = logica.autenticarUsuario("usuarioPruebaRecursoNoDisponible", "usuarioPruebaRecursoNoDisponible", null);
                 string token2 = autent.access_token;
                 try
                 {
@@ -254,7 +254,7 @@ namespace Test.UnitTesting
                 IMetodos logica = new Metodos();
 
                 // Obtengo token de usuario. 
-                var autent = logica.autenticarUsuario("usuarioPruebaZonas", "usuarioPruebaZonas");
+                var autent = logica.autenticarUsuario("usuarioPruebaZonas", "usuarioPruebaZonas", null);
                 string token = autent.access_token;
 
                 // Usuario pertenece a todas las unidades ejecutoras de las zonas.
@@ -320,7 +320,7 @@ namespace Test.UnitTesting
                 IMetodos logica = new Metodos();
 
                 // Obtengo token de usuario. 
-                var autent = logica.autenticarUsuario("usuarioPruebaCerrarSesion", "usuarioPruebaCerrarSesion");
+                var autent = logica.autenticarUsuario("usuarioPruebaCerrarSesion", "usuarioPruebaCerrarSesion", null);
                 string token = autent.access_token;
 
                 try
@@ -399,7 +399,7 @@ namespace Test.UnitTesting
                 IMetodos logica = new Metodos();
 
                 // Obtengo token de usuario. 
-                var autent = logica.autenticarUsuario("usuarioPruebaZonasCerrarSesion", "usuarioPruebaZonasCerrarSesion");
+                var autent = logica.autenticarUsuario("usuarioPruebaZonasCerrarSesion", "usuarioPruebaZonasCerrarSesion", null);
                 string token = autent.access_token;
 
                 // Usuario pertenece a todas las unidades ejecutoras de las zonas.
@@ -518,7 +518,7 @@ namespace Test.UnitTesting
                 }
 
                 // Obtengo token de usuario. 
-                var autent = logica.autenticarUsuario("usuarioDE", "usuarioDE");
+                var autent = logica.autenticarUsuario("usuarioDE", "usuarioDE", null);
                 string token = autent.access_token;
 
                 List<DtoRecurso> lRecurso = new List<DtoRecurso>();
@@ -683,7 +683,7 @@ namespace Test.UnitTesting
             }
 
             // Obtengo token de usuario. 
-            var autent = logica.autenticarUsuario("usuarioListarEventoRecurso", "usuarioListarEventoRecurso");
+            var autent = logica.autenticarUsuario("usuarioListarEventoRecurso", "usuarioListarEventoRecurso", null);
             string token = autent.access_token;
 
             // Se prueba que se listen las extensiones asociadas a un recurso
@@ -699,9 +699,9 @@ namespace Test.UnitTesting
             }
 
             // Agrego Multimedia.
-            var res1 = logica.adjuntarImagen(token, new byte[0], ".jpg", 1);
-            var res2 = logica.adjuntarAudio(token, new byte[0], ".mp3", 1);
-            var res3 = logica.adjuntarVideo(token, new byte[0], ".mp4", 1);
+            var res1 = logica.adjuntarImagen(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.jpg", idExtension = 1 });
+            var res2 = logica.adjuntarAudio(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp3", idExtension = 1 });
+            var res3 = logica.adjuntarVideo(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp4", idExtension = 1 });
 
 
             List<DtoRecurso> lRecurso = new List<DtoRecurso>();
@@ -735,7 +735,7 @@ namespace Test.UnitTesting
             }
             logica.cerrarSesion(token);
             context = new EmsysContext();
-            autent = logica.autenticarUsuario("usuarioListarEventoRecurso", "usuarioListarEventoRecurso");
+            autent = logica.autenticarUsuario("usuarioListarEventoRecurso", "usuarioListarEventoRecurso", null);
             token = autent.access_token;
             List<DtoZona> _zonas = new List<DtoZona>();
             var userZ = context.Users.FirstOrDefault(uz => uz.NombreLogin == "usuarioListarEventoRecurso");
@@ -805,7 +805,7 @@ namespace Test.UnitTesting
             IMetodos logica = new Metodos();
 
             // Autenticar.
-            var result = logica.autenticarUsuario("A", "A");
+            var result = logica.autenticarUsuario("A", "A", null);
             string token = result.access_token;
 
             // Elegir roles.
@@ -868,7 +868,7 @@ namespace Test.UnitTesting
             IMetodos logica = new Metodos();
 
             // Autenticar.
-            var result = logica.autenticarUsuario("A", "A");
+            var result = logica.autenticarUsuario("A", "A", null);
             string token = result.access_token;
 
             // Elegir roles.
@@ -878,7 +878,7 @@ namespace Test.UnitTesting
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = lRecursos };
                         
             // Sin autorizacion.
-            Assert.IsFalse(logica.adjuntarImagen(token, new byte[0], ".jpg", 1));
+            Assert.IsFalse(logica.adjuntarImagen(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.jpg", idExtension = 1 }));
 
             // Loguear.
             var log = logica.loguearUsuario(token, rol);
@@ -886,7 +886,7 @@ namespace Test.UnitTesting
             // Sin token.
             try
             {
-                logica.adjuntarImagen(null, new byte[0], ".jpg", 1);
+                logica.adjuntarImagen(null, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.jpg", idExtension = 1 });
             }
             catch (InvalidTokenException e)
             {
@@ -896,15 +896,15 @@ namespace Test.UnitTesting
             // Token invalido.
             try
             {
-                logica.adjuntarImagen("tokenIncorrecto", new byte[0], ".jpg", 1);
+                logica.adjuntarImagen("tokenIncorrecto", new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.jpg", idExtension = 1 });
             }
             catch (InvalidTokenException e)
             {
                 Assert.IsTrue(true);
             }
 
-            // Adjuntar geo ubicacion valida.
-            var ok = logica.adjuntarImagen(token, new byte[0], ".jpg", 1);
+            // Adjuntar imagen ubicacion valida.
+            var ok = logica.adjuntarImagen(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.jpg", idExtension = 1 });
 
             var c = db.Imagenes.Count();
             var c2 = db.ApplicationFiles.Count();
@@ -976,11 +976,11 @@ namespace Test.UnitTesting
             IMetodos logica = new Metodos();
 
             // Autenticar.
-            var result = logica.autenticarUsuario("A", "A");
+            var result = logica.autenticarUsuario("A", "A", null);
             string token = result.access_token;
 
             // Sin autorizacion.
-            Assert.IsFalse(logica.adjuntarAudio(token, new byte[0], ".mp3", 1));
+            Assert.IsFalse(logica.adjuntarAudio(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp3", idExtension = 1 }));
 
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
@@ -994,7 +994,7 @@ namespace Test.UnitTesting
             // Sin token.
             try
             {
-                logica.adjuntarAudio(null, new byte[0], ".mp3", 1);
+                logica.adjuntarAudio(null, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp3", idExtension = 1 });
             }
             catch (InvalidTokenException e)
             {
@@ -1004,7 +1004,7 @@ namespace Test.UnitTesting
             // Token invalido.
             try
             {
-                logica.adjuntarAudio("tokenIncorrecto", new byte[0], ".mp3", 1);
+                logica.adjuntarAudio("tokenIncorrecto", new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp3", idExtension = 1 });
             }
             catch (InvalidTokenException e)
             {
@@ -1012,7 +1012,7 @@ namespace Test.UnitTesting
             }
 
             // Adjuntar geo ubicacion valida.
-            var ok = logica.adjuntarAudio(token, new byte[0], ".mp3", 1);
+            var ok = logica.adjuntarAudio(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp3", idExtension = 1 });
 
             var c = db.Audios.Count();
             var c2 = db.ApplicationFiles.Count();
@@ -1084,12 +1084,12 @@ namespace Test.UnitTesting
             IMetodos logica = new Metodos();
 
             // Autenticar.
-            var result = logica.autenticarUsuario("A", "A");
+            var result = logica.autenticarUsuario("A", "A", null);
             string token = result.access_token;
             
 
             // No tengo autorizacion.
-            Assert.IsFalse(logica.adjuntarVideo(token, new byte[0], ".mp4", 1));
+            Assert.IsFalse(logica.adjuntarVideo(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp4", idExtension = 1 }));
 
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
@@ -1103,7 +1103,7 @@ namespace Test.UnitTesting
             // Sin token.
             try
             {
-                logica.adjuntarVideo(null, new byte[0], ".mp4", 1);
+                logica.adjuntarVideo(null, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp4", idExtension = 1 });
             }
             catch (InvalidTokenException e)
             {
@@ -1113,7 +1113,7 @@ namespace Test.UnitTesting
             // Token invalido.
             try
             {
-                logica.adjuntarVideo("tokenIncorrecto", new byte[0], ".mp4", 1);
+                logica.adjuntarVideo("tokenIncorrecto", new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp4", idExtension = 1 });
             }
             catch (InvalidTokenException e)
             {
@@ -1121,7 +1121,7 @@ namespace Test.UnitTesting
             }
 
             // Adjuntar geo ubicacion valida.
-            var ok = logica.adjuntarVideo(token, new byte[0], ".mp4", 1);
+            var ok = logica.adjuntarVideo(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp4", idExtension = 1 });
 
             var c = db.Videos.Count();
             var c2 = db.ApplicationFiles.Count();
@@ -1191,7 +1191,7 @@ namespace Test.UnitTesting
             db.SaveChanges();
 
             IMetodos dbAL = new Metodos();
-            var result = dbAL.autenticarUsuario("A", "A");
+            var result = dbAL.autenticarUsuario("A", "A", null);
             
             try
             {
@@ -1240,7 +1240,7 @@ namespace Test.UnitTesting
             IMetodos dbAL = new Metodos();
             try
             {
-                var result = dbAL.autenticarUsuario("A", "A");
+                var result = dbAL.autenticarUsuario("A", "A", null);
             }
             catch (SesionActivaException e)
             {
@@ -1248,7 +1248,7 @@ namespace Test.UnitTesting
             }
 
             dbAL.desconectarAusentes(10);
-            var result2 = dbAL.autenticarUsuario("A", "A");
+            var result2 = dbAL.autenticarUsuario("A", "A", null);
             Assert.IsTrue(result2.access_token != null);
 
             db = new EmsysContext();
@@ -1260,7 +1260,7 @@ namespace Test.UnitTesting
             Thread workerThread = new Thread(new ThreadStart(Emsys.LogicLayer.Program.Main));
             workerThread.Start();
             Thread.Sleep(1000);
-            var result3 = dbAL.autenticarUsuario("A", "A");
+            var result3 = dbAL.autenticarUsuario("A", "A", null);
             Assert.IsTrue(result3.access_token != null);
         }
 
@@ -1282,7 +1282,7 @@ namespace Test.UnitTesting
             IMetodos logica = new Metodos();
 
             // Autenticar.
-            var result = logica.autenticarUsuario("A", "A");
+            var result = logica.autenticarUsuario("A", "A", null);
             string token = result.access_token;
 
             // Elegir roles.
@@ -1402,7 +1402,7 @@ namespace Test.UnitTesting
             IMetodos logica = new Metodos();
 
             // Autenticar.
-            var result = logica.autenticarUsuario("A", "A");
+            var result = logica.autenticarUsuario("A", "A", null);
             string token = result.access_token;
 
             // La actualizacion.
@@ -1465,7 +1465,7 @@ namespace Test.UnitTesting
             IMetodos logica = new Metodos();
 
             // Autenticar.
-            var result = logica.autenticarUsuario("A", "A");
+            var result = logica.autenticarUsuario("A", "A", null);
             string token = result.access_token;
             
             // Elegir roles.
@@ -1549,7 +1549,7 @@ namespace Test.UnitTesting
             IMetodos logica = new Metodos();
 
             // Autenticar.
-            var result = logica.autenticarUsuario("A", "A");
+            var result = logica.autenticarUsuario("A", "A", null);
             string token = result.access_token;
 
 
@@ -1629,7 +1629,7 @@ namespace Test.UnitTesting
             db.SaveChanges();
 
             // Autenticar.
-            var result = logic.autenticarUsuario("A", "A");
+            var result = logic.autenticarUsuario("A", "A", null);
             string token = result.access_token;
 
             // Elegir roles.
@@ -1671,7 +1671,7 @@ namespace Test.UnitTesting
             db.SaveChanges();
 
             // Autenticar.
-            var result = logic.autenticarUsuario("A", "A");
+            var result = logic.autenticarUsuario("A", "A", null);
             string token = result.access_token;
 
             // Elegir roles.
@@ -1741,7 +1741,7 @@ namespace Test.UnitTesting
             db.SaveChanges();
 
             // Autenticar.
-            var result = logic.autenticarUsuario("A", "A");
+            var result = logic.autenticarUsuario("A", "A", null);
             string token = result.access_token;
 
             // Elegir roles.
@@ -1794,7 +1794,7 @@ namespace Test.UnitTesting
             db.SaveChanges();
 
             // Autenticar.
-            var result = logic.autenticarUsuario("A", "A");
+            var result = logic.autenticarUsuario("A", "A", null);
             string token = result.access_token;
 
             // Elegir roles.
@@ -1845,7 +1845,7 @@ namespace Test.UnitTesting
             db.SaveChanges();
 
             // Autenticar.
-            var result = logic.autenticarUsuario("A", "A");
+            var result = logic.autenticarUsuario("A", "A", null);
             string token = result.access_token;
 
             // Elegir roles.

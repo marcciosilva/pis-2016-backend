@@ -11,7 +11,7 @@ namespace Emsys.LogicLayer
         /// <param name="userName">Nombre de usuario que se desea autenticar.</param>
         /// <param name="password">Contraseña no encriptada de usuario que se desea autenticar.</param>
         /// <returns>Retorna la respuesta segun el documento de interfaz.</returns>
-        DtoAutenticacion autenticarUsuario(string userName, string password);
+        DtoAutenticacion autenticarUsuario(string userName, string password, string token);
 
         /// <summary>
         /// Obtiene el rol del usuario dado un token.
@@ -151,7 +151,7 @@ namespace Emsys.LogicLayer
         /// <param name="extArchivo">Extension de la imagen (ej: ".jpg")</param>
         /// <param name="idExtension">Extension a la cual se desea agregar la imagen</param>
         /// <returns></returns>
-        bool adjuntarImagen(string token, byte[] imagenData, string extArchivo, int idExtension);
+        bool adjuntarImagen(string token, DtoApplicationFile imgN);
 
         /// <summary>
         /// Adjunta un archivo de imagen a una extension
@@ -161,7 +161,7 @@ namespace Emsys.LogicLayer
         /// <param name="extArchivo">Extension de la imagen (ej: ".jpg")</param>
         /// <param name="idExtension">Extension a la cual se desea agregar la imagen</param>
         /// <returns></returns>
-        bool adjuntarVideo(string token, byte[] videoData, string extArchivo, int idExtension);
+        bool adjuntarVideo(string token, DtoApplicationFile vidN);
 
         /// <summary>
         /// Adjunta un archivo de imagen a una extension
@@ -171,7 +171,7 @@ namespace Emsys.LogicLayer
         /// <param name="extArchivo">Extension de la imagen (ej: ".jpg")</param>
         /// <param name="idExtension">Extension a la cual se desea agregar la imagen</param>
         /// <returns></returns>
-        bool adjuntarAudio(string token, byte[] audioData, string extArchivo, int idExtension);
+        bool adjuntarAudio(string token, DtoApplicationFile audN);
 
         /// <summary>
         /// Indica al servidor que el usuario esta conectado.

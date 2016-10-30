@@ -5,5 +5,7 @@
         public string nombre { get; set; }
 
         public byte[] file_data { get; set; }
+
+        public int idExtension { get; set; }
     }
 }

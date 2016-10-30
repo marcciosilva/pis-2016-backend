@@ -101,18 +101,78 @@ namespace Emsys.DataAccesLayer.Core
 
                 // Agregar rol.
                 Rol rol1 = new Rol() { Id = 1, Nombre = "Admin", Permisos = new List<Permiso>() };
+                Rol rol2 = new Rol() { Id = 2, Nombre = "Recurso", Permisos = new List<Permiso>() };
+                Rol rol3 = new Rol() { Id = 3, Nombre = "Despachador", Permisos = new List<Permiso>() };
 
                 // Agregar permisos.
-                Permiso permiso1 = new Permiso() { Id = 1, Nombre = "listarEventos", Clave = "listarEventos", Descripcion = "Permite al usuario ver los eventos de sus zonas actuales/recurso" };
+                Permiso permiso1 = new Permiso() { Id = 1, Nombre = "Listar eventos", Clave = "listarEventos", Descripcion = "Permite al usuario ver la lista de eventos de sus zonas actuales/recurso actual." };
+                Permiso permiso2 = new Permiso() { Id = 2, Nombre = "Adjuntar multimedia", Clave = "adjuntarMultimedia", Descripcion = "Permite al usuario adjuntar multimedia." };
+                Permiso permiso3 = new Permiso() { Id = 3, Nombre = "Login", Clave = "login", Descripcion = "Permite al usuario iniciar sesion, mantenerse conectado y cerrar sesion." };
+                Permiso permiso4 = new Permiso() { Id = 4, Nombre = "Consumir servicio externo", Clave = "consumirServicioExterno", Descripcion = "Permite al usuario consumir un servicio externo." };
+                Permiso permiso5 = new Permiso() { Id = 5, Nombre = "Obtener evento", Clave = "obtenerEvento", Descripcion = "Permite al usuario consultar la informacion de eventos." };
+                Permiso permiso6 = new Permiso() { Id = 6, Nombre = "Actualizar descripcion (Recurso)", Clave = "actualizarDescripcionRecurso", Descripcion = "Permite a un usuario recurso actualizar la descripcion de extensiones de evento." };
+                Permiso permiso7 = new Permiso() { Id = 7, Nombre = "Reportar hora de arribo", Clave = "reportarHoraArribo", Descripcion = "Permite a un usuario recurso reportar la hora de arribo a eventos." };
+                Permiso permiso8 = new Permiso() { Id = 8, Nombre = "Obtener informacion para creacion de eventos", Clave = "infoCreacionEvento", Descripcion = "Permite a un usuario obtener informacion necesaria para crear eventos." };
+                Permiso permiso9 = new Permiso() { Id = 9, Nombre = "Crear Evento", Clave = "crearEvento", Descripcion = "Permite a un usuario crear eventos." };
+                Permiso permiso10 = new Permiso() { Id = 10, Nombre = "Despachar extension", Clave = "despacharExtension", Descripcion = "Permite a un usuario tomar y liberar extensiones para despacharlas." };
+                Permiso permiso11 = new Permiso() { Id = 11, Nombre = "Gestionar recursos de extension", Clave = "gestionarRecursosExtension", Descripcion = "Permite a un despachador asignar o quitar recursos de una extension de evento." };
+                Permiso permiso12 = new Permiso() { Id = 12, Nombre = "Actualizar segunda categoria", Clave = "actualizarSegundaCategoria", Descripcion = "Permite a un despachador actualizar la segunda categoria de una extension de evento." };
+                Permiso permiso13 = new Permiso() { Id = 13, Nombre = "Abrir extension", Clave = "abrirExtension", Descripcion = "Permite a un despachador abrir una extension nueva para un evento." };
+                Permiso permiso14 = new Permiso() { Id = 14, Nombre = "Cerrar extension", Clave = "cerrarExtension", Descripcion = "Permite a un despachador pasar a estado 'cerrado' la extension de un evento." };
+                Permiso permiso15 = new Permiso() { Id = 15, Nombre = "Actualizar descripcion (Despachador)", Clave = "actualizarDescripcionDespachador", Descripcion = "Permite a un despachador actualizar la descripcion de una extension de evento." };
+                Permiso permiso16 = new Permiso() { Id = 16, Nombre = "Adjuntar geo ubicacion", Clave = "adjuntarGeoUbicacion", Descripcion = "Permite a un usuario adjuntar geo ubicaciones a extensiones de evento." };
+                Permiso permiso17 = new Permiso() { Id = 17, Nombre = "Ver multimedia", Clave = "verMultimedia", Descripcion = "Permite a un usuario ver informacion multimedia." };
 
-                Permiso permiso2 = new Permiso() { Id = 2, Nombre = "adjuntarMultimedia", Clave = "adjuntarMultimedia", Descripcion = "Permite al usuario adjuntar multimedia" };
-                //no va
-                //context.Permisos.AddOrUpdate(x => x.Id, permiso2);
-                //context.Permisos.AddOrUpdate(x => x.Id, permiso1);
 
                 // Asignar permisos a roles.
+                // Permisos admin (totales).
                 rol1.Permisos.Add(permiso1);
                 rol1.Permisos.Add(permiso2);
+                rol1.Permisos.Add(permiso3);
+                rol1.Permisos.Add(permiso4);
+                rol1.Permisos.Add(permiso5);
+                rol1.Permisos.Add(permiso6);
+                rol1.Permisos.Add(permiso7);
+                rol1.Permisos.Add(permiso8);
+                rol1.Permisos.Add(permiso9);
+                rol1.Permisos.Add(permiso10);
+                rol1.Permisos.Add(permiso11);
+                rol1.Permisos.Add(permiso12);
+                rol1.Permisos.Add(permiso13);
+                rol1.Permisos.Add(permiso14);
+                rol1.Permisos.Add(permiso15);
+                rol1.Permisos.Add(permiso16);
+                rol1.Permisos.Add(permiso17);
+
+                // Permisos recurso.
+                rol2.Permisos.Add(permiso1);
+                rol2.Permisos.Add(permiso2);
+                rol2.Permisos.Add(permiso3);
+                rol2.Permisos.Add(permiso4);
+                rol2.Permisos.Add(permiso5);
+                rol2.Permisos.Add(permiso6);
+                rol2.Permisos.Add(permiso7);
+                rol2.Permisos.Add(permiso8);
+                rol2.Permisos.Add(permiso9);
+                rol2.Permisos.Add(permiso16);
+                rol2.Permisos.Add(permiso17);
+
+                // Permisos despachador (totales).
+                rol3.Permisos.Add(permiso1);
+                rol3.Permisos.Add(permiso2);
+                rol3.Permisos.Add(permiso3);
+                rol3.Permisos.Add(permiso4);
+                rol3.Permisos.Add(permiso5);
+                rol3.Permisos.Add(permiso8);
+                rol3.Permisos.Add(permiso9);
+                rol3.Permisos.Add(permiso10);
+                rol3.Permisos.Add(permiso11);
+                rol3.Permisos.Add(permiso12);
+                rol3.Permisos.Add(permiso13);
+                rol3.Permisos.Add(permiso14);
+                rol3.Permisos.Add(permiso15);
+                rol3.Permisos.Add(permiso16);
+                rol3.Permisos.Add(permiso17);
 
                 //context.ApplicationRoles.AddOrUpdate(x => x.Id, rol1);
 

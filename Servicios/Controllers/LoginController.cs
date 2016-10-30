@@ -23,9 +23,10 @@ namespace Servicios.Controllers
         public DtoRespuesta Login([FromBody] DtoUser user)
         {
             IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
             try
             {
-                DtoAutenticacion autenticacion = dbAL.autenticarUsuario(user.username, user.password);
+                DtoAutenticacion autenticacion = dbAL.autenticarUsuario(user.username, user.password, token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, autenticacion);
             }
             catch (SesionActivaException)
@@ -47,7 +48,7 @@ namespace Servicios.Controllers
         /// Servicio obtener roles.
         /// </summary>
         /// <returns>Devuelve los roles asociados a un usuario. En el header del request se recibe el token del usuario.</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("login")]
         [HttpPost]
         [LogFilter]
         [Route("users/getroles")]
@@ -81,7 +82,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="rol">Roles a los que sea desea loguear.</param>
         /// <returns>Devuelve la respuesta definida en el documento de interfaz.</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("login")]
         [HttpPost]
         [LogFilter]
         [Route("users/login")]
@@ -124,7 +125,7 @@ namespace Servicios.Controllers
         /// Servicio para cerrar session de usuario. Borrando el token y la fecha de inicio de sesion.
         /// </summary>
         /// <returns>Retorna la respuesta definida en el documento de interfaz.</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("login")]
         [HttpPost]
         [LogFilter]
         [Route("users/logout")]
@@ -159,7 +160,7 @@ namespace Servicios.Controllers
             }
         }
 
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("login")]
         [HttpPost]
         [LogFilter]
         [Route("users/keepmealive")]

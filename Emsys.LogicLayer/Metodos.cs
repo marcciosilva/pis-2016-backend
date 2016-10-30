@@ -13,7 +13,7 @@ namespace Emsys.LogicLayer
 {
     public class Metodos : IMetodos
     {
-        public DtoAutenticacion autenticarUsuario(string userName, string password)
+        public DtoAutenticacion autenticarUsuario(string userName, string password, string token)
         {
             using (var context = new EmsysContext())
             {
@@ -26,6 +26,13 @@ namespace Emsys.LogicLayer
                 // Si el usuario ya tiene una sesion activa.
                 if (user.Token != null)
                 {
+                    // Si el usuario intenta recuperar su sesion.
+                    if (user.Token == token)
+                    {
+                        user.UltimoSignal = DateTime.Now;
+                        context.SaveChanges();
+                        return new DtoAutenticacion(token, MensajesParaFE.Correcto);
+                    }
                     throw new SesionActivaException();
                 }
                
@@ -39,12 +46,12 @@ namespace Emsys.LogicLayer
                 context.SaveChanges();
                 
                 // Retorna un token y registra el inicia de sesion.
-                string token = TokenGenerator.ObtenerToken();
-                user.Token = token;
+                string tokenNuevo = TokenGenerator.ObtenerToken();
+                user.Token = tokenNuevo;
                 user.FechaInicioSesion = DateTime.Now;
                 user.UltimoSignal = DateTime.Now;
                 context.SaveChanges();                    
-                return new DtoAutenticacion(token, MensajesParaFE.Correcto);
+                return new DtoAutenticacion(tokenNuevo, MensajesParaFE.Correcto);
             }
         }
 
@@ -728,8 +735,7 @@ namespace Emsys.LogicLayer
             }
         }
 
-
-        public bool adjuntarImagen(string token, byte[] imagenData, string extArchivo, int idExtension)
+        public bool adjuntarImagen(string token, DtoApplicationFile imgN)
         {
             using (var context = new EmsysContext())
             {
@@ -740,15 +746,19 @@ namespace Emsys.LogicLayer
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();                   
+                    throw new InvalidTokenException();
                 }
-                string nombre;
-                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == imgN.idExtension);
                 if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
                 {
                     return false;
                 }
-
+                string extArchivo = Path.GetExtension(imgN.nombre);
+                if ((extArchivo != ".jpg") && (extArchivo != ".png"))
+                {
+                    throw new FormatoInvalidoException();
+                }
+                string nombre;
                 // Si es el primer archivo.
                 if (context.ApplicationFiles.Count() == 0)
                 {
@@ -758,7 +768,7 @@ namespace Emsys.LogicLayer
                 {
                     nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
                 }
-                var file = new ApplicationFile() { Nombre = nombre, FileData = imagenData };                
+                var file = new ApplicationFile() { Nombre = nombre, FileData = imgN.file_data };
                 Imagen img = new Imagen() { Usuario = user, FechaEnvio = DateTime.Now, ImagenData = file };
                 ext.Imagenes.Add(img);
                 ext.TimeStamp = DateTime.Now;
@@ -767,9 +777,47 @@ namespace Emsys.LogicLayer
                 return true;
             }
         }
+        //public bool adjuntarImagen(string token, byte[] imagenData, string extArchivo, int idExtension)
+        //{
+        //    using (var context = new EmsysContext())
+        //    {
+        //        if (token == null)
+        //        {
+        //            throw new InvalidTokenException();
+        //        }
+        //        var user = context.Users.FirstOrDefault(u => u.Token == token);
+        //        if (user == null)
+        //        {
+        //            throw new InvalidTokenException();                   
+        //        }
+        //        string nombre;
+        //        Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
+        //        if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
+        //        {
+        //            return false;
+        //        }
+
+        //        // Si es el primer archivo.
+        //        if (context.ApplicationFiles.Count() == 0)
+        //        {
+        //            nombre = "1" + extArchivo;
+        //        }
+        //        else
+        //        {
+        //            nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
+        //        }
+        //        var file = new ApplicationFile() { Nombre = nombre, FileData = imagenData };                
+        //        Imagen img = new Imagen() { Usuario = user, FechaEnvio = DateTime.Now, ImagenData = file };
+        //        ext.Imagenes.Add(img);
+        //        ext.TimeStamp = DateTime.Now;
+        //        ext.Evento.TimeStamp = DateTime.Now;
+        //        context.SaveChanges();
+        //        return true;
+        //    }
+        //}
 
 
-        public bool adjuntarVideo(string token, byte[] videoData, string extArchivo, int idExtension)
+        public bool adjuntarVideo(string token, DtoApplicationFile vidN)
         {
             using (var context = new EmsysContext())
             {
@@ -782,13 +830,17 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
-                string nombre;
-                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == vidN.idExtension);
                 if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
                 {
                     return false;
                 }
-
+                string extArchivo = Path.GetExtension(vidN.nombre);
+                if ((extArchivo != ".mp4") && (extArchivo != ".avi"))
+                {
+                    throw new FormatoInvalidoException();
+                }
+                string nombre;
                 // Si es el primer archivo.
                 if (context.ApplicationFiles.Count() == 0)
                 {
@@ -798,8 +850,8 @@ namespace Emsys.LogicLayer
                 {
                     nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
                 }
-                var file = new ApplicationFile() { Nombre = nombre, FileData = videoData };
-                Video vid = new Video() { Usuario = user, FechaEnvio = DateTime.Now, VideoData = file};
+                var file = new ApplicationFile() { Nombre = nombre, FileData = vidN.file_data };
+                Video vid = new Video() { Usuario = user, FechaEnvio = DateTime.Now, VideoData = file };
                 ext.Videos.Add(vid);
                 ext.TimeStamp = DateTime.Now;
                 ext.Evento.TimeStamp = DateTime.Now;
@@ -809,7 +861,7 @@ namespace Emsys.LogicLayer
         }
 
         
-        public bool adjuntarAudio(string token, byte[] audioData, string extArchivo, int idExtension)
+        public bool adjuntarAudio(string token, DtoApplicationFile audN)
         {
             using (var context = new EmsysContext())
             {
@@ -822,13 +874,17 @@ namespace Emsys.LogicLayer
                 {
                     throw new InvalidTokenException();
                 }
-                string nombre;
-                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == audN.idExtension);
                 if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
                 {
                     return false;
                 }
-
+                string extArchivo = Path.GetExtension(audN.nombre);
+                if ((extArchivo != ".mp3") && (extArchivo != ".wav"))
+                {
+                    throw new FormatoInvalidoException();
+                }
+                string nombre;
                 // Si es el primer archivo.
                 if (context.ApplicationFiles.Count() == 0)
                 {
@@ -838,7 +894,7 @@ namespace Emsys.LogicLayer
                 {
                     nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
                 }
-                var file = new ApplicationFile() { Nombre = nombre, FileData = audioData };
+                var file = new ApplicationFile() { Nombre = nombre, FileData = audN.file_data };
                 Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file };
                 ext.Audios.Add(aud);
                 ext.TimeStamp = DateTime.Now;

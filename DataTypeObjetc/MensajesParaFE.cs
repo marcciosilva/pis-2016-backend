@@ -71,9 +71,9 @@
         public const int UsuarioNoAutorizadoCod = 15;
         public const int ZonaInvalidaCod = 16;
         public const int EventoNoEnviadoCod = 17;
-        public const int ImagenInvalidaCod = -1;
-        public const int VideoInvalidoCod = -1;
-        public const int AudioInvalidoCod = -1;
+        public const int ImagenInvalidaCod = 101;
+        public const int VideoInvalidoCod = 102;
+        public const int AudioInvalidoCod = 103;
 
         // Codigos de error.
         public const int ErrorCod = 500;

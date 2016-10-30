@@ -52,7 +52,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="idEvento">Identificador del evento.</param>
         /// <returns>Devuelve la informacion del evento siguiendo el documento de interfaz.</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("obtenerEvento")]
         [HttpGet]
         [LogFilter]
         [Route("eventos/obtener")]
@@ -91,6 +91,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="descParam">Entension y descripcion a agregar.</param>
         /// <returns>Respuesta definida en el documento de interfaz.</returns>
+        [CustomAuthorizeAttribute("actualizarDescripcionRecurso")]
         [HttpPost]
         [Route("eventos/actualizardescripcionrecurso")]
         [LogFilter]
@@ -130,7 +131,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="idExtension">Extension que atiende el recurso</param>
         /// <returns>DtoRespuesta indicando el resultado</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("reportarHoraArribo")]
         [HttpPost]
         [Route("eventos/reportarhoraarribo")]
         [LogFilter]
@@ -161,8 +162,11 @@ namespace Servicios.Controllers
             }
         }
 
-
-        [CustomAuthorizeAttribute()]
+        /// <summary>
+        /// Servicio para obtener informacion necesaria para crear un evento.
+        /// </summary>
+        /// <returns>Lista de zonas y sectores, categorias y departamentos</returns>
+        [CustomAuthorizeAttribute("infoCreacionEvento")]
         [HttpGet]
         [Route("eventos/infocreacionevento")]
         [LogFilter]
@@ -191,7 +195,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="evento">Dto con los datos del evento a crear</param>
         /// <returns>DtoRespuesta indicando el resultado</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("crearEvento")]
         [HttpPost]
         [Route("eventos/crearevento")]
         [LogFilter]
@@ -232,7 +236,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="idExtension">Extension a despachar</param>
         /// <returns>Dto indicando si se realizo con exito</returns>
-        [CustomAuthorizeAttribute()]        
+        [CustomAuthorizeAttribute("despacharExtension")]        
         [HttpPost]
         [Route("eventos/tomarextension")]
         [LogFilter]                
@@ -273,7 +277,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="idExtension">Id de la extension a liberar</param>
         /// <returns>Si se libero con exito</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("despacharExtension")]
         [HttpPost]
         [Route("eventos/liberarextension")]
         [LogFilter]
@@ -287,7 +291,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-                if (dbAL.tomarExtension(token, idExtension))
+                if (dbAL.liberarExtension(token, idExtension))
                 {
                     return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
                 }
@@ -314,7 +318,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="idExtension">Id de la extension a consultar</param>
         /// <returns>DtoRespuesta con una lista de los recursos asignados a la extension y otra con los recursos disponibles</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("gestionarRecursosExtension")]
         [HttpGet]
         [Route("eventos/getrecursosextension")]
         [LogFilter]
@@ -351,7 +355,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="recursos">Dto con una lista de recursos a agregar ("recursosAsignados") y una lista de recursos a retirar ("recursosNoAsignados") y el id de la extension</param>
         /// <returns>Dto indicando el exito o no de la operacin</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("gestionarRecursosExtension")]
         [HttpPost]
         [Route("eventos/gestionarrecursos")]
         [LogFilter]
@@ -393,7 +397,7 @@ namespace Servicios.Controllers
         /// <param name="idExtension">El id de la extension a actualizar</param>
         /// <param name="idCategoria">El id de la nueva categoria (-1 indica eliminar categoria actual unicamente)</param>
         /// <returns>Exito o no</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("actualizarSegundaCategoria")]
         [HttpPost]
         [Route("eventos/actualizarsegundacategoria")]
         [LogFilter]
@@ -430,7 +434,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="idExtension">Id de la extension a consultar</param>
         /// <returns>Lista de dtos de las zonas libres</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("abrirExtension")]
         [HttpGet]
         [Route("eventos/getzonaslibresevento")]
         [LogFilter]
@@ -468,7 +472,7 @@ namespace Servicios.Controllers
         /// <param name="idExtension">Id de una extension despahcada por el usuario en ese evento</param>
         /// <param name="idZona">Id de la zona para la cual se abre la extension</param>
         /// <returns>Exito o fracaso</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("abrirExtension")]
         [HttpPost]
         [Route("eventos/abrirextension")]
         [LogFilter]
@@ -510,7 +514,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="idExtension">Id de la extension a cerrar</param>
         /// <returns>Resultado de la operacion</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("cerrarExtension")]
         [HttpPost]
         [Route("eventos/cerrarextension")]
         [LogFilter]
@@ -551,7 +555,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="descParam">Dto con el id de la extension y la descripcion a actualizar</param>
         /// <returns>Resultado de la accion</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("actualizarDescripcionDespachador")]
         [HttpPost]
         [Route("eventos/actualizardescripciondespachador")]
         [LogFilter]
