@@ -697,12 +697,7 @@ namespace Test.UnitTesting
             {
                 throw e;
             }
-
-            // Agrego Multimedia.
-            var res1 = logica.adjuntarImagen(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.jpg", idExtension = 1 });
-            var res2 = logica.adjuntarAudio(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp3", idExtension = 1 });
-            var res3 = logica.adjuntarVideo(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp4", idExtension = 1 });
-
+            
 
             List<DtoRecurso> lRecurso = new List<DtoRecurso>();
             DtoRecurso dtoRecurso = new DtoRecurso() { id = recursoDisponible.Id, codigo = "recursoListarEvento" };
@@ -877,9 +872,15 @@ namespace Test.UnitTesting
             lRecursos.Add(dtoRecurso1);
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = lRecursos };
                         
-            // Sin autorizacion.
-            Assert.IsFalse(logica.adjuntarImagen(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.jpg", idExtension = 1 }));
-
+            // Sin autorizacion.            
+            try
+            {
+                logica.adjuntarImagen(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.jpg", idExtension = 1 });
+            }
+            catch (UsuarioNoAutorizadoException e)
+            {
+                Assert.IsTrue(true);
+            }
             // Loguear.
             var log = logica.loguearUsuario(token, rol);
                        
@@ -980,7 +981,14 @@ namespace Test.UnitTesting
             string token = result.accessToken;
 
             // Sin autorizacion.
-            Assert.IsFalse(logica.adjuntarAudio(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp3", idExtension = 1 }));
+            try
+            { 
+                logica.adjuntarAudio(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp3", idExtension = 1 });
+            }
+            catch (UsuarioNoAutorizadoException e)
+            {
+                Assert.IsTrue(true);
+            }
 
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
@@ -1086,11 +1094,17 @@ namespace Test.UnitTesting
             // Autenticar.
             var result = logica.autenticarUsuario("A", "A", null);
             string token = result.accessToken;
-            
+
 
             // No tengo autorizacion.
-            Assert.IsFalse(logica.adjuntarVideo(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp4", idExtension = 1 }));
-
+            try
+            {
+                logica.adjuntarVideo(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp4", idExtension = 1 });
+            }
+            catch (UsuarioNoAutorizadoException e)
+            {
+                Assert.IsTrue(true);
+            }
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
             DtoRecurso dtoRecurso1 = new DtoRecurso() { id = 1, codigo = "recurso1" };
@@ -1128,8 +1142,7 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
-
-            // Adjuntar geo ubicacion valida.
+            
             var ok = logica.adjuntarVideo(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp4", idExtension = 1 });
 
             var c = db.Videos.Count();
