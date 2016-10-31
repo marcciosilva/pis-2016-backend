@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace DataTypeObject
@@ -11,8 +12,10 @@ namespace DataTypeObject
         
         public List<DtoDescripcion> descripcion { get; set; }
 
-        public DateTime? fecha_arribo { get; set; }
+        [JsonProperty(PropertyName = "fecha_arribo")]
+        public DateTime? fechaArribo { get; set; }
 
-        public bool actualmente_asignado { get; set; }
+        [JsonProperty(PropertyName = "actualmente_asignado")]
+        public bool actualmenteAsignado { get; set; }
     }
 }

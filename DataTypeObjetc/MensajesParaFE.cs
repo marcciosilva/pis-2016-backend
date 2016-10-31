@@ -22,6 +22,7 @@
         public const string ArgumentoInvalido = "Se utilizaron argumentos invalidos.";
         public const string ZonaInvalida = "La zona indicada no es valida.";
         public const string EventoNoEnviado = "No fue posible realizar la accion deseada debido a que el evento aun no ha sido enviado.";
+        public const string CategoriaInvalida = "La categoria ingresada no es valida.";
 
         // Mensajes de error.
         public const string ErrorCerraSesion = "Ocurrio un error en el servidor al cerrar la sesion";
@@ -51,6 +52,8 @@
         public const string ErrorAbrirExtension = "Ocurrio un error al intentar abrir una extension nueva para un evento.";
         public const string ErrorCerrarExtension = "Ocurrio un error al intentar cerrar una extension de un evento.";
         public const string ErrorActualizarDescripcionDespachador = "Ocurrio un error al intentar actualizar la descripcion.";
+        public const string EventoSinZonas = "El evento debe tener almenos una zona";
+
 
         // Codigos.
         public const int CorrectoCod = 0;
@@ -71,6 +74,8 @@
         public const int UsuarioNoAutorizadoCod = 15;
         public const int ZonaInvalidaCod = 16;
         public const int EventoNoEnviadoCod = 17;
+        public const int CategoriaInvalidaCod = 18;
+        public const int EventoSinZonasCod = 19;
         public const int ImagenInvalidaCod = 101;
         public const int VideoInvalidoCod = 102;
         public const int AudioInvalidoCod = 103;

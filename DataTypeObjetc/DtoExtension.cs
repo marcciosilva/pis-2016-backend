@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace DataTypeObject
@@ -10,18 +11,23 @@ namespace DataTypeObject
         public DtoZona zona { get; set; }
 
         public string despachador { get; set; }
-        
-        public List<DtoDescripcion> descripcion_despachadores { get; set; }
 
-        public string descripcion_supervisor { get; set; }
+        [JsonProperty(PropertyName = "descripcion_despachadores")]
+        public List<DtoDescripcion> descripcionDespachadores { get; set; }
 
-        public ICollection<DtoAsignacionRecurso> asignaciones_recursos { get; set; }
+        [JsonProperty(PropertyName = "descripcion_supervisor")]
+        public string descripcionSupervisor { get; set; }
+
+        [JsonProperty(PropertyName = "asignaciones_recursos")]
+        public ICollection<DtoAsignacionRecurso> asignacionesRecursos { get; set; }
 
         public string estado { get; set; }
 
-        public DateTime time_stamp { get; set; }
+        [JsonProperty(PropertyName = "time_stamp")]
+        public DateTime timeStamp { get; set; }
 
-        public DtoCategoria segunda_categoria { get; set; }
+        [JsonProperty(PropertyName = "segunda_categoria")]
+        public DtoCategoria segundaCategoria { get; set; }
 
         public ICollection<string> recursos { get; set; }
 
@@ -31,6 +37,7 @@ namespace DataTypeObject
 
         public virtual ICollection<DtoAudio> audios { get; set; }
 
-        public virtual ICollection<DtoGeoUbicacion> geo_ubicaciones { get; set; }
+        [JsonProperty(PropertyName = "geo_ubicaciones")]
+        public virtual ICollection<DtoGeoUbicacion> geoUbicaciones { get; set; }
     }
 }

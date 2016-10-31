@@ -2,9 +2,9 @@
 
 namespace Emsys.LogicLayer.ApplicationExceptions
 {
-    public class InvalidExtensionException : Exception
+    public class CategoriaInvalidaException : Exception
     {
-        public InvalidExtensionException()
+        public CategoriaInvalidaException()
         {
         }
     }

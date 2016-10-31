@@ -186,7 +186,7 @@ namespace Emsys.LogicLayer
         /// <param name="descParam">Contiene identificador de la extension y la descripcion que se quiere agregar.</param>
         /// <param name="token">token del usuario que desea actualizar descripcion</param>
         /// <returns>Retorna la respuesta segun el documento de interfaz.</returns>
-        bool ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token);
+        bool ActualizarDescripcionRecurso(DtoActualizarDescripcion descParam, string token);
         
        /// <summary>
        /// Desconecta a los usuarios inactivos (que no han enviado keep alive) por mas de maxTime minutos.
@@ -206,7 +206,7 @@ namespace Emsys.LogicLayer
         /// Devuelve la informacin de zonas, sectores, categorias y departamentos necesaria para crear un evento.
         /// </summary>
         /// <returns></returns>
-        DtoInfoCreacionEvento getInfoCreacionEvento();
+        DtoInfoCreacionEvento getInfoCreacionEvento(string token);
 
         /// <summary>
         /// Crea un evento en el servidor.
@@ -289,7 +289,7 @@ namespace Emsys.LogicLayer
         /// <param name="token">Token del despachador</param>
         /// <param name="descr">Dto con el id de la extension y la descripcion a agregar</param>
         /// <returns>Resultado</returns>
-        bool actualizarDescripcionDespachador(string token, DtoActualizarDescripcionParametro descr);
+        bool actualizarDescripcionDespachador(string token, DtoActualizarDescripcion descr);
 
     }
 }

@@ -36,7 +36,7 @@ namespace Servicios.Controllers
                 ICollection<DtoEvento> lista = dbAL.listarEventos(token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, lista);
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
@@ -74,7 +74,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.EventoInvalidoCod, new Mensaje(MensajesParaFE.EventoInvalido));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
@@ -95,7 +95,7 @@ namespace Servicios.Controllers
         [HttpPost]
         [Route("eventos/actualizardescripcionrecurso")]
         [LogFilter]
-        public DtoRespuesta ActualizarDescripcionRecurso([FromBody] DtoActualizarDescripcionParametro descParam)
+        public DtoRespuesta ActualizarDescripcionRecurso([FromBody] DtoActualizarDescripcion descParam)
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
@@ -111,7 +111,7 @@ namespace Servicios.Controllers
                 }
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
@@ -151,7 +151,11 @@ namespace Servicios.Controllers
                 }
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (InvalidTokenException)
+            catch (ExtensionInvalidaException)
+            {
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+            }
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
@@ -180,8 +184,12 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-                var info = dbAL.getInfoCreacionEvento();
+                var info = dbAL.getInfoCreacionEvento(token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, info);
+            }
+            catch (TokenInvalidoException)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
             catch (Exception e)
             {
@@ -215,7 +223,11 @@ namespace Servicios.Controllers
                 }
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorCrearEvento));
             }
-            catch (InvalidTokenException)
+            catch (SeleccionZonasInvalidaException)
+            {
+                return new DtoRespuesta(MensajesParaFE.EventoSinZonasCod, new Mensaje(MensajesParaFE.EventoSinZonas));
+            }
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
@@ -253,11 +265,11 @@ namespace Servicios.Controllers
                 dbAL.tomarExtension(token, idExtension);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (InvalidExtensionException e)
+            catch (ExtensionInvalidaException e)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -297,11 +309,11 @@ namespace Servicios.Controllers
                 }
                 return new DtoRespuesta(MensajesParaFE.ErrorLiberarExtensionCod, new Mensaje(MensajesParaFE.ErrorLiberarExtension));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (InvalidExtensionException e)
+            catch (ExtensionInvalidaException e)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -335,11 +347,11 @@ namespace Servicios.Controllers
                 var resp = dbAL.getRecursosExtension(token, idExtension);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, resp);
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (InvalidExtensionException e)
+            catch (ExtensionInvalidaException e)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -372,11 +384,11 @@ namespace Servicios.Controllers
                 dbAL.gestionarRecursos(token, recursos);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (InvalidExtensionException e)
+            catch (ExtensionInvalidaException e)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -413,12 +425,16 @@ namespace Servicios.Controllers
                 }
                 dbAL.actualizarSegundaCategoria(token, idExtension, idCategoria);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+            }            
+            catch (CategoriaInvalidaException)
+            {
+                return new DtoRespuesta(MensajesParaFE.CategoriaInvalidaCod, new Mensaje(MensajesParaFE.CategoriaInvalida));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (InvalidExtensionException e)
+            catch (ExtensionInvalidaException e)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -451,11 +467,11 @@ namespace Servicios.Controllers
                 var zonas = dbAL.getZonasLibresEvento(token, idExtension);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, zonas);
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (InvalidExtensionException e)
+            catch (ExtensionInvalidaException e)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -489,11 +505,11 @@ namespace Servicios.Controllers
                 dbAL.abrirExtension(token, idExtension, idZona);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (InvalidExtensionException e)
+            catch (ExtensionInvalidaException e)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -531,11 +547,11 @@ namespace Servicios.Controllers
                 dbAL.cerrarExtension(token, idExtension);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (InvalidExtensionException e)
+            catch (ExtensionInvalidaException e)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -559,7 +575,7 @@ namespace Servicios.Controllers
         [HttpPost]
         [Route("eventos/actualizardescripciondespachador")]
         [LogFilter]
-        public DtoRespuesta ActualizarDescripcionDespachador([FromBody] DtoActualizarDescripcionParametro descParam)
+        public DtoRespuesta ActualizarDescripcionDespachador([FromBody] DtoActualizarDescripcion descParam)
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
@@ -572,11 +588,11 @@ namespace Servicios.Controllers
                 dbAL.actualizarDescripcionDespachador(token, descParam);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (InvalidExtensionException e)
+            catch (ExtensionInvalidaException e)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }

@@ -42,17 +42,20 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-
-                if (dbAL.adjuntarGeoUbicacion(token, ubicacion))
-                {
-                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, null);
-                }
-
-                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+                dbAL.adjuntarGeoUbicacion(token, ubicacion);
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, null);
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+            }
+            catch (ExtensionInvalidaException)
+            {
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+            }
+            catch (UsuarioNoAutorizadoException)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
             catch (Exception e)
             {
@@ -80,15 +83,8 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-                if (img == null)
-                {
-                    return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
-                }
-                if (dbAL.adjuntarImagen(token, img))
-                {
-                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
-                }
-                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+                dbAL.adjuntarImagen(token, img);              
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
                 //var request = HttpContext.Current.Request;
                 //if (request.Files.Count == 0)
                 //{
@@ -117,9 +113,25 @@ namespace Servicios.Controllers
                 //}
                 //return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
+            catch (TokenInvalidoException e)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+            }
+            catch (ExtensionInvalidaException e)
+            {
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+            }
             catch (FormatoInvalidoException e)
             {
                 return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
+            }
+            catch (ImagenInvalidaException e)
+            {
+                return new DtoRespuesta(MensajesParaFE.ErrorAdjuntarImagenCod, new Mensaje(MensajesParaFE.ErrorAdjuntarImagen));
+            }
+            catch (UsuarioNoAutorizadoException e)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
             catch (Exception e)
             {
@@ -147,46 +159,28 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-                if (aud == null)
-                {
-                    return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
-                }
-                if (dbAL.adjuntarAudio(token, aud))
-                {
-                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
-                }
+                dbAL.adjuntarAudio(token, aud);
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+            }
+            catch (TokenInvalidoException e)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+            }
+            catch (ExtensionInvalidaException e)
+            {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
-                //var request = HttpContext.Current.Request;
-                //if (request.Files.Count == 0)
-                //{
-                //    return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
-                //}
-                //var postedFile = request.Files[0];
-                //string ext = Path.GetExtension(postedFile.FileName);
-                //if ((ext != ".mp3") && (ext != ".wav"))
-                //{
-                //    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
-                //}
-                //string[] idExtension = request.Params.GetValues("idExtension");
-                //if (idExtension.Count() == 0)
-                //{
-                //    return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
-                //}
-                //byte[] bytesAudio;
-                //using (MemoryStream ms = new MemoryStream())
-                //{
-                //    postedFile.InputStream.CopyTo(ms);
-                //    bytesAudio = ms.ToArray();
-                //}
-                //if (dbAL.adjuntarAudio(token, bytesAudio, ext, Int32.Parse(idExtension[0])))
-                //{
-                //    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
-                //}
-                //return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
             catch (FormatoInvalidoException e)
             {
                 return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
+            }
+            catch (AudioInvalidoException e)
+            {
+                return new DtoRespuesta(MensajesParaFE.ErrorAdjuntarAudioCod, new Mensaje(MensajesParaFE.ErrorAdjuntarAudio));
+            }
+            catch (UsuarioNoAutorizadoException e)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
             catch (Exception e)
             {
@@ -214,46 +208,28 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-                if (vid == null)
-                {
-                    return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
-                }
-                if (dbAL.adjuntarVideo(token, vid))
-                {
-                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
-                }
+                dbAL.adjuntarVideo(token, vid);
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));                
+            }
+            catch (TokenInvalidoException e)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+            }
+            catch (ExtensionInvalidaException e)
+            {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
-                //var request = HttpContext.Current.Request;
-                //if (request.Files.Count == 0)
-                //{
-                //    return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
-                //}
-                //var postedFile = request.Files[0];
-                //string ext = Path.GetExtension(postedFile.FileName);
-                //if ((ext != ".mp4") && (ext != ".avi"))
-                //{
-                //    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
-                //}
-                //string[] idExtension = request.Params.GetValues("idExtension");
-                //if (idExtension.Count() == 0)
-                //{
-                //    return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
-                //}
-                //byte[] bytesVideo;
-                //using (MemoryStream ms = new MemoryStream())
-                //{
-                //    postedFile.InputStream.CopyTo(ms);
-                //    bytesVideo = ms.ToArray();
-                //}
-                //if (dbAL.adjuntarVideo(token, bytesVideo, ext, Int32.Parse(idExtension[0])))
-                //{
-                //    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
-                //}
-                //return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
             catch (FormatoInvalidoException e)
             {
                 return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
+            }
+            catch (VideoInvalidoException e)
+            {
+                return new DtoRespuesta(MensajesParaFE.ErrorAdjuntarVideoCod, new Mensaje(MensajesParaFE.ErrorAdjuntarVideo));
+            }
+            catch (UsuarioNoAutorizadoException e)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
             catch (Exception e)
             {
@@ -289,7 +265,7 @@ namespace Servicios.Controllers
                 {    
                     return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
                 }
-                //var stream = new MemoryStream(img.file_data);
+                //var stream = new MemoryStream(img.fileData);
                 //responseMessage.Content = new StreamContent(stream);
                 //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
                 //responseMessage.Content.Headers.ContentDisposition.FileName = img.nombre;
@@ -306,7 +282,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
@@ -343,7 +319,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.VideoInvalidoCod, new Mensaje(MensajesParaFE.VideoInvalido));
                 }
-                //var stream = new MemoryStream(vid.file_data);
+                //var stream = new MemoryStream(vid.fileData);
                 //responseMessage.Content = new StreamContent(stream);
                 //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
                 //responseMessage.Content.Headers.ContentDisposition.FileName = vid.nombre;
@@ -359,7 +335,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
@@ -396,7 +372,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.AudioInvalidoCod, new Mensaje(MensajesParaFE.AudioInvalido));
                 }
-                //var stream = new MemoryStream(aud.file_data);
+                //var stream = new MemoryStream(aud.fileData);
                 //responseMessage.Content = new StreamContent(stream);
                 //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
                 //responseMessage.Content.Headers.ContentDisposition.FileName = aud.nombre;
@@ -413,7 +389,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }

@@ -37,7 +37,7 @@ namespace Test.UnitTesting
                     logica.autenticarUsuario("usuarioPruebaAutenticar", "incorrecto", null);
                     Assert.Fail();
                 }
-                catch (InvalidCredentialsException)
+                catch (CredencialesInvalidasException)
                 {
                     Assert.IsTrue(true);
                 }
@@ -47,7 +47,7 @@ namespace Test.UnitTesting
                     var result = logica.autenticarUsuario("usuarioPruebaAutenticar", "usuarioPruebaAutenticar", null);
                     Assert.IsNotNull(result);
                 }
-                catch (InvalidCredentialsException)
+                catch (CredencialesInvalidasException)
                 {
                     Assert.Fail();
                 }
@@ -91,7 +91,7 @@ namespace Test.UnitTesting
                 context.SaveChanges();
 
                 var autent = logica.autenticarUsuario("usuario", "pruebapass", null);
-                string token = autent.access_token;
+                string token = autent.accessToken;
 
                 string[] etiqueta1 = { "permisoFalso" };
                 Assert.IsFalse(logica.autorizarUsuario(token, etiqueta1));
@@ -138,7 +138,7 @@ namespace Test.UnitTesting
 
                 // Obtengo token de usuario. 
                 var autent = logica.autenticarUsuario("usuarioPruebaRecurso", "usuarioPruebaRecurso", null);
-                string token = autent.access_token;
+                string token = autent.accessToken;
 
                 // Recurso seleccionable por el usuario y disponible.
                 List<DtoRecurso> lRecurso = new List<DtoRecurso>();
@@ -150,7 +150,7 @@ namespace Test.UnitTesting
                 {
                     logica.loguearUsuario(null, rol);
                 }
-                catch (InvalidTokenException e)
+                catch (TokenInvalidoException e)
                 {
                     Assert.IsTrue(true);
                 }
@@ -159,7 +159,7 @@ namespace Test.UnitTesting
                 {
                     logica.loguearUsuario("tokenIncorrecto", rol);
                 }
-                catch (InvalidTokenException e)
+                catch (TokenInvalidoException e)
                 {
                     Assert.IsTrue(true);
                 }
@@ -178,7 +178,7 @@ namespace Test.UnitTesting
 
                 // Pruebo loguearme con otro usuario que tenga el mismo recurso asignado
                 var autent2 = logica.autenticarUsuario("usuarioPruebaRecursoNoDisponible", "usuarioPruebaRecursoNoDisponible", null);
-                string token2 = autent.access_token;
+                string token2 = autent.accessToken;
                 try
                 {
                     logica.loguearUsuario(token, rol);
@@ -255,7 +255,7 @@ namespace Test.UnitTesting
 
                 // Obtengo token de usuario. 
                 var autent = logica.autenticarUsuario("usuarioPruebaZonas", "usuarioPruebaZonas", null);
-                string token = autent.access_token;
+                string token = autent.accessToken;
 
                 // Usuario pertenece a todas las unidades ejecutoras de las zonas.
                 List<DtoZona> lZonas = new List<DtoZona>();
@@ -321,13 +321,13 @@ namespace Test.UnitTesting
 
                 // Obtengo token de usuario. 
                 var autent = logica.autenticarUsuario("usuarioPruebaCerrarSesion", "usuarioPruebaCerrarSesion", null);
-                string token = autent.access_token;
+                string token = autent.accessToken;
 
                 try
                 {
                     logica.cerrarSesion(null);
                 }
-                catch (InvalidTokenException e)
+                catch (TokenInvalidoException e)
                 {
                     Assert.IsTrue(true);
                 }
@@ -336,7 +336,7 @@ namespace Test.UnitTesting
                 {
                     logica.cerrarSesion("tokenIncorrecto");
                 }
-                catch (InvalidTokenException e)
+                catch (TokenInvalidoException e)
                 {
                     Assert.IsTrue(true);
                 }
@@ -400,7 +400,7 @@ namespace Test.UnitTesting
 
                 // Obtengo token de usuario. 
                 var autent = logica.autenticarUsuario("usuarioPruebaZonasCerrarSesion", "usuarioPruebaZonasCerrarSesion", null);
-                string token = autent.access_token;
+                string token = autent.accessToken;
 
                 // Usuario pertenece a todas las unidades ejecutoras de las zonas.
                 List<DtoZona> lZonas = new List<DtoZona>();
@@ -519,7 +519,7 @@ namespace Test.UnitTesting
 
                 // Obtengo token de usuario. 
                 var autent = logica.autenticarUsuario("usuarioDE", "usuarioDE", null);
-                string token = autent.access_token;
+                string token = autent.accessToken;
 
                 List<DtoRecurso> lRecurso = new List<DtoRecurso>();
                 DtoRecurso dtoRecurso = new DtoRecurso() { id = recursoDisponible.Id, codigo = "recursoListarEvento" };
@@ -530,7 +530,7 @@ namespace Test.UnitTesting
                 {
                     logica.verInfoEvento(null, 1);
                 }
-                catch (InvalidTokenException e)
+                catch (TokenInvalidoException e)
                 {
                     Assert.IsTrue(true);
                 }
@@ -539,7 +539,7 @@ namespace Test.UnitTesting
                 {
                     logica.verInfoEvento("tokenIncorrecto", 1);
                 }
-                catch (InvalidTokenException e)
+                catch (TokenInvalidoException e)
                 {
                     Assert.IsTrue(true);
                 }
@@ -550,7 +550,7 @@ namespace Test.UnitTesting
                     DtoExtension dtoExt = dtoEvento.extensiones.FirstOrDefault();
 
                     // Compruebo que existan los 3 dtoDescripcion
-                    Assert.AreEqual(dtoExt.descripcion_despachadores.Count, 3);
+                    Assert.AreEqual(dtoExt.descripcionDespachadores.Count, 3);
 
                     // Comrpuebo que los dtos tengan el texto correspondiente
                     DateTime fecha1 = DateTime.Parse("2016/07/23 21:30:00");
@@ -558,7 +558,7 @@ namespace Test.UnitTesting
                     DateTime fecha3 = DateTime.Parse("2016/07/24 10:37:00");
                     for (int i = 0; i < 3; i++)
                     {
-                        DtoDescripcion dtoDesc = dtoExt.descripcion_despachadores.ElementAt(i);
+                        DtoDescripcion dtoDesc = dtoExt.descripcionDespachadores.ElementAt(i);
                         switch (i)
                         {
                             case 0:
@@ -684,7 +684,7 @@ namespace Test.UnitTesting
 
             // Obtengo token de usuario. 
             var autent = logica.autenticarUsuario("usuarioListarEventoRecurso", "usuarioListarEventoRecurso", null);
-            string token = autent.access_token;
+            string token = autent.accessToken;
 
             // Se prueba que se listen las extensiones asociadas a un recurso
             recursoDisponible.Extensiones_Eventos.Add(ext1);
@@ -699,9 +699,9 @@ namespace Test.UnitTesting
             }
 
             // Agrego Multimedia.
-            var res1 = logica.adjuntarImagen(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.jpg", idExtension = 1 });
-            var res2 = logica.adjuntarAudio(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp3", idExtension = 1 });
-            var res3 = logica.adjuntarVideo(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp4", idExtension = 1 });
+            var res1 = logica.adjuntarImagen(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.jpg", idExtension = 1 });
+            var res2 = logica.adjuntarAudio(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp3", idExtension = 1 });
+            var res3 = logica.adjuntarVideo(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp4", idExtension = 1 });
 
 
             List<DtoRecurso> lRecurso = new List<DtoRecurso>();
@@ -713,7 +713,7 @@ namespace Test.UnitTesting
             {
                 logica.listarEventos(null);
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -722,7 +722,7 @@ namespace Test.UnitTesting
             {
                 logica.listarEventos("tokenIncorrecto");
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -736,7 +736,7 @@ namespace Test.UnitTesting
             logica.cerrarSesion(token);
             context = new EmsysContext();
             autent = logica.autenticarUsuario("usuarioListarEventoRecurso", "usuarioListarEventoRecurso", null);
-            token = autent.access_token;
+            token = autent.accessToken;
             List<DtoZona> _zonas = new List<DtoZona>();
             var userZ = context.Users.FirstOrDefault(uz => uz.NombreLogin == "usuarioListarEventoRecurso");
             userZ.Zonas.Add(context.Zonas.FirstOrDefault());
@@ -806,7 +806,7 @@ namespace Test.UnitTesting
 
             // Autenticar.
             var result = logica.autenticarUsuario("A", "A", null);
-            string token = result.access_token;
+            string token = result.accessToken;
 
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
@@ -822,7 +822,7 @@ namespace Test.UnitTesting
             {
                 logica.adjuntarGeoUbicacion(null, new DtoGeoUbicacion() { idExtension = 1, latitud = 12, longitud = 120 });
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -832,7 +832,7 @@ namespace Test.UnitTesting
             {
                 logica.adjuntarGeoUbicacion("estoesuntokeninvalido", new DtoGeoUbicacion() { idExtension = 1, latitud = 12, longitud = 120 });
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -869,7 +869,7 @@ namespace Test.UnitTesting
 
             // Autenticar.
             var result = logica.autenticarUsuario("A", "A", null);
-            string token = result.access_token;
+            string token = result.accessToken;
 
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
@@ -878,7 +878,7 @@ namespace Test.UnitTesting
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = lRecursos };
                         
             // Sin autorizacion.
-            Assert.IsFalse(logica.adjuntarImagen(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.jpg", idExtension = 1 }));
+            Assert.IsFalse(logica.adjuntarImagen(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.jpg", idExtension = 1 }));
 
             // Loguear.
             var log = logica.loguearUsuario(token, rol);
@@ -886,9 +886,9 @@ namespace Test.UnitTesting
             // Sin token.
             try
             {
-                logica.adjuntarImagen(null, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.jpg", idExtension = 1 });
+                logica.adjuntarImagen(null, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.jpg", idExtension = 1 });
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -896,15 +896,15 @@ namespace Test.UnitTesting
             // Token invalido.
             try
             {
-                logica.adjuntarImagen("tokenIncorrecto", new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.jpg", idExtension = 1 });
+                logica.adjuntarImagen("tokenIncorrecto", new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.jpg", idExtension = 1 });
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
 
             // Adjuntar imagen ubicacion valida.
-            var ok = logica.adjuntarImagen(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.jpg", idExtension = 1 });
+            var ok = logica.adjuntarImagen(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.jpg", idExtension = 1 });
 
             var c = db.Imagenes.Count();
             var c2 = db.ApplicationFiles.Count();
@@ -920,7 +920,7 @@ namespace Test.UnitTesting
             {
                 logica.getImageData(null, 1);
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -930,7 +930,7 @@ namespace Test.UnitTesting
             {
                 logica.getImageData("tokenIncorrecto", 1);
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -977,10 +977,10 @@ namespace Test.UnitTesting
 
             // Autenticar.
             var result = logica.autenticarUsuario("A", "A", null);
-            string token = result.access_token;
+            string token = result.accessToken;
 
             // Sin autorizacion.
-            Assert.IsFalse(logica.adjuntarAudio(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp3", idExtension = 1 }));
+            Assert.IsFalse(logica.adjuntarAudio(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp3", idExtension = 1 }));
 
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
@@ -994,9 +994,9 @@ namespace Test.UnitTesting
             // Sin token.
             try
             {
-                logica.adjuntarAudio(null, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp3", idExtension = 1 });
+                logica.adjuntarAudio(null, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp3", idExtension = 1 });
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1004,15 +1004,15 @@ namespace Test.UnitTesting
             // Token invalido.
             try
             {
-                logica.adjuntarAudio("tokenIncorrecto", new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp3", idExtension = 1 });
+                logica.adjuntarAudio("tokenIncorrecto", new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp3", idExtension = 1 });
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
 
             // Adjuntar geo ubicacion valida.
-            var ok = logica.adjuntarAudio(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp3", idExtension = 1 });
+            var ok = logica.adjuntarAudio(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp3", idExtension = 1 });
 
             var c = db.Audios.Count();
             var c2 = db.ApplicationFiles.Count();
@@ -1028,7 +1028,7 @@ namespace Test.UnitTesting
             {
                 logica.getAudioData(null, 1);
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1038,7 +1038,7 @@ namespace Test.UnitTesting
             {
                 logica.getAudioData("tokenIncorrecto", 1);
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1085,11 +1085,11 @@ namespace Test.UnitTesting
 
             // Autenticar.
             var result = logica.autenticarUsuario("A", "A", null);
-            string token = result.access_token;
+            string token = result.accessToken;
             
 
             // No tengo autorizacion.
-            Assert.IsFalse(logica.adjuntarVideo(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp4", idExtension = 1 }));
+            Assert.IsFalse(logica.adjuntarVideo(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp4", idExtension = 1 }));
 
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
@@ -1103,9 +1103,9 @@ namespace Test.UnitTesting
             // Sin token.
             try
             {
-                logica.adjuntarVideo(null, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp4", idExtension = 1 });
+                logica.adjuntarVideo(null, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp4", idExtension = 1 });
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1113,15 +1113,24 @@ namespace Test.UnitTesting
             // Token invalido.
             try
             {
-                logica.adjuntarVideo("tokenIncorrecto", new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp4", idExtension = 1 });
+                logica.adjuntarVideo("tokenIncorrecto", new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp4", idExtension = 1 });
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Formato invalido.
+            try
+            {
+                logica.adjuntarVideo(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp3", idExtension = 1 });
+            }
+            catch (FormatoInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
 
             // Adjuntar geo ubicacion valida.
-            var ok = logica.adjuntarVideo(token, new DtoApplicationFile() { file_data = new byte[0], nombre = "algo.mp4", idExtension = 1 });
+            var ok = logica.adjuntarVideo(token, new DtoApplicationFile() { fileData = new byte[0], nombre = "algo.mp4", idExtension = 1 });
 
             var c = db.Videos.Count();
             var c2 = db.ApplicationFiles.Count();
@@ -1138,7 +1147,7 @@ namespace Test.UnitTesting
             {
                 logica.getVideoData(null, 1);
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1148,7 +1157,7 @@ namespace Test.UnitTesting
             {
                 logica.getVideoData("tokenIncorrecto", 1);
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1197,7 +1206,7 @@ namespace Test.UnitTesting
             {
                 dbAL.keepMeAlive(null);
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1206,7 +1215,7 @@ namespace Test.UnitTesting
             {
                 dbAL.keepMeAlive("tokenIncorrecto");
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1216,7 +1225,7 @@ namespace Test.UnitTesting
 
             Thread.Sleep(1000);
 
-            bool ok = dbAL.keepMeAlive(result.access_token);
+            bool ok = dbAL.keepMeAlive(result.accessToken);
             db = new EmsysContext();
             var time2 = db.Users.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal.Value;
 
@@ -1249,7 +1258,7 @@ namespace Test.UnitTesting
 
             dbAL.desconectarAusentes(10);
             var result2 = dbAL.autenticarUsuario("A", "A", null);
-            Assert.IsTrue(result2.access_token != null);
+            Assert.IsTrue(result2.accessToken != null);
 
             db = new EmsysContext();
 
@@ -1261,7 +1270,7 @@ namespace Test.UnitTesting
             workerThread.Start();
             Thread.Sleep(1000);
             var result3 = dbAL.autenticarUsuario("A", "A", null);
-            Assert.IsTrue(result3.access_token != null);
+            Assert.IsTrue(result3.accessToken != null);
         }
 
 
@@ -1283,7 +1292,7 @@ namespace Test.UnitTesting
 
             // Autenticar.
             var result = logica.autenticarUsuario("A", "A", null);
-            string token = result.access_token;
+            string token = result.accessToken;
 
             // Elegir roles.
             List<DtoZona> lZonas = new List<DtoZona>();
@@ -1331,7 +1340,7 @@ namespace Test.UnitTesting
             Assert.AreEqual(dto.id, 1);
             Assert.AreNotEqual(dto.id_imagen,0);
             Assert.AreEqual(dto.usuario, db.Users.FirstOrDefault().Nombre);
-            Assert.AreNotEqual(dto.fecha_envio, null);
+            Assert.AreNotEqual(dto.fechaEnvio, null);
         }
 
         /// <summary>
@@ -1354,9 +1363,9 @@ namespace Test.UnitTesting
             db = new EmsysContext();
             DtoAudio dto = DtoGetters.getDtoAudio(db.Audios.FirstOrDefault());
             Assert.AreEqual(dto.id, 1);
-            Assert.AreNotEqual(dto.id_audio,0);
+            Assert.AreNotEqual(dto.idAudio,0);
             Assert.AreEqual(dto.usuario, db.Users.FirstOrDefault().Nombre);
-            Assert.AreNotEqual(dto.fecha_envio, null);
+            Assert.AreNotEqual(dto.fechaEnvio, null);
         }
 
 
@@ -1380,9 +1389,9 @@ namespace Test.UnitTesting
             db = new EmsysContext();
             DtoVideo dto = DtoGetters.getDtoVideo(db.Videos.FirstOrDefault());
             Assert.AreEqual(dto.id, 1);
-            Assert.AreNotEqual(dto.id_video, 0);
+            Assert.AreNotEqual(dto.idVideo, 0);
             Assert.AreEqual(dto.usuario, db.Users.FirstOrDefault().Nombre);
-            Assert.AreNotEqual(dto.fecha_envio, null);
+            Assert.AreNotEqual(dto.fechaEnvio, null);
         }
         
      
@@ -1403,10 +1412,10 @@ namespace Test.UnitTesting
 
             // Autenticar.
             var result = logica.autenticarUsuario("A", "A", null);
-            string token = result.access_token;
+            string token = result.accessToken;
 
             // La actualizacion.
-            var dto = new DtoActualizarDescripcionParametro() { descripcion = "hola", idExtension = 1 };
+            var dto = new DtoActualizarDescripcion() { descripcion = "hola", idExtension = 1 };
 
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
@@ -1422,7 +1431,7 @@ namespace Test.UnitTesting
             {
                 logica.ActualizarDescripcionRecurso(dto, null);
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1432,7 +1441,7 @@ namespace Test.UnitTesting
             {
                 logica.ActualizarDescripcionRecurso(dto ,"tokenIncorrecto");
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1466,7 +1475,7 @@ namespace Test.UnitTesting
 
             // Autenticar.
             var result = logica.autenticarUsuario("A", "A", null);
-            string token = result.access_token;
+            string token = result.accessToken;
             
             // Elegir roles.
             List<DtoRecurso> lRecursos = new List<DtoRecurso>();
@@ -1483,7 +1492,7 @@ namespace Test.UnitTesting
             {
                 logica.reportarHoraArribo(null, 1);
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1493,7 +1502,7 @@ namespace Test.UnitTesting
             {
                 logica.reportarHoraArribo("tokenIncorrecto", 1);
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1550,12 +1559,12 @@ namespace Test.UnitTesting
 
             // Autenticar.
             var result = logica.autenticarUsuario("A", "A", null);
-            string token = result.access_token;
+            string token = result.accessToken;
 
 
-            DtoInfoCreacionEvento info = logica.getInfoCreacionEvento();
+            DtoInfoCreacionEvento info = logica.getInfoCreacionEvento(token);
             List<int> idZonas = new List<int>();
-            idZonas.Add(info.zonas_sectores.FirstOrDefault().id);
+            idZonas.Add(info.zonasSectores.FirstOrDefault().id);
             DtoEvento ev = new DtoEvento()
             {
                 informante = "Informante",
@@ -1565,13 +1574,13 @@ namespace Test.UnitTesting
                 calle = "calle evento",
                 esquina = "esquina evento",
                 numero = "110",
-                id_departamento = info.departamentos.FirstOrDefault().id,
-                id_sector = info.zonas_sectores.FirstOrDefault().sectores.FirstOrDefault().id,
+                idDepartamento = info.departamentos.FirstOrDefault().id,
+                idSector = info.zonasSectores.FirstOrDefault().sectores.FirstOrDefault().id,
                 longitud = 19.95,
                 latitud = 666.6,
                 descripcion = "Este es un evento de prueba",
-                en_proceso = false,
-                id_zonas = idZonas
+                enProceso = false,
+                idZonas = idZonas
             };
              
             // Sin token.
@@ -1579,7 +1588,7 @@ namespace Test.UnitTesting
             {
                 logica.crearEvento(null, ev);
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1589,7 +1598,7 @@ namespace Test.UnitTesting
             {
                 logica.crearEvento("tokenIncorrecto", ev);
             }
-            catch (InvalidTokenException e)
+            catch (TokenInvalidoException e)
             {
                 Assert.IsTrue(true);
             }
@@ -1602,6 +1611,18 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+            // Sin zonas.
+            try
+            {
+                ev.idZonas = new List<int>();
+                logica.crearEvento(token, ev);
+            }
+            catch (SeleccionZonasInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            ev.idZonas = idZonas;
 
             // Crea evento valido.
             var ok = logica.crearEvento(token, ev);
@@ -1630,7 +1651,7 @@ namespace Test.UnitTesting
 
             // Autenticar.
             var result = logic.autenticarUsuario("A", "A", null);
-            string token = result.access_token;
+            string token = result.accessToken;
 
             // Elegir roles.
             List<DtoZona> lZonas = new List<DtoZona>();
@@ -1642,11 +1663,69 @@ namespace Test.UnitTesting
             // Loguear.
             var log = logic.loguearUsuario(token, rol);
 
+            // Sin token.
+            try
+            {
+                logic.tomarExtension(null, 1);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Token invalido.
+            try
+            {
+                logic.tomarExtension("tokenIncorrecto", 1);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Extension invalida.
+            try
+            {
+                logic.tomarExtension(token, -1);
+            }
+            catch (ExtensionInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
+
             var ok = logic.tomarExtension(token, 1);
             Assert.IsTrue(ok);
             db = new EmsysContext();
             Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().Estado == EstadoExtension.Despachado);
             Assert.IsTrue(db.Users.FirstOrDefault(u => u.NombreLogin == "A").Despachando.Count() == 1);
+
+            // Sin token.
+            try
+            {
+                logic.liberarExtension(null, 1);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            // Token invalido.
+            try
+            {
+                logic.liberarExtension("tokenIncorrecto", 1);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Extension invalida.
+            try
+            {
+                logic.liberarExtension(token, -1);
+            }
+            catch (ExtensionInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
 
             var ok2 = logic.liberarExtension(token, 1);
             Assert.IsTrue(ok2);
@@ -1672,7 +1751,7 @@ namespace Test.UnitTesting
 
             // Autenticar.
             var result = logic.autenticarUsuario("A", "A", null);
-            string token = result.access_token;
+            string token = result.accessToken;
 
             // Elegir roles.
             List<DtoZona> lZonas = new List<DtoZona>();
@@ -1685,6 +1764,34 @@ namespace Test.UnitTesting
             var log = logic.loguearUsuario(token, rol);
 
             var ok = logic.tomarExtension(token, 1);
+
+            // Sin token.
+            try
+            {
+                logic.getRecursosExtension(null, 1);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Token invalido.
+            try
+            {
+                logic.getRecursosExtension("tokenIncorrecto", 1);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Extension invalida.
+            try
+            {
+                logic.getRecursosExtension(token, -1);
+            }
+            catch (ExtensionInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
 
             Assert.AreEqual(db.Extensiones_Evento.FirstOrDefault().AsignacionesRecursos.Count(), 1);
             var result2 = logic.getRecursosExtension(token, 1);
@@ -1702,6 +1809,44 @@ namespace Test.UnitTesting
             // Quita r1 de la extension.
             result2.recursosNoAsignados.Clear();
             result2.recursosNoAsignados.Add(r1);
+
+
+            // Sin token.
+            try
+            {
+                logic.gestionarRecursos(null, result2);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Token invalido.
+            try
+            {
+                logic.gestionarRecursos("tokenIncorrecto", result2);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Extension invalida.
+            try
+            {
+                logic.gestionarRecursos(token, null);
+            }
+            catch (ArgumentoInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Extension invalida.
+            try
+            {
+                logic.gestionarRecursos(token, new DtoRecursosExtension() { idExtension = -1, recursosAsignados = new List<DtoRecurso>(), recursosNoAsignados = new List<DtoRecurso>()});
+            }
+            catch (ExtensionInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
 
             var result3 = logic.gestionarRecursos(token, result2);            
             Assert.IsTrue(result3);
@@ -1742,7 +1887,7 @@ namespace Test.UnitTesting
 
             // Autenticar.
             var result = logic.autenticarUsuario("A", "A", null);
-            string token = result.access_token;
+            string token = result.accessToken;
 
             // Elegir roles.
             List<DtoZona> lZonas = new List<DtoZona>();
@@ -1755,6 +1900,43 @@ namespace Test.UnitTesting
             var log = logic.loguearUsuario(token, rol);
 
             var ok = logic.tomarExtension(token, 1);
+
+            // Sin token.
+            try
+            {
+                logic.actualizarSegundaCategoria(null, 1, 1);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Token invalido.
+            try
+            {
+                logic.actualizarSegundaCategoria("tokenIncorrecto", 1, 1);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Extension invalida.
+            try
+            {
+                logic.actualizarSegundaCategoria(token, -1, 1);
+            }
+            catch (ExtensionInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Categoria invalida.
+            try
+            {
+                logic.actualizarSegundaCategoria(token, 1, 0);
+            }
+            catch (CategoriaInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
 
             Categoria cat1 = db.Extensiones_Evento.FirstOrDefault().SegundaCategoria;
             Assert.IsTrue(cat1 == null);
@@ -1795,7 +1977,7 @@ namespace Test.UnitTesting
 
             // Autenticar.
             var result = logic.autenticarUsuario("A", "A", null);
-            string token = result.access_token;
+            string token = result.accessToken;
 
             // Elegir roles.
             List<DtoZona> lZonas = new List<DtoZona>();
@@ -1809,9 +1991,75 @@ namespace Test.UnitTesting
 
             var ok = logic.tomarExtension(token, 1);
 
+            // Sin token.
+            try
+            {
+                logic.getZonasLibresEvento(null, 1);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Token invalido.
+            try
+            {
+                logic.getZonasLibresEvento("tokenIncorrecto", 1);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Extension invalida.
+            try
+            {
+                logic.getZonasLibresEvento(token, -1);
+            }
+            catch (ExtensionInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
+
             int cantPrevia = db.Evento.FirstOrDefault(e => e.Id == 1).ExtensionesEvento.Count();
             ICollection<DtoZona> zonas = logic.getZonasLibresEvento(token, 1);
             Assert.IsTrue(zonas.Count() > 0);
+
+            // Sin token.
+            try
+            {
+                logic.abrirExtension(null, 1, zonas.FirstOrDefault().id);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Token invalido.
+            try
+            {
+                logic.abrirExtension("tokenIncorrecto", 1, zonas.FirstOrDefault().id);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Extension invalida.
+            try
+            {
+                logic.abrirExtension(token, -1, zonas.FirstOrDefault().id);
+            }
+            catch (ExtensionInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Zona invalida.
+            try
+            {
+                logic.abrirExtension(token, 1, -1);
+            }
+            catch (ZonaInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
+
             bool ok2 = logic.abrirExtension(token, 1, zonas.FirstOrDefault().id);
             Assert.IsTrue(ok2);
             db = new EmsysContext();
@@ -1819,7 +2067,39 @@ namespace Test.UnitTesting
             Assert.IsTrue(db.Evento.FirstOrDefault().ExtensionesEvento.ToArray()[cantPrevia].Zona.Id == zonas.FirstOrDefault().id);
 
             int idExtNueva = db.Extensiones_Evento.Max(e => e.Id);
+            db.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtNueva).Recursos.Add(db.Recursos.FirstOrDefault());
+            db.SaveChanges();
             var ok5 = logic.tomarExtension(token, idExtNueva);
+
+            // Sin token.
+            try
+            {
+                logic.cerrarExtension(null, idExtNueva);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Token invalido.
+            try
+            {
+                logic.cerrarExtension("tokenIncorrecto", idExtNueva);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Extension invalida.
+            try
+            {
+                logic.cerrarExtension(token, -1);
+            }
+            catch (ExtensionInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+
             var ok3 = logic.cerrarExtension(token, idExtNueva);
             Assert.IsTrue(ok);
             db = new EmsysContext();
@@ -1846,7 +2126,7 @@ namespace Test.UnitTesting
 
             // Autenticar.
             var result = logic.autenticarUsuario("A", "A", null);
-            string token = result.access_token;
+            string token = result.accessToken;
 
             // Elegir roles.
             List<DtoZona> lZonas = new List<DtoZona>();
@@ -1859,16 +2139,45 @@ namespace Test.UnitTesting
             var log = logic.loguearUsuario(token, rol);
 
             var ok = logic.tomarExtension(token, 1);
-
+                        
             var previo = logic.verInfoEvento(token, 1);
-            int cantPrevia = previo.extensiones.FirstOrDefault().descripcion_despachadores.Count();
-            DtoActualizarDescripcionParametro descr = new DtoActualizarDescripcionParametro() { idExtension = 1, descripcion = "pruebaDescrDesp" };
+            int cantPrevia = previo.extensiones.FirstOrDefault().descripcionDespachadores.Count();
+            DtoActualizarDescripcion descr = new DtoActualizarDescripcion() { idExtension = 1, descripcion = "pruebaDescrDesp" };
+            
+            // Sin token.
+            try
+            {
+                logic.actualizarDescripcionDespachador(null, descr);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Token invalido.
+            try
+            {
+                logic.actualizarDescripcionDespachador("tokenIncorrecto", descr);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Extension invalida.
+            try
+            {
+                logic.actualizarDescripcionDespachador(token, new DtoActualizarDescripcion() { idExtension = -1, descripcion = "cosas"});
+            }
+            catch (ExtensionInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
+                        
             var ok2 = logic.actualizarDescripcionDespachador(token, descr);
             Assert.IsTrue(ok2);
             var post = logic.verInfoEvento(token, 1);
-            var cantPost = post.extensiones.FirstOrDefault().descripcion_despachadores.Count();
+            var cantPost = post.extensiones.FirstOrDefault().descripcionDespachadores.Count();
             Assert.AreEqual(cantPost, cantPrevia + 1);
-            Assert.AreEqual(post.extensiones.FirstOrDefault().descripcion_despachadores.ToArray()[cantPrevia].descripcion, "pruebaDescrDesp");
+            Assert.AreEqual(post.extensiones.FirstOrDefault().descripcionDespachadores.ToArray()[cantPrevia].descripcion, "pruebaDescrDesp");
 
             var ok4 = logic.liberarExtension(token, 1);
             logic.cerrarSesion(token);
@@ -1890,9 +2199,9 @@ namespace Test.UnitTesting
             }
             try
             {
-                throw new InvalidExtensionException();
+                throw new ExtensionInvalidaException();
             }
-            catch (InvalidExtensionException e)
+            catch (ExtensionInvalidaException e)
             {
             }
         }

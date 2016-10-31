@@ -1,10 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace DataTypeObject
 {
     public class DtoInfoCreacionEvento
     {
-        public ICollection<DtoZona> zonas_sectores { get; set; }
+        [JsonProperty(PropertyName = "zonas_sectores")]
+        public ICollection<DtoZona> zonasSectores { get; set; }
 
         public ICollection<DtoCategoria> categorias { get; set; }
 

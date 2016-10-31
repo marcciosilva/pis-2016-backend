@@ -21,18 +21,11 @@ namespace Emsys.LogicLayer
                 // Si el usuario o contraseña son incorrectos.
                 if ((user == null) || ((user.Contraseña != Passwords.GetSHA1(password))))
                 {
-                    throw new InvalidCredentialsException();
+                    throw new CredencialesInvalidasException();
                 }
-                // Si el usuario ya tiene una sesion activa.
-                if (user.Token != null)
+                // Si el usuario ya tiene una sesion activa y no corresponde al usuario que intenta loguearse.
+                if ((user.Token != null) && (user.Token != token))
                 {
-                    // Si el usuario intenta recuperar su sesion.
-                    if (user.Token == token)
-                    {
-                        user.UltimoSignal = DateTime.Now;
-                        context.SaveChanges();
-                        return new DtoAutenticacion(token, MensajesParaFE.Correcto);
-                    }
                     throw new SesionActivaException();
                 }
                
@@ -62,14 +55,14 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 // Si no encuentra el token.
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 // Agrega las zonas disponibles para el usuario mediante sus unidades ejecutoras.
                 ICollection<DtoZona> zonas = new List<DtoZona>();
@@ -107,7 +100,7 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
@@ -160,12 +153,12 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 // Si el usuario se loguea por recurso.
@@ -248,13 +241,13 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 List<DtoEvento> eventos = new List<DtoEvento>();
                 List<int> eventosAgregados = new List<int>();
@@ -296,12 +289,12 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 // Retira las zonas y recursos asociadas al usuario.
                 user.Zonas.Clear();
@@ -539,12 +532,12 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 Evento evento = context.Evento.FirstOrDefault(e => e.Id == idEvento);
                 if (!TieneAcceso.tieneVisionEvento(user, evento))
@@ -561,17 +554,21 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == ubicacion.idExtension);
+                if (ext == null)
+                {
+                    throw new ExtensionInvalidaException();
+                }
                 if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user,ext)))
-                {                    
-                    return false;
+                {
+                    throw new UsuarioNoAutorizadoException();
                 }
                 GeoUbicacion geoU = new GeoUbicacion() { Usuario = user, FechaEnvio = DateTime.Now, Latitud = ubicacion.latitud, Longitud = ubicacion.longitud };
                 ext.GeoUbicaciones.Add(geoU);
@@ -588,13 +585,13 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 Imagen img = context.Imagenes.FirstOrDefault(i => i.Id == idAdjunto);
                 if (img == null)
@@ -640,13 +637,13 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();                    
+                    throw new TokenInvalidoException();                    
                 }
                 Video vid = context.Videos.FirstOrDefault(v => v.Id == idAdjunto);
                 if (vid == null)
@@ -691,12 +688,12 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();                    
+                    throw new TokenInvalidoException();                    
                 }
                 Audio aud = context.Audios.FirstOrDefault(a => a.Id == idAdjunto);
                 if (aud == null)
@@ -741,17 +738,25 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
+                }
+                if (imgN == null)
+                {
+                    throw new ImagenInvalidaException();
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == imgN.idExtension);
+                if (ext == null)
+                {
+                    throw new ExtensionInvalidaException();
+                }
                 if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
                 {
-                    return false;
+                    throw new UsuarioNoAutorizadoException();
                 }
                 string extArchivo = Path.GetExtension(imgN.nombre);
                 if ((extArchivo != ".jpg") && (extArchivo != ".png"))
@@ -768,7 +773,7 @@ namespace Emsys.LogicLayer
                 {
                     nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
                 }
-                var file = new ApplicationFile() { Nombre = nombre, FileData = imgN.file_data };
+                var file = new ApplicationFile() { Nombre = nombre, FileData = imgN.fileData };
                 Imagen img = new Imagen() { Usuario = user, FechaEnvio = DateTime.Now, ImagenData = file };
                 ext.Imagenes.Add(img);
                 ext.TimeStamp = DateTime.Now;
@@ -823,17 +828,25 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
+                }
+                if (vidN == null)
+                {
+                    throw new VideoInvalidoException();
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == vidN.idExtension);
+                if (ext == null)
+                {
+                    throw new ExtensionInvalidaException();
+                }
                 if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
                 {
-                    return false;
+                    throw new UsuarioNoAutorizadoException();
                 }
                 string extArchivo = Path.GetExtension(vidN.nombre);
                 if ((extArchivo != ".mp4") && (extArchivo != ".avi"))
@@ -850,7 +863,7 @@ namespace Emsys.LogicLayer
                 {
                     nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
                 }
-                var file = new ApplicationFile() { Nombre = nombre, FileData = vidN.file_data };
+                var file = new ApplicationFile() { Nombre = nombre, FileData = vidN.fileData };
                 Video vid = new Video() { Usuario = user, FechaEnvio = DateTime.Now, VideoData = file };
                 ext.Videos.Add(vid);
                 ext.TimeStamp = DateTime.Now;
@@ -867,17 +880,25 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
+                }
+                if (audN == null)
+                {
+                    throw new AudioInvalidoException();
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == audN.idExtension);
+                if (ext == null)
+                {
+                    throw new ExtensionInvalidaException();
+                }
                 if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
                 {
-                    return false;
+                    throw new UsuarioNoAutorizadoException();
                 }
                 string extArchivo = Path.GetExtension(audN.nombre);
                 if ((extArchivo != ".mp3") && (extArchivo != ".wav"))
@@ -894,7 +915,7 @@ namespace Emsys.LogicLayer
                 {
                     nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
                 }
-                var file = new ApplicationFile() { Nombre = nombre, FileData = audN.file_data };
+                var file = new ApplicationFile() { Nombre = nombre, FileData = audN.fileData };
                 Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file };
                 ext.Audios.Add(aud);
                 ext.TimeStamp = DateTime.Now;
@@ -905,19 +926,19 @@ namespace Emsys.LogicLayer
         }
 
 
-        public bool ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token)
+        public bool ActualizarDescripcionRecurso(DtoActualizarDescripcion descParam, string token)
         {
             using (var context = new EmsysContext())
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();                   
+                    throw new TokenInvalidoException();                   
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == descParam.idExtension);
                 Recurso rec = user.Recurso.FirstOrDefault();
@@ -950,12 +971,12 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();                    
+                    throw new TokenInvalidoException();                    
                 }
                 user.UltimoSignal = DateTime.Now;
                 context.SaveChanges();
@@ -999,13 +1020,13 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();                    
+                    throw new TokenInvalidoException();                    
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
                 Recurso rec = user.Recurso.FirstOrDefault();
@@ -1015,7 +1036,7 @@ namespace Emsys.LogicLayer
                 }
                 if (!TieneAcceso.estaAsignadoExtension(user, ext))
                 {
-                    throw new InvalidExtensionException();
+                    throw new ExtensionInvalidaException();
                 }
                 AsignacionRecurso asig = ext.AsignacionesRecursos.FirstOrDefault(a => a.Recurso.Id == rec.Id);
                 if (asig != null)
@@ -1028,12 +1049,22 @@ namespace Emsys.LogicLayer
             }
         }
 
-        public DtoInfoCreacionEvento getInfoCreacionEvento()
+        public DtoInfoCreacionEvento getInfoCreacionEvento(string token)
         {
             using (var context = new EmsysContext())
             {
-                DtoInfoCreacionEvento resp = new DtoInfoCreacionEvento();
+                if (token == null)
+                {
+                    throw new TokenInvalidoException();
+                }
 
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+
+                DtoInfoCreacionEvento resp = new DtoInfoCreacionEvento();
                 List<DtoZona> zonas = new List<DtoZona>();
                 List<DtoCategoria> cats = new List<DtoCategoria>();
                 List<DtoDepartamento> deps = new List<DtoDepartamento>();
@@ -1053,7 +1084,7 @@ namespace Emsys.LogicLayer
                     deps.Add(DtoGetters.getDtoDepartamento(d));
                 }
                 resp.categorias = cats;
-                resp.zonas_sectores = zonas;
+                resp.zonasSectores = zonas;
                 resp.departamentos = deps;
                 return resp;
             }
@@ -1066,20 +1097,20 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 if (ev == null)
                 {
                     throw new ArgumentoInvalidoException();
                 }
                 // Si no se eligieron zonas.
-                if (ev.id_zonas.Count() <= 0)
+                if (ev.idZonas.Count() <= 0)
                 {
                     throw new SeleccionZonasInvalidaException();
                 }
@@ -1091,9 +1122,9 @@ namespace Emsys.LogicLayer
                 }
                 // Si el departamento es invalido.
                 Departamento dep = null;
-                if (ev.id_departamento != 0)
+                if (ev.idDepartamento != 0)
                 {
-                    dep = context.Departamentos.FirstOrDefault(d => d.Id == ev.id_departamento);
+                    dep = context.Departamentos.FirstOrDefault(d => d.Id == ev.idDepartamento);
                     if (dep == null)
                     {
                         throw new ArgumentoInvalidoException();
@@ -1101,7 +1132,7 @@ namespace Emsys.LogicLayer
                 }
 
                 List<Zona> zonas = new List<Zona>();
-                foreach (int z in ev.id_zonas)
+                foreach (int z in ev.idZonas)
                 {
                     Zona zona = context.Zonas.FirstOrDefault(zid => zid.Id == z);
                     if (zona == null)
@@ -1114,7 +1145,7 @@ namespace Emsys.LogicLayer
                     }
                 }
                 // Si el sector es invalido.                
-                Sector sect = context.Sectores.FirstOrDefault(s => s.Id == ev.id_sector);
+                Sector sect = context.Sectores.FirstOrDefault(s => s.Id == ev.idSector);
                 if (sect == null)
                 {
                     throw new ArgumentoInvalidoException();
@@ -1165,7 +1196,7 @@ namespace Emsys.LogicLayer
                     Latitud = ev.latitud,
                     Longitud = ev.longitud,
                     Descripcion = ev.descripcion,
-                    EnProceso = ev.en_proceso,
+                    EnProceso = ev.enProceso,
                     ExtensionesEvento = new List<Extension_Evento>()
                 };
 
@@ -1192,18 +1223,18 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
                 if ((ext == null) || (ext.Estado != EstadoExtension.FaltaDespachar))
                 {
-                    throw new InvalidExtensionException();
+                    throw new ExtensionInvalidaException();
                 }
                 // Si esta logueado como recurso o no tiene vision sobre la extension.
                 if ((user.Recurso.Count() > 0) || (!TieneAcceso.tieneVisionExtension(user, ext)))
@@ -1226,18 +1257,18 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 Extension_Evento ext = user.Despachando.FirstOrDefault(e => e.Id == idExtension);
                 if (ext == null)
                 {
-                    throw new InvalidExtensionException();
+                    throw new ExtensionInvalidaException();
                 } 
                 if ((ext.Estado == EstadoExtension.Despachado) && (ext.Despachador.Id == user.Id))
                 {
@@ -1258,18 +1289,18 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
                 if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
                 {
-                    throw new InvalidExtensionException();
+                    throw new ExtensionInvalidaException();
                 }
 
                 ICollection<DtoRecurso> asignados = new List<DtoRecurso>();
@@ -1303,13 +1334,13 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 if (recursos == null)
                 {
@@ -1318,7 +1349,7 @@ namespace Emsys.LogicLayer
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == recursos.idExtension);
                 if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
                 {
-                    throw new InvalidExtensionException();
+                    throw new ExtensionInvalidaException();
                 }
                 // Agrego los recursos asignados.
                 foreach (DtoRecurso r in recursos.recursosAsignados)
@@ -1372,24 +1403,24 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var cat = context.Categorias.FirstOrDefault(c => c.Id == idCategoria);
                 // En caso de usar id -1 se asume que se desea eliminar la segunda categoria.
                 if ((cat == null) && (idCategoria != -1))
                 {
-                    throw new InvalidExtensionException();
+                    throw new CategoriaInvalidaException();
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
                 if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
                 {
-                    throw new InvalidExtensionException();
+                    throw new ExtensionInvalidaException();
                 }
 
                 if (ext.SegundaCategoria != null)
@@ -1410,17 +1441,17 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
                 if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
                 {
-                    throw new InvalidExtensionException();
+                    throw new ExtensionInvalidaException();
                 }
 
                 List<DtoZona> zonas = new List<DtoZona>();
@@ -1448,17 +1479,17 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
                 if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
                 {
-                    throw new InvalidExtensionException();
+                    throw new ExtensionInvalidaException();
                 }
                 Zona zExt = context.Zonas.FirstOrDefault(z => z.Id == idZona);
                 // Si la zona es invalida o evento cuenta con una extension para esa zona.
@@ -1487,17 +1518,17 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
                 if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
                 {
-                    throw new InvalidExtensionException();
+                    throw new ExtensionInvalidaException();
                 }
                 if (ext.Evento.Estado == EstadoEvento.Creado)
                 {
@@ -1522,23 +1553,23 @@ namespace Emsys.LogicLayer
         }
 
 
-        public bool actualizarDescripcionDespachador(string token, DtoActualizarDescripcionParametro descr)
+        public bool actualizarDescripcionDespachador(string token, DtoActualizarDescripcion descr)
         {
             using (var context = new EmsysContext())
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == descr.idExtension);
                 if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
                 {
-                    throw new InvalidExtensionException();
+                    throw new ExtensionInvalidaException();
                 }
 
                 string formato = "yyyy-MM-dd'T'hh:mm:ss.FFF";

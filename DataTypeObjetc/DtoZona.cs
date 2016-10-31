@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Newtonsoft.Json;
+using System.Collections.Generic;
 
 namespace DataTypeObject
 {
@@ -8,7 +9,8 @@ namespace DataTypeObject
 
         public string nombre { get; set; }
 
-        public string nombre_ue { get; set; }
+        [JsonProperty(PropertyName = "nombre_ue")]
+        public string nombreUe { get; set; }
 
         public ICollection<DtoSector> sectores { get; set; }
     }

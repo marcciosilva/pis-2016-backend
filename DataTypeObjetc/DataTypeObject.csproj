@@ -65,8 +65,7 @@
     <Compile Include="DtoAsignacionRecurso.cs" />
     <Compile Include="DtoAutenticacion.cs" />
     <Compile Include="DtoAudio.cs" />
-    <Compile Include="DtoAccionesRecursoExtension.cs" />
-    <Compile Include="DtoActualizarDescripcionParametro.cs" />
+    <Compile Include="DtoActualizarDescripcion.cs" />
     <Compile Include="DtoInfoCreacionEvento.cs" />
     <Compile Include="DtoDepartamento.cs" />
     <Compile Include="DtoDescripcion.cs" />
@@ -80,7 +79,7 @@
     <Compile Include="Notificacion.Data.cs" />
     <Compile Include="Notificaciones.Data.Codigos.cs" />
     <Compile Include="DtoRespuesta.cs" />
-    <Compile Include="DtoUser.cs" />
+    <Compile Include="DtoUsuario.cs" />
     <Compile Include="DtoConsultaExterna.cs" />
     <Compile Include="Mensaje.cs" />
     <Compile Include="MensajesParaFE.cs" />
