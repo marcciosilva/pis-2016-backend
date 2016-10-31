@@ -72,26 +72,6 @@ namespace Test.UnitTesting
             }
         }
 
-        /// <summary>
-        /// Test que prueba que se pueda crear una Zona y agregarla a la base de datos.
-        /// </summary>
-        [Test]
-        public void CrearDepartamentoTest()
-        {
-            var context = new EmsysContext();
-            Departamento dep = new Departamento()
-            {
-                Nombre = "departamento",
-                Eventos = new List<Evento>()
-            };
-            context.Departamentos.Add(dep);
-            context.SaveChanges();
-
-            var d = context.Departamentos.FirstOrDefault();
-            Assert.AreEqual(d.Id, 1);
-            Assert.AreEqual(d.Nombre, "departamento");
-            Assert.AreEqual(d.Eventos.Count(), 0);
-        }
 
         /// <summary>
         /// Test que prueba que se pueda crear un Sector y agregarlo a la base de datos.
@@ -138,411 +118,63 @@ namespace Test.UnitTesting
         public void CrearOrigenEventoTest()
         {
             AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
-
-            //using (var context = new EmsysContext())
-            //{
+            
             var context = new EmsysContext();
-                // Evento y extensiones.
-                var sector = new Sector() { Nombre = "sectorDEPrueba", Zona = context.Zonas.FirstOrDefault() };
-                var catEvento = new Categoria() { Clave = "catPruebaDE", Activo = true, Codigo = "catDE", Prioridad = NombrePrioridad.Media };
-                var evento = new Evento()
-                {
-                    NombreInformante = "PruebaDE",
-                    TelefonoEvento = "PruebaDE",
-                    Estado = EstadoEvento.Enviado,
-                    Categoria = catEvento,
-                    TimeStamp = DateTime.Now,
-                    FechaCreacion = DateTime.Now,
-                    Sector = sector,
-                    EnProceso = true,
-                    Numero = "PruebaDE",
-                    Audios = new List<Audio>(),
-                    Calle = "PruebaDE",
-                    Esquina = "PruebaDE",
-                    GeoUbicaciones = new List<GeoUbicacion>(),
-                    Imagenes = new List<Imagen>(),
-                    Latitud = 0,
-                    Longitud = 0,
-                    //Origen_Evento = new Origen_Evento(),
-                    Videos = new List<Video>(),
-                    //Departamento = new Departamento(),
-                    Descripcion = "PruebaDE"
-                };
+            // Evento y extensiones.
+            var sector = new Sector() { Nombre = "sectorDEPrueba", Zona = context.Zonas.FirstOrDefault() };
+            var catEvento = new Categoria() { Clave = "catPruebaDE", Activo = true, Codigo = "catDE", Prioridad = NombrePrioridad.Media };
+            var evento = new Evento()
+            {
+                NombreInformante = "PruebaDE",
+                TelefonoEvento = "PruebaDE",
+                Estado = EstadoEvento.Enviado,
+                Categoria = catEvento,
+                TimeStamp = DateTime.Now,
+                FechaCreacion = DateTime.Now,
+                Sector = sector,
+                EnProceso = true,
+                Numero = "PruebaDE",
+                Audios = new List<Audio>(),
+                Calle = "PruebaDE",
+                Esquina = "PruebaDE",
+                GeoUbicaciones = new List<GeoUbicacion>(),
+                Imagenes = new List<Imagen>(),
+                Latitud = 0,
+                Longitud = 0,
+                //Origen_Evento = new Origen_Evento(),
+                Videos = new List<Video>(),
+                //Departamento = new Departamento(),
+                Descripcion = "PruebaDE"
+            };
 
-                var ext1 = new Extension_Evento()
-                {
-                    Evento = evento,
-                    Zona = context.Zonas.FirstOrDefault(),
-                    Estado = EstadoExtension.Despachado,
-                    TimeStamp = DateTime.Now,
-                    Despachador = context.Users.FirstOrDefault(),
-                    DescripcionDespachador = "2016/07/23 21:30:00\\UsuarioDespachador\\descripcion de evento\\2016/07/23 21:37:00\\UsuarioDespachador2\\otra descripcion de evento\\2016/07/24 10:37:00\\UsuarioDespachador2\\otra mas"
-                };
+            var ext1 = new Extension_Evento()
+            {
+                Evento = evento,
+                Zona = context.Zonas.FirstOrDefault(),
+                Estado = EstadoExtension.Despachado,
+                TimeStamp = DateTime.Now,
+                Despachador = context.Users.FirstOrDefault(),
+                DescripcionDespachador = "2016/07/23 21:30:00\\UsuarioDespachador\\descripcion de evento\\2016/07/23 21:37:00\\UsuarioDespachador2\\otra descripcion de evento\\2016/07/24 10:37:00\\UsuarioDespachador2\\otra mas"
+            };
 
-                Origen_Evento oe1 = new Origen_Evento()
-                {
-                    TimeStamp = DateTime.Now,
-                    TipoOrigen = "test",
-                    IdOrigen = 1,
-                    Evento = evento
-                };
-                context.Origen_Eventos.Add(oe1);
-                context.SaveChanges();
+            Origen_Evento oe1 = new Origen_Evento()
+            {
+                TimeStamp = DateTime.Now,
+                TipoOrigen = "test",
+                IdOrigen = 1,
+                Evento = evento
+            };
+            context.Origen_Eventos.Add(oe1);
+            context.SaveChanges();
 
-                context = new EmsysContext();
-                var oe = context.Origen_Eventos.FirstOrDefault();
-                Assert.AreEqual(oe.Id, 4);
-                Assert.AreNotEqual(oe.TimeStamp, null);
-                Assert.AreEqual(oe.TipoOrigen, "test");
-                Assert.AreEqual(oe.IdOrigen, 1);
-                Assert.AreEqual(oe.Evento.Id, 4);
-            // }
+            context = new EmsysContext();
+            var oe = context.Origen_Eventos.FirstOrDefault();
+            Assert.AreEqual(oe.Id, 4);
+            Assert.AreNotEqual(oe.TimeStamp, null);
+            Assert.AreEqual(oe.TipoOrigen, "test");
+            Assert.AreEqual(oe.IdOrigen, 1);
+            Assert.AreEqual(oe.Evento.Id, 4);
         }
 
-        //[Test]
-        //public void CrearCategoria()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine("Codigo de la categoria:");
-        //            string codigo = Console.ReadLine();
-
-        //            Console.WriteLine("Descripcion de la categoria:");
-        //            string clave = Console.ReadLine();
-
-        //            Console.WriteLine("Prioridad de la categoria (0-> Alta, 1-> Media, 2-> Baja): ");
-        //            int prioridad = Int32.Parse(Console.ReadLine());
-
-        //            context.Categorias.Add(new Categoria() { Codigo = codigo, Clave = clave, Prioridad = (NombrePrioridad)prioridad, Activo = true });
-        //            context.SaveChanges();
-        //            Console.WriteLine("Exito!");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-        //    }
-        //}
-
-        //[Test]
-        //static void CrearEvento()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine("Id de la Categoria:");
-        //            int categoria = Int32.Parse(Console.ReadLine());
-
-        //            Console.WriteLine("Estado (Creado->0, Enviado->1):");
-        //            int estado = Int32.Parse(Console.ReadLine());
-
-        //            Console.WriteLine("Nombre de usuario del creador:");
-        //            string creador = Console.ReadLine();
-
-        //            Console.WriteLine("Id del sector de origen:");
-        //            int sector = Int32.Parse(Console.ReadLine());
-
-        //            Console.WriteLine("En proceso (0 , 1):");
-        //            int enProceso = Int32.Parse(Console.ReadLine());
-
-        //            Evento ev = new Evento()
-        //            {
-        //                Categoria = context.Categorias.Find(categoria),
-        //                Estado = (EstadoEvento)estado,
-        //                Usuario = context.Users.FirstOrDefault(u => u.UserName == creador),
-        //                Sector = context.Sectores.Find(sector),
-        //                EnProceso = enProceso != 0,
-        //                TimeStamp = DateTime.Now,
-        //                FechaCreacion = DateTime.Now
-        //            };
-
-        //            List<int> zonas = new List<int>();
-        //            bool seguir = true;
-        //            while (seguir)
-        //            {
-        //                Console.WriteLine("Id de una zona del evento:");
-        //                zonas.Add(Int32.Parse(Console.ReadLine()));
-        //                Console.WriteLine("1-> Agregar mas zonas, 0-> No agregar mas zonas");
-        //                seguir = Int32.Parse(Console.ReadLine()) == 1;
-        //            }
-        //            foreach (int z in zonas)
-        //            {
-        //                context.Extensiones_Evento.Add(new Extension_Evento() { Evento = ev, Zona = context.Zonas.Find(z), Estado = EstadoExtension.FaltaDespachar, TimeStamp = DateTime.Now });
-        //            }
-        //            context.SaveChanges();
-        //            Console.WriteLine("Exito!");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-        //    }
-        //}
-
-        //static void CrearRecurso()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine("Codigo:");
-        //            string codigo = Console.ReadLine();
-
-        //            Recurso rec = new Recurso() { Codigo = codigo, Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Grupos_Recursos = new List<Grupo_Recurso>() };
-        //            context.Recursos.Add(rec);
-
-        //            List<int> grupos = new List<int>();
-        //            bool seguir = true;
-        //            while (seguir)
-        //            {
-        //                Console.WriteLine("Id de un grupo recurso del recurso:");
-        //                grupos.Add(Int32.Parse(Console.ReadLine()));
-        //                Console.WriteLine("1-> Agregar mas grupos, 0-> No agregar mas gripos");
-        //                seguir = Int32.Parse(Console.ReadLine()) == 1;
-        //            }
-        //            foreach (int g in grupos)
-        //            {
-        //                rec.Grupos_Recursos.Add(context.Grupos_Recursos.Find(g));
-        //            }
-
-        //            context.SaveChanges();
-        //            Console.WriteLine("Exito!");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-        //    }
-        //}
-
-        //static void AsignarRecurso()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine("Codigo del recurso a asignar:");
-        //            string codigo = Console.ReadLine();
-
-        //            Console.WriteLine("Id de la extension a la cual asignar el recurso:");
-        //            int extension = Int32.Parse(Console.ReadLine());
-
-        //            context.Recursos.FirstOrDefault(r => r.Codigo == codigo).Extensiones_Eventos.Add(context.Extensiones_Evento.Find(extension));
-        //            context.SaveChanges();
-        //            Console.WriteLine("Exito!");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-        //    }
-        //}
-
-        //static void AgregarClaim()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine("Nombre de usuario:");
-        //            string usuario = Console.ReadLine();
-
-        //            Console.WriteLine("ClaimType:");
-        //            string type = Console.ReadLine();
-
-        //            Console.WriteLine("ClaimValue:");
-        //            string value = Console.ReadLine();
-
-        //            context.Users.FirstOrDefault(u => u.UserName == usuario).Claims.Add(new IdentityUserClaim() { ClaimType = type, ClaimValue = value });
-        //            context.SaveChanges();
-        //            Console.WriteLine("Exito!");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-        //    }
-        //}
-
-        //static void IniciarUsuarioPorRecurso()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine("Nombre de usuario:");
-        //            string usuario = Console.ReadLine();
-
-        //            Console.WriteLine("Id del recurso:");
-        //            int recurso = Int32.Parse(Console.ReadLine());
-
-        //            context.Recursos.Find(recurso).Usuario = context.Users.FirstOrDefault(us => us.UserName == usuario);
-        //            context.SaveChanges();
-        //            Console.WriteLine("Exito!");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-        //    }
-        //}
-
-        //static void CrearGrupoRecurso()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine("Nombre de grupo:");
-        //            string nombre = Console.ReadLine();
-
-        //            context.Grupos_Recursos.Add(new Grupo_Recurso() { Nombre = nombre });
-        //            context.SaveChanges();
-        //            Console.WriteLine("Exito!");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-        //    }
-        //}
-
-        //static void AgregarRol()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine("Nombre de rol:");
-        //            string rol = Console.ReadLine();
-
-        //            context.ApplicationRoles.Add(new ApplicationRole() { Nombre = rol });
-        //            context.SaveChanges();
-        //            Console.WriteLine("Exito!");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-        //    }
-        //}
-
-        //static void AgregarPermiso()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine("Clave del permiso:");
-        //            string clave = Console.ReadLine();
-
-        //            Console.WriteLine("Descripcion del permiso:");
-        //            string descripcion = Console.ReadLine();
-
-        //            context.Permisos.Add(new Permiso() { Clave = clave, Descripcion = descripcion });
-        //            context.SaveChanges();
-        //            Console.WriteLine("Exito!");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-        //    }
-        //}
-
-        //static void AsignarPermiso()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine("Nombre del permiso:");
-        //            string permiso = Console.ReadLine();
-
-        //            Console.WriteLine("Nombre del rol:");
-        //            string rol = Console.ReadLine();
-
-        //            context.ApplicationRoles.FirstOrDefault(r => r.Nombre == rol).Permisos.Add(context.Permisos.FirstOrDefault(per => per.Clave == permiso));
-        //            context.SaveChanges();
-        //            Console.WriteLine("Exito!");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-        //    }
-        //}
-
-        //static void AsignarRol()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine("Nombre de usuario:");
-        //            string usuario = Console.ReadLine();
-
-        //            Console.WriteLine("Nombre del rol:");
-        //            string rol = Console.ReadLine();
-
-        //            context.Users.FirstOrDefault(u => u.UserName == usuario).ApplicationRoles.Add(context.ApplicationRoles.FirstOrDefault(r => r.Nombre == rol));
-        //            context.SaveChanges();
-        //            Console.WriteLine("Exito!");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-        //    }
-        //}
-
-        //static void AsignarGR()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine("Nombre de usuario:");
-        //            string usuario = Console.ReadLine();
-
-        //            Console.WriteLine("Id del grupo recurso:");
-        //            int gr = Int32.Parse(Console.ReadLine());
-
-        //            context.Users.FirstOrDefault(u => u.UserName == usuario).Grupos_Recursos.Add(context.Grupos_Recursos.Find(gr));
-        //            context.SaveChanges();
-        //            Console.WriteLine("Exito!");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-        //    }
-        //}
-
-        //static void AsignarUE()
-        //{
-        //    using (var context = new EmsysContext())
-        //    {
-        //        try
-        //        {
-        //            Console.WriteLine("Nombre de usuario:");
-        //            string usuario = Console.ReadLine();
-
-        //            Console.WriteLine("Id de la unidad ejecutora:");
-        //            int ue = Int32.Parse(Console.ReadLine());
-
-        //            context.Users.FirstOrDefault(u => u.UserName == usuario).Unidades_Ejecutoras.Add(context.Unidades_Ejecutoras.Find(ue));
-        //            context.SaveChanges();
-        //            Console.WriteLine("Exito!");
-        //        }
-        //        catch (Exception e)
-        //        {
-        //            Console.WriteLine(e.ToString());
-        //        }
-        //    }
-        //}
     }
 }

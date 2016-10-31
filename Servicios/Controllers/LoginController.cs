@@ -20,19 +20,20 @@ namespace Servicios.Controllers
         [HttpPost]
         [Route("users/authenticate")]
         [LogFilter]
-        public DtoRespuesta Login([FromBody] DtoUser user)
+        public DtoRespuesta Login([FromBody] DtoUsuario user)
         {
             IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
             try
             {
-                DtoAutenticacion autenticacion = dbAL.autenticarUsuario(user.username, user.password);
+                DtoAutenticacion autenticacion = dbAL.autenticarUsuario(user.username, user.password, token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, autenticacion);
             }
             catch (SesionActivaException)
             {
                 return new DtoRespuesta(MensajesParaFE.SesionActivaCod, new Mensaje(MensajesParaFE.SesionActiva));
             }
-            catch (InvalidCredentialsException)
+            catch (CredencialesInvalidasException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioContraseñaInvalidosCod, new Mensaje(MensajesParaFE.UsuarioContraseñaInvalidos));
             }
@@ -47,7 +48,7 @@ namespace Servicios.Controllers
         /// Servicio obtener roles.
         /// </summary>
         /// <returns>Devuelve los roles asociados a un usuario. En el header del request se recibe el token del usuario.</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("login")]
         [HttpPost]
         [LogFilter]
         [Route("users/getroles")]
@@ -65,7 +66,7 @@ namespace Servicios.Controllers
                 DtoRol rol = dbAL.getRolUsuario(token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, rol);
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
@@ -81,7 +82,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="rol">Roles a los que sea desea loguear.</param>
         /// <returns>Devuelve la respuesta definida en el documento de interfaz.</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("login")]
         [HttpPost]
         [LogFilter]
         [Route("users/login")]
@@ -109,7 +110,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.RecursoNoDisponibleCod, new Mensaje(MensajesParaFE.RecursoNoDisponible));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
@@ -124,7 +125,7 @@ namespace Servicios.Controllers
         /// Servicio para cerrar session de usuario. Borrando el token y la fecha de inicio de sesion.
         /// </summary>
         /// <returns>Retorna la respuesta definida en el documento de interfaz.</returns>
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("login")]
         [HttpPost]
         [LogFilter]
         [Route("users/logout")]
@@ -148,7 +149,7 @@ namespace Servicios.Controllers
                 dbAL.cerrarSesion(token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
@@ -159,7 +160,7 @@ namespace Servicios.Controllers
             }
         }
 
-        [CustomAuthorizeAttribute()]
+        [CustomAuthorizeAttribute("login")]
         [HttpPost]
         [LogFilter]
         [Route("users/keepmealive")]
@@ -176,7 +177,7 @@ namespace Servicios.Controllers
                 dbAL.keepMeAlive(token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
-            catch (InvalidTokenException)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }

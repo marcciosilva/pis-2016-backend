@@ -13,7 +13,7 @@
             return new DtoApplicationFile()
             {
                 nombre = file.Nombre,
-                file_data = file.FileData
+                fileData = file.FileData
             };
         }
 
@@ -23,8 +23,8 @@
             {
                 id = asignacionRecurso.Id,
                 recurso = asignacionRecurso.Recurso.Codigo,
-                fecha_arribo = asignacionRecurso.HoraArribo,
-                actualmente_asignado = asignacionRecurso.ActualmenteAsignado
+                fechaArribo = asignacionRecurso.HoraArribo,
+                actualmenteAsignado = asignacionRecurso.ActualmenteAsignado
             };
             var desc = new List<DtoDescripcion>();
             foreach (var item in asignacionRecurso.AsignacionRecursoDescripcion)
@@ -47,7 +47,7 @@
                 id = img.Id,
                 id_imagen = img.ImagenData.Id,
                 usuario = img.Usuario.Nombre,
-                fecha_envio = img.FechaEnvio
+                fechaEnvio = img.FechaEnvio
             };
         }
 
@@ -56,9 +56,9 @@
             return new DtoVideo()
             {
                 id = vid.Id,
-                id_video = vid.VideoData.Id,
+                idVideo = vid.VideoData.Id,
                 usuario = vid.Usuario.Nombre,
-                fecha_envio = vid.FechaEnvio
+                fechaEnvio = vid.FechaEnvio
             };
         }
 
@@ -67,9 +67,9 @@
             return new DtoAudio()
             {
                 id = aud.Id,
-                id_audio = aud.AudioData.Id,
+                idAudio = aud.AudioData.Id,
                 usuario = aud.Usuario.Nombre,
-                fecha_envio = aud.FechaEnvio
+                fechaEnvio = aud.FechaEnvio
             };
         }
 
@@ -79,7 +79,25 @@
             {
                 longitud = ubicacion.Longitud,
                 latitud = ubicacion.Latitud,
-                fecha_envio=ubicacion.FechaEnvio                
+                fechaEnvio=ubicacion.FechaEnvio                
+            };
+        }
+
+        public static DtoDepartamento getDtoDepartamento(Departamento dep)
+        {
+            return new DtoDepartamento()
+            {
+                id = dep.Id,
+                nombre = dep.Nombre
+            };
+        }
+
+        public static DtoSector getDtoSector(Sector sector)
+        {
+            return new DtoSector()
+            {
+                id = sector.Id,
+                nombre = sector.Nombre
             };
         }
 
@@ -89,16 +107,40 @@
             {
                 id = zona.Id,
                 nombre = zona.Nombre,
-                nombre_ue = zona.UnidadEjecutora.Nombre
+                nombreUe = zona.UnidadEjecutora.Nombre
+            };
+        }
+
+        public static DtoZona getDtoZonaCompleto(Zona zona)
+        {
+            ICollection<DtoSector> sects = new List<DtoSector>();
+            foreach (Sector s in zona.Sectores)
+            {
+                sects.Add(getDtoSector(s));
+            }
+            return new DtoZona()
+            {
+                id = zona.Id,
+                nombre = zona.Nombre,
+                nombreUe = zona.UnidadEjecutora.Nombre,
+                sectores = sects
             };
         }
 
         public static DtoRecurso getDtoRecurso(Recurso recurso)
         {
+            string user = null;
+            if ((recurso.Estado == EstadoRecurso.NoDisponible) && (recurso.Usuario != null))
+            {
+                user = recurso.Usuario.Nombre;
+            }
             return new DtoRecurso()
             {
                 id = recurso.Id,
-                codigo = recurso.Codigo
+                codigo = recurso.Codigo,
+                estado = recurso.Estado.ToString().ToLower(),
+                estadoAsignacion = recurso.EstadoAsignacion.ToString().ToLower(),
+                usuario = user
             };
         }
 
@@ -179,17 +221,17 @@
                 id = ext.Id,
                 zona = getDtoZona(ext.Zona),
                 despachador = desp,
-                descripcion_supervisor = ext.DescripcionSupervisor,
-                asignaciones_recursos = asignaciones,
+                descripcionSupervisor = ext.DescripcionSupervisor,
+                asignacionesRecursos = asignaciones,
                 estado = ext.Estado.ToString().ToLower(),
-                time_stamp = ext.TimeStamp,
-                segunda_categoria = cat,
+                timeStamp = ext.TimeStamp,
+                segundaCategoria = cat,
                 recursos = recursos,
                 imagenes = imgs,
                 videos = vids,
                 audios = auds,
-                geo_ubicaciones = geos,
-                descripcion_despachadores = descDespachadores,
+                geoUbicaciones = geos,
+                descripcionDespachadores = descDespachadores,
             };
         }
 
@@ -238,9 +280,9 @@
                 telefono = evento.TelefonoEvento,
                 categoria = getDtoCategoria(evento.Categoria),
                 estado = evento.Estado.ToString().ToLower(),
-                time_stamp = evento.TimeStamp,
+                timeStamp = evento.TimeStamp,
                 creador = cread,
-                fecha_creacion = evento.FechaCreacion,
+                fechaCreacion = evento.FechaCreacion,
                 calle = evento.Calle,
                 esquina = evento.Esquina,
                 numero = evento.Numero,
@@ -249,7 +291,7 @@
                 longitud = evento.Longitud,
                 latitud = evento.Latitud,
                 descripcion = evento.Descripcion,
-                en_proceso = evento.EnProceso,
+                enProceso = evento.EnProceso,
                 extensiones = extensiones,
                 imagenes = imgs,
                 videos = vids,
@@ -278,6 +320,7 @@
                 {
                     fecha = DateTime.Parse(textoParseado[i]),
                     usuario = textoParseado[i + 1],
+                    descripcion = textoParseado[i + 2],
                     origen = origen
                 };
                 resultado.Add(d);

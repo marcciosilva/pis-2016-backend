@@ -1,6 +1,6 @@
 ﻿namespace DataTypeObject
 {
-    public class DtoUser
+    public class DtoUsuario
     {
         public string username { get; set; }
 

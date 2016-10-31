@@ -8,17 +8,7 @@ namespace Test.UnitTesting
     [TestFixture]
     public class DtosUnitTest
     {
-        /// <summary>
-        /// Prueba dto.
-        /// </summary>
-        [Test]
-        public void DtoAccionesRecursoTest()
-        {
-            var dto = new DtoAccionesRecursoExtension() { id = 1, recurso = "recurso1", descripcion = "desc1", fecha_arribo = DateTime.Now, actualmente_asignado = false };
-
-            Assert.IsTrue((dto.id == 1) && (dto.recurso == "recurso1") && (dto.descripcion == "desc1") && (dto.fecha_arribo != null) && (dto.actualmente_asignado == false));
-        }
-
+      
         /// <summary>
         /// Prueba dto.
         /// </summary>
@@ -27,7 +17,7 @@ namespace Test.UnitTesting
         {
             DtoDescripcion desc = new DtoDescripcion() { descripcion = "desc", fecha = DateTime.Now, origen = OrigenDescripcion.Recurso, usuario = "usuario" };
 
-            var dto = new DtoActualizarDescripcionParametro() {descripcion = "algo", idExtension = 1 };
+            var dto = new DtoActualizarDescripcion() {descripcion = "algo", idExtension = 1 };
 
             Assert.IsTrue(dto.idExtension == 1);
             Assert.IsTrue(dto.descripcion == "algo");
@@ -39,9 +29,9 @@ namespace Test.UnitTesting
         [Test]
         public void DtoAsignacionRecursoTest()
         {
-            var dto = new DtoAsignacionRecurso() { id = 1, recurso = "recurso1", descripcion = new List<DtoDescripcion>(), fecha_arribo = DateTime.Now, actualmente_asignado = false };
+            var dto = new DtoAsignacionRecurso() { id = 1, recurso = "recurso1", descripcion = new List<DtoDescripcion>(), fechaArribo = DateTime.Now, actualmenteAsignado = false };
 
-            Assert.IsTrue((dto.id == 1) && (dto.recurso == "recurso1") && (dto.descripcion.Count == 0) && (dto.fecha_arribo != null) && (dto.actualmente_asignado == false));
+            Assert.IsTrue((dto.id == 1) && (dto.recurso == "recurso1") && (dto.descripcion.Count == 0) && (dto.fechaArribo != null) && (dto.actualmenteAsignado == false));
         }
 
         /// <summary>
@@ -50,9 +40,9 @@ namespace Test.UnitTesting
         [Test]
         public void DtoAudioTest()
         {
-            var dto = new DtoAudio() { id = 1, id_audio = 1, usuario = "usuario", fecha_envio = DateTime.Now, idExtension = 1 };
+            var dto = new DtoAudio() { id = 1, idAudio = 1, usuario = "usuario", fechaEnvio = DateTime.Now, idExtension = 1 };
 
-            Assert.IsTrue((dto.id == 1) && (dto.id_audio == 1) && (dto.usuario == "usuario") && (dto.fecha_envio != null) && (dto.idExtension == 1));
+            Assert.IsTrue((dto.id == 1) && (dto.idAudio == 1) && (dto.usuario == "usuario") && (dto.fechaEnvio != null) && (dto.idExtension == 1));
         }
 
         /// <summary>
@@ -102,11 +92,11 @@ namespace Test.UnitTesting
                 creador = "creador",
                 departamento = "departamento",
                 descripcion = "descripcion",
-                en_proceso = false,
+                enProceso = false,
                 esquina = "esquina",
                 estado = "estado",
                 extensiones = new List<DtoExtension>(),
-                fecha_creacion = DateTime.Now,
+                fechaCreacion = DateTime.Now,
                 id = 1,
                 imagenes = new List<DtoImagen>(),
                 informante = "informante",
@@ -115,7 +105,7 @@ namespace Test.UnitTesting
                 numero = "1",
                 sector = "sector",
                 telefono = "tel",
-                time_stamp = DateTime.Now,
+                timeStamp = DateTime.Now,
                 videos = new List<DtoVideo>()
             };
 
@@ -124,7 +114,7 @@ namespace Test.UnitTesting
             Assert.AreEqual(dto.creador, "creador");
             Assert.AreEqual(dto.departamento, "departamento");
             Assert.AreEqual(dto.descripcion, "descripcion");
-            Assert.AreEqual(dto.en_proceso, false);
+            Assert.AreEqual(dto.enProceso, false);
             Assert.AreEqual(dto.esquina, "esquina");
             Assert.AreEqual(dto.estado, "estado");
             Assert.AreEqual(dto.id, 1);
@@ -134,8 +124,8 @@ namespace Test.UnitTesting
             Assert.AreEqual(dto.numero, "1");
             Assert.AreEqual(dto.sector, "sector");
             Assert.AreEqual(dto.telefono, "tel");
-            Assert.IsNotNull(dto.fecha_creacion);
-            Assert.IsNotNull(dto.time_stamp);
+            Assert.IsNotNull(dto.fechaCreacion);
+            Assert.IsNotNull(dto.timeStamp);
             Assert.AreEqual(dto.audios.Count, 0);
             Assert.AreEqual(dto.videos.Count, 0);
             Assert.AreEqual(dto.imagenes.Count, 0);
@@ -151,35 +141,35 @@ namespace Test.UnitTesting
             var dto = new DtoExtension()
             {
                 audios = new List<DtoAudio>(),
-                asignaciones_recursos = new List<DtoAsignacionRecurso>(),
-                descripcion_despachadores = new List<DtoDescripcion>(),
-                descripcion_supervisor = "descsuper",
+                asignacionesRecursos = new List<DtoAsignacionRecurso>(),
+                descripcionDespachadores = new List<DtoDescripcion>(),
+                descripcionSupervisor = "descsuper",
                 despachador = "despachador",
-                geo_ubicaciones = new List<DtoGeoUbicacion>(),
+                geoUbicaciones = new List<DtoGeoUbicacion>(),
                 recursos = new List<string>(),
-                segunda_categoria = null,
+                segundaCategoria = null,
                 zona = new DtoZona(),               
                 estado = "estado",              
                 id = 1,
                 imagenes = new List<DtoImagen>(),
-                time_stamp = DateTime.Now,
+                timeStamp = DateTime.Now,
                 videos = new List<DtoVideo>()
             };
 
-            Assert.AreEqual(dto.descripcion_supervisor, "descsuper");
+            Assert.AreEqual(dto.descripcionSupervisor, "descsuper");
             Assert.AreEqual(dto.despachador, "despachador");
-            Assert.AreEqual(dto.segunda_categoria, null);
+            Assert.AreEqual(dto.segundaCategoria, null);
             Assert.AreNotEqual(dto.zona, null);
             Assert.AreEqual(dto.estado, "estado");
             Assert.AreEqual(dto.id, 1);
-            Assert.IsNotNull(dto.time_stamp);
+            Assert.IsNotNull(dto.timeStamp);
             Assert.AreEqual(dto.audios.Count, 0);
             Assert.AreEqual(dto.videos.Count, 0);
             Assert.AreEqual(dto.imagenes.Count, 0);
             Assert.AreEqual(dto.recursos.Count, 0);
-            Assert.AreEqual(dto.asignaciones_recursos.Count, 0);
-            Assert.AreEqual(dto.geo_ubicaciones.Count, 0);
-            Assert.AreEqual(dto.descripcion_despachadores.Count, 0);
+            Assert.AreEqual(dto.asignacionesRecursos.Count, 0);
+            Assert.AreEqual(dto.geoUbicaciones.Count, 0);
+            Assert.AreEqual(dto.descripcionDespachadores.Count, 0);
         }
 
         /// <summary>
@@ -188,9 +178,9 @@ namespace Test.UnitTesting
         [Test]
         public void DtogeoUbicacionTest()
         {
-            var dto = new DtoGeoUbicacion() { usuario = "usuario", fecha_envio = DateTime.Now };
+            var dto = new DtoGeoUbicacion() { usuario = "usuario", fechaEnvio = DateTime.Now };
 
-            Assert.IsTrue((dto.usuario == "usuario") && (dto.fecha_envio != null));
+            Assert.IsTrue((dto.usuario == "usuario") && (dto.fechaEnvio != null));
         }
 
         /// <summary>
@@ -199,9 +189,9 @@ namespace Test.UnitTesting
         [Test]
         public void DtoImagenTest()
         {
-            var dto = new DtoImagen() { id = 1, usuario = "usuario", fecha_envio = DateTime.Now };
+            var dto = new DtoImagen() { id = 1, usuario = "usuario", fechaEnvio = DateTime.Now };
 
-            Assert.IsTrue((dto.usuario == "usuario") && (dto.fecha_envio != null) && (dto.fecha_envio != null));
+            Assert.IsTrue((dto.usuario == "usuario") && (dto.fechaEnvio != null) && (dto.fechaEnvio != null));
         }
 
         /// <summary>
@@ -210,9 +200,9 @@ namespace Test.UnitTesting
         [Test]
         public void DtoOrigenEventotest()
         {
-            var dto = new DtoOrigenEvento() { id = 1, id_origen = 1, tipo_origen = "tipo" };
+            var dto = new DtoOrigenEvento() { id = 1, idOrigen = 1, tipoOrigen = "tipo" };
 
-            Assert.IsTrue((dto.id == 1) && (dto.id_origen == 1) && (dto.tipo_origen == "tipo"));
+            Assert.IsTrue((dto.id == 1) && (dto.idOrigen == 1) && (dto.tipoOrigen == "tipo"));
         }
 
         /// <summary>
@@ -221,9 +211,9 @@ namespace Test.UnitTesting
         [Test]
         public void DtoVideoTest()
         {
-            var dto = new DtoVideo() { id = 1, usuario = "usuario", fecha_envio = DateTime.Now };
+            var dto = new DtoVideo() { id = 1, usuario = "usuario", fechaEnvio = DateTime.Now };
 
-            Assert.IsTrue((dto.usuario == "usuario") && (dto.fecha_envio != null) && (dto.fecha_envio != null));
+            Assert.IsTrue((dto.usuario == "usuario") && (dto.fechaEnvio != null) && (dto.fechaEnvio != null));
         }
 
         /// <summary>
@@ -232,9 +222,9 @@ namespace Test.UnitTesting
         [Test]
         public void DtoZonaTest()
         {
-            var dto = new DtoZona() { id = 1, nombre = "nombre", nombre_ue = "ue" };
+            var dto = new DtoZona() { id = 1, nombre = "nombre", nombreUe = "ue" };
 
-            Assert.IsTrue((dto.id == 1) && (dto.nombre == "nombre") && (dto.nombre_ue == "ue"));
+            Assert.IsTrue((dto.id == 1) && (dto.nombre == "nombre") && (dto.nombreUe == "ue"));
         }
 
         /// <summary>

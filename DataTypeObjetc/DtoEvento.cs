@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 
 namespace DataTypeObject
@@ -15,11 +16,13 @@ namespace DataTypeObject
 
         public string estado { get; set; }
 
-        public DateTime time_stamp { get; set; }
+        [JsonProperty(PropertyName = "time_stamp")]
+        public DateTime timeStamp { get; set; }
 
         public string creador { get; set; }
-        
-        public DateTime fecha_creacion { get; set; }     
+
+        [JsonProperty(PropertyName = "fecha_creacion")]
+        public DateTime fechaCreacion { get; set; }     
 
         public string calle { get; set; }
         
@@ -37,11 +40,13 @@ namespace DataTypeObject
 
         public string descripcion { get; set; }
 
-        public bool en_proceso { get; set; }              
+        [JsonProperty(PropertyName = "en_proceso")]
+        public bool enProceso { get; set; }              
         
         public ICollection<DtoExtension> extensiones { get; set; }
 
-        //public DtoOrigenEvento origen_evento { get; set; }
+        //[JsonProperty(PropertyName = "origen_evento")]
+        //public DtoOrigenEvento origenEvento { get; set; }
 
         public virtual ICollection<DtoImagen> imagenes { get; set; }
 
@@ -49,6 +54,14 @@ namespace DataTypeObject
 
         public virtual ICollection<DtoAudio> audios { get; set; }
 
-        //public virtual ICollection<DtoGeoUbicacion> geo_ubicaciones { get; set; }
+        [JsonProperty(PropertyName = "id_zonas")]
+        public ICollection<int> idZonas { get; set; }
+
+        [JsonProperty(PropertyName = "id_departamento")]
+        public int idDepartamento { get; set; }
+
+        [JsonProperty(PropertyName = "id_sector")]
+        public int idSector { get; set; }
+
     }
 }

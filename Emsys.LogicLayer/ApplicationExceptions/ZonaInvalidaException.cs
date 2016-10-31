@@ -2,9 +2,9 @@
 
 namespace Emsys.LogicLayer.ApplicationExceptions
 {
-    public class InvalidCredentialsException : Exception
+    public class ZonaInvalidaException : Exception
     {
-        public InvalidCredentialsException()
+        public ZonaInvalidaException()
         {
         }
     }

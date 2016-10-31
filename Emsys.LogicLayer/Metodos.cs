@@ -13,7 +13,7 @@ namespace Emsys.LogicLayer
 {
     public class Metodos : IMetodos
     {
-        public DtoAutenticacion autenticarUsuario(string userName, string password)
+        public DtoAutenticacion autenticarUsuario(string userName, string password, string token)
         {
             using (var context = new EmsysContext())
             {
@@ -21,10 +21,10 @@ namespace Emsys.LogicLayer
                 // Si el usuario o contraseña son incorrectos.
                 if ((user == null) || ((user.Contraseña != Passwords.GetSHA1(password))))
                 {
-                    throw new InvalidCredentialsException();
+                    throw new CredencialesInvalidasException();
                 }
-                // Si el usuario ya tiene una sesion activa.
-                if (user.Token != null)
+                // Si el usuario ya tiene una sesion activa y no corresponde al usuario que intenta loguearse.
+                if ((user.Token != null) && (user.Token != token))
                 {
                     throw new SesionActivaException();
                 }
@@ -39,12 +39,12 @@ namespace Emsys.LogicLayer
                 context.SaveChanges();
                 
                 // Retorna un token y registra el inicia de sesion.
-                string token = TokenGenerator.ObtenerToken();
-                user.Token = token;
+                string tokenNuevo = TokenGenerator.ObtenerToken();
+                user.Token = tokenNuevo;
                 user.FechaInicioSesion = DateTime.Now;
                 user.UltimoSignal = DateTime.Now;
                 context.SaveChanges();                    
-                return new DtoAutenticacion(token, MensajesParaFE.Correcto);
+                return new DtoAutenticacion(tokenNuevo, MensajesParaFE.Correcto);
             }
         }
 
@@ -55,14 +55,14 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 // Si no encuentra el token.
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 // Agrega las zonas disponibles para el usuario mediante sus unidades ejecutoras.
                 ICollection<DtoZona> zonas = new List<DtoZona>();
@@ -100,7 +100,7 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
@@ -153,12 +153,12 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 // Si el usuario se loguea por recurso.
@@ -241,13 +241,13 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 List<DtoEvento> eventos = new List<DtoEvento>();
                 List<int> eventosAgregados = new List<int>();
@@ -289,12 +289,12 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 // Retira las zonas y recursos asociadas al usuario.
                 user.Zonas.Clear();
@@ -532,12 +532,12 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 Evento evento = context.Evento.FirstOrDefault(e => e.Id == idEvento);
                 if (!TieneAcceso.tieneVisionEvento(user, evento))
@@ -554,17 +554,21 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == ubicacion.idExtension);
-                if (!TieneAcceso.tieneAccesoExtension(user, ext))
-                {                    
-                    return false;
+                if (ext == null)
+                {
+                    throw new ExtensionInvalidaException();
+                }
+                if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user,ext)))
+                {
+                    throw new UsuarioNoAutorizadoException();
                 }
                 GeoUbicacion geoU = new GeoUbicacion() { Usuario = user, FechaEnvio = DateTime.Now, Latitud = ubicacion.latitud, Longitud = ubicacion.longitud };
                 ext.GeoUbicaciones.Add(geoU);
@@ -581,13 +585,13 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 Imagen img = context.Imagenes.FirstOrDefault(i => i.Id == idAdjunto);
                 if (img == null)
@@ -633,13 +637,13 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();                    
+                    throw new TokenInvalidoException();                    
                 }
                 Video vid = context.Videos.FirstOrDefault(v => v.Id == idAdjunto);
                 if (vid == null)
@@ -684,12 +688,12 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();                    
+                    throw new TokenInvalidoException();                    
                 }
                 Audio aud = context.Audios.FirstOrDefault(a => a.Id == idAdjunto);
                 if (aud == null)
@@ -728,27 +732,38 @@ namespace Emsys.LogicLayer
             }
         }
 
-
-        public bool adjuntarImagen(string token, byte[] imagenData, string extArchivo, int idExtension)
+        public bool adjuntarImagen(string token, DtoApplicationFile imgN)
         {
             using (var context = new EmsysContext())
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();                   
+                    throw new TokenInvalidoException();
+                }
+                if (imgN == null)
+                {
+                    throw new ImagenInvalidaException();
+                }
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == imgN.idExtension);
+                if (ext == null)
+                {
+                    throw new ExtensionInvalidaException();
+                }
+                if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                {
+                    throw new UsuarioNoAutorizadoException();
+                }
+                string extArchivo = Path.GetExtension(imgN.nombre);
+                if ((extArchivo != ".jpg") && (extArchivo != ".png"))
+                {
+                    throw new FormatoInvalidoException();
                 }
                 string nombre;
-                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
-                if (!TieneAcceso.tieneAccesoExtension(user, ext))
-                {
-                    return false;
-                }
-
                 // Si es el primer archivo.
                 if (context.ApplicationFiles.Count() == 0)
                 {
@@ -758,7 +773,7 @@ namespace Emsys.LogicLayer
                 {
                     nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
                 }
-                var file = new ApplicationFile() { Nombre = nombre, FileData = imagenData };                
+                var file = new ApplicationFile() { Nombre = nombre, FileData = imgN.fileData };
                 Imagen img = new Imagen() { Usuario = user, FechaEnvio = DateTime.Now, ImagenData = file };
                 ext.Imagenes.Add(img);
                 ext.TimeStamp = DateTime.Now;
@@ -767,28 +782,78 @@ namespace Emsys.LogicLayer
                 return true;
             }
         }
+        //public bool adjuntarImagen(string token, byte[] imagenData, string extArchivo, int idExtension)
+        //{
+        //    using (var context = new EmsysContext())
+        //    {
+        //        if (token == null)
+        //        {
+        //            throw new InvalidTokenException();
+        //        }
+        //        var user = context.Users.FirstOrDefault(u => u.Token == token);
+        //        if (user == null)
+        //        {
+        //            throw new InvalidTokenException();                   
+        //        }
+        //        string nombre;
+        //        Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
+        //        if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
+        //        {
+        //            return false;
+        //        }
+
+        //        // Si es el primer archivo.
+        //        if (context.ApplicationFiles.Count() == 0)
+        //        {
+        //            nombre = "1" + extArchivo;
+        //        }
+        //        else
+        //        {
+        //            nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
+        //        }
+        //        var file = new ApplicationFile() { Nombre = nombre, FileData = imagenData };                
+        //        Imagen img = new Imagen() { Usuario = user, FechaEnvio = DateTime.Now, ImagenData = file };
+        //        ext.Imagenes.Add(img);
+        //        ext.TimeStamp = DateTime.Now;
+        //        ext.Evento.TimeStamp = DateTime.Now;
+        //        context.SaveChanges();
+        //        return true;
+        //    }
+        //}
 
 
-        public bool adjuntarVideo(string token, byte[] videoData, string extArchivo, int idExtension)
+        public bool adjuntarVideo(string token, DtoApplicationFile vidN)
         {
             using (var context = new EmsysContext())
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
+                }
+                if (vidN == null)
+                {
+                    throw new VideoInvalidoException();
+                }
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == vidN.idExtension);
+                if (ext == null)
+                {
+                    throw new ExtensionInvalidaException();
+                }
+                if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                {
+                    throw new UsuarioNoAutorizadoException();
+                }
+                string extArchivo = Path.GetExtension(vidN.nombre);
+                if ((extArchivo != ".mp4") && (extArchivo != ".avi"))
+                {
+                    throw new FormatoInvalidoException();
                 }
                 string nombre;
-                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
-                if (!TieneAcceso.tieneAccesoExtension(user, ext))
-                {
-                    return false;
-                }
-
                 // Si es el primer archivo.
                 if (context.ApplicationFiles.Count() == 0)
                 {
@@ -798,8 +863,8 @@ namespace Emsys.LogicLayer
                 {
                     nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
                 }
-                var file = new ApplicationFile() { Nombre = nombre, FileData = videoData };
-                Video vid = new Video() { Usuario = user, FechaEnvio = DateTime.Now, VideoData = file};
+                var file = new ApplicationFile() { Nombre = nombre, FileData = vidN.fileData };
+                Video vid = new Video() { Usuario = user, FechaEnvio = DateTime.Now, VideoData = file };
                 ext.Videos.Add(vid);
                 ext.TimeStamp = DateTime.Now;
                 ext.Evento.TimeStamp = DateTime.Now;
@@ -809,26 +874,38 @@ namespace Emsys.LogicLayer
         }
 
         
-        public bool adjuntarAudio(string token, byte[] audioData, string extArchivo, int idExtension)
+        public bool adjuntarAudio(string token, DtoApplicationFile audN)
         {
             using (var context = new EmsysContext())
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
+                }
+                if (audN == null)
+                {
+                    throw new AudioInvalidoException();
+                }
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == audN.idExtension);
+                if (ext == null)
+                {
+                    throw new ExtensionInvalidaException();
+                }
+                if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                {
+                    throw new UsuarioNoAutorizadoException();
+                }
+                string extArchivo = Path.GetExtension(audN.nombre);
+                if ((extArchivo != ".mp3") && (extArchivo != ".wav"))
+                {
+                    throw new FormatoInvalidoException();
                 }
                 string nombre;
-                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
-                if (!TieneAcceso.tieneAccesoExtension(user, ext))
-                {
-                    return false;
-                }
-
                 // Si es el primer archivo.
                 if (context.ApplicationFiles.Count() == 0)
                 {
@@ -838,7 +915,7 @@ namespace Emsys.LogicLayer
                 {
                     nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
                 }
-                var file = new ApplicationFile() { Nombre = nombre, FileData = audioData };
+                var file = new ApplicationFile() { Nombre = nombre, FileData = audN.fileData };
                 Audio aud = new Audio() { Usuario = user, FechaEnvio = DateTime.Now, AudioData = file };
                 ext.Audios.Add(aud);
                 ext.TimeStamp = DateTime.Now;
@@ -849,19 +926,19 @@ namespace Emsys.LogicLayer
         }
 
 
-        public bool ActualizarDescripcionRecurso(DtoActualizarDescripcionParametro descParam, string token)
+        public bool ActualizarDescripcionRecurso(DtoActualizarDescripcion descParam, string token)
         {
             using (var context = new EmsysContext())
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();                   
+                    throw new TokenInvalidoException();                   
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == descParam.idExtension);
                 Recurso rec = user.Recurso.FirstOrDefault();
@@ -869,7 +946,7 @@ namespace Emsys.LogicLayer
                 {
                     return false;                    
                 }
-                if (!TieneAcceso.tieneAccesoExtension(user, ext))
+                if (!TieneAcceso.estaAsignadoExtension(user, ext))
                 {
                     throw new UsuarioNoAutorizadoException();                    
                 }
@@ -894,12 +971,12 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    throw new InvalidTokenException();                    
+                    throw new TokenInvalidoException();                    
                 }
                 user.UltimoSignal = DateTime.Now;
                 context.SaveChanges();
@@ -943,13 +1020,13 @@ namespace Emsys.LogicLayer
             {
                 if (token == null)
                 {
-                    throw new InvalidTokenException();
+                    throw new TokenInvalidoException();
                 }
 
                 var user = context.Users.FirstOrDefault(u => u.Token == token);
-                if ((user == null) || (user.Recurso.Count() != 1))
+                if (user == null)
                 {
-                    throw new InvalidTokenException();                    
+                    throw new TokenInvalidoException();                    
                 }
                 Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
                 Recurso rec = user.Recurso.FirstOrDefault();
@@ -957,19 +1034,553 @@ namespace Emsys.LogicLayer
                 {
                     return false;                    
                 }
-                foreach (var item in ext.AsignacionesRecursos)
+                if (!TieneAcceso.estaAsignadoExtension(user, ext))
                 {
-                    if (item.Recurso == rec)
-                    {
-                        item.HoraArribo = DateTime.Now;
-                        context.SaveChanges();
-                        return true;
-                    }
+                    throw new ExtensionInvalidaException();
+                }
+                AsignacionRecurso asig = ext.AsignacionesRecursos.FirstOrDefault(a => a.Recurso.Id == rec.Id);
+                if (asig != null)
+                {
+                    asig.HoraArribo = DateTime.Now;
+                    context.SaveChanges();
+                    return true;
                 }
                 return false;
             }
         }
 
+        public DtoInfoCreacionEvento getInfoCreacionEvento(string token)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+
+                DtoInfoCreacionEvento resp = new DtoInfoCreacionEvento();
+                List<DtoZona> zonas = new List<DtoZona>();
+                List<DtoCategoria> cats = new List<DtoCategoria>();
+                List<DtoDepartamento> deps = new List<DtoDepartamento>();
+                // Obtiene zonas y sectores.
+                foreach (Zona z in context.Zonas)
+                {
+                    zonas.Add(DtoGetters.getDtoZonaCompleto(z));
+                }
+                // Obtiene categorias.
+                foreach (Categoria c in context.Categorias)
+                {
+                    cats.Add(DtoGetters.getDtoCategoria(c));
+                }
+                // Obtiene departamentos.
+                foreach (Departamento d in context.Departamentos)
+                {
+                    deps.Add(DtoGetters.getDtoDepartamento(d));
+                }
+                resp.categorias = cats;
+                resp.zonasSectores = zonas;
+                resp.departamentos = deps;
+                return resp;
+            }
+        }
+
+
+        public bool crearEvento(string token, DtoEvento ev)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                if (ev == null)
+                {
+                    throw new ArgumentoInvalidoException();
+                }
+                // Si no se eligieron zonas.
+                if (ev.idZonas.Count() <= 0)
+                {
+                    throw new SeleccionZonasInvalidaException();
+                }
+                // Si la categoria es invalida.
+                var cat = context.Categorias.FirstOrDefault(c => c.Id == ev.categoria.id);
+                if (cat == null)
+                {
+                    throw new ArgumentoInvalidoException();
+                }
+                // Si el departamento es invalido.
+                Departamento dep = null;
+                if (ev.idDepartamento != 0)
+                {
+                    dep = context.Departamentos.FirstOrDefault(d => d.Id == ev.idDepartamento);
+                    if (dep == null)
+                    {
+                        throw new ArgumentoInvalidoException();
+                    }
+                }
+
+                List<Zona> zonas = new List<Zona>();
+                foreach (int z in ev.idZonas)
+                {
+                    Zona zona = context.Zonas.FirstOrDefault(zid => zid.Id == z);
+                    if (zona == null)
+                    {
+                        throw new ArgumentoInvalidoException();
+                    }
+                    else
+                    {
+                        zonas.Add(zona);
+                    }
+                }
+                // Si el sector es invalido.                
+                Sector sect = context.Sectores.FirstOrDefault(s => s.Id == ev.idSector);
+                if (sect == null)
+                {
+                    throw new ArgumentoInvalidoException();
+                }
+                
+                // Si el sector no se corresponde a alguna de las zonas.
+                bool sectorCorrecto = false;
+                foreach (Zona zAgregada in zonas)
+                {
+                    foreach (Sector sZona in zAgregada.Sectores)
+                    {
+                        if (sect.Id == sZona.Id)
+                        {
+                            sectorCorrecto = true;
+                            break;
+                        }
+                    }
+                }
+                if (!sectorCorrecto)
+                {
+                    throw new ArgumentoInvalidoException();
+                }
+
+                EstadoEvento est;
+                if (ev.estado == "creado")
+                {
+                    est = EstadoEvento.Creado;
+                }
+                else
+                {
+                    est = EstadoEvento.Enviado;
+                }
+                // Crea el evento.
+                Evento nuevoEvento = new Evento()
+                {
+                    NombreInformante = ev.informante,
+                    TelefonoEvento = ev.telefono,
+                    Categoria = cat,
+                    Estado = est,
+                    TimeStamp = DateTime.Now,
+                    Usuario = user,
+                    FechaCreacion = DateTime.Now,
+                    Calle = ev.calle,
+                    Esquina = ev.esquina,
+                    Numero = ev.numero,
+                    Departamento = dep,
+                    Sector = sect,
+                    Latitud = ev.latitud,
+                    Longitud = ev.longitud,
+                    Descripcion = ev.descripcion,
+                    EnProceso = ev.enProceso,
+                    ExtensionesEvento = new List<Extension_Evento>()
+                };
+
+                //Agrego extensiones.
+                foreach (Zona zEveto in zonas)
+                {
+                    nuevoEvento.ExtensionesEvento.Add(new Extension_Evento()
+                    {
+                        Zona = zEveto,
+                        Evento = nuevoEvento,
+                        Estado = EstadoExtension.FaltaDespachar,
+                        TimeStamp = DateTime.Now
+                    });
+                }
+                context.Evento.Add(nuevoEvento);
+                context.SaveChanges();
+                return true;
+            }
+        }
+
+        public bool tomarExtension(string token, int idExtension)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
+                if ((ext == null) || (ext.Estado != EstadoExtension.FaltaDespachar))
+                {
+                    throw new ExtensionInvalidaException();
+                }
+                // Si esta logueado como recurso o no tiene vision sobre la extension.
+                if ((user.Recurso.Count() > 0) || (!TieneAcceso.tieneVisionExtension(user, ext)))
+                {
+                    throw new UsuarioNoAutorizadoException();
+                }
+
+                ext.Estado = EstadoExtension.Despachado;
+                ext.Despachador = user;
+                user.Despachando.Add(ext);
+                context.SaveChanges();
+                return true;
+            }
+        }
+
+
+        public bool liberarExtension(string token, int idExtension)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                Extension_Evento ext = user.Despachando.FirstOrDefault(e => e.Id == idExtension);
+                if (ext == null)
+                {
+                    throw new ExtensionInvalidaException();
+                } 
+                if ((ext.Estado == EstadoExtension.Despachado) && (ext.Despachador.Id == user.Id))
+                {
+                    ext.Estado = EstadoExtension.FaltaDespachar;
+                    ext.Despachador = null;
+                    user.Despachando.Remove(ext);
+                    context.SaveChanges();
+                    return true;
+                }
+                return false;
+            }
+        }
+
+
+        public DtoRecursosExtension getRecursosExtension(string token, int idExtension)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
+                if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                {
+                    throw new ExtensionInvalidaException();
+                }
+
+                ICollection<DtoRecurso> asignados = new List<DtoRecurso>();
+                ICollection<DtoRecurso> noAsignados = new List<DtoRecurso>();
+
+                foreach (Recurso r in context.Recursos)
+                {
+                    if (r.Extensiones_Eventos.Contains(ext))
+                    {
+                        asignados.Add(DtoGetters.getDtoRecurso(r));
+                    }
+                    else if(r.EstadoAsignacion == EstadoAsignacionRecurso.Libre)
+                    {
+                        noAsignados.Add(DtoGetters.getDtoRecurso(r));
+                    }
+                }
+                DtoRecursosExtension resp = new DtoRecursosExtension()
+                {
+                    idExtension = idExtension,
+                    recursosAsignados = asignados,
+                    recursosNoAsignados = noAsignados
+                };
+                return resp;
+            }
+        }
+
+
+        public bool gestionarRecursos(string token, DtoRecursosExtension recursos)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                if (recursos == null)
+                {
+                    throw new ArgumentoInvalidoException();
+                }
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == recursos.idExtension);
+                if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                {
+                    throw new ExtensionInvalidaException();
+                }
+                // Agrego los recursos asignados.
+                foreach (DtoRecurso r in recursos.recursosAsignados)
+                {
+                    Recurso rec = context.Recursos.FirstOrDefault(rb => rb.Id == r.id);
+                    if ((rec == null) || (rec.EstadoAsignacion == EstadoAsignacionRecurso.Operativo) || (ext.Recursos.Contains(rec)))
+                    {
+                        throw new ArgumentoInvalidoException();
+                    }
+                    ext.Recursos.Add(rec);
+                    AsignacionRecurso ar = ext.AsignacionesRecursos.FirstOrDefault(a => a.Recurso.Id == rec.Id);
+                    // Si el recurso no habia estado asignado a la extension crea una nueva AsignacionRecurso.
+                    if (ar == null)
+                    {
+                        ext.AsignacionesRecursos.Add(new AsignacionRecurso() { Recurso = rec, Extension = ext, ActualmenteAsignado = true });
+                    }
+                    // Si ya estuvo asignado.
+                    else
+                    {
+                        ar.ActualmenteAsignado = true;
+                        ar.HoraArribo = null;                        
+                    }
+                }
+                // Quito los recursos a retirar.
+                foreach (DtoRecurso r in recursos.recursosNoAsignados)
+                {
+                    Recurso rec = context.Recursos.FirstOrDefault(rb => rb.Id == r.id);
+                    if ((rec == null) || (!ext.Recursos.Contains(rec)))
+                    {
+                        throw new ArgumentoInvalidoException();
+                    }
+                    ext.Recursos.Remove(rec);
+                    AsignacionRecurso ar = ext.AsignacionesRecursos.FirstOrDefault(a => a.Recurso.Id == rec.Id);
+                    if (ar != null)
+                    {
+                        ar.ActualmenteAsignado = false;
+                        ar.HoraArribo = null;
+                    }
+                }
+                ext.TimeStamp = DateTime.Now;
+                ext.Evento.TimeStamp = DateTime.Now;
+                context.SaveChanges();
+                return true;
+            }
+        }
+
+        
+        public bool actualizarSegundaCategoria(string token, int idExtension, int idCategoria)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                var cat = context.Categorias.FirstOrDefault(c => c.Id == idCategoria);
+                // En caso de usar id -1 se asume que se desea eliminar la segunda categoria.
+                if ((cat == null) && (idCategoria != -1))
+                {
+                    throw new CategoriaInvalidaException();
+                }
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
+                if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                {
+                    throw new ExtensionInvalidaException();
+                }
+
+                if (ext.SegundaCategoria != null)
+                {
+                    ext.SegundaCategoria.Extensiones_Evento.Remove(ext);
+                }
+                ext.SegundaCategoria = cat;
+                ext.TimeStamp = DateTime.Now;
+                ext.Evento.TimeStamp = DateTime.Now;
+                context.SaveChanges();
+                return true;               
+            }
+        }
+
+        public ICollection<DtoZona> getZonasLibresEvento(string token, int idExtension)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
+                if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                {
+                    throw new ExtensionInvalidaException();
+                }
+
+                List<DtoZona> zonas = new List<DtoZona>();
+                List<int> zonasNoDisponibles = new List<int>();
+                foreach (Extension_Evento e in ext.Evento.ExtensionesEvento)
+                {
+                    zonasNoDisponibles.Add(e.Id);
+                }
+
+                foreach (Zona z in context.Zonas)
+                {
+                    if (!zonasNoDisponibles.Contains(z.Id))
+                    {
+                        zonas.Add(DtoGetters.getDtoZona(z));
+                    }
+                }
+                return zonas;                
+            }
+        }
+
+
+        public bool abrirExtension(string token, int idExtension, int idZona)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
+                if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                {
+                    throw new ExtensionInvalidaException();
+                }
+                Zona zExt = context.Zonas.FirstOrDefault(z => z.Id == idZona);
+                // Si la zona es invalida o evento cuenta con una extension para esa zona.
+                if ((zExt == null) || (zExt.Extensiones_Evento.Contains(ext)))
+                {
+                    throw new ZonaInvalidaException();
+                }
+
+                ext.Evento.ExtensionesEvento.Add(new Extension_Evento()
+                {
+                    Evento = ext.Evento,
+                    Zona = zExt,
+                    Estado = EstadoExtension.FaltaDespachar,
+                    TimeStamp = DateTime.Now
+                });
+                ext.Evento.TimeStamp = DateTime.Now;
+                context.SaveChanges();
+                return true;
+            }
+        }
+
+
+        public bool cerrarExtension(string token, int idExtension)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtension);
+                if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                {
+                    throw new ExtensionInvalidaException();
+                }
+                if (ext.Evento.Estado == EstadoEvento.Creado)
+                {
+                    throw new EventoNoEnviadoException();
+                }
+
+                // Libero recursos de extension.
+                foreach (Recurso r in ext.Recursos)
+                {
+                    r.Extensiones_Eventos.Remove(ext);
+                    r.EstadoAsignacion = EstadoAsignacionRecurso.Libre;
+                }
+                // Libero al despachador.
+                user.Despachando.Remove(ext);
+
+                ext.Estado = EstadoExtension.Cerrado;
+                ext.TimeStamp = DateTime.Now;
+                ext.Evento.TimeStamp = DateTime.Now;
+                context.SaveChanges();                
+                return true;
+            }
+        }
+
+
+        public bool actualizarDescripcionDespachador(string token, DtoActualizarDescripcion descr)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                var user = context.Users.FirstOrDefault(u => u.Token == token);
+                if (user == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+                Extension_Evento ext = context.Extensiones_Evento.FirstOrDefault(e => e.Id == descr.idExtension);
+                if ((ext == null) || (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                {
+                    throw new ExtensionInvalidaException();
+                }
+
+                string formato = "yyyy-MM-dd'T'hh:mm:ss.FFF";
+                string descrFormateada = "\\" + DateTime.Now.ToString(formato) + "\\" + user.Nombre + "\\" + descr.descripcion;
+                ext.DescripcionDespachador += descrFormateada;
+                ext.TimeStamp = DateTime.Now;
+                ext.Evento.TimeStamp = DateTime.Now;
+                context.SaveChanges();
+                return true;
+            }
+        }
 
 
     }

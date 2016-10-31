@@ -2,9 +2,9 @@
 
 namespace Emsys.LogicLayer.ApplicationExceptions
 {
-    public class InvalidTokenException : Exception
+    public class ExtensionInvalidaException : Exception
     {
-        public InvalidTokenException()
+        public ExtensionInvalidaException()
         {
         }
     }

@@ -26,10 +26,10 @@ namespace Test.UnitTesting
             var controllerLogin = new LoginController();
             var us = context.Evento.FirstOrDefault();
 
-            var respuesta = controllerLogin.Login(new DtoUser() { username = nombreUsuario, password = contraseña });
+            var respuesta = controllerLogin.Login(new DtoUsuario() { username = nombreUsuario, password = contraseña });
             Assert.IsTrue(respuesta.cod == 0);
             var respuestaAutenticate = (DtoAutenticacion)respuesta.response;
-            var token = respuestaAutenticate.access_token;
+            var token = respuestaAutenticate.accessToken;
 
             controllerLogin.Request = new HttpRequestMessage();
             controllerLogin.Request.Headers.Add("auth", token);

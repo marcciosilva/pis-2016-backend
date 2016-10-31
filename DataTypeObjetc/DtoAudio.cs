@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace DataTypeObject
 {
@@ -6,12 +7,15 @@ namespace DataTypeObject
     {        
         public int id { get; set; }
 
-        public int id_audio { get; set; }
+        [JsonProperty(PropertyName = "id_audio")]
+        public int idAudio { get; set; }
 
         public string usuario { get; set; }
 
-        public DateTime fecha_envio { get; set; }
+        [JsonProperty(PropertyName = "fecha_envio")]
+        public DateTime fechaEnvio { get; set; }
 
+        [JsonProperty(PropertyName = "id_extension")]
         public int idExtension { get; set; }
     }
 }

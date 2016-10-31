@@ -56,16 +56,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ApplicationExceptions\InvalidExtensionException.cs" />
+    <Compile Include="ApplicationExceptions\ArgumentoInvalidoException.cs" />
+    <Compile Include="ApplicationExceptions\CategoriaInvalidaException.cs" />
+    <Compile Include="ApplicationExceptions\FormatoInvalidoException.cs" />
+    <Compile Include="ApplicationExceptions\EventoNoEnviadoException.cs" />
+    <Compile Include="ApplicationExceptions\ExtensionInvalidaException.cs" />
     <Compile Include="ApplicationExceptions\UsuarioNoAutorizadoException.cs" />
     <Compile Include="ApplicationExceptions\AudioInvalidoException .cs" />
+    <Compile Include="ApplicationExceptions\SeleccionZonasInvalidaException.cs" />
+    <Compile Include="ApplicationExceptions\ZonaInvalidaException.cs" />
     <Compile Include="ApplicationExceptions\VideoInvalidoException.cs" />
     <Compile Include="ApplicationExceptions\ImagenInvalidaException.cs" />
     <Compile Include="ApplicationExceptions\EventoInvalidoException.cs" />
     <Compile Include="ApplicationExceptions\SesionActivaException.cs" />
     <Compile Include="ApplicationExceptions\RecursoNoDisponibleException.cs" />
-    <Compile Include="ApplicationExceptions\InvalidTokenException.cs" />
-    <Compile Include="ApplicationExceptions\InvalidCredentialsException.cs" />
+    <Compile Include="ApplicationExceptions\TokenInvalidoException.cs" />
+    <Compile Include="ApplicationExceptions\CredencialesInvalidasException.cs" />
     <Compile Include="IMetodos.cs" />
     <Compile Include="Metodos.cs" />
     <Compile Include="Program.cs" />
