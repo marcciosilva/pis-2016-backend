@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Emsys.LogicLayer", "Emsys.L
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ServidorExterno", "ServidorExterno\ServidorExterno.csproj", "{A1967C3A-93F9-4845-83F1-160DD268E158}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Util.NotificacionAnalysis", "Util.NotificacionAnalysis\Util.NotificacionAnalysis.csproj", "{FEEBCFFB-CDC6-4DF5-A49B-25DC7569753C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,6 +62,10 @@ Global
 		{A1967C3A-93F9-4845-83F1-160DD268E158}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A1967C3A-93F9-4845-83F1-160DD268E158}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A1967C3A-93F9-4845-83F1-160DD268E158}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEEBCFFB-CDC6-4DF5-A49B-25DC7569753C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEEBCFFB-CDC6-4DF5-A49B-25DC7569753C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEEBCFFB-CDC6-4DF5-A49B-25DC7569753C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEEBCFFB-CDC6-4DF5-A49B-25DC7569753C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

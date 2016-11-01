@@ -142,6 +142,10 @@
     <Compile Include="Migrations\201610252143277__initial.Designer.cs">
       <DependentUpon>201610252143277__initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201611012205369_AgregoLogViejoLogNotificaciones.cs" />
+    <Compile Include="Migrations\201611012205369_AgregoLogViejoLogNotificaciones.Designer.cs">
+      <DependentUpon>201611012205369_AgregoLogViejoLogNotificaciones.cs</DependentUpon>
+    </Compile>
     <Compile Include="Model\ApplicationFile.cs" />
     <Compile Include="Model\AsignacionRecursoDescripcion.cs" />
     <Compile Include="Model\Audio.cs" />
@@ -184,6 +188,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201610252143277__initial.resx">
       <DependentUpon>201610252143277__initial.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201611012205369_AgregoLogViejoLogNotificaciones.resx">
+      <DependentUpon>201611012205369_AgregoLogViejoLogNotificaciones.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

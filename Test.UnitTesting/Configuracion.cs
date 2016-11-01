@@ -50,6 +50,7 @@ namespace Test.UnitTesting
                     throw e;
                 }
             }
+            Assert.IsTrue(true);
         }
 
         private void CrearBD(SqlConnection con, string nombreBD)

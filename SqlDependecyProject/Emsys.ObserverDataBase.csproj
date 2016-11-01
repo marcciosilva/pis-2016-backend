@@ -99,6 +99,7 @@
     <Compile Include="ProcesoAsignacionRecursoDescripcion.cs" />
     <Compile Include="ProcesoImagenes.cs" />
     <Compile Include="ProcesoAsignacionRecurso.cs" />
+    <Compile Include="ProcesoGeoUbicacion.cs" />
     <Compile Include="ProcesoVideos.cs" />
     <Compile Include="ProcesoAudios.cs" />
     <Compile Include="ProcesoExtensiones.cs" />

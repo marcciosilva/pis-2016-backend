@@ -33,5 +33,7 @@
         public bool EsError { get; set; }
 
         public string Detalles { get; set; }
+
+        public virtual LogNotification LogNotificationPrevio { get; set; }
     }
 }

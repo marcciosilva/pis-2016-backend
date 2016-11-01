@@ -32,27 +32,35 @@ namespace Test.UnitTesting
                 //espero a que se disparen todos los hilos y luego empiezo a modificar la base
                 Thread.Sleep(5000);
                 ModificarBaseDatos();
-                Thread.Sleep(240* _seconds * 1000+10000);
-                workerThread.Abort();               
+                Thread.Sleep(240 * _seconds * 1000 + 10000);
+                workerThread.Abort();
             }
             catch (Exception)
             {
                 using (EmsysContext db = new EmsysContext())
                 {
-                    Assert.IsTrue(db.LogNotification.Where(x => x.EsError == false).Count() == 83);
+                    var cantidadEnviosReales = db.LogNotification.Where(x => x.Codigo == 901).Count();
+                    var cantidadEnviosExitosos = db.LogNotification.Where(x => x.Codigo == 906).Count();
+                    var cantidadEnviosError = db.LogNotification.Where(x => x.Codigo == 904).Count();
+                    Assert.IsTrue(cantidadEnviosReales == cantidadEnviosExitosos);
+
                 }
             }
 
             using (EmsysContext db = new EmsysContext())
             {
-                Assert.IsTrue(db.LogNotification.Where(x => x.EsError == false).Count() == 83);
+                var cantidadEnviosReales = db.LogNotification.Where(x => x.Codigo == 901).Count();
+                var cantidadEnviosExitosos = db.LogNotification.Where(x => x.Codigo == 906).Count();
+                var cantidadEnviosError = db.LogNotification.Where(x => x.Codigo == 904).Count();
+                Assert.IsTrue(cantidadEnviosReales == cantidadEnviosExitosos);
             }
         }
 
-        private static void ModificarBaseDatos()
+        private static int ModificarBaseDatos()
         {
             using (EmsysContext db = new EmsysContext())
             {
+                var contador = 0;
                 foreach (var item in db.Evento)
                 {
                     item.Descripcion = "otro";
@@ -112,11 +120,12 @@ namespace Test.UnitTesting
 
                 ////Thread.Sleep(10000);
                 LogicLayerUnitTest test = new LogicLayerUnitTest();
-                test.AdjuntarAudioTest();
+                test.AdjuntarAudioTest();//  1
                 test.AdjuntarVideoTest();
                 test.AdjuntarImagenTest();
                 test.AdjuntarGeoUbicacion();
                 test.ActualizarDescripcionRecursoTest();
+                return contador;
             }
         }
     }

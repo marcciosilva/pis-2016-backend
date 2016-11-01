@@ -419,7 +419,7 @@ namespace Emsys.LogicLayer
             }
         }
 
-        public void AgregarLogNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo)
+        public void AgregarLogNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo, LogNotification logViejo = null)
         {
             try
             {
@@ -446,6 +446,7 @@ namespace Emsys.LogicLayer
                     log.Detalles = detalles;
                     log.Codigo = codigo;
                     log.EsError = false;
+                    log.LogNotificationPrevio = logViejo;
                     context.LogNotification.Add(log);
                     context.SaveChanges();
                 }
@@ -457,22 +458,10 @@ namespace Emsys.LogicLayer
                 {
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Errores");
                 }
-
-                ////string ruta = string.Format("{0}Errores\\{1}", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss").Replace(" ", "").Replace(":", "_") + ".txt");
-
-                ////StreamWriter fs = File.CreateText(ruta);
-                ////fs.Write("Mensaje: " + " error al registrar un log " + e.Message + "\n" +
-                ////        "HelpLink: " + e.HelpLink + "\n" +
-                ////        "Hresult: " + e.HResult + "\n" +
-                ////        "Innerexception: " + e.InnerException + "\n" +
-                ////        "Source: " + e.Source + "\n" +
-                ////        "StackTrace: " + e.StackTrace + "\n" +
-                ////        "TargetSite: " + e.TargetSite + "\n");
-                ////fs.Close();
             }
         }
 
-        public void AgregarLogErrorNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo)
+        public LogNotification AgregarLogErrorNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo, LogNotification logViejo = null)
         {
             try
             {
@@ -499,8 +488,10 @@ namespace Emsys.LogicLayer
                     log.Detalles = detalles;
                     log.Codigo = codigo;
                     log.EsError = true;
+                    log.LogNotificationPrevio = logViejo;
                     context.LogNotification.Add(log);
                     context.SaveChanges();
+                    return log;
                 }
             }
             catch (Exception e)
@@ -511,18 +502,7 @@ namespace Emsys.LogicLayer
                 {
                     Directory.CreateDirectory(AppDomain.CurrentDomain.BaseDirectory + "Errores");
                 }
-
-                //string ruta = string.Format("{0}Errores\\{1}", AppDomain.CurrentDomain.BaseDirectory, DateTime.Now.ToString("yyyy-MM-dd-hh-mm-ss").Replace(" ", "").Replace(":", "_") + ".txt");
-
-                //StreamWriter fs = File.CreateText(ruta);
-                //fs.Write("Mensaje: " + " error al registrar un log " + e.Message + "\n" +
-                //        "HelpLink: " + e.HelpLink + "\n" +
-                //        "Hresult: " + e.HResult + "\n" +
-                //        "Innerexception: " + e.InnerException + "\n" +
-                //        "Source: " + e.Source + "\n" +
-                //        "StackTrace: " + e.StackTrace + "\n" +
-                //        "TargetSite: " + e.TargetSite + "\n");
-                //fs.Close();
+                return null;
             }
         }
 

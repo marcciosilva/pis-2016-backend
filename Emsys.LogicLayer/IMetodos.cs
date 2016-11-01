@@ -1,4 +1,5 @@
 ﻿using DataTypeObject;
+using Emsys.DataAccesLayer.Model;
 using System.Collections.Generic;
 
 namespace Emsys.LogicLayer
@@ -49,7 +50,7 @@ namespace Emsys.LogicLayer
         /// <param name="token">Identificador unico del usuario.</param>
         /// <returns>Retorna si puedo realizar la operacion de cerrar sesion.</returns>
         bool cerrarSesion(string token);
-        
+
         /// <summary>
         /// Metodo para agregar al log una nueva accion.
         /// </summary>
@@ -87,7 +88,7 @@ namespace Emsys.LogicLayer
         /// <param name="accion">Nombre del metodo o funcion que ejecuto una accion y guardo un log.</param>
         /// <param name="detalles">Informacion adicional.</param>
         /// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
-        void AgregarLogNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo);
+        void AgregarLogNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo, LogNotification logViejo = null);
 
         /// <summary>
         /// Metodo para agregar al log  de error.
@@ -100,7 +101,7 @@ namespace Emsys.LogicLayer
         /// <param name="accion">Nombre del metodo o funcion que ejecuto una accion y guardo un log.</param>
         /// <param name="detalles">Informacion adicional.</param>
         /// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
-        void AgregarLogErrorNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo);
+        LogNotification AgregarLogErrorNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo, LogNotification log = null);
 
         /// <summary>
         /// Metodo que dado un evento y un identificador de usuario devuelve la informacion del evento.
@@ -117,7 +118,7 @@ namespace Emsys.LogicLayer
         /// <param name="ubicacion">Objeto de ubicacion.</param>
         /// <returns>Retorna su pudo realizar la persistencia de la  geoubicacion o no.</returns>
         bool adjuntarGeoUbicacion(string token, DtoGeoUbicacion ubicacion);
-        
+
 
         /// <summary>
         /// Devuelve el nombre y datos de el archivo de imagen indicado.
@@ -178,7 +179,7 @@ namespace Emsys.LogicLayer
         /// </summary>
         /// <param name="token">token del usuario</param>
         /// <returns>Si se realizo correctamente</returns>
-        bool keepMeAlive(string token);        
+        bool keepMeAlive(string token);
 
         /// <summary>
         /// Interfaz Actualizar descripcion implentado por la capa de servicios.
@@ -187,11 +188,11 @@ namespace Emsys.LogicLayer
         /// <param name="token">token del usuario que desea actualizar descripcion</param>
         /// <returns>Retorna la respuesta segun el documento de interfaz.</returns>
         bool ActualizarDescripcionRecurso(DtoActualizarDescripcion descParam, string token);
-        
-       /// <summary>
-       /// Desconecta a los usuarios inactivos (que no han enviado keep alive) por mas de maxTime minutos.
-       /// </summary>
-       /// <param name="maxTime">Tiempo en minutos minimo para considerar inactivo a un usuario</param>
+
+        /// <summary>
+        /// Desconecta a los usuarios inactivos (que no han enviado keep alive) por mas de maxTime minutos.
+        /// </summary>
+        /// <param name="maxTime">Tiempo en minutos minimo para considerar inactivo a un usuario</param>
         void desconectarAusentes(int maxTime);
 
         /// <summary>

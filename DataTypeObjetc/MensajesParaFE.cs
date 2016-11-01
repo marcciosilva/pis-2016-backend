@@ -115,9 +115,14 @@
         public const int ErrorCerrarExtensionCod = 3013;
         public const int ErrorActualizarDescripcionDespachadorCod = 3014;
         // Codigos Logs.
-        public const int LogNotificacionesCod = 901;
+        
+        public const int LogNotificaciones = 901;
         public const int LogCapturarCambioEventoCod = 902;
         public const int LogAccionesCod = 903;
+
+        public const int LogNotificacionesErrorReenvio = 904;
+        public const int LogNotificacionesErrorGenerico = 905;
+        public const int LogNotificacionesCierreEnvio = 906;
         // Desconectar inactivos
         public const int LogDesconectarUsuarioCod = 904;
 
