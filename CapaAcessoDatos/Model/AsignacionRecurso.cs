@@ -14,12 +14,12 @@
         [Required]
         public virtual Recurso Recurso { get; set; }
 
-        public virtual Extension_Evento Extension { get; set; }
+        public virtual ExtensionEvento Extension { get; set; }
         
         public string Descripcion { get; set; }
 
         public DateTime? HoraArribo { get; set; }
-
+        
         public bool ActualmenteAsignado { get; set; }
 
         public virtual List<AsignacionRecursoDescripcion> AsignacionRecursoDescripcion { get; set; }

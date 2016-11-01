@@ -52,13 +52,13 @@ namespace Test.UnitTesting
             var eventosRespuesta = (ICollection<DataTypeObject.DtoEvento>)respuesta4.response;
             using (EmsysContext db = new EmsysContext())
             {
-                var user = db.Users.Where(x => x.NombreLogin == nombreUsuario).FirstOrDefault();
+                var user = db.Usuarios.Where(x => x.NombreLogin == nombreUsuario).FirstOrDefault();
                 if (user != null)
                 {
                     var zonas = user.Zonas;
                     foreach (var item in zonas)
                     {
-                        foreach (var extensionEvento in item.Extensiones_Evento)
+                        foreach (var extensionEvento in item.ExtensionesEvento)
                         {
                             var esta = eventosRespuesta.Where(x => x.id == extensionEvento.Evento.Id).FirstOrDefault();
                             Assert.IsNotNull(esta);
@@ -73,7 +73,7 @@ namespace Test.UnitTesting
             var respuesta5 = controllerLogin.CerrarSesion();
             Assert.IsTrue(respuesta5.cod == 0);
             context = new EmsysContext();
-            int cant = context.Users.FirstOrDefault(u => u.NombreLogin == "B").Zonas.Count();
+            int cant = context.Usuarios.FirstOrDefault(u => u.NombreLogin == "B").Zonas.Count();
             Assert.IsTrue(cant == 0);
         }
         

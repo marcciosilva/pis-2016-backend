@@ -5,7 +5,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Unidades_Ejecutoras")]
-    public partial class Unidad_Ejecutora
+    public partial class UnidadEjecutora
     {
         [Key]
         public int Id { get; set; }

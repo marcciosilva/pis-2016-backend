@@ -5,7 +5,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Grupos_Recursos")]
-    public partial class Grupo_Recurso
+    public partial class GrupoRecurso
     {
         [Key]
         public int Id { get; set; }

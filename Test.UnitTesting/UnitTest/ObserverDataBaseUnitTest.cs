@@ -70,7 +70,7 @@ namespace Test.UnitTesting
                     };
                 }
                 db.SaveChanges();
-                foreach (var item in db.Extensiones_Evento)
+                foreach (var item in db.ExtensionesEvento)
                 {
                     item.DescripcionDespachador = "2016/07/23 21:30:00\\UsuarioDespachador\\descripcion de evento";
                 }
@@ -101,7 +101,7 @@ namespace Test.UnitTesting
                     ActualmenteAsignado = true,
                     AsignacionRecursoDescripcion = new List<AsignacionRecursoDescripcion>(),
                     Descripcion = "",
-                    Extension = db.Extensiones_Evento.FirstOrDefault(),
+                    Extension = db.ExtensionesEvento.FirstOrDefault(),
                     HoraArribo = DateTime.Now,
                     Recurso = db.Recursos.FirstOrDefault(),
                 };

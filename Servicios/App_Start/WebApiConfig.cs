@@ -11,11 +11,9 @@ namespace Emsys.ServiceLayer
         /// <param name="config">Parametro de configuracion.</param>
         public static void Register(HttpConfiguration config)
         {
-            //config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(
-            //new IsoDateTimeConverter());
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(
              new IsoDateTimeConverter());
-            // Web API routes
+            // Web API routes.
             config.MapHttpAttributeRoutes();
             config.MessageHandlers.Add(new Emsys.ServiceLayer.Filtros.DelegateHandler());
             config.Routes.MapHttpRoute(

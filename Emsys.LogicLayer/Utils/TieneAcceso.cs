@@ -19,7 +19,7 @@ namespace Emsys.LogicLayer.Utils
                 {
                     if (user.Recurso.Count() > 0)
                     {
-                        Extension_Evento ext = user.Recurso.FirstOrDefault().Extensiones_Eventos.FirstOrDefault(e => e.Evento.Id == evento.Id);
+                        ExtensionEvento ext = user.Recurso.FirstOrDefault().ExtensionesEventos.FirstOrDefault(e => e.Evento.Id == evento.Id);
                         if ((ext != null) && (ext.Estado != EstadoExtension.Cerrado))
                         {
                             return true;
@@ -29,7 +29,7 @@ namespace Emsys.LogicLayer.Utils
                     // Si el usuario esta conectado por zonas.
                     else if (user.Zonas.Count() > 0)
                     {
-                        foreach (Extension_Evento ext in evento.ExtensionesEvento)
+                        foreach (ExtensionEvento ext in evento.ExtensionesEvento)
                         {
                             if ((ext.Estado != EstadoExtension.Cerrado) && (user.Zonas.Contains(ext.Zona)))
                             {
@@ -42,7 +42,7 @@ namespace Emsys.LogicLayer.Utils
             }
         }
 
-        public static bool tieneVisionExtension(Usuario user, Extension_Evento extension)
+        public static bool tieneVisionExtension(Usuario user, ExtensionEvento extension)
         {
             using (var context = new EmsysContext())
             {
@@ -50,7 +50,7 @@ namespace Emsys.LogicLayer.Utils
                 {
                     if (user.Recurso.Count() > 0)
                     {
-                        Extension_Evento ext = user.Recurso.FirstOrDefault().Extensiones_Eventos.FirstOrDefault(e => e.Evento.Id == extension.Id);
+                        ExtensionEvento ext = user.Recurso.FirstOrDefault().ExtensionesEventos.FirstOrDefault(e => e.Evento.Id == extension.Id);
                         if ((ext != null) && (ext.Estado != EstadoExtension.Cerrado))
                         {
                             return true;
@@ -70,7 +70,7 @@ namespace Emsys.LogicLayer.Utils
             }
         }
 
-        public static bool estaAsignadoExtension(Usuario user, Extension_Evento extension)
+        public static bool estaAsignadoExtension(Usuario user, ExtensionEvento extension)
         {
             using (var context = new EmsysContext())
             {
@@ -82,7 +82,7 @@ namespace Emsys.LogicLayer.Utils
                 {
                     return false;
                 }
-                Extension_Evento ext = user.Recurso.FirstOrDefault().Extensiones_Eventos.FirstOrDefault(e => e.Id == extension.Id);
+                ExtensionEvento ext = user.Recurso.FirstOrDefault().ExtensionesEventos.FirstOrDefault(e => e.Id == extension.Id);
                 if ((ext != null) && (ext.Estado != EstadoExtension.Cerrado))
                 {
                     return true;
@@ -91,7 +91,7 @@ namespace Emsys.LogicLayer.Utils
             }
         }
 
-        public static bool estaDespachandoExtension(Usuario user, Extension_Evento extension)
+        public static bool estaDespachandoExtension(Usuario user, ExtensionEvento extension)
         {
             using (var context = new EmsysContext())
             {

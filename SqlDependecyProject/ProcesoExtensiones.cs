@@ -20,7 +20,7 @@
 
         private static bool llamo = true;
 
-        private static SqlTableDependency<Extension_Evento> _dependency;
+        private static SqlTableDependency<ExtensionEvento> _dependency;
 
         private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
@@ -52,9 +52,9 @@
         /// </summary>
         public static void Listener()
         {
-            var mapper = new ModelToTableMapper<Extension_Evento>();
+            var mapper = new ModelToTableMapper<ExtensionEvento>();
             mapper.AddMapping(model => model.Id, "Id");
-            _dependency = new SqlTableDependency<Extension_Evento>(_connectionString, "Extensiones_Evento", mapper);
+            _dependency = new SqlTableDependency<ExtensionEvento>(_connectionString, "Extensiones_Evento", mapper);
             _dependency.OnChanged += _dependency_OnChanged;
             _dependency.OnError += _dependency_OnError;
             _dependency.Start();
@@ -77,7 +77,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="eventoEnBD">Evento generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Extension_Evento> eventoEnBD)
+        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<ExtensionEvento> eventoEnBD)
         {
             try
             {
@@ -116,13 +116,13 @@
         /// <param name="cod">Codigo que se desea notificar a la aplicacion dado el evento.</param>
         /// <param name="extension">Identificador del evento que fue modificado/alta/baja.</param>
         /// <param name="GestorNotificaciones">Instancia de INotification.</param>
-        private static void AtenderEvento(string cod, TableDependency.EventArgs.RecordChangedEventArgs<Extension_Evento> extension, Utils.Notifications.INotifications GestorNotificaciones)
+        private static void AtenderEvento(string cod, TableDependency.EventArgs.RecordChangedEventArgs<ExtensionEvento> extension, Utils.Notifications.INotifications GestorNotificaciones)
         {
             using (EmsysContext db = new EmsysContext())
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Evento", extension.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla Eventos. Se inicia la secuencia de envio de notificaciones.", MensajesParaFE.LogCapturarCambioEventoCod);
-                var extensionEnBD = db.Extensiones_Evento.Find(extension.Entity.Id);
+                var extensionEnBD = db.ExtensionesEvento.Find(extension.Entity.Id);
                 if (extensionEnBD != null)
                 {
                     // Para los recursos asociados a la extension genero una notificacion.

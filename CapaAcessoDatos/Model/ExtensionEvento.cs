@@ -13,7 +13,7 @@
     }
 
     [Table("Extensiones_Evento")]
-    public partial class Extension_Evento
+    public partial class ExtensionEvento
     {
         [Key]
         public int Id { get; set; }

@@ -31,17 +31,17 @@
         [Required]
         public Estado Estado { get; set; }    
 
-        public virtual ICollection<Unidad_Ejecutora> Unidades_Ejecutoras { get; set; }
+        public virtual ICollection<UnidadEjecutora> UnidadesEjecutoras { get; set; }
 
         public virtual ICollection<Log> Logs { get; set; }
 
         public virtual ICollection<Zona> Zonas { get; set; }
 
-        public virtual ICollection<Extension_Evento> Despachando { get; set; }
+        public virtual ICollection<ExtensionEvento> Despachando { get; set; }
 
         public virtual ICollection<Evento> EventosCreados { get; set; }
 
-        public virtual ICollection<Grupo_Recurso> Grupos_Recursos { get; set; }
+        public virtual ICollection<GrupoRecurso> GruposRecursos { get; set; }
 
         public virtual ICollection<Recurso> Recurso { get; set; }
 

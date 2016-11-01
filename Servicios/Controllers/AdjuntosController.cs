@@ -294,6 +294,61 @@ namespace Servicios.Controllers
         }
 
         /// <summary>
+        /// Servicio para obtener el thumbnail de un archivo de imagen.
+        /// </summary>
+        /// <param name="idImagen">id de la imagen solicitada</param>
+        /// <returns>Dto con el nombre y los bytes del archivo</returns>
+        [CustomAuthorizeAttribute("verMultimedia")]
+        [LogFilter]
+        [Route("adjuntos/getimagethumbnail")]
+        [HttpGet]
+        public DtoRespuesta GetImageThumbnail(int idImagen)
+        {
+            IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
+            HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+            try
+            {
+                if (token == null)
+                {
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                }
+
+                var img = dbAL.getImageThumbnail(token, idImagen);
+                if (img == null)
+                {
+                    return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
+                }
+                //var stream = new MemoryStream(img.fileData);
+                //responseMessage.Content = new StreamContent(stream);
+                //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                //responseMessage.Content.Headers.ContentDisposition.FileName = img.nombre;
+                //responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                //responseMessage.Content.Headers.ContentLength = stream.Length;
+                //return responseMessage;
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, img);
+            }
+            catch (ImagenInvalidaException)
+            {
+                return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
+            }
+            catch (UsuarioNoAutorizadoException)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
+            }
+            catch (TokenInvalidoException)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+            }
+            catch (Exception e)
+            {
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo));
+            }
+        }
+
+
+        /// <summary>
         /// Servicio para obtener un archivo de video.
         /// </summary>
         /// <param name="idVideo">Id del video solicitado</param>
@@ -315,6 +370,60 @@ namespace Servicios.Controllers
                 }
 
                 var vid = dbAL.getVideoData(token, idVideo);
+                if (vid == null)
+                {
+                    return new DtoRespuesta(MensajesParaFE.VideoInvalidoCod, new Mensaje(MensajesParaFE.VideoInvalido));
+                }
+                //var stream = new MemoryStream(vid.fileData);
+                //responseMessage.Content = new StreamContent(stream);
+                //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                //responseMessage.Content.Headers.ContentDisposition.FileName = vid.nombre;
+                //responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
+                //responseMessage.Content.Headers.ContentLength = stream.Length;
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, vid);
+            }
+            catch (VideoInvalidoException)
+            {
+                return new DtoRespuesta(MensajesParaFE.VideoInvalidoCod, new Mensaje(MensajesParaFE.VideoInvalido));
+            }
+            catch (UsuarioNoAutorizadoException)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
+            }
+            catch (TokenInvalidoException)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+            }
+            catch (Exception e)
+            {
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetVideoData", "Hubo un error al intentar obtener los datos de un video, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo));
+            }
+        }
+
+
+        /// <summary>
+        /// Servicio para obtener un thumbnail de un archivo de video.
+        /// </summary>
+        /// <param name="idVideo">Id del video solicitado</param>
+        /// <returns>Dto con el nombre y los bytes del archivo</returns>
+        [CustomAuthorizeAttribute("verMultimedia")]
+        [LogFilter]
+        [Route("adjuntos/getvideothumbnail")]
+        [HttpGet]
+        public DtoRespuesta GetVideoThumbnail(int idVideo)
+        {
+            IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
+            HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+            try
+            {
+                if (token == null)
+                {
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                }
+
+                var vid = dbAL.getVideoThumbnail(token, idVideo);
                 if (vid == null)
                 {
                     return new DtoRespuesta(MensajesParaFE.VideoInvalidoCod, new Mensaje(MensajesParaFE.VideoInvalido));

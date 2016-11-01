@@ -15,9 +15,9 @@
         public string Nombre { get; set; }
         
         [Required]
-        public virtual Unidad_Ejecutora UnidadEjecutora { get; set; }
+        public virtual UnidadEjecutora UnidadEjecutora { get; set; }
 
-        public virtual ICollection<Extension_Evento> Extensiones_Evento { get; set; }
+        public virtual ICollection<ExtensionEvento> ExtensionesEvento { get; set; }
 
         public virtual ICollection<Sector> Sectores { get; set; }
     }

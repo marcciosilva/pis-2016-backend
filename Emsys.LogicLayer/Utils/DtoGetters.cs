@@ -4,7 +4,10 @@
     using DataTypeObject;
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
+    using System.Drawing;
+    using System.Drawing.Imaging;
 
     public class DtoGetters
     {
@@ -14,6 +17,34 @@
             {
                 nombre = file.Nombre,
                 fileData = file.FileData
+            };
+        }
+
+        public static DtoApplicationFile GetImageThumbnail(ApplicationFile file)
+        {
+            var ms = new MemoryStream(file.FileData);            
+            Image img = Image.FromStream(ms);
+            Image thumb = img.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
+            ms = new MemoryStream();
+            thumb.Save(ms, img.RawFormat);
+            return new DtoApplicationFile()
+            {
+                nombre = file.Nombre,
+                fileData = ms.ToArray()
+            };            
+        }
+
+        public static DtoApplicationFile GetVideoThumbnail(ApplicationFile file)
+        {
+            var ms = new MemoryStream(file.FileData);
+            Image img = Image.FromStream(ms);
+            Image thumb = img.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
+            ms = new MemoryStream();
+            thumb.Save(ms, ImageFormat.Jpeg);
+            return new DtoApplicationFile()
+            {
+                nombre = file.Nombre,
+                fileData = ms.ToArray()
             };
         }
 
@@ -156,7 +187,7 @@
             };
         }
         
-        public static DtoExtension getDtoExtension(Extension_Evento ext)
+        public static DtoExtension getDtoExtension(ExtensionEvento ext)
         {
             List<string> recursos = new List<string>();
             foreach (Recurso r in ext.Recursos)
@@ -238,7 +269,7 @@
         public static DtoEvento getDtoEvento(Evento evento)
         {
             List<DtoExtension> extensiones = new List<DtoExtension>();
-            foreach (Extension_Evento e in evento.ExtensionesEvento)
+            foreach (ExtensionEvento e in evento.ExtensionesEvento)
             {
                 extensiones.Add(getDtoExtension(e));
             }

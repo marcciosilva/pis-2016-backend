@@ -17,7 +17,5 @@
         public double Longitud { get; set; }
 
         public double Latitud { get; set; }
-
-        //public virtual Extension_Evento ExtensionEvento { get; set; }
     }
 }

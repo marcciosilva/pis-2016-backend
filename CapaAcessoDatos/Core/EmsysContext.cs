@@ -7,7 +7,6 @@ namespace Emsys.DataAccesLayer.Core
     {
         public EmsysContext() : base("name=DefaultConnection")
         {
-            //   Database.SetInitializer<EmsysContext>(new DropCreateDatabaseIfModelChanges<EmsysContext>());
             Database.SetInitializer(new MigrateDatabaseToLatestVersion<EmsysContext, Configuration>());
         }
 
@@ -31,17 +30,17 @@ namespace Emsys.DataAccesLayer.Core
 
         public DbSet<Departamento> Departamentos { get; set; }
 
-        public DbSet<Extension_Evento> Extensiones_Evento { get; set; }
+        public DbSet<ExtensionEvento> ExtensionesEvento { get; set; }
 
         public DbSet<Log> Logs { get; set; }
 
-        public DbSet<Origen_Evento> Origen_Eventos { get; set; }
+        public DbSet<OrigenEvento> OrigenEventos { get; set; }
         
         public DbSet<Recurso> Recursos { get; set; }
 
         public DbSet<Sector> Sectores { get; set; }
 
-        public DbSet<Unidad_Ejecutora> Unidades_Ejecutoras { get; set; }
+        public DbSet<UnidadEjecutora> UnidadesEjecutoras { get; set; }
         
         public DbSet<Zona> Zonas { get; set; }
 
@@ -49,22 +48,14 @@ namespace Emsys.DataAccesLayer.Core
         
         public DbSet<Permiso> Permisos { get; set; }
 
-        public DbSet<Grupo_Recurso> Grupos_Recursos { get; set; }
+        public DbSet<GrupoRecurso> GruposRecursos { get; set; }
 
-        public DbSet<Usuario> Users { get; set; }
+        public DbSet<Usuario> Usuarios { get; set; }
 
         public DbSet<AsignacionRecurso> AsignacionesRecursos { get; set; }
 
         public DbSet<LogNotification> LogNotification { get; set; }
-        public DbSet<AsignacionRecursoDescripcion> AsignacionRecursoDescripcion { get; set; }
 
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        //{
-        //    base.OnModelCreating(modelBuilder);
-        //    modelBuilder.Entity<IdentityUser>().ToTable("Users").
-        //        Property(u => u.PasswordHash).HasColumnName("Password");
-        //    modelBuilder.Entity<ApplicationUser>().ToTable("Users").
-        //        Property(u => u.PasswordHash).HasColumnName("Password");
-        //}
+        public DbSet<AsignacionRecursoDescripcion> AsignacionRecursoDescripcion { get; set; }
     }
 }

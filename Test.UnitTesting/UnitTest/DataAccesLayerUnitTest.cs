@@ -21,11 +21,11 @@ namespace Test.UnitTesting
             using (var db = new EmsysContext())
             {
                 var user = new Usuario() { NombreLogin = "prueba", Nombre = "prueba" };
-                db.Users.Add(user);
+                db.Usuarios.Add(user);
                 db.SaveChanges();
-                var usuarioAgregado = db.Users.FirstOrDefault(x => x.NombreLogin.Equals("prueba"));
+                var usuarioAgregado = db.Usuarios.FirstOrDefault(x => x.NombreLogin.Equals("prueba"));
                 Assert.IsNotNull(usuarioAgregado);
-                db.Users.Remove(user);
+                db.Usuarios.Remove(user);
             }
         }
 
@@ -37,11 +37,11 @@ namespace Test.UnitTesting
         {
             using (var context = new EmsysContext())
             {
-                context.Unidades_Ejecutoras.Add(new Unidad_Ejecutora() { Nombre = "pruebaUE" });
+                context.UnidadesEjecutoras.Add(new UnidadEjecutora() { Nombre = "pruebaUE" });
                 context.SaveChanges();
-                var unidadEjecutoraAgregada = context.Unidades_Ejecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUE"));
+                var unidadEjecutoraAgregada = context.UnidadesEjecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUE"));
                 Assert.IsNotNull(unidadEjecutoraAgregada);
-                context.Unidades_Ejecutoras.Remove(unidadEjecutoraAgregada);
+                context.UnidadesEjecutoras.Remove(unidadEjecutoraAgregada);
             }
         }
 
@@ -53,9 +53,9 @@ namespace Test.UnitTesting
         {
             using (var context = new EmsysContext())
             {
-                context.Unidades_Ejecutoras.Add(new Unidad_Ejecutora() { Nombre = "pruebaUEZona" });
+                context.UnidadesEjecutoras.Add(new UnidadEjecutora() { Nombre = "pruebaUEZona" });
                 context.SaveChanges();
-                var unidadEjecutoraAgregada = context.Unidades_Ejecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUEZona"));
+                var unidadEjecutoraAgregada = context.UnidadesEjecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUEZona"));
                 if (unidadEjecutoraAgregada != null)
                 {
                     context.Zonas.Add(new Zona() { Nombre = "pruebaZona", UnidadEjecutora = unidadEjecutoraAgregada });
@@ -63,7 +63,7 @@ namespace Test.UnitTesting
                     var zonaAgregada = context.Zonas.FirstOrDefault(x => x.Nombre.Equals("pruebaZona"));
                     Assert.IsNotNull(zonaAgregada);
                     context.Zonas.Remove(zonaAgregada);
-                    context.Unidades_Ejecutoras.Remove(unidadEjecutoraAgregada);
+                    context.UnidadesEjecutoras.Remove(unidadEjecutoraAgregada);
                 }
                 else
                 {
@@ -81,9 +81,9 @@ namespace Test.UnitTesting
         {
             using (var context = new EmsysContext())
             {
-                context.Unidades_Ejecutoras.Add(new Unidad_Ejecutora() { Nombre = "pruebaUEZonaSector" });
+                context.UnidadesEjecutoras.Add(new UnidadEjecutora() { Nombre = "pruebaUEZonaSector" });
                 context.SaveChanges();
-                var unidadEjecutoraAgregada = context.Unidades_Ejecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUEZonaSector"));
+                var unidadEjecutoraAgregada = context.UnidadesEjecutoras.FirstOrDefault(x => x.Nombre.Equals("pruebaUEZonaSector"));
                 if (unidadEjecutoraAgregada != null)
                 {
                     context.Zonas.Add(new Zona() { Nombre = "pruebaZonaSector", UnidadEjecutora = unidadEjecutoraAgregada });
@@ -97,7 +97,7 @@ namespace Test.UnitTesting
                         Assert.IsNotNull(sectorAgregado);
                         context.Sectores.Remove(sectorAgregado);
                         context.Zonas.Remove(zonaAgregada);
-                        context.Unidades_Ejecutoras.Remove(unidadEjecutoraAgregada);
+                        context.UnidadesEjecutoras.Remove(unidadEjecutoraAgregada);
                     }
                     else
                     {
@@ -147,28 +147,28 @@ namespace Test.UnitTesting
                 Descripcion = "PruebaDE"
             };
 
-            var ext1 = new Extension_Evento()
+            var ext1 = new ExtensionEvento()
             {
                 Evento = evento,
                 Zona = context.Zonas.FirstOrDefault(),
                 Estado = EstadoExtension.Despachado,
                 TimeStamp = DateTime.Now,
-                Despachador = context.Users.FirstOrDefault(),
+                Despachador = context.Usuarios.FirstOrDefault(),
                 DescripcionDespachador = "2016/07/23 21:30:00\\UsuarioDespachador\\descripcion de evento\\2016/07/23 21:37:00\\UsuarioDespachador2\\otra descripcion de evento\\2016/07/24 10:37:00\\UsuarioDespachador2\\otra mas"
             };
 
-            Origen_Evento oe1 = new Origen_Evento()
+            OrigenEvento oe1 = new OrigenEvento()
             {
                 TimeStamp = DateTime.Now,
                 TipoOrigen = "test",
                 IdOrigen = 1,
                 Evento = evento
             };
-            context.Origen_Eventos.Add(oe1);
+            context.OrigenEventos.Add(oe1);
             context.SaveChanges();
 
             context = new EmsysContext();
-            var oe = context.Origen_Eventos.FirstOrDefault();
+            var oe = context.OrigenEventos.FirstOrDefault();
             Assert.AreEqual(oe.Id, 4);
             Assert.AreNotEqual(oe.TimeStamp, null);
             Assert.AreEqual(oe.TipoOrigen, "test");

@@ -128,12 +128,28 @@ namespace Emsys.LogicLayer
         DtoApplicationFile getImageData(string token, int idAdjunto);
 
         /// <summary>
+        /// Devuelve el nombre y datos del thumbnail del archivo de imagen indicado.
+        /// </summary>
+        /// <param name="token">Token del usuario que solicita la imagen</param>
+        /// <param name="idAdjunto">Id de la imagen solicitada</param>
+        /// <returns>DtoApplicationFile con los bytes y nombre del archivo</returns>
+        DtoApplicationFile getImageThumbnail(string token, int idAdjunto);
+
+        /// <summary>
         /// Devuelve el nombre y datos de el archivo de video indicado.
         /// </summary>
         /// <param name="token">Token del usuario que solicita el video</param>
         /// <param name="idAdjunto">Id del video solicitada</param>
         /// <returns>DtoApplicationFile con los bytes y nombre del archivo</returns>
         DtoApplicationFile getVideoData(string token, int idAdjunto);
+
+        /// <summary>
+        /// Devuelve el nombre y datos de el thumbnail del archivo de video indicado.
+        /// </summary>
+        /// <param name="token">Token del usuario que solicita el video</param>
+        /// <param name="idAdjunto">Id del video solicitada</param>
+        /// <returns>DtoApplicationFile con los bytes y nombre del archivo</returns>
+        DtoApplicationFile getVideoThumbnail(string token, int idAdjunto);
 
         /// <summary>
         /// Devuelve el nombre y datos de el archivo de audio indicado.
