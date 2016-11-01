@@ -6,6 +6,7 @@ using System.Threading;
 using Emsys.LogicLayer;
 using DataTypeObject;
 using Servicios;
+using System.Collections.Generic;
 
 namespace Emsys.ServiceLayer.Filtros
 {
@@ -22,8 +23,8 @@ namespace Emsys.ServiceLayer.Filtros
             string requestBody = await request.Content.ReadAsStringAsync();
             string token = ObtenerToken.GetToken(request);
             IMetodos dbAL = new Metodos();
-            dbAL.AgregarLog(token, GetClientIp(request), "", "", 0, "", "Request body: " + requestBody.ToString(), MensajesParaFE.LogAccionesCod);
-            
+            dbAL.AgregarLog(token, GetClientIp(request), "", "", 0, "", "Request body: " + requestBody.ToString() + " Enviado en el header - auth: " + token, MensajesParaFE.LogAccionesCod);
+
             // Let other handlers process the request.
             var result = await base.SendAsync(request, cancellationToken);
             if (result.Content != null)

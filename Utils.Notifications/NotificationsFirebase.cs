@@ -25,9 +25,7 @@ namespace Utils.Notifications
         /// <param name="topic">Topic/Channel al que se desea enviar una notificacion.</param>
         public void SendMessage(string cod, string pk, string topic)
         {
-
             sendNotification(cod, pk, topic);
-
         }
 
         /// <summary>
