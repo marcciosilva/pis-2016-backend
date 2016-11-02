@@ -151,6 +151,10 @@ namespace Servicios.Controllers
                 }
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
+            catch (ArriboPrevioException)
+            {
+                return new DtoRespuesta(MensajesParaFE.ArriboPrevioCod, new Mensaje(MensajesParaFE.ArriboPrevio));
+            }
             catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
