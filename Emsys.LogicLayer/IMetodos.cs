@@ -88,7 +88,10 @@ namespace Emsys.LogicLayer
         /// <param name="accion">Nombre del metodo o funcion que ejecuto una accion y guardo un log.</param>
         /// <param name="detalles">Informacion adicional.</param>
         /// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
-        void AgregarLogNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo, LogNotification logViejo = null);
+        void AgregarLogNotification(string token, string terminal, string modulo, string Entidad,
+            int idEntidad, string accion, string detalles, int codigo,
+            string topic, string codigoNotificacion, string pkEvento, string firebaseResponse
+            , LogNotification logViejo = null);
 
         /// <summary>
         /// Metodo para agregar al log  de error.
@@ -101,7 +104,9 @@ namespace Emsys.LogicLayer
         /// <param name="accion">Nombre del metodo o funcion que ejecuto una accion y guardo un log.</param>
         /// <param name="detalles">Informacion adicional.</param>
         /// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
-        LogNotification AgregarLogErrorNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo, LogNotification log = null);
+        LogNotification AgregarLogErrorNotification(string token, string terminal, string modulo, string Entidad,
+            int idEntidad, string accion, string detalles, int codigo,
+            string topic, string codigoNotificacion, string pkEvento, string firebaseResponse, LogNotification log = null);
 
         /// <summary>
         /// Metodo que dado un evento y un identificador de usuario devuelve la informacion del evento.

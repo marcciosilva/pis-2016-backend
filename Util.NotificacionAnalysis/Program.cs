@@ -45,11 +45,14 @@ namespace Util.NotificacionAnalysis
                 {
                     using (EmsysContext db = new EmsysContext())
                     {
-                        double max = 0;
-                        double min = 0;
-                        double average = 0;
+                        double tiempoMaximoEsperaNotificacion = 0;
+                        double tiempoMinimoEsperaNotificacion = 0;
+                        double tiempoPromedioEnvioNotificacion = 0;
+
                         int nivelRecursion = 0;
                         var logs = db.LogNotification.ToList().OrderByDescending(x => x.Id);
+                        DateTime tiempoMenor = logs.FirstOrDefault().TimeStamp;
+                        DateTime tiempoMayor = logs.FirstOrDefault().TimeStamp;
                         foreach (var item in logs)
                         {
                             if (item.Codigo == 906)
@@ -59,27 +62,55 @@ namespace Util.NotificacionAnalysis
                                 int nivel = 0;
                                 DateTime timepoInicio = ObtenerInicio(item, ref nivel);
                                 var diferencia = (tiempoFin - timepoInicio).TotalMilliseconds;
-                                if (diferencia > max)
+                                if (diferencia > tiempoMaximoEsperaNotificacion)
                                 {
-                                    max = diferencia;
+                                    tiempoMaximoEsperaNotificacion = diferencia;
                                 }
-                                if (diferencia < min)
+                                if (diferencia < tiempoMinimoEsperaNotificacion)
                                 {
-                                    min = diferencia;
+                                    tiempoMinimoEsperaNotificacion = diferencia;
                                 }
                                 if (nivel > nivelRecursion)
                                 {
                                     nivelRecursion = nivel;
                                 }
-                                average = (average + diferencia) / 2;
+                                tiempoPromedioEnvioNotificacion = (tiempoPromedioEnvioNotificacion + diferencia) / 2;
+                                if (tiempoMenor > item.TimeStamp)
+                                {
+                                    tiempoMenor = item.TimeStamp;
+                                }
+                                if (tiempoMayor < item.TimeStamp)
+                                {
+                                    tiempoMayor = item.TimeStamp;
+                                }
                             }
                         }
+                        
+                        double duracionRafaga = (tiempoMayor - tiempoMenor).TotalMilliseconds;
+                        var cantidadTopics = db.LogNotification.Where(y => y.Codigo == 901).GroupBy(x => x.Topic).Count();
+                        var topicsRateNotification = db.LogNotification.Where(y => y.Codigo == 901).GroupBy(x => x.Topic);
+                        var codigosNotificacionesEnviados= db.LogNotification.Where(y => y.Codigo == 901).GroupBy(x => x.CodigoNotificacion);
+                        var cantidadCodigosNotificaciones = codigosNotificacionesEnviados.Count();
                         Console.WriteLine();
-                        Console.WriteLine("Tiempo maximo de envio: " + max + " milisenconds.");
-                        Console.WriteLine("Tiempo minimo de envio: " + min + " milisenconds.");
-                        Console.WriteLine("Tiempo promedop de envio: " + average + " milisenconds.");
+                        Console.WriteLine("Tiempo maximo de envio: " + tiempoMaximoEsperaNotificacion + " milisenconds.");
+                        Console.WriteLine("Tiempo minimo de envio: " + tiempoMinimoEsperaNotificacion + " milisenconds.");
+                        Console.WriteLine("Tiempo promedio de envio: " + tiempoPromedioEnvioNotificacion + " milisenconds.");
+                        Console.WriteLine("Duracion de rafaga de notificaciones: "+ duracionRafaga + " miliseconds.");
                         Console.WriteLine("Maximo nivel de recursion " + nivelRecursion + ".");
+                        Console.WriteLine("Cantidad topics " + cantidadTopics + ".");
+                        Console.WriteLine("Taza de notificaciones por topic: ");
+                        foreach (var item in topicsRateNotification)
+                        {
+                            Console.WriteLine("--->  " + item.FirstOrDefault().Topic + " - " + item.Count());
+                        }
+                        Console.WriteLine("Cantidad codigos de notificaciones " + cantidadCodigosNotificaciones + ".");
+                        Console.WriteLine("Taza de notificaciones por codigo de notificacion: ");
+                        foreach (var item in codigosNotificacionesEnviados)
+                        {
+                            Console.WriteLine("--->  " + item.FirstOrDefault().CodigoNotificacion + " - " + item.Count());
+                        }
                         Console.WriteLine();
+
                     }
                 }
                 else

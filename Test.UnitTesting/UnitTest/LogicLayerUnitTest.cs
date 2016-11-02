@@ -1547,7 +1547,7 @@ namespace Test.UnitTesting
             IMetodos logic = new Metodos();
             db.Usuarios.FirstOrDefault().Token = "hola";
             db.SaveChanges();
-            logic.AgregarLogErrorNotification("hola", "hola", "hola", "hola", 1, "hola", "hola", 1);
+            logic.AgregarLogErrorNotification("hola", "hola", "hola", "hola", 1, "hola", "hola", 1, "hola", "hola", "hola", "hola");
             db = new EmsysContext();
             int cant2 = db.LogNotification.Count();
             Assert.IsTrue(cant2 == cantLogs + 1);

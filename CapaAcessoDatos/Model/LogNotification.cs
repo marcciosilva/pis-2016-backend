@@ -9,7 +9,7 @@
     {
         [Key]
         public int Id { get; set; }
-        
+
         public virtual string Usuario { get; set; }
 
         public DateTime TimeStamp { get; set; }
@@ -33,6 +33,14 @@
         public bool EsError { get; set; }
 
         public string Detalles { get; set; }
+
+        public string Topic { get; set; }
+
+        public string CodigoNotificacion { get; set; }
+
+        public string PKEventoAfectado { get; set; }
+
+        public string responseFireBase { get; set; }
 
         public virtual LogNotification LogNotificationPrevio { get; set; }
     }

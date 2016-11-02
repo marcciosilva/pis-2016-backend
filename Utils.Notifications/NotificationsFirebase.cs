@@ -27,8 +27,25 @@ namespace Utils.Notifications
         public void SendMessage(string cod, string pk, string topic)
         {
             IMetodos dbAL = new Metodos();
-            dbAL.AgregarLogNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topic + "con el codigo: " + cod + "y la pk:" + pk, MensajesParaFE.LogNotificaciones, null);
+
+            dbAL.AgregarLogNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase"
+                , 0, "sendNotification",
+                "Se genero una notificacion Real.",
+                MensajesParaFE.LogNotificaciones, topic, cod, pk, "No tengo aun.", null);
+            EstadoSistema();
             sendNotification(cod, pk, topic, null);
+        }
+        private static int MaximoPermitidoConsecutivo=0;
+        private Semaphore semaforo = new Semaphore(1, 1);
+        private void EstadoSistema()
+        {
+            MaximoPermitidoConsecutivo++;
+            if (MaximoPermitidoConsecutivo==20) {
+                semaforo.WaitOne();
+                Thread.Sleep(1000);
+                _pool.Release();
+                MaximoPermitidoConsecutivo = 0;
+            }
         }
 
         /// <summary>
@@ -59,13 +76,21 @@ namespace Utils.Notifications
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                 {
-                    var log = dbAL.AgregarLogErrorNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topicFinal + " con el codigo: " + cod + " y la pk: " + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), MensajesParaFE.LogNotificacionesErrorGenerico, logPrevio);
+                    var log = dbAL.AgregarLogErrorNotification("vacio", "servidor", "Utils.Notitications",
+                        "NotificacionesFirebase", 0, "sendNotification",
+                        "Ocurrio un error al enviar la notificacion.",
+                        MensajesParaFE.LogNotificacionesErrorGenerico, topicFinal, cod, pk,
+                        response.ToString(), logPrevio);
                     throw new Exception("Al enviar una notifiacion la respuesta del servidor NO fue positiva.");
                 }
                 string mensaje = responseString.Split(':')[0].ToString();
                 if (mensaje != "{\"message_id\"")
                 {
-                    var logActual = dbAL.AgregarLogErrorNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topicFinal + " con el codigo: " + cod + " y la pk: " + pk + " la respuesta de firebase es: " + responseString + " y la respuesta fue: " + response.ToString(), MensajesParaFE.LogNotificacionesErrorReenvio, logPrevio);
+                    var logActual = dbAL.AgregarLogErrorNotification("vacio", "servidor",
+                        "Utils.Notitications", "NotificacionesFirebase", 0,
+                        "sendNotification", "Error al enviar mensaje por taza superada",
+                        MensajesParaFE.LogNotificacionesErrorReenvio,
+                         topicFinal, cod, pk, response.ToString(), logPrevio);
                     _pool.WaitOne();
                     Thread.Sleep(_seconds * 1000);
                     _pool.Release();
@@ -74,7 +99,12 @@ namespace Utils.Notifications
                 }
                 else
                 {
-                    dbAL.AgregarLogNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase", 0, "sendNotification", "Se genero una notificacion al topic: " + topicFinal + "con el codigo: " + cod + "y la pk:" + pk, MensajesParaFE.LogNotificacionesCierreEnvio, logPrevio);
+                    dbAL.AgregarLogNotification("vacio", "servidor", "Utils.Notitications",
+                        "NotificacionesFirebase", 0, "sendNotification",
+                        "Se genero una notificacion exitosamente.",
+                        MensajesParaFE.LogNotificacionesCierreEnvio,
+                        topicFinal, cod, pk, responseString,
+                        logPrevio);
                 }
             }
         }
