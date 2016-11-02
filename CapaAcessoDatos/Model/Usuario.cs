@@ -10,7 +10,7 @@
         Inactivo
     }
         
-    public class Usuario //: IdentityUser
+    public class Usuario
     {
         [Key]
         public int Id { get; set; }

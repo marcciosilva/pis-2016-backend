@@ -1,13 +1,13 @@
 ﻿namespace Emsys.LogicLayer.Utils
 {
-    using DataAccesLayer.Model;
-    using DataTypeObject;
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
     using System.Drawing;
     using System.Drawing.Imaging;
+    using System.IO;
+    using System.Linq;
+    using DataAccesLayer.Model;
+    using DataTypeObject;
 
     public class DtoGetters
     {
@@ -67,6 +67,7 @@
                     origen = OrigenDescripcion.Despachador
                 });
             }
+
             res.descripcion = desc;
             return res;
         }
@@ -110,7 +111,7 @@
             {
                 longitud = ubicacion.Longitud,
                 latitud = ubicacion.Latitud,
-                fechaEnvio=ubicacion.FechaEnvio                
+                fechaEnvio = ubicacion.FechaEnvio                
             };
         }
 
@@ -149,6 +150,7 @@
             {
                 sects.Add(getDtoSector(s));
             }
+
             return new DtoZona()
             {
                 id = zona.Id,
@@ -165,6 +167,7 @@
             {
                 user = recurso.Usuario.Nombre;
             }
+
             return new DtoRecurso()
             {
                 id = recurso.Id,

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Configuration;
 using System.Threading;
 using System.Web.Configuration;
 
@@ -23,7 +22,6 @@ namespace Emsys.LogicLayer
                 Console.WriteLine("Sleeping...");
                 Thread.Sleep(refreshTime * 60 * 1000);
             }
-
         }
     }
 }
