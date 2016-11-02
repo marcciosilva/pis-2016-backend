@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace DataTypeObject
 {
@@ -62,6 +62,5 @@ namespace DataTypeObject
 
         [JsonProperty(PropertyName = "id_sector")]
         public int idSector { get; set; }
-
     }
 }

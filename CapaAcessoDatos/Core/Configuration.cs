@@ -1,9 +1,9 @@
 namespace Emsys.DataAccesLayer.Core
 {
-    using Model;
     using System;
     using System.Collections.Generic;
     using System.Data.Entity.Migrations;
+    using Model;
 
     public class Configuration : DbMigrationsConfiguration<EmsysContext>
     {
@@ -21,7 +21,6 @@ namespace Emsys.DataAccesLayer.Core
         {
             try
             {
-
                 // Agregar departamentos.
                 Departamento dep1 = new Departamento() { Id = 1, Nombre = "departamento1" };
                 Departamento dep2 = new Departamento() { Id = 2, Nombre = "departamento2" };
@@ -81,7 +80,8 @@ namespace Emsys.DataAccesLayer.Core
                 Categoria cat1 = new Categoria() { Id = 1, Codigo = "cod1", Clave = "Categoria de prueba 1", Prioridad = NombrePrioridad.Baja, Activo = true };
                 Categoria cat2 = new Categoria() { Id = 2, Codigo = "cod2", Clave = "Categoria de prueba 2", Prioridad = NombrePrioridad.Media, Activo = true };
                 Categoria cat3 = new Categoria() { Id = 3, Codigo = "cod3", Clave = "Categoria de prueba 3", Prioridad = NombrePrioridad.Alta, Activo = true };
-                //se agregan despues
+                
+                // Se agregan despues.
                 //context.Categorias.AddOrUpdate(m => m.Id, cat1);
                 //context.Categorias.AddOrUpdate(m => m.Id, cat2);
                 //context.Categorias.AddOrUpdate(m => m.Id, cat3);
@@ -122,7 +122,6 @@ namespace Emsys.DataAccesLayer.Core
                 Permiso permiso15 = new Permiso() { Id = 15, Nombre = "Actualizar descripcion (Despachador)", Clave = "actualizarDescripcionDespachador", Descripcion = "Permite a un despachador actualizar la descripcion de una extension de evento." };
                 Permiso permiso16 = new Permiso() { Id = 16, Nombre = "Adjuntar geo ubicacion", Clave = "adjuntarGeoUbicacion", Descripcion = "Permite a un usuario adjuntar geo ubicaciones a extensiones de evento." };
                 Permiso permiso17 = new Permiso() { Id = 17, Nombre = "Ver multimedia", Clave = "verMultimedia", Descripcion = "Permite a un usuario ver informacion multimedia." };
-
 
                 // Asignar permisos a roles.
                 // Permisos admin (totales).
@@ -269,7 +268,7 @@ namespace Emsys.DataAccesLayer.Core
                 ExtensionEvento ext1 = new ExtensionEvento()
                 {
                     Id = 1,
-                    DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
+                    DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
                     Evento = evento1,
                     Zona = zona1,
                     Estado = EstadoExtension.FaltaDespachar,
@@ -290,7 +289,7 @@ namespace Emsys.DataAccesLayer.Core
                 ExtensionEvento ext2 = new ExtensionEvento()
                 {
                     Id = 2,
-                    DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
+                    DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
                     Evento = evento2,
                     Zona = zona2,
                     Estado = EstadoExtension.FaltaDespachar,
@@ -299,7 +298,7 @@ namespace Emsys.DataAccesLayer.Core
                 ExtensionEvento ext3 = new ExtensionEvento()
                 {
                     Id = 3,
-                    DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
+                    DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
                     Evento = evento3,
                     Zona = zona4,
                     Estado = EstadoExtension.FaltaDespachar,
