@@ -160,6 +160,10 @@
       <Project>{1ddb2c9b-93db-4962-8dcc-e8615fdb1068}</Project>
       <Name>Emsys.ObserverDataBase</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Util.NotificacionAnalysis\Utils.NotificacionsAnalysis.csproj">
+      <Project>{feebcffb-cdc6-4df5-a49b-25dc7569753c}</Project>
+      <Name>Utils.NotificacionsAnalysis</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utils.Notifications\Utils.Notifications.csproj">
       <Project>{a10bb2f4-e63f-40d5-a9b7-52bae04a6316}</Project>
       <Name>Utils.Notifications</Name>
@@ -179,6 +183,9 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <Content Include="App_Data\NotificationsAnalysisData.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="App_Data\DatosBD.sql">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

@@ -22,10 +22,18 @@ namespace Test.UnitTesting
         {
             string nombreBD = "EmsysBackendTestingDB";
             //string scriptInicial = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"App_Data\DatosBD.sql");
+            CrearBaseDatos(nombreBD, "DatosBD.sql");
+
+            CrearBaseDatos("NotificationsAnalysisData", "NotificationsAnalysisData.sql");
+            Assert.IsTrue(true);
+        }
+
+        private void CrearBaseDatos(string nombreBD, string NombreArchivoIniciar)
+        {
             //string scriptInicial = Environment.CurrentDirectory + "\\App_Data\\DatosBD.sql";
-            string scriptInicial = AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\DatosBD.sql";
+            string scriptInicial = AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\"+NombreArchivoIniciar;
             string connectionString = String.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;Integrated Security=True;MultipleActiveResultSets=True;");
-            
+
             using (var con = new SqlConnection(connectionString))
             {
                 try
@@ -36,7 +44,7 @@ namespace Test.UnitTesting
                     CrearBD(con, nombreBD);
 
                     // Se carga la BD con el script inicial.
-                    using (var context = new EmsysContext()) 
+                    using (var context = new EmsysContext())
                     {
                         Database db = context.Database;
                         db.Initialize(false);
@@ -50,7 +58,6 @@ namespace Test.UnitTesting
                     throw e;
                 }
             }
-            Assert.IsTrue(true);
         }
 
         private void CrearBD(SqlConnection con, string nombreBD)

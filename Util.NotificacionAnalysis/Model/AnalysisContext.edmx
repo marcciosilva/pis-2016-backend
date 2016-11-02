@@ -4,11 +4,28 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl" Namespace="AnalysisContext.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2005">
-        <EntityContainer Name="AnalysisContextTargetContainer" >
-        </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+    <Schema Namespace="AnalysisContext.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="AnalysisContextStoreContainer">
+    <EntitySet Name="ScreenShotDatosSet" EntityType="AnalysisContext.Store.ScreenShotDatosSet" store:Type="Tables" Schema="dbo" />
+  </EntityContainer>
+  <EntityType Name="ScreenShotDatosSet">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="TimeStamp" Type="datetime" Nullable="false" />
+    <Property Name="cantidadEnviosExitosos" Type="bigint" Nullable="false" />
+    <Property Name="cantidadEnviosReales" Type="bigint" Nullable="false" />
+    <Property Name="cantidadEnviosError" Type="bigint" Nullable="false" />
+    <Property Name="tiempoMaximoEsperaNotificacion" Type="float" Nullable="false" />
+    <Property Name="tiempoMinimoEsperaNotificacion" Type="float" Nullable="false" />
+    <Property Name="tiempoPromedioEnvioNotificacion" Type="float" Nullable="false" />
+    <Property Name="nivelRecursion" Type="int" Nullable="false" />
+    <Property Name="duracionRafaga" Type="float" Nullable="false" />
+    <Property Name="cantidadTopics" Type="int" Nullable="false" />
+    <Property Name="cantidadCodigosNotificaciones" Type="int" Nullable="false" />
+  </EntityType>
+</Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="AnalysisContext" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
@@ -36,13 +53,28 @@
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
-      <Mapping xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs" Space="C-S">
-        <Alias Key="Model" Value="AnalysisContext" />
-        <Alias Key="Target" Value="AnalysisContext.Store" />
-        <EntityContainerMapping CdmEntityContainer="AnalysisContextContainer" StorageEntityContainer="AnalysisContextTargetContainer">
-        </EntityContainerMapping>
-      </Mapping>
-    </edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="AnalysisContextStoreContainer" CdmEntityContainer="AnalysisContextContainer">
+    <EntitySetMapping Name="ScreenShotDatosSet">
+      <EntityTypeMapping TypeName="IsTypeOf(AnalysisContext.ScreenShotDatos)">
+        <MappingFragment StoreEntitySet="ScreenShotDatosSet">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="TimeStamp" ColumnName="TimeStamp" />
+          <ScalarProperty Name="cantidadEnviosExitosos" ColumnName="cantidadEnviosExitosos" />
+          <ScalarProperty Name="cantidadEnviosReales" ColumnName="cantidadEnviosReales" />
+          <ScalarProperty Name="cantidadEnviosError" ColumnName="cantidadEnviosError" />
+          <ScalarProperty Name="tiempoMaximoEsperaNotificacion" ColumnName="tiempoMaximoEsperaNotificacion" />
+          <ScalarProperty Name="tiempoMinimoEsperaNotificacion" ColumnName="tiempoMinimoEsperaNotificacion" />
+          <ScalarProperty Name="tiempoPromedioEnvioNotificacion" ColumnName="tiempoPromedioEnvioNotificacion" />
+          <ScalarProperty Name="nivelRecursion" ColumnName="nivelRecursion" />
+          <ScalarProperty Name="duracionRafaga" ColumnName="duracionRafaga" />
+          <ScalarProperty Name="cantidadTopics" ColumnName="cantidadTopics" />
+          <ScalarProperty Name="cantidadCodigosNotificaciones" ColumnName="cantidadCodigosNotificaciones" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
   </edmx:Runtime>
   <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
@@ -56,6 +88,7 @@
         <DesignerProperty Name="ValidateOnBuild" Value="true" />
         <DesignerProperty Name="EnablePluralization" Value="False" />
         <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
       </DesignerInfoPropertySet>
     </edmx:Options>
     <!-- Diagram content (shape and connector positions) -->

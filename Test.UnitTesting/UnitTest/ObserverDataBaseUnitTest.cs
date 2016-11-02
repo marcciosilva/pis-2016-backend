@@ -29,17 +29,20 @@ namespace Test.UnitTesting
                 string[] entrada = new string[1];
                 Thread workerThread = new Thread(new ThreadStart(SqlDependecyProject.Program.Main));
                 workerThread.Start();
-                //espero a que se disparen todos los hilos y luego empiezo a modificar la base
 
+                Thread workerThreadAnalysisDataNotifications = new Thread(new ThreadStart(HiloDeScreenShoots));
+                workerThreadAnalysisDataNotifications.Start();
+                //espero a que se disparen todos los hilos y luego empiezo a modificar la base
                 Thread.Sleep(5000);
+               // ModificarBaseDatos();
                 Random r = new Random();
                 EmsysContext db = new EmsysContext();
-                for (int i = 0; i < 5000; i++)
+                for (int i = 0; i < 500; i++)
                 {
                     Modificaciones(db);
-                }
-                
-                ModificarBaseDatos();
+                    Thread.Sleep( 1000);
+                }                
+                // me quedo colgado por que sino mato todo los threads y no puedo ver si el test fue exitoso.
                 Thread.Sleep(240 * _seconds * 1000 + 10000);
                 workerThread.Abort();
             }
@@ -51,16 +54,22 @@ namespace Test.UnitTesting
                     var cantidadEnviosExitosos = db.LogNotification.Where(x => x.Codigo == 906).Count();
                     var cantidadEnviosError = db.LogNotification.Where(x => x.Codigo == 904).Count();
                     Assert.IsTrue(cantidadEnviosReales == cantidadEnviosExitosos);
-
                 }
             }
-
             using (EmsysContext db = new EmsysContext())
             {
                 var cantidadEnviosReales = db.LogNotification.Where(x => x.Codigo == 901).Count();
                 var cantidadEnviosExitosos = db.LogNotification.Where(x => x.Codigo == 906).Count();
                 var cantidadEnviosError = db.LogNotification.Where(x => x.Codigo == 904).Count();
                 Assert.IsTrue(cantidadEnviosReales == cantidadEnviosExitosos);
+            }
+        }
+
+        private void HiloDeScreenShoots()
+        {
+            while (true) {
+                Thread.Sleep(60000);//un minuto
+                Util.NotificacionAnalysis.Program.CapturoDatos();
             }
         }
 

@@ -32,7 +32,7 @@ namespace Utils.Notifications
                 , 0, "sendNotification",
                 "Se genero una notificacion Real.",
                 MensajesParaFE.LogNotificaciones, topic, cod, pk, "No tengo aun.", null);
-            EstadoSistema();
+            //EstadoSistema();
             sendNotification(cod, pk, topic, null);
         }
         private static int MaximoPermitidoConsecutivo=0;
@@ -40,7 +40,7 @@ namespace Utils.Notifications
         private void EstadoSistema()
         {
             MaximoPermitidoConsecutivo++;
-            if (MaximoPermitidoConsecutivo==20) {
+            if (MaximoPermitidoConsecutivo==5) {
                 semaforo.WaitOne();
                 Thread.Sleep(1000);
                 _pool.Release();
