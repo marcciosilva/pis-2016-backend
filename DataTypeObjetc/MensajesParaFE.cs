@@ -23,6 +23,7 @@
         public const string ZonaInvalida = "La zona indicada no es valida.";
         public const string EventoNoEnviado = "No fue posible realizar la accion deseada debido a que el evento aun no ha sido enviado.";
         public const string CategoriaInvalida = "La categoria ingresada no es valida.";
+        public const string ArriboPrevio = "El recurso ya posee una hora de arribo previa en la extension seleccionada.";
 
         // Mensajes de error.
         public const string ErrorCerraSesion = "Ocurrio un error en el servidor al cerrar la sesion";
@@ -76,6 +77,7 @@
         public const int EventoNoEnviadoCod = 17;
         public const int CategoriaInvalidaCod = 18;
         public const int EventoSinZonasCod = 19;
+        public const int ArriboPrevioCod = 20;
         public const int ImagenInvalidaCod = 101;
         public const int VideoInvalidoCod = 102;
         public const int AudioInvalidoCod = 103;

@@ -1051,13 +1051,18 @@ namespace Emsys.LogicLayer
                     throw new ExtensionInvalidaException();
                 }
                 AsignacionRecurso asig = ext.AsignacionesRecursos.FirstOrDefault(a => a.Recurso.Id == rec.Id);
-                if (asig != null)
+                if (asig == null)
                 {
-                    asig.HoraArribo = DateTime.Now;
-                    context.SaveChanges();
-                    return true;
+                    return false;                    
                 }
-                return false;
+                if (asig.HoraArribo != null)
+                {
+                    throw new ArriboPrevioException();
+                }
+                asig.HoraArribo = DateTime.Now;
+                context.SaveChanges();
+                return true;
+
             }
         }
 

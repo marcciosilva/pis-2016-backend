@@ -8,6 +8,7 @@ using Servicios.Filtros;
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -248,102 +249,114 @@ namespace Servicios.Controllers
         [LogFilter]
         [Route("adjuntos/getimagedata")]
         [HttpGet]
-        public DtoRespuesta GetImageData(int idImagen)
+        public HttpResponseMessage GetImageData(int idImagen)
         {
+            
+        
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
-            HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
             try
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                    //return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                    return new HttpResponseMessage(HttpStatusCode.Unauthorized);
                 }
-
                 var img = dbAL.getImageData(token, idImagen);
                 if (img == null)
-                {    
-                    return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
+                {
+                    //return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
+                    return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
-                //var stream = new MemoryStream(img.fileData);
-                //responseMessage.Content = new StreamContent(stream);
-                //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                //responseMessage.Content.Headers.ContentDisposition.FileName = img.nombre;
-                //responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                //responseMessage.Content.Headers.ContentLength = stream.Length;
-                //return responseMessage;
-                return new DtoRespuesta(MensajesParaFE.CorrectoCod, img);
+                HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                var stream = new MemoryStream(img.fileData);
+                responseMessage.Content = new StreamContent(stream);
+                responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                responseMessage.Content.Headers.ContentDisposition.FileName = img.nombre;
+                responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+                responseMessage.Content.Headers.ContentLength = stream.Length;
+                return responseMessage;
             }
             catch (ImagenInvalidaException)
             {
-                return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
+                //return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
             catch (UsuarioNoAutorizadoException)
             {
-                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
+                //return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
             catch (TokenInvalidoException)
             {
-                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                //return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
             catch (Exception e)
             {
                 dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
-                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo));
+                //return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo));
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
 
-        /// <summary>
-        /// Servicio para obtener el thumbnail de un archivo de imagen.
-        /// </summary>
-        /// <param name="idImagen">id de la imagen solicitada</param>
-        /// <returns>Dto con el nombre y los bytes del archivo</returns>
-        [CustomAuthorizeAttribute("verMultimedia")]
+    /// <summary>
+    /// Servicio para obtener el thumbnail de un archivo de imagen.
+    /// </summary>
+    /// <param name="idImagen">id de la imagen solicitada</param>
+    /// <returns>Dto con el nombre y los bytes del archivo</returns>
+    [CustomAuthorizeAttribute("verMultimedia")]
         [LogFilter]
         [Route("adjuntos/getimagethumbnail")]
         [HttpGet]
-        public DtoRespuesta GetImageThumbnail(int idImagen)
+        public HttpResponseMessage GetImageThumbnail(int idImagen)
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
-            HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
             try
             {
                 if (token == null)
                 {
-                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                    //return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                    return new HttpResponseMessage(HttpStatusCode.Unauthorized);
                 }
 
                 var img = dbAL.getImageThumbnail(token, idImagen);
                 if (img == null)
                 {
-                    return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
+                    // return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
+                    return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
-                //var stream = new MemoryStream(img.fileData);
-                //responseMessage.Content = new StreamContent(stream);
-                //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                //responseMessage.Content.Headers.ContentDisposition.FileName = img.nombre;
-                //responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                //responseMessage.Content.Headers.ContentLength = stream.Length;
-                //return responseMessage;
-                return new DtoRespuesta(MensajesParaFE.CorrectoCod, img);
+                HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
+                var stream = new MemoryStream(img.fileData);
+                responseMessage.Content = new StreamContent(stream);
+                responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
+                responseMessage.Content.Headers.ContentDisposition.FileName = img.nombre;
+                responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
+                responseMessage.Content.Headers.ContentLength = stream.Length;
+                return responseMessage;
+                //return new DtoRespuesta(MensajesParaFE.CorrectoCod, img);
             }
             catch (ImagenInvalidaException)
             {
-                return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
+                //return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
+                return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
             catch (UsuarioNoAutorizadoException)
             {
-                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
+                //return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
             catch (TokenInvalidoException)
             {
-                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                //return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
             catch (Exception e)
             {
                 dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
-                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo));
+                //return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo));
+                return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
 
