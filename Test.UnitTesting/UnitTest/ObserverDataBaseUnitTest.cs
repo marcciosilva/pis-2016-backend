@@ -41,7 +41,7 @@ namespace Test.UnitTesting
                 {
                     var cantidadEnviosReales = db.LogNotification.Where(x => x.Codigo == 901).Count();
                     var cantidadEnviosExitosos = db.LogNotification.Where(x => x.Codigo == 906).Count();
-                    var cantidadEnviosError = db.LogNotification.Where(x => x.Codigo == 904).Count();
+                    var cantidadEnviosError = db.LogNotification.Where(x => x.Codigo == 904).Count();                   
                     Assert.IsTrue(cantidadEnviosReales == cantidadEnviosExitosos);
 
                 }

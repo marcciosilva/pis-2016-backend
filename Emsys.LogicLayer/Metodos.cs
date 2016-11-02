@@ -459,6 +459,7 @@ namespace Emsys.LogicLayer
             }
             catch (Exception e)
             {
+                return null;
                 Console.WriteLine(e.Message);
             }
         }

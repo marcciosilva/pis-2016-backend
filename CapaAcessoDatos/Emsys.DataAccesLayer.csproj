@@ -138,13 +138,9 @@
   <ItemGroup>
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
-    <Compile Include="Migrations\201610252143277__initial.cs" />
-    <Compile Include="Migrations\201610252143277__initial.Designer.cs">
-      <DependentUpon>201610252143277__initial.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201611012205369_AgregoLogViejoLogNotificaciones.cs" />
-    <Compile Include="Migrations\201611012205369_AgregoLogViejoLogNotificaciones.Designer.cs">
-      <DependentUpon>201611012205369_AgregoLogViejoLogNotificaciones.cs</DependentUpon>
+    <Compile Include="Migrations\201611012349114_Inicio.cs" />
+    <Compile Include="Migrations\201611012349114_Inicio.Designer.cs">
+      <DependentUpon>201611012349114_Inicio.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\ApplicationFile.cs" />
     <Compile Include="Model\AsignacionRecursoDescripcion.cs" />
@@ -175,9 +171,7 @@
     <None Include="packages.config" />
     <None Include="Settings.StyleCop" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\DataTypeObjetc\DataTypeObject.csproj">
       <Project>{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}</Project>
@@ -188,11 +182,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201610252143277__initial.resx">
-      <DependentUpon>201610252143277__initial.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611012205369_AgregoLogViejoLogNotificaciones.resx">
-      <DependentUpon>201611012205369_AgregoLogViejoLogNotificaciones.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201611012349114_Inicio.resx">
+      <DependentUpon>201611012349114_Inicio.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

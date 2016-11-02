@@ -1233,12 +1233,13 @@ namespace Test.UnitTesting
                 Assert.IsTrue(true);
             }
 
+            bool ok = dbAL.keepMeAlive(result.accessToken);
             db = new EmsysContext();
             var time1 = db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal.Value;
 
             Thread.Sleep(1000);
 
-            bool ok = dbAL.keepMeAlive(result.accessToken);
+            ok = dbAL.keepMeAlive(result.accessToken);
             db = new EmsysContext();
             var time2 = db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal.Value;
 
