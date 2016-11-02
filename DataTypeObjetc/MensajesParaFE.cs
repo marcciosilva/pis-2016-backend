@@ -54,7 +54,6 @@
         public const string ErrorActualizarDescripcionDespachador = "Ocurrio un error al intentar actualizar la descripcion.";
         public const string EventoSinZonas = "El evento debe tener almenos una zona";
 
-
         // Codigos.
         public const int CorrectoCod = 0;
         public const int Correct = 0;
@@ -69,7 +68,7 @@
         public const int UsuarioNoAutenticadoComoRecurso = 10;
         public const int IdentificadorExtensionIncorrecto = 11;
         public const int ExtensionInvalidaCod = 12;
-        public const int FormatoNoSoportadoCod =13;
+        public const int FormatoNoSoportadoCod = 13;
         public const int ArgumentoInvalidoCod = 14;
         public const int UsuarioNoAutorizadoCod = 15;
         public const int ZonaInvalidaCod = 16;
@@ -82,8 +81,10 @@
 
         // Codigos de error.
         public const int ErrorCod = 500;
+
         // Servicio externo.
         public const int ErrorConsumirServicioExternoCod = 3000;
+
         // Login.
         public const int ErrorIniciarSesionCod = 1001;
         public const int ErrorGetRolesCod = 1002;
@@ -91,13 +92,15 @@
         public const int ErrorKeepMeAliveCod = 1004;
         public const int ErrorCerrarSesionCod = 1005;
         public const int ErrorAlGenerarTokenCod = 1000;
+
         // Adjuntos.
         public const int ErrorAdjuntarGeoUbicacionCod = 2001;
         public const int ErrorAdjuntarImagenCod = 2002;
         public const int ErrorAdjuntarVideoCod = 2003;
         public const int ErrorAdjuntarAudioCod = 2004;
         public const int ErrorDescargarArchivoCod = 2005;
-        public const int ErrorEnviarArchivoCod = 2000;        
+        public const int ErrorEnviarArchivoCod = 2000;  
+              
         // Eventos.
         public const int ErrorListarEventosCod = 3000;
         public const int ErrorObtenerEventoCod = 3001;
@@ -114,8 +117,8 @@
         public const int ErrorAbrirExtensionCod = 3012;
         public const int ErrorCerrarExtensionCod = 3013;
         public const int ErrorActualizarDescripcionDespachadorCod = 3014;
+
         // Codigos Logs.
-        
         public const int LogNotificaciones = 901;
         public const int LogCapturarCambioEventoCod = 902;
         public const int LogAccionesCod = 903;
@@ -123,8 +126,8 @@
         public const int LogNotificacionesErrorReenvio = 904;
         public const int LogNotificacionesErrorGenerico = 905;
         public const int LogNotificacionesCierreEnvio = 906;
+
         // Desconectar inactivos
         public const int LogDesconectarUsuarioCod = 904;
-
     }
 }
