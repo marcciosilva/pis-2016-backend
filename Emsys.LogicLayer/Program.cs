@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Configuration;
 using System.Threading;
+using System.Web.Configuration;
 
 namespace Emsys.LogicLayer
 {
@@ -7,11 +9,12 @@ namespace Emsys.LogicLayer
     {
         public static void Main()
         {
-            // Tiempo para el cual se desonectan usuarios (inactivos por mas de maxTime minutos). 
-            const int maxTime = 12;
+            // Tiempo para el cual se desonectan usuarios (inactivos por mas de "maxTime" minutos). 
+            var maxTime = Convert.ToInt32(WebConfigurationManager.AppSettings["maxTime"]);
 
-            // Tiempo cada el cual el servidor checkea por usuarios inactivos (cara refreshTime minutos).
-            const int refreshTime = 6;
+            // Tiempo cada el cual el servidor checkea por usuarios inactivos (cada "refreshTime" minutos).
+            var refreshTime = Convert.ToInt32(WebConfigurationManager.AppSettings["refreshTime"]);
+
             Console.WriteLine("Started...");
             IMetodos logica = new Metodos();
             while (true)
@@ -20,6 +23,7 @@ namespace Emsys.LogicLayer
                 Console.WriteLine("Sleeping...");
                 Thread.Sleep(refreshTime * 60 * 1000);
             }
+
         }
     }
 }

@@ -18,6 +18,6 @@
 
         public virtual Evento Evento { get; set; }
 
-        public virtual Extension_Evento ExtensionEvento { get; set; }
+        public virtual ExtensionEvento ExtensionEvento { get; set; }
     }
 }

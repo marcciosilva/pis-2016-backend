@@ -15,7 +15,7 @@ namespace DataTypeObject
             this.msg = mensaje;
         }
 
-        [JsonProperty(PropertyName = "accessToken")]
+        [JsonProperty(PropertyName = "access_token")]
         public string accessToken { get; set; }
 
         public string msg { get; set; }

@@ -158,13 +158,13 @@
     <Compile Include="Model\GrupoRecurso.cs" />
     <Compile Include="Model\Rol.cs" />
     <Compile Include="Model\Permiso.cs" />
-    <Compile Include="Model\Unidad_Ejecutora.cs" />
+    <Compile Include="Model\UnidadEjecutora.cs" />
     <Compile Include="Model\Zona.cs" />
     <Compile Include="Model\Sector.cs" />
     <Compile Include="Model\Recurso.cs" />
-    <Compile Include="Model\Origen_Evento.cs" />
+    <Compile Include="Model\OrigenEvento.cs" />
     <Compile Include="Model\Log.cs" />
-    <Compile Include="Model\Extension_Evento.cs" />
+    <Compile Include="Model\ExtensionEvento.cs" />
     <Compile Include="Model\Departamento.cs" />
     <Compile Include="Model\Categoria.cs" />
     <Compile Include="Model\Evento.cs" />
@@ -175,7 +175,9 @@
     <None Include="packages.config" />
     <None Include="Settings.StyleCop" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Migrations\" />
+  </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DataTypeObjetc\DataTypeObject.csproj">
       <Project>{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}</Project>

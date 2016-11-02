@@ -31,7 +31,7 @@
         [Required]
         public bool Activo { get; set; }
 
-        public virtual ICollection<Extension_Evento> Extensiones_Evento { get; set; }
+        public virtual ICollection<ExtensionEvento> ExtensionesEvento { get; set; }
 
         public virtual ICollection<Evento> Eventos { get; set; }
     }

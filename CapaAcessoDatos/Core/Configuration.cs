@@ -34,9 +34,9 @@ namespace Emsys.DataAccesLayer.Core
                 context.Departamentos.AddOrUpdate(dep4);
 
                 // Agregar unidades ejecutoras.
-                Unidad_Ejecutora ue1 = new Unidad_Ejecutora() { Id = 1, Nombre = "ue1" };
-                Unidad_Ejecutora ue2 = new Unidad_Ejecutora() { Id = 2, Nombre = "ue2" };
-                Unidad_Ejecutora ue3 = new Unidad_Ejecutora() { Id = 3, Nombre = "ue3" };
+                UnidadEjecutora ue1 = new UnidadEjecutora() { Id = 1, Nombre = "ue1" };
+                UnidadEjecutora ue2 = new UnidadEjecutora() { Id = 2, Nombre = "ue2" };
+                UnidadEjecutora ue3 = new UnidadEjecutora() { Id = 3, Nombre = "ue3" };
 
                 // No va por que se agrega luego.
                 //context.Unidades_Ejecutoras.AddOrUpdate(x => x.Id, ue1);
@@ -74,8 +74,8 @@ namespace Emsys.DataAccesLayer.Core
                 //context.Sectores.AddOrUpdate(m => m.Id, sector4);
 
                 // Agregar grupos recursos.
-                Grupo_Recurso gr1 = new Grupo_Recurso() { Id = 1, Nombre = "gr1" };
-                Grupo_Recurso gr2 = new Grupo_Recurso() { Id = 2, Nombre = "gr2" };
+                GrupoRecurso gr1 = new GrupoRecurso() { Id = 1, Nombre = "gr1" };
+                GrupoRecurso gr2 = new GrupoRecurso() { Id = 2, Nombre = "gr2" };
 
                 // Agregar categorias.
                 Categoria cat1 = new Categoria() { Id = 1, Codigo = "cod1", Clave = "Categoria de prueba 1", Prioridad = NombrePrioridad.Baja, Activo = true };
@@ -87,13 +87,13 @@ namespace Emsys.DataAccesLayer.Core
                 //context.Categorias.AddOrUpdate(m => m.Id, cat3);
 
                 // Agregar recusos.
-                Recurso rec1 = new Recurso() { Id = 1, Codigo = "recurso1", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Grupos_Recursos = new List<Grupo_Recurso>(), Extensiones_Eventos = new List<Extension_Evento>() };
-                Recurso rec2 = new Recurso() { Id = 2, Codigo = "recurso2", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Grupos_Recursos = new List<Grupo_Recurso>(), Extensiones_Eventos = new List<Extension_Evento>() };
-                Recurso rec3 = new Recurso() { Id = 3, Codigo = "recurso3", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Grupos_Recursos = new List<Grupo_Recurso>(), Extensiones_Eventos = new List<Extension_Evento>() };
+                Recurso rec1 = new Recurso() { Id = 1, Codigo = "recurso1", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>(), ExtensionesEventos = new List<ExtensionEvento>() };
+                Recurso rec2 = new Recurso() { Id = 2, Codigo = "recurso2", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>(), ExtensionesEventos = new List<ExtensionEvento>() };
+                Recurso rec3 = new Recurso() { Id = 3, Codigo = "recurso3", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>(), ExtensionesEventos = new List<ExtensionEvento>() };
 
                 // Agregar recursos a grupos recursos. No se agregan directo.
-                rec1.Grupos_Recursos.Add(gr1);
-                rec2.Grupos_Recursos.Add(gr2);
+                rec1.GruposRecursos.Add(gr1);
+                rec2.GruposRecursos.Add(gr2);
 
                 context.Recursos.AddOrUpdate(m => m.Id, rec1);
                 context.Recursos.AddOrUpdate(m => m.Id, rec2);
@@ -177,16 +177,16 @@ namespace Emsys.DataAccesLayer.Core
                 //context.ApplicationRoles.AddOrUpdate(x => x.Id, rol1);
 
                 // Agregar usuarios.
-                var user1 = new Usuario() { Id = 1, NombreLogin = "A", Contraseña = "6dcd4ce23d88e2ee9568ba546c007c63d9131c1b", Nombre = "Usuario1", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
-                var user2 = new Usuario() { Id = 2, NombreLogin = "B", Contraseña = "ae4f281df5a5d0ff3cad6371f76d5c29b6d953ec", Nombre = "Usuario2", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
-                var user3 = new Usuario() { Id = 3, NombreLogin = "C", Contraseña = "32096c2e0eff33d844ee6d675407ace18289357d", Nombre = "Usuario3", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
-                var user4 = new Usuario() { Id = 4, NombreLogin = "D", Contraseña = "50c9e8d5fc98727b4bbc93cf5d64a68db647f04f", Nombre = "Usuario4", ApplicationRoles = new List<Rol>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>(), Grupos_Recursos = new List<Grupo_Recurso>() };
+                var user1 = new Usuario() { Id = 1, NombreLogin = "A", Contraseña = "6dcd4ce23d88e2ee9568ba546c007c63d9131c1b", Nombre = "Usuario1", ApplicationRoles = new List<Rol>(), UnidadesEjecutoras = new List<UnidadEjecutora>(), GruposRecursos = new List<GrupoRecurso>() };
+                var user2 = new Usuario() { Id = 2, NombreLogin = "B", Contraseña = "ae4f281df5a5d0ff3cad6371f76d5c29b6d953ec", Nombre = "Usuario2", ApplicationRoles = new List<Rol>(), UnidadesEjecutoras = new List<UnidadEjecutora>(), GruposRecursos = new List<GrupoRecurso>() };
+                var user3 = new Usuario() { Id = 3, NombreLogin = "C", Contraseña = "32096c2e0eff33d844ee6d675407ace18289357d", Nombre = "Usuario3", ApplicationRoles = new List<Rol>(), UnidadesEjecutoras = new List<UnidadEjecutora>(), GruposRecursos = new List<GrupoRecurso>() };
+                var user4 = new Usuario() { Id = 4, NombreLogin = "D", Contraseña = "50c9e8d5fc98727b4bbc93cf5d64a68db647f04f", Nombre = "Usuario4", ApplicationRoles = new List<Rol>(), UnidadesEjecutoras = new List<UnidadEjecutora>(), GruposRecursos = new List<GrupoRecurso>() };
 
                 // Se agregan luego.
-                context.Users.AddOrUpdate(x => x.Id, user1);
-                context.Users.AddOrUpdate(x => x.Id, user2);
-                context.Users.AddOrUpdate(x => x.Id, user3);
-                context.Users.AddOrUpdate(x => x.Id, user4);
+                context.Usuarios.AddOrUpdate(x => x.Id, user1);
+                context.Usuarios.AddOrUpdate(x => x.Id, user2);
+                context.Usuarios.AddOrUpdate(x => x.Id, user3);
+                context.Usuarios.AddOrUpdate(x => x.Id, user4);
 
                 // Asignar rol a usuarios.
                 user1.ApplicationRoles.Add(rol1);
@@ -195,19 +195,19 @@ namespace Emsys.DataAccesLayer.Core
                 user4.ApplicationRoles.Add(rol1);
 
                 // Agregar usuarios a unidades ejecutoras y grupos recursos.
-                user1.Grupos_Recursos.Add(gr1);
-                user1.Grupos_Recursos.Add(gr2);
-                user2.Grupos_Recursos.Add(gr2);
-                user3.Grupos_Recursos.Add(gr2);
-                user4.Grupos_Recursos.Add(gr1);
+                user1.GruposRecursos.Add(gr1);
+                user1.GruposRecursos.Add(gr2);
+                user2.GruposRecursos.Add(gr2);
+                user3.GruposRecursos.Add(gr2);
+                user4.GruposRecursos.Add(gr1);
 
-                user1.Unidades_Ejecutoras.Add(ue1);
-                user1.Unidades_Ejecutoras.Add(ue2);
-                user1.Unidades_Ejecutoras.Add(ue3);
-                user2.Unidades_Ejecutoras.Add(ue2);
-                user3.Unidades_Ejecutoras.Add(ue3);
-                user4.Unidades_Ejecutoras.Add(ue1);
-                user4.Unidades_Ejecutoras.Add(ue2);
+                user1.UnidadesEjecutoras.Add(ue1);
+                user1.UnidadesEjecutoras.Add(ue2);
+                user1.UnidadesEjecutoras.Add(ue3);
+                user2.UnidadesEjecutoras.Add(ue2);
+                user3.UnidadesEjecutoras.Add(ue3);
+                user4.UnidadesEjecutoras.Add(ue1);
+                user4.UnidadesEjecutoras.Add(ue2);
 
                 // Origen eventos.
                 //Origen_Evento oe1 = new Origen_Evento()
@@ -266,7 +266,7 @@ namespace Emsys.DataAccesLayer.Core
                 //context.Evento.AddOrUpdate(x => x.Id, evento2);
                 //context.Evento.AddOrUpdate(x => x.Id, evento3);
                 string formato = "yyyy-MM-dd'T'hh:mm:ss.FFF";
-                Extension_Evento ext1 = new Extension_Evento()
+                ExtensionEvento ext1 = new ExtensionEvento()
                 {
                     Id = 1,
                     DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
@@ -287,7 +287,7 @@ namespace Emsys.DataAccesLayer.Core
                     HoraArribo = null,
                     Descripcion = string.Empty
                 });
-                Extension_Evento ext2 = new Extension_Evento()
+                ExtensionEvento ext2 = new ExtensionEvento()
                 {
                     Id = 2,
                     DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
@@ -296,7 +296,7 @@ namespace Emsys.DataAccesLayer.Core
                     Estado = EstadoExtension.FaltaDespachar,
                     TimeStamp = DateTime.Now
                 };
-                Extension_Evento ext3 = new Extension_Evento()
+                ExtensionEvento ext3 = new ExtensionEvento()
                 {
                     Id = 3,
                     DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\"+ DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
@@ -320,9 +320,9 @@ namespace Emsys.DataAccesLayer.Core
 
                 ext1.Recursos.Add(rec1);
 
-                context.Extensiones_Evento.AddOrUpdate(x => x.Id, ext1);
-                context.Extensiones_Evento.AddOrUpdate(x => x.Id, ext2);
-                context.Extensiones_Evento.AddOrUpdate(x => x.Id, ext3);
+                context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext1);
+                context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext2);
+                context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext3);
             }
             catch (Exception e)
             {

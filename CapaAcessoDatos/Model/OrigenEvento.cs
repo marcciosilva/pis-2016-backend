@@ -5,7 +5,7 @@
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Origen_Eventos")]
-    public partial class Origen_Evento
+    public partial class OrigenEvento
     {
         [Key]
         public int Id { get; set; }

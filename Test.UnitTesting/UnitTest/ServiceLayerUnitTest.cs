@@ -26,7 +26,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
             var controller = new LoginController();
@@ -53,7 +53,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
             var controller = new LoginController();
@@ -77,7 +77,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
             var controller = new LoginController();
@@ -127,7 +127,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
             var controller = new LoginController();
@@ -152,7 +152,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
             var controller = new LoginController();
@@ -189,7 +189,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
             var controller = new EventosController();
@@ -235,7 +235,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 
@@ -282,7 +282,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 
@@ -343,7 +343,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 
@@ -403,7 +403,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 
@@ -443,7 +443,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 
@@ -524,7 +524,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 
@@ -610,7 +610,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 
@@ -707,7 +707,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 
@@ -784,7 +784,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 
@@ -861,7 +861,7 @@ namespace Test.UnitTesting
             Assert.IsTrue(resp12.cod == 0);
             
             db = new EmsysContext();
-            int nuevaExt = db.Extensiones_Evento.Max(e => e.Id);
+            int nuevaExt = db.ExtensionesEvento.Max(e => e.Id);
             
             // Tomar extension.
             controller.Request = new HttpRequestMessage();
@@ -885,7 +885,7 @@ namespace Test.UnitTesting
             var resp15 = controller.CerrarExtension(-1);
             Assert.IsTrue(resp15.cod == 12);
 
-            db.Extensiones_Evento.FirstOrDefault(ex => ex.Id == nuevaExt).Evento.Estado = Emsys.DataAccesLayer.Model.EstadoEvento.Creado;
+            db.ExtensionesEvento.FirstOrDefault(ex => ex.Id == nuevaExt).Evento.Estado = Emsys.DataAccesLayer.Model.EstadoEvento.Creado;
             db.SaveChanges();
 
             // Evento no enviado.
@@ -894,10 +894,10 @@ namespace Test.UnitTesting
             var resp16 = controller.CerrarExtension(nuevaExt);
             Assert.IsTrue(resp16.cod == 17);
 
-            db.Extensiones_Evento.FirstOrDefault(ex => ex.Id == nuevaExt).Evento.Estado = Emsys.DataAccesLayer.Model.EstadoEvento.Enviado;
+            db.ExtensionesEvento.FirstOrDefault(ex => ex.Id == nuevaExt).Evento.Estado = Emsys.DataAccesLayer.Model.EstadoEvento.Enviado;
             db.SaveChanges();
 
-            db.Extensiones_Evento.FirstOrDefault(ex => ex.Id == nuevaExt).Recursos.Add(db.Recursos.FirstOrDefault());
+            db.ExtensionesEvento.FirstOrDefault(ex => ex.Id == nuevaExt).Recursos.Add(db.Recursos.FirstOrDefault());
             db.SaveChanges();
 
             controller.Request = new HttpRequestMessage();
@@ -923,7 +923,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 
@@ -990,7 +990,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 
@@ -1051,7 +1051,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 
@@ -1157,7 +1157,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 
@@ -1263,7 +1263,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
             db.SaveChanges();
 

@@ -6,7 +6,7 @@ namespace DataTypeObject
     {        
         public string nombre { get; set; }
 
-        [JsonProperty(PropertyName = "fileData")]
+        [JsonProperty(PropertyName = "file_data")]
         public byte[] fileData { get; set; }
 
         [JsonProperty(PropertyName = "id_extension")]

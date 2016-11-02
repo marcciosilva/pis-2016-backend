@@ -36,9 +36,9 @@
         [Required]
         public EstadoAsignacionRecurso EstadoAsignacion { get; set; }
 
-        public virtual ICollection<Extension_Evento> Extensiones_Eventos { get; set; }
+        public virtual ICollection<ExtensionEvento> ExtensionesEventos { get; set; }
 
-        public virtual ICollection<Grupo_Recurso> Grupos_Recursos { get; set; }
+        public virtual ICollection<GrupoRecurso> GruposRecursos { get; set; }
 
         public virtual Usuario Usuario { get; set; }
     }

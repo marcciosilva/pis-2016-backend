@@ -29,7 +29,7 @@ namespace Test.UnitTesting
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
                 string pass = Passwords.GetSHA1("usuarioPruebaAutenticar");
                 Usuario usuarioPrueba = new Usuario { NombreLogin = "usuarioPruebaAutenticar", Contraseña = pass };
-                context.Users.Add(usuarioPrueba);
+                context.Usuarios.Add(usuarioPrueba);
                 context.SaveChanges();
                 IMetodos logica = new Metodos();
                 try
@@ -75,7 +75,7 @@ namespace Test.UnitTesting
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
 
                 var user = new Usuario() { NombreLogin = "usuario", Nombre = "pepe", Contraseña = Emsys.LogicLayer.Utils.Passwords.GetSHA1("pruebapass") };
-                context.Users.Add(user);
+                context.Usuarios.Add(user);
 
                 var permiso = new Permiso() { Clave = "pruebaPermiso", Roles = new List<Rol>() };
                 context.Permisos.Add(permiso);
@@ -99,11 +99,11 @@ namespace Test.UnitTesting
                 string[] etiqueta2 = { "pruebaPermiso" };
                 Assert.IsTrue(logica.autorizarUsuario(token, etiqueta2));
 
-                context.Users.FirstOrDefault(u => u.NombreLogin == "usuario").FechaInicioSesion = DateTime.Parse("2015/07/23 21:30:00");
+                context.Usuarios.FirstOrDefault(u => u.NombreLogin == "usuario").FechaInicioSesion = DateTime.Parse("2015/07/23 21:30:00");
                 context.SaveChanges();
 
                 logica.autorizarUsuario(token, new string[0]);
-                Assert.IsTrue(context.Users.FirstOrDefault(u => u.NombreLogin == "usuario").Token == null);
+                Assert.IsTrue(context.Usuarios.FirstOrDefault(u => u.NombreLogin == "usuario").Token == null);
             }
         }
 
@@ -119,19 +119,19 @@ namespace Test.UnitTesting
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
 
                 // Se crea un usuario con un recurso asociado en la BD.
-                var user = new Usuario() { NombreLogin = "usuarioPruebaRecurso", Nombre = "usuarioPruebaRecurso", Contraseña = Passwords.GetSHA1("usuarioPruebaRecurso"), Grupos_Recursos = new List<Grupo_Recurso>() };
-                var user2 = new Usuario() { NombreLogin = "usuarioPruebaRecursoNoDisponible", Nombre = "usuarioPruebaRecursoNoDisponible", Contraseña = Passwords.GetSHA1("usuarioPruebaRecursoNoDisponible"), Grupos_Recursos = new List<Grupo_Recurso>() };
+                var user = new Usuario() { NombreLogin = "usuarioPruebaRecurso", Nombre = "usuarioPruebaRecurso", Contraseña = Passwords.GetSHA1("usuarioPruebaRecurso"), GruposRecursos = new List<GrupoRecurso>() };
+                var user2 = new Usuario() { NombreLogin = "usuarioPruebaRecursoNoDisponible", Nombre = "usuarioPruebaRecursoNoDisponible", Contraseña = Passwords.GetSHA1("usuarioPruebaRecursoNoDisponible"), GruposRecursos = new List<GrupoRecurso>() };
                 var recursoDisponible = new Recurso() { Codigo = "recursoPruebaDisponible", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre };
                 var recursoNoSeleccionable = new Recurso() { Codigo = "recursoNoSeleccionable", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre };
-                var gr = new Grupo_Recurso() { Nombre = "grPrueba", Recursos = new List<Recurso>() };
+                var gr = new GrupoRecurso() { Nombre = "grPrueba", Recursos = new List<Recurso>() };
                 gr.Recursos.Add(recursoDisponible);
-                user.Grupos_Recursos.Add(gr);
-                user2.Grupos_Recursos.Add(gr);
+                user.GruposRecursos.Add(gr);
+                user2.GruposRecursos.Add(gr);
                 context.Recursos.Add(recursoDisponible);
                 context.Recursos.Add(recursoNoSeleccionable);
-                context.Grupos_Recursos.Add(gr);
-                context.Users.Add(user);
-                context.Users.Add(user2);
+                context.GruposRecursos.Add(gr);
+                context.Usuarios.Add(user);
+                context.Usuarios.Add(user2);
                 context.SaveChanges();
 
                 IMetodos logica = new Metodos();
@@ -216,14 +216,14 @@ namespace Test.UnitTesting
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
 
                 // Se crea un usuario con zonas asociadas en la BD.
-                var user = new Usuario() { NombreLogin = "usuarioPruebaZonas", Nombre = "usuarioPruebaZonas", Contraseña = Passwords.GetSHA1("usuarioPruebaZonas"), Grupos_Recursos = new List<Grupo_Recurso>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>() };
+                var user = new Usuario() { NombreLogin = "usuarioPruebaZonas", Nombre = "usuarioPruebaZonas", Contraseña = Passwords.GetSHA1("usuarioPruebaZonas"), GruposRecursos = new List<GrupoRecurso>(), UnidadesEjecutoras = new List<UnidadEjecutora>() };
                 var zona1 = new Zona() { Nombre = "zona1" };
                 var zona2 = new Zona() { Nombre = "zona2" };
                 var zona3 = new Zona() { Nombre = "zona3" };
                 var zona4 = new Zona() { Nombre = "zona4" };
-                var unidadEjecutora1 = new Unidad_Ejecutora() { Nombre = "uePrueba", Zonas = new List<Zona>() };
-                var unidadEjecutora2 = new Unidad_Ejecutora() { Nombre = "uePrueba2", Zonas = new List<Zona>() };
-                var unidadEjecutora3 = new Unidad_Ejecutora() { Nombre = "uePrueba3", Zonas = new List<Zona>() };
+                var unidadEjecutora1 = new UnidadEjecutora() { Nombre = "uePrueba", Zonas = new List<Zona>() };
+                var unidadEjecutora2 = new UnidadEjecutora() { Nombre = "uePrueba2", Zonas = new List<Zona>() };
+                var unidadEjecutora3 = new UnidadEjecutora() { Nombre = "uePrueba3", Zonas = new List<Zona>() };
                 unidadEjecutora1.Zonas.Add(zona1);
                 unidadEjecutora1.Zonas.Add(zona2);
                 unidadEjecutora2.Zonas.Add(zona3);
@@ -232,16 +232,16 @@ namespace Test.UnitTesting
                 zona2.UnidadEjecutora = unidadEjecutora1;
                 zona3.UnidadEjecutora = unidadEjecutora2;
                 zona4.UnidadEjecutora = unidadEjecutora3;
-                user.Unidades_Ejecutoras.Add(unidadEjecutora1);
-                user.Unidades_Ejecutoras.Add(unidadEjecutora2);
+                user.UnidadesEjecutoras.Add(unidadEjecutora1);
+                user.UnidadesEjecutoras.Add(unidadEjecutora2);
                 context.Zonas.Add(zona1);
                 context.Zonas.Add(zona2);
                 context.Zonas.Add(zona3);
                 context.Zonas.Add(zona4);
-                context.Unidades_Ejecutoras.Add(unidadEjecutora1);
-                context.Unidades_Ejecutoras.Add(unidadEjecutora2);
-                context.Unidades_Ejecutoras.Add(unidadEjecutora3);
-                context.Users.Add(user);
+                context.UnidadesEjecutoras.Add(unidadEjecutora1);
+                context.UnidadesEjecutoras.Add(unidadEjecutora2);
+                context.UnidadesEjecutoras.Add(unidadEjecutora3);
+                context.Usuarios.Add(user);
                 try
                 {
                     context.SaveChanges();
@@ -307,14 +307,14 @@ namespace Test.UnitTesting
             using (var context = new EmsysContext())
             {
                 // Se crea un usuario con un recurso asociado en la BD.
-                var user = new Usuario() { NombreLogin = "usuarioPruebaCerrarSesion", Nombre = "usuarioPruebaCerrarSesion", Contraseña = Passwords.GetSHA1("usuarioPruebaCerrarSesion"), Grupos_Recursos = new List<Grupo_Recurso>() };
+                var user = new Usuario() { NombreLogin = "usuarioPruebaCerrarSesion", Nombre = "usuarioPruebaCerrarSesion", Contraseña = Passwords.GetSHA1("usuarioPruebaCerrarSesion"), GruposRecursos = new List<GrupoRecurso>() };
                 var recursoDisponible = new Recurso() { Codigo = "recursoPruebaCerrarSesion", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre };
-                var gr = new Grupo_Recurso() { Nombre = "grPruebaCerrarSesion", Recursos = new List<Recurso>() };
+                var gr = new GrupoRecurso() { Nombre = "grPruebaCerrarSesion", Recursos = new List<Recurso>() };
                 gr.Recursos.Add(recursoDisponible);
-                user.Grupos_Recursos.Add(gr);
+                user.GruposRecursos.Add(gr);
                 context.Recursos.Add(recursoDisponible);
-                context.Grupos_Recursos.Add(gr);
-                context.Users.Add(user);
+                context.GruposRecursos.Add(gr);
+                context.Usuarios.Add(user);
                 context.SaveChanges();
 
                 IMetodos logica = new Metodos();
@@ -351,7 +351,7 @@ namespace Test.UnitTesting
                     logica.cerrarSesion(token);
 
                     // Compruebo que se haya liberado el recurso asignado.
-                    var tieneRecurso = context.Users.Where(x => x.Id == user.Id).Select(x => x.Recurso.FirstOrDefault());
+                    var tieneRecurso = context.Usuarios.Where(x => x.Id == user.Id).Select(x => x.Recurso.FirstOrDefault());
                     Assert.IsNull(tieneRecurso.FirstOrDefault());
 
                     // Compruebo que el recurso haya quedado disponible.
@@ -372,28 +372,28 @@ namespace Test.UnitTesting
                 AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
 
                 // Se crea un usuario con zonas asociadas en la BD.
-                var user = new Usuario() { NombreLogin = "usuarioPruebaZonasCerrarSesion", Nombre = "usuarioPruebaZonasCerrarSesion", Contraseña = Passwords.GetSHA1("usuarioPruebaZonasCerrarSesion"), Grupos_Recursos = new List<Grupo_Recurso>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>() };
+                var user = new Usuario() { NombreLogin = "usuarioPruebaZonasCerrarSesion", Nombre = "usuarioPruebaZonasCerrarSesion", Contraseña = Passwords.GetSHA1("usuarioPruebaZonasCerrarSesion"), GruposRecursos = new List<GrupoRecurso>(), UnidadesEjecutoras = new List<UnidadEjecutora>() };
                 var zona1 = new Zona() { Nombre = "zona1CerrarSesion" };
                 var zona2 = new Zona() { Nombre = "zona2CerrarSesion" };
                 var zona3 = new Zona() { Nombre = "zona3CerrarSesion" };
-                var unidadEjecutora1 = new Unidad_Ejecutora() { Nombre = "uePruebaCerrarSesion", Zonas = new List<Zona>() };
-                var unidadEjecutora2 = new Unidad_Ejecutora() { Nombre = "uePrueba2CerrarSesion", Zonas = new List<Zona>() };
-                var unidadEjecutora3 = new Unidad_Ejecutora() { Nombre = "uePrueba3CerrarSesion", Zonas = new List<Zona>() };
+                var unidadEjecutora1 = new UnidadEjecutora() { Nombre = "uePruebaCerrarSesion", Zonas = new List<Zona>() };
+                var unidadEjecutora2 = new UnidadEjecutora() { Nombre = "uePrueba2CerrarSesion", Zonas = new List<Zona>() };
+                var unidadEjecutora3 = new UnidadEjecutora() { Nombre = "uePrueba3CerrarSesion", Zonas = new List<Zona>() };
                 unidadEjecutora1.Zonas.Add(zona1);
                 unidadEjecutora1.Zonas.Add(zona2);
                 unidadEjecutora2.Zonas.Add(zona3);
                 zona1.UnidadEjecutora = unidadEjecutora1;
                 zona2.UnidadEjecutora = unidadEjecutora1;
                 zona3.UnidadEjecutora = unidadEjecutora2;
-                user.Unidades_Ejecutoras.Add(unidadEjecutora1);
-                user.Unidades_Ejecutoras.Add(unidadEjecutora2);
+                user.UnidadesEjecutoras.Add(unidadEjecutora1);
+                user.UnidadesEjecutoras.Add(unidadEjecutora2);
                 context.Zonas.Add(zona1);
                 context.Zonas.Add(zona2);
                 context.Zonas.Add(zona3);
-                context.Unidades_Ejecutoras.Add(unidadEjecutora1);
-                context.Unidades_Ejecutoras.Add(unidadEjecutora2);
-                context.Unidades_Ejecutoras.Add(unidadEjecutora3);
-                context.Users.Add(user);
+                context.UnidadesEjecutoras.Add(unidadEjecutora1);
+                context.UnidadesEjecutoras.Add(unidadEjecutora2);
+                context.UnidadesEjecutoras.Add(unidadEjecutora3);
+                context.Usuarios.Add(user);
                 context.SaveChanges();
 
                 IMetodos logica = new Metodos();
@@ -419,7 +419,7 @@ namespace Test.UnitTesting
                         logica.cerrarSesion(token);
 
                         // Compruebo que se hayan liberado las zonas asignadas.
-                        var tieneZonasAsignadas = context.Users.Where(x => x.Id == user.Id).Select(x => x.Zonas.FirstOrDefault());
+                        var tieneZonasAsignadas = context.Usuarios.Where(x => x.Id == user.Id).Select(x => x.Zonas.FirstOrDefault());
                         Assert.IsNull(tieneZonasAsignadas.FirstOrDefault());
                     }
                 }
@@ -443,24 +443,24 @@ namespace Test.UnitTesting
             using (var context = new EmsysContext())
             {
                 // Se crea un usuario con un recurso asociado en la BD.
-                var user = new Usuario() { NombreLogin = "usuarioDE", Nombre = "usuarioDE", Contraseña = Passwords.GetSHA1("usuarioDE"), Grupos_Recursos = new List<Grupo_Recurso>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>() };
-                var recursoDisponible = new Recurso() { Codigo = "recursoDE", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Extensiones_Eventos = new List<Extension_Evento>() };
-                var gr = new Grupo_Recurso() { Nombre = "grDEPrueba", Recursos = new List<Recurso>() };
+                var user = new Usuario() { NombreLogin = "usuarioDE", Nombre = "usuarioDE", Contraseña = Passwords.GetSHA1("usuarioDE"), GruposRecursos = new List<GrupoRecurso>(), UnidadesEjecutoras = new List<UnidadEjecutora>() };
+                var recursoDisponible = new Recurso() { Codigo = "recursoDE", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, ExtensionesEventos = new List<ExtensionEvento>() };
+                var gr = new GrupoRecurso() { Nombre = "grDEPrueba", Recursos = new List<Recurso>() };
                 var zona1 = new Zona() { Nombre = "zonaDE1" };
-                var unidadEjecutora1 = new Unidad_Ejecutora() { Nombre = "ueDEPrueba", Zonas = new List<Zona>() };
+                var unidadEjecutora1 = new UnidadEjecutora() { Nombre = "ueDEPrueba", Zonas = new List<Zona>() };
 
                 unidadEjecutora1.Zonas.Add(zona1);
                 zona1.UnidadEjecutora = unidadEjecutora1;
-                user.Unidades_Ejecutoras.Add(unidadEjecutora1);
+                user.UnidadesEjecutoras.Add(unidadEjecutora1);
 
                 gr.Recursos.Add(recursoDisponible);
-                user.Grupos_Recursos.Add(gr);
+                user.GruposRecursos.Add(gr);
                 context.Zonas.Add(zona1);
 
-                context.Unidades_Ejecutoras.Add(unidadEjecutora1);
+                context.UnidadesEjecutoras.Add(unidadEjecutora1);
                 context.Recursos.Add(recursoDisponible);
-                context.Grupos_Recursos.Add(gr);
-                context.Users.Add(user);
+                context.GruposRecursos.Add(gr);
+                context.Usuarios.Add(user);
                 context.SaveChanges();
 
                 // Evento y extensiones
@@ -490,7 +490,7 @@ namespace Test.UnitTesting
                     Descripcion = "PruebaDE"
                 };
 
-                var ext1 = new Extension_Evento()
+                var ext1 = new ExtensionEvento()
                 {
                     Evento = evento,
                     Zona = zona1,
@@ -501,13 +501,13 @@ namespace Test.UnitTesting
                 };
 
                 IMetodos logica = new Metodos();
-                var u = context.Users.Where(x => x.NombreLogin == "usuarioDE").FirstOrDefault();
+                var u = context.Usuarios.Where(x => x.NombreLogin == "usuarioDE").FirstOrDefault();
                 if (u != null && u.Token != null)
                 {
                     u.Token = null;
                 }
                 
-                recursoDisponible.Extensiones_Eventos.Add(ext1);
+                recursoDisponible.ExtensionesEventos.Add(ext1);
                 try
                 {
                     context.SaveChanges();
@@ -592,16 +592,16 @@ namespace Test.UnitTesting
             var context = new EmsysContext();
 
             // Se crea un usuario con un recurso asociado en la BD.
-            var user = new Usuario() { NombreLogin = "usuarioListarEventoRecurso", Nombre = "usuarioListarEventoRecurso", Contraseña = Passwords.GetSHA1("usuarioListarEventoRecurso"), Grupos_Recursos = new List<Grupo_Recurso>(), Unidades_Ejecutoras = new List<Unidad_Ejecutora>() };
-            var recursoDisponible = new Recurso() { Codigo = "recursoListarEvento", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, Extensiones_Eventos = new List<Extension_Evento>() };
-            var gr = new Grupo_Recurso() { Nombre = "grPrueba", Recursos = new List<Recurso>() };
+            var user = new Usuario() { NombreLogin = "usuarioListarEventoRecurso", Nombre = "usuarioListarEventoRecurso", Contraseña = Passwords.GetSHA1("usuarioListarEventoRecurso"), GruposRecursos = new List<GrupoRecurso>(), UnidadesEjecutoras = new List<UnidadEjecutora>() };
+            var recursoDisponible = new Recurso() { Codigo = "recursoListarEvento", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, ExtensionesEventos = new List<ExtensionEvento>() };
+            var gr = new GrupoRecurso() { Nombre = "grPrueba", Recursos = new List<Recurso>() };
             var zona1 = new Zona() { Nombre = "zona1" };
             var zona2 = new Zona() { Nombre = "zona2" };
             var zona3 = new Zona() { Nombre = "zona3" };
             var zona4 = new Zona() { Nombre = "zona4" };
-            var unidadEjecutora1 = new Unidad_Ejecutora() { Nombre = "uePrueba", Zonas = new List<Zona>() };
-            var unidadEjecutora2 = new Unidad_Ejecutora() { Nombre = "uePrueba2", Zonas = new List<Zona>() };
-            var unidadEjecutora3 = new Unidad_Ejecutora() { Nombre = "uePrueba3", Zonas = new List<Zona>() };
+            var unidadEjecutora1 = new UnidadEjecutora() { Nombre = "uePrueba", Zonas = new List<Zona>() };
+            var unidadEjecutora2 = new UnidadEjecutora() { Nombre = "uePrueba2", Zonas = new List<Zona>() };
+            var unidadEjecutora3 = new UnidadEjecutora() { Nombre = "uePrueba3", Zonas = new List<Zona>() };
             var departamento1 = new Departamento() { Nombre = "dep1" };
             unidadEjecutora1.Zonas.Add(zona1);
             unidadEjecutora1.Zonas.Add(zona2);
@@ -611,20 +611,20 @@ namespace Test.UnitTesting
             zona2.UnidadEjecutora = unidadEjecutora1;
             zona3.UnidadEjecutora = unidadEjecutora2;
             zona4.UnidadEjecutora = unidadEjecutora3;
-            user.Unidades_Ejecutoras.Add(unidadEjecutora1);
-            user.Unidades_Ejecutoras.Add(unidadEjecutora2);
+            user.UnidadesEjecutoras.Add(unidadEjecutora1);
+            user.UnidadesEjecutoras.Add(unidadEjecutora2);
             gr.Recursos.Add(recursoDisponible);
-            user.Grupos_Recursos.Add(gr);
+            user.GruposRecursos.Add(gr);
             context.Zonas.Add(zona1);
             context.Zonas.Add(zona2);
             context.Zonas.Add(zona3);
             context.Zonas.Add(zona4);
-            context.Unidades_Ejecutoras.Add(unidadEjecutora1);
-            context.Unidades_Ejecutoras.Add(unidadEjecutora2);
-            context.Unidades_Ejecutoras.Add(unidadEjecutora3);
+            context.UnidadesEjecutoras.Add(unidadEjecutora1);
+            context.UnidadesEjecutoras.Add(unidadEjecutora2);
+            context.UnidadesEjecutoras.Add(unidadEjecutora3);
             context.Recursos.Add(recursoDisponible);
-            context.Grupos_Recursos.Add(gr);
-            context.Users.Add(user);
+            context.GruposRecursos.Add(gr);
+            context.Usuarios.Add(user);
             context.Departamentos.Add(departamento1);
             context.SaveChanges();
 
@@ -651,7 +651,7 @@ namespace Test.UnitTesting
                 Usuario = user,
                 Departamento = departamento1
             };
-            var ext1 = new Extension_Evento()
+            var ext1 = new ExtensionEvento()
             {
                 Evento = evento,
                 Zona = zona1,
@@ -659,7 +659,7 @@ namespace Test.UnitTesting
                 TimeStamp = DateTime.Now,
                 Despachador = user
             };
-            var ext2 = new Extension_Evento()
+            var ext2 = new ExtensionEvento()
             {
                 Evento = evento,
                 Zona = zona2,
@@ -667,7 +667,7 @@ namespace Test.UnitTesting
                 TimeStamp = DateTime.Now,
                 Despachador = user
             };
-            var ext3 = new Extension_Evento()
+            var ext3 = new ExtensionEvento()
             {
                 Evento = evento,
                 Zona = zona3,
@@ -676,7 +676,7 @@ namespace Test.UnitTesting
                 Despachador = user
             };
             IMetodos logica = new Metodos();
-            var u = context.Users.Where(x => x.NombreLogin == "usuarioListarEventoRecurso").FirstOrDefault();
+            var u = context.Usuarios.Where(x => x.NombreLogin == "usuarioListarEventoRecurso").FirstOrDefault();
             if (u != null && u.Token != null)
             {
                 u.Token = null;
@@ -687,8 +687,8 @@ namespace Test.UnitTesting
             string token = autent.accessToken;
 
             // Se prueba que se listen las extensiones asociadas a un recurso
-            recursoDisponible.Extensiones_Eventos.Add(ext1);
-            recursoDisponible.Extensiones_Eventos.Add(ext2);
+            recursoDisponible.ExtensionesEventos.Add(ext1);
+            recursoDisponible.ExtensionesEventos.Add(ext2);
             try
             {
                 context.SaveChanges();
@@ -733,7 +733,7 @@ namespace Test.UnitTesting
             autent = logica.autenticarUsuario("usuarioListarEventoRecurso", "usuarioListarEventoRecurso", null);
             token = autent.accessToken;
             List<DtoZona> _zonas = new List<DtoZona>();
-            var userZ = context.Users.FirstOrDefault(uz => uz.NombreLogin == "usuarioListarEventoRecurso");
+            var userZ = context.Usuarios.FirstOrDefault(uz => uz.NombreLogin == "usuarioListarEventoRecurso");
             userZ.Zonas.Add(context.Zonas.FirstOrDefault());
             context.SaveChanges();
             var listaEventos2 = logica.listarEventos(token);
@@ -793,10 +793,10 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
-            int cant = db.Extensiones_Evento.FirstOrDefault().GeoUbicaciones.Count();
+            int cant = db.ExtensionesEvento.FirstOrDefault().GeoUbicaciones.Count();
             IMetodos logica = new Metodos();
 
             // Autenticar.
@@ -837,9 +837,9 @@ namespace Test.UnitTesting
             Assert.IsTrue(ok);
 
             var geo = db.GeoUbicaciones.FirstOrDefault(g => g.Id == 5);
-            var geo2 = db.Extensiones_Evento.FirstOrDefault().GeoUbicaciones.FirstOrDefault(g => g.Id == 5);
+            var geo2 = db.ExtensionesEvento.FirstOrDefault().GeoUbicaciones.FirstOrDefault(g => g.Id == 5);
 
-            int cant2 = db.Extensiones_Evento.FirstOrDefault().GeoUbicaciones.Count();
+            int cant2 = db.ExtensionesEvento.FirstOrDefault().GeoUbicaciones.Count();
             Assert.IsTrue(cant2 == cant + 1);
             Assert.IsTrue((geo2.Longitud == 120) && (geo2.Latitud == 12));
             
@@ -855,10 +855,10 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
             
-            int cantAdjImagen = db.Extensiones_Evento.FirstOrDefault().Imagenes.Count();
+            int cantAdjImagen = db.ExtensionesEvento.FirstOrDefault().Imagenes.Count();
             int cantFiles = db.ApplicationFiles.Count();
             IMetodos logica = new Metodos();
 
@@ -913,7 +913,7 @@ namespace Test.UnitTesting
             var file = db.ApplicationFiles.Count();
            
             Assert.IsTrue(ok);
-            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().Imagenes.Count() == cantAdjImagen + 1);
+            Assert.IsTrue(db.ExtensionesEvento.FirstOrDefault().Imagenes.Count() == cantAdjImagen + 1);
             Assert.IsTrue(db.ApplicationFiles.Count() == cantFiles + 1);
 
             // Obtener data de la imagen.
@@ -951,7 +951,7 @@ namespace Test.UnitTesting
             Assert.IsTrue(f.nombre == db.Imagenes.FirstOrDefault().ImagenData.Id.ToString() + ".jpg");
 
             // Imagen en evento.
-            db.Evento.FirstOrDefault().Imagenes.Add(new Imagen() { Evento = db.Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, ImagenData = db.Extensiones_Evento.FirstOrDefault().Imagenes.FirstOrDefault().ImagenData, Usuario = db.Users.FirstOrDefault() });
+            db.Evento.FirstOrDefault().Imagenes.Add(new Imagen() { Evento = db.Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, ImagenData = db.ExtensionesEvento.FirstOrDefault().Imagenes.FirstOrDefault().ImagenData, Usuario = db.Usuarios.FirstOrDefault() });
             db.SaveChanges();
             DtoApplicationFile f2 = logica.getImageData(token, 2);
             Assert.IsNotNull(f2);
@@ -969,10 +969,10 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
             
-            int cantAdjAudio = db.Extensiones_Evento.FirstOrDefault().Audios.Count();
+            int cantAdjAudio = db.ExtensionesEvento.FirstOrDefault().Audios.Count();
             int cantFiles = db.ApplicationFiles.Count();
             IMetodos logica = new Metodos();
 
@@ -1028,7 +1028,7 @@ namespace Test.UnitTesting
             var file = db.ApplicationFiles.Count();
 
             Assert.IsTrue(ok);
-            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().Audios.Count() == cantAdjAudio + 1);
+            Assert.IsTrue(db.ExtensionesEvento.FirstOrDefault().Audios.Count() == cantAdjAudio + 1);
             Assert.IsTrue(db.ApplicationFiles.Count() == cantFiles + 1);
 
             // Obtener data de la imagen.
@@ -1066,7 +1066,7 @@ namespace Test.UnitTesting
             Assert.IsTrue(f.nombre == db.Audios.FirstOrDefault().AudioData.Id.ToString() + ".mp3");
 
             // Audio en evento.
-            db.Evento.FirstOrDefault().Audios.Add(new Audio() { Evento = db.Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, AudioData = db.Extensiones_Evento.FirstOrDefault().Audios.FirstOrDefault().AudioData, Usuario = db.Users.FirstOrDefault() });
+            db.Evento.FirstOrDefault().Audios.Add(new Audio() { Evento = db.Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, AudioData = db.ExtensionesEvento.FirstOrDefault().Audios.FirstOrDefault().AudioData, Usuario = db.Usuarios.FirstOrDefault() });
             db.SaveChanges();
             DtoApplicationFile f2 = logica.getAudioData(token, 2);
             Assert.IsNotNull(f2);
@@ -1084,10 +1084,10 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
-            int cantAdjVideo = db.Extensiones_Evento.FirstOrDefault().Videos.Count();
+            int cantAdjVideo = db.ExtensionesEvento.FirstOrDefault().Videos.Count();
             int cantFiles = db.ApplicationFiles.Count();
             IMetodos logica = new Metodos();
 
@@ -1151,7 +1151,7 @@ namespace Test.UnitTesting
             var file = db.ApplicationFiles.Count();
 
             Assert.IsTrue(ok);
-            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().Videos.Count() == cantAdjVideo + 1);
+            Assert.IsTrue(db.ExtensionesEvento.FirstOrDefault().Videos.Count() == cantAdjVideo + 1);
             Assert.IsTrue(db.ApplicationFiles.Count() == cantFiles + 1);
 
 
@@ -1190,7 +1190,7 @@ namespace Test.UnitTesting
             Assert.IsTrue(f.nombre == db.Videos.FirstOrDefault().VideoData.Id.ToString() + ".mp4");
 
             // Video en evento.
-            db.Evento.FirstOrDefault().Videos.Add(new Video() { Evento = db.Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, VideoData = db.Extensiones_Evento.FirstOrDefault().Videos.FirstOrDefault().VideoData, Usuario = db.Users.FirstOrDefault() });
+            db.Evento.FirstOrDefault().Videos.Add(new Video() { Evento = db.Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, VideoData = db.ExtensionesEvento.FirstOrDefault().Videos.FirstOrDefault().VideoData, Usuario = db.Usuarios.FirstOrDefault() });
             db.SaveChanges();
             DtoApplicationFile f2 = logica.getVideoData(token, 2);
             Assert.IsNotNull(f2);
@@ -1209,7 +1209,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
             IMetodos dbAL = new Metodos();
@@ -1234,13 +1234,13 @@ namespace Test.UnitTesting
             }
 
             db = new EmsysContext();
-            var time1 = db.Users.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal.Value;
+            var time1 = db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal.Value;
 
             Thread.Sleep(1000);
 
             bool ok = dbAL.keepMeAlive(result.accessToken);
             db = new EmsysContext();
-            var time2 = db.Users.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal.Value;
+            var time2 = db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal.Value;
 
             Assert.IsTrue((time1 != null) && (time2 != null) && (DateTime.Compare(time1, time2) < 0));
         }
@@ -1255,8 +1255,8 @@ namespace Test.UnitTesting
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
             
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = "simuloEstarConectado";
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal = DateTime.Parse("2015/07/23 21:30:00");
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = "simuloEstarConectado";
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal = DateTime.Parse("2015/07/23 21:30:00");
             db.SaveChanges();
 
             IMetodos dbAL = new Metodos();
@@ -1275,8 +1275,8 @@ namespace Test.UnitTesting
 
             db = new EmsysContext();
 
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = "simuloEstarConectado";
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal = DateTime.Parse("2015/07/23 21:30:00");
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = "simuloEstarConectado";
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").UltimoSignal = DateTime.Parse("2015/07/23 21:30:00");
             db.SaveChanges();
 
             Thread workerThread = new Thread(new ThreadStart(Emsys.LogicLayer.Program.Main));
@@ -1296,11 +1296,11 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
 
-            int cant = db.Extensiones_Evento.FirstOrDefault().GeoUbicaciones.Count();
+            int cant = db.ExtensionesEvento.FirstOrDefault().GeoUbicaciones.Count();
             IMetodos logica = new Metodos();
 
             // Autenticar.
@@ -1316,18 +1316,18 @@ namespace Test.UnitTesting
             // Loguear.
             var log = logica.loguearUsuario(token, rol);
 
-            Assert.IsTrue(TieneAcceso.tieneVisionEvento(db.Users.FirstOrDefault(u=>u.NombreLogin == "A"), db.Evento.FirstOrDefault()));
-            Assert.IsTrue(TieneAcceso.tieneVisionExtension(db.Users.FirstOrDefault(u=>u.NombreLogin == "A"), db.Extensiones_Evento.FirstOrDefault()));
-            Assert.IsFalse(TieneAcceso.tieneVisionExtension(null, db.Extensiones_Evento.FirstOrDefault()));
+            Assert.IsTrue(TieneAcceso.tieneVisionEvento(db.Usuarios.FirstOrDefault(u=>u.NombreLogin == "A"), db.Evento.FirstOrDefault()));
+            Assert.IsTrue(TieneAcceso.tieneVisionExtension(db.Usuarios.FirstOrDefault(u=>u.NombreLogin == "A"), db.ExtensionesEvento.FirstOrDefault()));
+            Assert.IsFalse(TieneAcceso.tieneVisionExtension(null, db.ExtensionesEvento.FirstOrDefault()));
             Assert.IsFalse(TieneAcceso.tieneVisionEvento(null, db.Evento.FirstOrDefault()));
-            Assert.IsFalse(TieneAcceso.estaAsignadoExtension(null, db.Extensiones_Evento.FirstOrDefault()));
-            Assert.IsFalse(TieneAcceso.estaDespachandoExtension(null, db.Extensiones_Evento.FirstOrDefault()));
+            Assert.IsFalse(TieneAcceso.estaAsignadoExtension(null, db.ExtensionesEvento.FirstOrDefault()));
+            Assert.IsFalse(TieneAcceso.estaDespachandoExtension(null, db.ExtensionesEvento.FirstOrDefault()));
 
-            var user = db.Users.FirstOrDefault(u => u.NombreLogin == "A");
+            var user = db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A");
             user.Recurso.Clear();
-            user.Despachando.Add(db.Extensiones_Evento.FirstOrDefault());
+            user.Despachando.Add(db.ExtensionesEvento.FirstOrDefault());
             db.SaveChanges();
-            Assert.IsTrue(TieneAcceso.estaDespachandoExtension(user, db.Extensiones_Evento.FirstOrDefault()));
+            Assert.IsTrue(TieneAcceso.estaDespachandoExtension(user, db.ExtensionesEvento.FirstOrDefault()));
         }
 
 
@@ -1344,7 +1344,7 @@ namespace Test.UnitTesting
             db.ApplicationFiles.Add(new ApplicationFile() { FileData = new byte[0], Nombre = "algo.jpg"});
             db.SaveChanges();
             db = new EmsysContext();    
-            Imagen img = new Imagen() { Evento = db.Evento.FirstOrDefault(), ExtensionEvento = db.Extensiones_Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, ImagenData = db.ApplicationFiles.FirstOrDefault(), Usuario = db.Users.FirstOrDefault() };
+            Imagen img = new Imagen() { Evento = db.Evento.FirstOrDefault(), ExtensionEvento = db.ExtensionesEvento.FirstOrDefault(), FechaEnvio = DateTime.Now, ImagenData = db.ApplicationFiles.FirstOrDefault(), Usuario = db.Usuarios.FirstOrDefault() };
             db.Imagenes.Add(img);
             db.SaveChanges();
 
@@ -1352,7 +1352,7 @@ namespace Test.UnitTesting
             DtoImagen dto = DtoGetters.getDtoImagen(db.Imagenes.FirstOrDefault());
             Assert.AreEqual(dto.id, 1);
             Assert.AreNotEqual(dto.id_imagen,0);
-            Assert.AreEqual(dto.usuario, db.Users.FirstOrDefault().Nombre);
+            Assert.AreEqual(dto.usuario, db.Usuarios.FirstOrDefault().Nombre);
             Assert.AreNotEqual(dto.fechaEnvio, null);
         }
 
@@ -1369,7 +1369,7 @@ namespace Test.UnitTesting
             db.ApplicationFiles.Add(new ApplicationFile() { FileData = new byte[0], Nombre = "algo.mp3" });
             db.SaveChanges();
             db = new EmsysContext();
-            Audio aud = new Audio() { Evento = db.Evento.FirstOrDefault(), ExtensionEvento = db.Extensiones_Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, AudioData = db.ApplicationFiles.FirstOrDefault(), Usuario = db.Users.FirstOrDefault() };
+            Audio aud = new Audio() { Evento = db.Evento.FirstOrDefault(), ExtensionEvento = db.ExtensionesEvento.FirstOrDefault(), FechaEnvio = DateTime.Now, AudioData = db.ApplicationFiles.FirstOrDefault(), Usuario = db.Usuarios.FirstOrDefault() };
             db.Audios.Add(aud);
             db.SaveChanges();
 
@@ -1377,7 +1377,7 @@ namespace Test.UnitTesting
             DtoAudio dto = DtoGetters.getDtoAudio(db.Audios.FirstOrDefault());
             Assert.AreEqual(dto.id, 1);
             Assert.AreNotEqual(dto.idAudio,0);
-            Assert.AreEqual(dto.usuario, db.Users.FirstOrDefault().Nombre);
+            Assert.AreEqual(dto.usuario, db.Usuarios.FirstOrDefault().Nombre);
             Assert.AreNotEqual(dto.fechaEnvio, null);
         }
 
@@ -1395,7 +1395,7 @@ namespace Test.UnitTesting
             db.ApplicationFiles.Add(new ApplicationFile() { FileData = new byte[0], Nombre = "algo.mp4" });
             db.SaveChanges();
             db = new EmsysContext();
-            Video vid = new Video() { Evento = db.Evento.FirstOrDefault(), ExtensionEvento = db.Extensiones_Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, VideoData = db.ApplicationFiles.FirstOrDefault(), Usuario = db.Users.FirstOrDefault() };
+            Video vid = new Video() { Evento = db.Evento.FirstOrDefault(), ExtensionEvento = db.ExtensionesEvento.FirstOrDefault(), FechaEnvio = DateTime.Now, VideoData = db.ApplicationFiles.FirstOrDefault(), Usuario = db.Usuarios.FirstOrDefault() };
             db.Videos.Add(vid);
             db.SaveChanges();
 
@@ -1403,7 +1403,7 @@ namespace Test.UnitTesting
             DtoVideo dto = DtoGetters.getDtoVideo(db.Videos.FirstOrDefault());
             Assert.AreEqual(dto.id, 1);
             Assert.AreNotEqual(dto.idVideo, 0);
-            Assert.AreEqual(dto.usuario, db.Users.FirstOrDefault().Nombre);
+            Assert.AreEqual(dto.usuario, db.Usuarios.FirstOrDefault().Nombre);
             Assert.AreNotEqual(dto.fechaEnvio, null);
         }
         
@@ -1417,10 +1417,10 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
-            int cantDescripciones = db.Extensiones_Evento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().AsignacionRecursoDescripcion.Count();
+            int cantDescripciones = db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().AsignacionRecursoDescripcion.Count();
             IMetodos logica = new Metodos();
 
             // Autenticar.
@@ -1464,8 +1464,8 @@ namespace Test.UnitTesting
 
             db = new EmsysContext();
             Assert.IsTrue(ok);
-            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().AsignacionRecursoDescripcion.Count() == cantDescripciones + 1);
-            Assert.AreEqual(db.Extensiones_Evento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().AsignacionRecursoDescripcion.FirstOrDefault().Descripcion, "hola");
+            Assert.IsTrue(db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().AsignacionRecursoDescripcion.Count() == cantDescripciones + 1);
+            Assert.AreEqual(db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().AsignacionRecursoDescripcion.FirstOrDefault().Descripcion, "hola");
 
             logica.cerrarSesion(token);
         }
@@ -1480,10 +1480,10 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
-            int cantDescripciones = db.Extensiones_Evento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().AsignacionRecursoDescripcion.Count();
+            int cantDescripciones = db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().AsignacionRecursoDescripcion.Count();
             IMetodos logica = new Metodos();
 
             // Autenticar.
@@ -1526,8 +1526,8 @@ namespace Test.UnitTesting
 
             db = new EmsysContext();
             Assert.IsTrue(ok);
-            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().HoraArribo != null);
-            Assert.IsTrue(ahora.Subtract(db.Extensiones_Evento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().HoraArribo.Value).TotalSeconds < 5);
+            Assert.IsTrue(db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().HoraArribo != null);
+            Assert.IsTrue(ahora.Subtract(db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().HoraArribo.Value).TotalSeconds < 5);
 
             logica.cerrarSesion(token);
         }
@@ -1544,13 +1544,13 @@ namespace Test.UnitTesting
             EmsysContext db = new EmsysContext();
             int cantLogs = db.LogNotification.Count();
             IMetodos logic = new Metodos();
-            db.Users.FirstOrDefault().Token = "hola";
+            db.Usuarios.FirstOrDefault().Token = "hola";
             db.SaveChanges();
             logic.AgregarLogErrorNotification("hola", "hola", "hola", "hola", 1, "hola", "hola", 1);
             db = new EmsysContext();
             int cant2 = db.LogNotification.Count();
             Assert.IsTrue(cant2 == cantLogs + 1);
-            db.Users.FirstOrDefault().Token = null;
+            db.Usuarios.FirstOrDefault().Token = null;
         }
 
        
@@ -1563,11 +1563,11 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData(
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
             int cantEventos = db.Evento.Count();
-            int cantExtensiones = db.Extensiones_Evento.Count();
+            int cantExtensiones = db.ExtensionesEvento.Count();
             IMetodos logica = new Metodos();
 
             // Autenticar.
@@ -1643,7 +1643,7 @@ namespace Test.UnitTesting
             db = new EmsysContext();
             Assert.IsTrue(ok);
             Assert.IsTrue(db.Evento.Count() == cantEventos + 1);
-            Assert.IsTrue(db.Extensiones_Evento.Count() == cantExtensiones + 1);
+            Assert.IsTrue(db.ExtensionesEvento.Count() == cantExtensiones + 1);
 
             logica.cerrarSesion(token);
         }
@@ -1659,7 +1659,7 @@ namespace Test.UnitTesting
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
             IMetodos logic = new Metodos();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
             // Autenticar.
@@ -1708,8 +1708,8 @@ namespace Test.UnitTesting
             var ok = logic.tomarExtension(token, 1);
             Assert.IsTrue(ok);
             db = new EmsysContext();
-            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().Estado == EstadoExtension.Despachado);
-            Assert.IsTrue(db.Users.FirstOrDefault(u => u.NombreLogin == "A").Despachando.Count() == 1);
+            Assert.IsTrue(db.ExtensionesEvento.FirstOrDefault().Estado == EstadoExtension.Despachado);
+            Assert.IsTrue(db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Despachando.Count() == 1);
 
             // Sin token.
             try
@@ -1743,8 +1743,8 @@ namespace Test.UnitTesting
             var ok2 = logic.liberarExtension(token, 1);
             Assert.IsTrue(ok2);
             db = new EmsysContext();
-            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault().Estado == EstadoExtension.FaltaDespachar);
-            Assert.IsTrue(db.Users.FirstOrDefault(u => u.NombreLogin == "A").Despachando.Count() == 0);
+            Assert.IsTrue(db.ExtensionesEvento.FirstOrDefault().Estado == EstadoExtension.FaltaDespachar);
+            Assert.IsTrue(db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Despachando.Count() == 0);
             logic.cerrarSesion(token);
         }
 
@@ -1759,7 +1759,7 @@ namespace Test.UnitTesting
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
             IMetodos logic = new Metodos();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
             // Autenticar.
@@ -1806,7 +1806,7 @@ namespace Test.UnitTesting
                 Assert.IsTrue(true);
             }
 
-            Assert.AreEqual(db.Extensiones_Evento.FirstOrDefault().AsignacionesRecursos.Count(), 1);
+            Assert.AreEqual(db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.Count(), 1);
             var result2 = logic.getRecursosExtension(token, 1);
             Assert.IsNotNull(result2);
             Assert.AreEqual(result2.idExtension, 1);
@@ -1870,7 +1870,7 @@ namespace Test.UnitTesting
             Assert.IsTrue(result4.recursosAsignados.Count() == 1);
             Assert.AreEqual(result4.recursosAsignados.FirstOrDefault().id, 2);
             db = new EmsysContext();
-            Assert.AreEqual(db.Extensiones_Evento.FirstOrDefault().AsignacionesRecursos.Count(), 2);
+            Assert.AreEqual(db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.Count(), 2);
 
             // Vuelvo al estado inicial.
             List<DtoRecurso> l1 = new List<DtoRecurso>();
@@ -1879,7 +1879,7 @@ namespace Test.UnitTesting
             l2.Add(r2);
             var fine = logic.gestionarRecursos(token, new DtoRecursosExtension() { idExtension = 1, recursosAsignados = l1, recursosNoAsignados = l2});
             db = new EmsysContext();
-            Assert.AreEqual(db.Extensiones_Evento.FirstOrDefault().AsignacionesRecursos.Count(), 2);
+            Assert.AreEqual(db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.Count(), 2);
 
             var ok2 = logic.liberarExtension(token, 1);
             logic.cerrarSesion(token);
@@ -1895,7 +1895,7 @@ namespace Test.UnitTesting
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
             IMetodos logic = new Metodos();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
             // Autenticar.
@@ -1951,14 +1951,14 @@ namespace Test.UnitTesting
                 Assert.IsTrue(true);
             }
 
-            Categoria cat1 = db.Extensiones_Evento.FirstOrDefault().SegundaCategoria;
+            Categoria cat1 = db.ExtensionesEvento.FirstOrDefault().SegundaCategoria;
             Assert.IsTrue(cat1 == null);
 
             var result2 = logic.actualizarSegundaCategoria(token, 1, 1);
             Assert.IsTrue(result2);
 
             db = new EmsysContext();
-            Categoria cat2 = db.Extensiones_Evento.FirstOrDefault().SegundaCategoria;
+            Categoria cat2 = db.ExtensionesEvento.FirstOrDefault().SegundaCategoria;
             Assert.IsNotNull(cat2);
             Assert.AreEqual(cat2.Id, db.Categorias.FirstOrDefault(c => c.Id == 1).Id);
 
@@ -1966,7 +1966,7 @@ namespace Test.UnitTesting
             Assert.IsTrue(result3);
 
             db = new EmsysContext();
-            Extension_Evento e1 = db.Extensiones_Evento.FirstOrDefault(ex => ex.Id == 1);
+            ExtensionEvento e1 = db.ExtensionesEvento.FirstOrDefault(ex => ex.Id == 1);
             Categoria cat3 = e1.SegundaCategoria;
             Assert.IsTrue(cat3 == null);
 
@@ -1985,7 +1985,7 @@ namespace Test.UnitTesting
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
             IMetodos logic = new Metodos();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
             // Autenticar.
@@ -2079,8 +2079,8 @@ namespace Test.UnitTesting
             Assert.AreEqual(db.Evento.FirstOrDefault().ExtensionesEvento.Count(), cantPrevia + 1);
             Assert.IsTrue(db.Evento.FirstOrDefault().ExtensionesEvento.ToArray()[cantPrevia].Zona.Id == zonas.FirstOrDefault().id);
 
-            int idExtNueva = db.Extensiones_Evento.Max(e => e.Id);
-            db.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtNueva).Recursos.Add(db.Recursos.FirstOrDefault());
+            int idExtNueva = db.ExtensionesEvento.Max(e => e.Id);
+            db.ExtensionesEvento.FirstOrDefault(e => e.Id == idExtNueva).Recursos.Add(db.Recursos.FirstOrDefault());
             db.SaveChanges();
             var ok5 = logic.tomarExtension(token, idExtNueva);
 
@@ -2116,7 +2116,7 @@ namespace Test.UnitTesting
             var ok3 = logic.cerrarExtension(token, idExtNueva);
             Assert.IsTrue(ok);
             db = new EmsysContext();
-            Assert.IsTrue(db.Extensiones_Evento.FirstOrDefault(e => e.Id == idExtNueva).Estado == EstadoExtension.Cerrado);
+            Assert.IsTrue(db.ExtensionesEvento.FirstOrDefault(e => e.Id == idExtNueva).Estado == EstadoExtension.Cerrado);
 
             var ok4 = logic.liberarExtension(token, 1);
             logic.cerrarSesion(token);
@@ -2134,7 +2134,7 @@ namespace Test.UnitTesting
             "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             EmsysContext db = new EmsysContext();
             IMetodos logic = new Metodos();
-            db.Users.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
+            db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Token = null;
             db.SaveChanges();
 
             // Autenticar.
