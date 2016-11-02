@@ -11,6 +11,7 @@ using System.Threading;
 using Newtonsoft.Json;
 using System.Web.Services.Protocols;
 using System.Collections.Generic;
+using System.Net;
 
 namespace Test.UnitTesting
 {
@@ -345,6 +346,7 @@ namespace Test.UnitTesting
             EmsysContext db = new EmsysContext();
             db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
+            db.AsignacionesRecursos.FirstOrDefault().HoraArribo = null;
             db.SaveChanges();
 
             var controller = new EventosController();
@@ -1113,24 +1115,24 @@ namespace Test.UnitTesting
             // No autenticado.
             controller.Request = new HttpRequestMessage();
             var resp11 = controller.GetImageData(1);
-            Assert.IsTrue(resp11.cod == 2);
+            Assert.IsTrue(resp11.StatusCode == HttpStatusCode.Unauthorized);
 
             // Token invalido.
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", "tokenInvalido");
             var resp12 = controller.GetImageData(1);
-            Assert.IsTrue(resp12.cod == 2);            
+            Assert.IsTrue(resp12.StatusCode == HttpStatusCode.Unauthorized);            
 
             // Imagen invalida.
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             var resp14 = controller.GetImageData(-1);
-            Assert.IsTrue(resp14.cod == 101);
+            Assert.IsTrue(resp14.StatusCode == HttpStatusCode.NotFound);
 
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             var resp16 = controller.GetImageData(1);
-            Assert.IsTrue(resp16.cod == 0);
+            Assert.IsTrue(resp16.StatusCode == HttpStatusCode.OK);
 
             controller2.Request = new HttpRequestMessage();
             controller2.Request.Headers.Add("auth", token);
@@ -1144,7 +1146,7 @@ namespace Test.UnitTesting
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             var resp13 = controller.GetImageData(1);
-            Assert.IsTrue(resp13.cod == 15);
+            Assert.IsTrue(resp13.StatusCode == HttpStatusCode.Unauthorized);
         }
 
 
