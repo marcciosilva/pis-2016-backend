@@ -31,7 +31,7 @@ namespace Test.UnitTesting
         private void CrearBaseDatos(string nombreBD, string NombreArchivoIniciar)
         {
             //string scriptInicial = Environment.CurrentDirectory + "\\App_Data\\DatosBD.sql";
-            string scriptInicial = AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\"+NombreArchivoIniciar;
+            string scriptInicial = AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\" + NombreArchivoIniciar;
             string connectionString = String.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;Integrated Security=True;MultipleActiveResultSets=True;");
 
             using (var con = new SqlConnection(connectionString))

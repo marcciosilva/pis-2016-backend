@@ -1696,6 +1696,7 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+
             // Extension invalida.
             try
             {
@@ -1731,6 +1732,7 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+
             // Extension invalida.
             try
             {
@@ -1748,7 +1750,6 @@ namespace Test.UnitTesting
             Assert.IsTrue(db.Usuarios.FirstOrDefault(u => u.NombreLogin == "A").Despachando.Count() == 0);
             logic.cerrarSesion(token);
         }
-
 
         /// <summary>
         /// Se prueba gestionar los recursos de una extension.
@@ -1773,7 +1774,6 @@ namespace Test.UnitTesting
             lZonas.Add(dtoZona1);
             DtoRol rol = new DtoRol() { zonas = lZonas, recursos = new List<DtoRecurso>() };
 
-
             // Loguear.
             var log = logic.loguearUsuario(token, rol);
 
@@ -1788,6 +1788,7 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+
             // Token invalido.
             try
             {
@@ -1797,6 +1798,7 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+
             // Extension invalida.
             try
             {
@@ -1820,10 +1822,10 @@ namespace Test.UnitTesting
             // Asigna r2 a la extension.
             result2.recursosAsignados.Remove(r1);
             result2.recursosAsignados.Add(r2);
+
             // Quita r1 de la extension.
             result2.recursosNoAsignados.Clear();
             result2.recursosNoAsignados.Add(r1);
-
 
             // Sin token.
             try
@@ -1834,6 +1836,7 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+
             // Token invalido.
             try
             {
@@ -1843,6 +1846,7 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+
             // Extension invalida.
             try
             {
@@ -1852,6 +1856,7 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+
             // Extension invalida.
             try
             {

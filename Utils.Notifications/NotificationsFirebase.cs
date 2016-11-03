@@ -1,23 +1,26 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
-using System.Threading.Tasks;
+using System.Threading;
 using System.Web.Configuration;
 using DataTypeObject;
-using Newtonsoft.Json;
-using Emsys.LogicLayer;
-using System.Threading;
 using Emsys.DataAccesLayer.Model;
+using Emsys.LogicLayer;
+using Newtonsoft.Json;
 
 namespace Utils.Notifications
 {
     class NotificationsFirebase : INotifications
     {
         private Semaphore _pool = new Semaphore(1, 1);
+
         private int _seconds = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaEnvioNotificaciones"]);
+
+        private static int MaximoPermitidoConsecutivo = 0;
+
+        private Semaphore semaforo = new Semaphore(1, 1);
+
         /// <summary>
         /// Implementacion on FireBase del metodo Send para enviar notificaciones push.
         /// </summary>
@@ -28,19 +31,19 @@ namespace Utils.Notifications
         {
             IMetodos dbAL = new Metodos();
 
-            dbAL.AgregarLogNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase"
-                , 0, "sendNotification",
+            dbAL.AgregarLogNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase",
+                0, "sendNotification",
                 "Se genero una notificacion Real.",
                 MensajesParaFE.LogNotificaciones, topic, cod, pk, "No tengo aun.", null);
             //EstadoSistema();
             sendNotification(cod, pk, topic, null);
         }
-        private static int MaximoPermitidoConsecutivo=0;
-        private Semaphore semaforo = new Semaphore(1, 1);
+
         private void EstadoSistema()
         {
             MaximoPermitidoConsecutivo++;
-            if (MaximoPermitidoConsecutivo==5) {
+            if (MaximoPermitidoConsecutivo == 5)
+            {
                 semaforo.WaitOne();
                 Thread.Sleep(1000);
                 _pool.Release();
@@ -54,6 +57,7 @@ namespace Utils.Notifications
         /// <param name="cod">Codigo del mensaje a enviar definio en Codigos.</param>
         /// <param name="pk">Primary Key de elemento a informar que cambio.</param>
         /// <param name="topic">Topic/Channel de elemento que fue modificado.</param>
+        /// <param name="logPrevio"></param>
         private async void sendNotification(string cod, string pk, string topic, LogNotification logPrevio = null)
         {
             using (var client = new HttpClient())
@@ -83,6 +87,7 @@ namespace Utils.Notifications
                         response.ToString(), logPrevio);
                     throw new Exception("Al enviar una notifiacion la respuesta del servidor NO fue positiva.");
                 }
+
                 string mensaje = responseString.Split(':')[0].ToString();
                 if (mensaje != "{\"message_id\"")
                 {

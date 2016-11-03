@@ -1,17 +1,16 @@
-﻿using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using Emsys.DataAccesLayer.Core;
 using Emsys.DataAccesLayer.Model;
-using System.IO;
+using NUnit.Framework;
 
 namespace Test.UnitTesting
 {
     [TestFixture]
     class DataAccesLayerUnitTest
     {
-        
         /// <summary>
         /// Test que prueba que se pueda registrar un usuario a Identity.
         /// </summary>
@@ -72,7 +71,6 @@ namespace Test.UnitTesting
             }
         }
 
-
         /// <summary>
         /// Test que prueba que se pueda crear un Sector y agregarlo a la base de datos.
         /// </summary>
@@ -120,6 +118,7 @@ namespace Test.UnitTesting
             AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
             
             var context = new EmsysContext();
+
             // Evento y extensiones.
             var sector = new Sector() { Nombre = "sectorDEPrueba", Zona = context.Zonas.FirstOrDefault() };
             var catEvento = new Categoria() { Clave = "catPruebaDE", Activo = true, Codigo = "catDE", Prioridad = NombrePrioridad.Media };
@@ -175,6 +174,5 @@ namespace Test.UnitTesting
             Assert.AreEqual(oe.IdOrigen, 1);
             Assert.AreEqual(oe.Evento.Id, 4);
         }
-
     }
 }

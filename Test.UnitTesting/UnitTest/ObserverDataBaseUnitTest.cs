@@ -32,7 +32,8 @@ namespace Test.UnitTesting
 
                 Thread workerThreadAnalysisDataNotifications = new Thread(new ThreadStart(HiloDeScreenShoots));
                 workerThreadAnalysisDataNotifications.Start();
-                //espero a que se disparen todos los hilos y luego empiezo a modificar la base
+
+                // Espero a que se disparen todos los hilos y luego empiezo a modificar la base.
                 Thread.Sleep(5000);
                // ModificarBaseDatos();
                 Random r = new Random();
@@ -42,7 +43,7 @@ namespace Test.UnitTesting
                     Modificaciones(db);
                     Thread.Sleep( 1000);
                 }                
-                // me quedo colgado por que sino mato todo los threads y no puedo ver si el test fue exitoso.
+                // Me quedo colgado por que sino mato todo los threads y no puedo ver si el test fue exitoso.
                 Thread.Sleep(240 * _seconds * 1000 + 10000);
                 workerThread.Abort();
             }
@@ -68,7 +69,8 @@ namespace Test.UnitTesting
         private void HiloDeScreenShoots()
         {
             while (true) {
-                Thread.Sleep(60000);//un minuto
+                // Un minuto.
+                Thread.Sleep(60000);
                 Util.NotificacionAnalysis.Program.CapturoDatos();
             }
         }
