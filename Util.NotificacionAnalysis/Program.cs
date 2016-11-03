@@ -63,8 +63,9 @@ namespace Util.NotificacionAnalysis
                     if (item.Codigo == 906)
                     {
                         //cuento cuantas hay para atras.
-                        DateTime tiempoFin = item.TimeStamp;
+                        
                         int nivel = 0;
+                        DateTime tiempoFin = item.TimeStamp;
                         DateTime timepoInicio = ObtenerInicio(item, ref nivel);
                         var diferencia = (tiempoFin - timepoInicio).TotalMilliseconds;
                         if (diferencia > tiempoMaximoEsperaNotificacion)
@@ -75,11 +76,12 @@ namespace Util.NotificacionAnalysis
                         {
                             tiempoMinimoEsperaNotificacion = diferencia;
                         }
+                        tiempoPromedioEnvioNotificacion = (tiempoPromedioEnvioNotificacion + diferencia) / 2;
+
                         if (nivel > nivelRecursion)
                         {
                             nivelRecursion = nivel;
                         }
-                        tiempoPromedioEnvioNotificacion = (tiempoPromedioEnvioNotificacion + diferencia) / 2;
                         if (tiempoMenor > item.TimeStamp)
                         {
                             tiempoMenor = item.TimeStamp;

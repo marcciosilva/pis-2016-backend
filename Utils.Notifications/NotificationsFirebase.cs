@@ -94,7 +94,7 @@ namespace Utils.Notifications
                     _pool.WaitOne();
                     Thread.Sleep(_seconds * 1000);
                     _pool.Release();
-                    sendNotification(cod, pk, topic, logActual);
+                    sendNotification(cod, pk, topic, logActual);                    
                     // throw new Exception("Al enviar una notifiacion la respuesta del servidor NO contiene el id del mensjae, entonces la respuesta es negativa.");
                 }
                 else

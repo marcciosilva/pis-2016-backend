@@ -33,15 +33,32 @@ namespace Test.UnitTesting
                 Thread workerThreadAnalysisDataNotifications = new Thread(new ThreadStart(HiloDeScreenShoots));
                 workerThreadAnalysisDataNotifications.Start();
                 //espero a que se disparen todos los hilos y luego empiezo a modificar la base
-                Thread.Sleep(5000);
-               // ModificarBaseDatos();
-                Random r = new Random();
+                Thread.Sleep(10000);
                 EmsysContext db = new EmsysContext();
-                for (int i = 0; i < 500; i++)
+                bool PruebaCantidadMaxEnviosConsecutivos = false;
+
+                if (PruebaCantidadMaxEnviosConsecutivos)
                 {
-                    Modificaciones(db);
-                    Thread.Sleep( 1000);
-                }                
+                    for (int j = 0; j < 3; j++)
+                    {
+                        var evento = db.ExtensionesEvento.FirstOrDefault();
+                        evento.DescripcionDespachador = DateTime.Now.Millisecond.ToString();
+                        db.SaveChanges();
+                    }
+
+                    Thread.Sleep(30000);
+                    Util.NotificacionAnalysis.Program.CapturoDatos();
+                    Thread.Sleep(5000);
+                }
+                else
+                {
+                    for (int i = 0; i < 500; i++)
+                    {
+                        Modificaciones(db);
+                        Thread.Sleep(1000);
+                    }
+                }
+
                 // me quedo colgado por que sino mato todo los threads y no puedo ver si el test fue exitoso.
                 Thread.Sleep(240 * _seconds * 1000 + 10000);
                 workerThread.Abort();
@@ -67,7 +84,8 @@ namespace Test.UnitTesting
 
         private void HiloDeScreenShoots()
         {
-            while (true) {
+            while (true)
+            {
                 Thread.Sleep(60000);//un minuto
                 Util.NotificacionAnalysis.Program.CapturoDatos();
             }
@@ -79,27 +97,27 @@ namespace Test.UnitTesting
             {
                 int contador = Modificaciones(db);
 
-                //AsignacionRecurso ar = new AsignacionRecurso
-                //{
-                //    ActualmenteAsignado = true,
-                //    AsignacionRecursoDescripcion = new List<AsignacionRecursoDescripcion>(),
-                //    Descripcion = "",
-                //    Extension = db.ExtensionesEvento.FirstOrDefault(),
-                //    HoraArribo = DateTime.Now,
-                //    Recurso = db.Recursos.FirstOrDefault(),
-                //};
-                //db.AsignacionesRecursos.Add(ar);
-                //db.SaveChanges();
-                //ar.Descripcion = "nueva";
-                //db.SaveChanges();
+                AsignacionRecurso ar = new AsignacionRecurso
+                {
+                    ActualmenteAsignado = true,
+                    AsignacionRecursoDescripcion = new List<AsignacionRecursoDescripcion>(),
+                    Descripcion = "",
+                    Extension = db.ExtensionesEvento.FirstOrDefault(),
+                    HoraArribo = DateTime.Now,
+                    Recurso = db.Recursos.FirstOrDefault(),
+                };
+                db.AsignacionesRecursos.Add(ar);
+                db.SaveChanges();
+                ar.Descripcion = "nueva";
+                db.SaveChanges();
 
-                //////Thread.Sleep(10000);
-                //LogicLayerUnitTest test = new LogicLayerUnitTest();
-                //test.AdjuntarAudioTest();//  1
-                //test.AdjuntarVideoTest();
-                //test.AdjuntarImagenTest();
-                //test.AdjuntarGeoUbicacion();
-                //test.ActualizarDescripcionRecursoTest();
+                ////Thread.Sleep(10000);
+                LogicLayerUnitTest test = new LogicLayerUnitTest();
+                test.AdjuntarAudioTest();//  1
+                test.AdjuntarVideoTest();
+                test.AdjuntarImagenTest();
+                test.AdjuntarGeoUbicacion();
+                test.ActualizarDescripcionRecursoTest();
                 return contador;
             }
         }
@@ -126,7 +144,7 @@ namespace Test.UnitTesting
             db.SaveChanges();
             foreach (var item in db.ExtensionesEvento)
             {
-                item.DescripcionDespachador = DateTime.Now.ToString() ;
+                item.DescripcionDespachador = DateTime.Now.ToString();
             }
             db.SaveChanges();
             foreach (var item in db.Videos)
