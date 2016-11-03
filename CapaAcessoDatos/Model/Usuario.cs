@@ -29,7 +29,9 @@
         public string Nombre { get; set; }
 
         [Required]
-        public Estado Estado { get; set; }    
+        public Estado Estado { get; set; }
+
+        public string RegistrationTokenFirebase { get; set; }
 
         public virtual ICollection<UnidadEjecutora> UnidadesEjecutoras { get; set; }
 

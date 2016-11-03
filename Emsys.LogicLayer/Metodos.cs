@@ -7,6 +7,7 @@ using Emsys.DataAccesLayer.Core;
 using Emsys.DataAccesLayer.Model;
 using Emsys.LogicLayer.ApplicationExceptions;
 using Emsys.LogicLayer.Utils;
+using Utils.Notifications;
 
 namespace Emsys.LogicLayer
 {
@@ -399,94 +400,7 @@ namespace Emsys.LogicLayer
                 Console.WriteLine(e.Message);
             }
         }
-
-        public void AgregarLogNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo,
-            string topic, string codigoNotificacion, string pkEvento, string firebaseResponse, LogNotification logViejo = null)
-        {
-            try
-            {
-                using (EmsysContext context = new EmsysContext())
-                {
-                    string IdUsuario = string.Empty;
-                    if (token != null)
-                    {
-                        var user = context.Usuarios.FirstOrDefault(u => u.Token == token);
-                        if (user != null)
-                        {
-                            IdUsuario = user.NombreLogin;
-                        }
-                    }
-
-                    LogNotification log = new LogNotification();
-                    log.Usuario = IdUsuario;
-                    log.TimeStamp = DateTime.Now;
-                    log.Terminal = terminal;
-                    log.Modulo = modulo;
-                    log.Entidad = Entidad;
-                    log.idEntidad = idEntidad;
-                    log.Accion = accion;
-                    log.Detalles = detalles;
-                    log.Codigo = codigo;
-                    log.EsError = false;
-                    log.CodigoNotificacion = codigoNotificacion;
-                    log.Topic = topic;
-                    log.PKEventoAfectado = pkEvento;
-                    log.responseFireBase = firebaseResponse;
-                    log.LogNotificationPrevio = logViejo;
-                    context.LogNotification.Add(log);
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-            }
-        }
-
-        public LogNotification AgregarLogErrorNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo, string topicFinal, string codigoNotificacion, string pkEvento, string responseFirebase, LogNotification logViejo = null)
-        {
-            try
-            {
-                using (EmsysContext context = new EmsysContext())
-                {
-                    string IdUsuario = null;
-                    if (token != null)
-                    {
-                        var user = context.Usuarios.FirstOrDefault(u => u.Token == token);
-                        if (user != null)
-                        {
-                            IdUsuario = user.NombreLogin;
-                        }
-                    }
-
-                    LogNotification log = new LogNotification();
-                    log.Usuario = IdUsuario;
-                    log.TimeStamp = DateTime.Now;
-                    log.Terminal = terminal;
-                    log.Modulo = modulo;
-                    log.Entidad = Entidad;
-                    log.idEntidad = idEntidad;
-                    log.Accion = accion;
-                    log.Detalles = detalles;
-                    log.Codigo = codigo;
-                    log.EsError = true;
-                    log.CodigoNotificacion = codigoNotificacion;
-                    log.Topic = topicFinal;
-                    log.PKEventoAfectado = pkEvento;
-                    log.responseFireBase = responseFirebase;
-                    log.LogNotificationPrevio = logViejo;
-                    context.LogNotification.Add(log);
-                    context.SaveChanges();
-                    return log;
-                }
-            }
-            catch (Exception e)
-            {
-                return null;
-                Console.WriteLine(e.Message);
-            }
-        }
-
+   
         public DtoEvento verInfoEvento(string token, int idEvento)
         {
             using (var context = new EmsysContext())
@@ -1066,6 +980,26 @@ namespace Emsys.LogicLayer
             }
         }
 
+        public bool SetRegistrationToken(string token, string tokenFirebase)
+        {
+            using (var context = new EmsysContext())
+            {
+                if (token == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+
+                var user = context.Usuarios.FirstOrDefault(u => u.Token == token);
+                if (user == null)
+                {
+                    throw new TokenInvalidoException();
+                }
+
+                user.RegistrationTokenFirebase = tokenFirebase;
+                context.SaveChanges();
+                return true;
+            }
+        }
         public void desconectarAusentes(int maxTime)
         {
             using (var context = new EmsysContext())
@@ -1085,6 +1019,8 @@ namespace Emsys.LogicLayer
                                 Console.WriteLine("Se desconecto al usuario <" + user.NombreLogin + ">");
                                 string hora = user.UltimoSignal.Value.ToString();
                                 AgregarLog(user.NombreLogin, "Servidor", "Emsys.LogicLayer", "Usuarios", user.Id, "Se desconecta al usuario indicado.", "Ultimo signal a las " + hora, MensajesParaFE.LogDesconectarUsuarioCod);
+                                //doy de baja del servidor de firebase al usuario
+                                unsuscribeTopicsFromFirebase(context, user);
                             }
                         }
                     }
@@ -1094,6 +1030,20 @@ namespace Emsys.LogicLayer
                     }
                 }
             }
+        }
+
+        private static void unsuscribeTopicsFromFirebase(EmsysContext context, Usuario user)
+        {
+            INotifications GestorNotificaciones = FactoryNotifications.GetInstance();
+            foreach (var item in user.Recurso)
+            {
+                GestorNotificaciones.RemoveUserFromTopic(user.RegistrationTokenFirebase, "recurso-" + item.Id, user.Nombre);
+            }
+            foreach (var item in user.Zonas)
+            {
+                GestorNotificaciones.RemoveUserFromTopic(user.RegistrationTokenFirebase, "zona-" + item.Id, user.Nombre);
+            }
+           
         }
 
         public bool reportarHoraArribo(string token, int idExtension)
@@ -1126,7 +1076,7 @@ namespace Emsys.LogicLayer
                 AsignacionRecurso asig = ext.AsignacionesRecursos.FirstOrDefault(a => a.Recurso.Id == rec.Id);
                 if (asig == null)
                 {
-                    return false;                    
+                    return false;
                 }
 
                 if (asig.HoraArribo != null)

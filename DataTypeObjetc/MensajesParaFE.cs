@@ -128,6 +128,9 @@
         public const int LogNotificacionesErrorReenvio = 904;
         public const int LogNotificacionesErrorGenerico = 905;
         public const int LogNotificacionesCierreEnvio = 906;
+        public const int LogNotificacionesDessuscripcionUsuarioTopic = 911;
+        public const int LogNotificacionesDessuscripcionUsuarioTopicError = 914;
+        public const int LogNotificacionesDessuscripcionUsuarioTopicErrorGenericoRequest = 914;
 
         // Desconectar inactivos
         public const int LogDesconectarUsuarioCod = 904;

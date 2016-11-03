@@ -6,13 +6,75 @@ using System.Threading;
 using System.Web.Configuration;
 using DataTypeObject;
 using Emsys.DataAccesLayer.Model;
-using Emsys.LogicLayer;
 using Newtonsoft.Json;
+using Utils.Notifications.Utils;
 
 namespace Utils.Notifications
 {
     class NotificationsFirebase : INotifications
     {
+        private Semaphore semaforoDessucripcion = new Semaphore(1, 1);
+        public async void RemoveUserFromTopic(string tokenFirebase, string topic, string nombreUsuario)
+        {
+            using (var client = new HttpClient())
+            {
+                var request = new HttpRequestMessage()
+                {
+                    RequestUri = new Uri(" https://iid.googleapis.com/iid/v1:batchRemove"),
+                    Method = HttpMethod.Post,
+                };
+                string keyFireBase = WebConfigurationManager.AppSettings["KeyFireBase"];
+
+                client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "key = " + keyFireBase);
+                client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+                var topicFinal = "/topics/" + topic;
+                var BodyRequest = JsonConvert.SerializeObject(new DtoUnsuscribeTokenFirebase(topicFinal, tokenFirebase));
+                var content = new StringContent(BodyRequest, Encoding.UTF8, "application/json");
+                request.Content = content;
+                var response = await client.SendAsync(request);
+                var responseString = await response.Content.ReadAsStringAsync();
+                if (!response.IsSuccessStatusCode)
+                {
+                     LogsManager.AgregarLogNotificationDessuscripcionUsuarioError("vacio", "servidor",
+                        "Utils.Notitications", "RemoveUserFromTopic", 0,
+                        "sendNotification", "Error al enviar mensaje por taza superada",
+                        MensajesParaFE.LogNotificacionesDessuscripcionUsuarioTopicErrorGenericoRequest,
+                         topicFinal, nombreUsuario, response.ToString());
+                    throw new Exception("Al enviar una notifiacion la respuesta del servidor NO fue positiva.");
+                }
+
+                string mensaje = responseString.Split(':')[0].ToString();
+                if (mensaje != "{\"message_id\"")
+                {
+                    LogsManager.AgregarLogNotificationDessuscripcionUsuarioError("vacio", "servidor",
+                       "Utils.Notitications", "RemoveUserFromTopic", 0,
+                       "sendNotification", "Error al enviar mensaje por taza superada",
+                       MensajesParaFE.LogNotificacionesDessuscripcionUsuarioTopicError,
+                        topicFinal, nombreUsuario, response.ToString());
+                    semaforoDessucripcion.WaitOne();
+                    Thread.Sleep(_seconds * 1000);
+                    semaforoDessucripcion.Release();
+                    RemoveUserFromTopic(topic, tokenFirebase, nombreUsuario);
+                    // throw new Exception("Al enviar una notifiacion la respuesta del servidor NO contiene el id del mensjae, entonces la respuesta es negativa.");
+                }
+                else
+                {
+                    //si se pudo quitar entonces lo quito de la bd el token.
+                    Emsys.DataAccesLayer.Core.EmsysContext db = new Emsys.DataAccesLayer.Core.EmsysContext();
+                    var user= db.Usuarios.Find(nombreUsuario);
+                    user.RegistrationTokenFirebase = null;
+                    db.SaveChanges();
+
+                    LogsManager.AgregarLogNotificationDessuscripcionUsuario("vacio", "servidor", "Utils.Notitications",
+                        "NotificacionesFirebase", 0, "sendNotification",
+                        "Se genero una notificacion exitosamente.",
+                        MensajesParaFE.LogNotificacionesDessuscripcionUsuarioTopic,
+                        topicFinal, nombreUsuario, responseString);
+                }
+            }
+        }
+
+
         private Semaphore _pool = new Semaphore(1, 1);
 
         private int _seconds = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaEnvioNotificaciones"]);
@@ -29,9 +91,7 @@ namespace Utils.Notifications
         /// <param name="topic">Topic/Channel al que se desea enviar una notificacion.</param>
         public void SendMessage(string cod, string pk, string topic)
         {
-            IMetodos dbAL = new Metodos();
-
-            dbAL.AgregarLogNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase",
+            LogsManager.AgregarLogNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase",
                 0, "sendNotification",
                 "Se genero una notificacion Real.",
                 MensajesParaFE.LogNotificaciones, topic, cod, pk, "No tengo aun.", null);
@@ -62,7 +122,6 @@ namespace Utils.Notifications
         {
             using (var client = new HttpClient())
             {
-                IMetodos dbAL = new Metodos();
                 var request = new HttpRequestMessage()
                 {
                     RequestUri = new Uri("https://fcm.googleapis.com/fcm/send"),
@@ -80,7 +139,7 @@ namespace Utils.Notifications
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                 {
-                    var log = dbAL.AgregarLogErrorNotification("vacio", "servidor", "Utils.Notitications",
+                    var log = LogsManager.AgregarLogErrorNotification("vacio", "servidor", "Utils.Notitications",
                         "NotificacionesFirebase", 0, "sendNotification",
                         "Ocurrio un error al enviar la notificacion.",
                         MensajesParaFE.LogNotificacionesErrorGenerico, topicFinal, cod, pk,
@@ -91,7 +150,7 @@ namespace Utils.Notifications
                 string mensaje = responseString.Split(':')[0].ToString();
                 if (mensaje != "{\"message_id\"")
                 {
-                    var logActual = dbAL.AgregarLogErrorNotification("vacio", "servidor",
+                    var logActual = LogsManager.AgregarLogErrorNotification("vacio", "servidor",
                         "Utils.Notitications", "NotificacionesFirebase", 0,
                         "sendNotification", "Error al enviar mensaje por taza superada",
                         MensajesParaFE.LogNotificacionesErrorReenvio,
@@ -99,12 +158,12 @@ namespace Utils.Notifications
                     _pool.WaitOne();
                     Thread.Sleep(_seconds * 1000);
                     _pool.Release();
-                    sendNotification(cod, pk, topic, logActual);                    
+                    sendNotification(cod, pk, topic, logActual);
                     // throw new Exception("Al enviar una notifiacion la respuesta del servidor NO contiene el id del mensjae, entonces la respuesta es negativa.");
                 }
                 else
                 {
-                    dbAL.AgregarLogNotification("vacio", "servidor", "Utils.Notitications",
+                    LogsManager.AgregarLogNotification("vacio", "servidor", "Utils.Notitications",
                         "NotificacionesFirebase", 0, "sendNotification",
                         "Se genero una notificacion exitosamente.",
                         MensajesParaFE.LogNotificacionesCierreEnvio,

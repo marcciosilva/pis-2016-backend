@@ -186,5 +186,35 @@ namespace Servicios.Controllers
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorKeepMeAlive));
             }
         }
+
+
+        
+        [HttpPost]
+        [LogFilter]
+        [Route("users/SetRegistrationToken")]
+        public DtoRespuesta SetRegistrationToken(DtoResgistrationToken dtoToken)
+        {
+            IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
+            try
+            {
+                if (token == null)
+                {
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                }
+
+                dbAL.SetRegistrationToken(token, dtoToken.registrationTokens);
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+            }
+            catch (TokenInvalidoException)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+            }
+            catch (Exception e)
+            {
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "KeepMeAlive", "Hubo un error al intentar llaar al keepAlive: " + e.Message, MensajesParaFE.ErrorKeepMeAliveCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorKeepMeAlive));
+            }
+        }
     }
 }
