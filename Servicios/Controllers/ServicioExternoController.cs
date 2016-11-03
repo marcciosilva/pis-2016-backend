@@ -1,15 +1,12 @@
-﻿using DataTypeObject;
-using Emsys.LogicLayer;
-using Emsys.LogicLayer.ApplicationExceptions;
-using Servicios.Filtros;
-using Servicios.ServicioExterno;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
-using System.Net.Http;
 using System.Web.Http;
 using System.Web.Services.Protocols;
+using DataTypeObject;
+using Emsys.LogicLayer;
+using Servicios.Filtros;
+using Servicios.ServicioExterno;
 
 namespace Servicios.Controllers
 {
@@ -39,6 +36,7 @@ namespace Servicios.Controllers
                         result.Add(itemResp);
                     }
                 }
+
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, result);
             }
             catch (SoapException e)

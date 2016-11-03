@@ -1,7 +1,7 @@
 using System.Web.Http;
+using Emsys.ServiceLayer;
 using WebActivatorEx;
 using Swashbuckle.Application;
-using Emsys.ServiceLayer;
 
 [assembly: PreApplicationStartMethod(typeof(SwaggerConfig), "Register")]
 

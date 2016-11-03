@@ -13,6 +13,7 @@ namespace Emsys.ServiceLayer
         {
             config.Formatters.JsonFormatter.SerializerSettings.Converters.Add(
              new IsoDateTimeConverter());
+
             // Web API routes.
             config.MapHttpAttributeRoutes();
             config.MessageHandlers.Add(new Emsys.ServiceLayer.Filtros.DelegateHandler());

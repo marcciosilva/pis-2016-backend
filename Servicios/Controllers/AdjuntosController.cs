@@ -1,29 +1,18 @@
-﻿using DataTypeObject;
-using Emsys.DataAccesLayer.Core;
-using Emsys.DataAccesLayer.Model;
-using Emsys.LogicLayer;
-using Emsys.LogicLayer.ApplicationExceptions;
-using Newtonsoft.Json;
-using Servicios.Filtros;
-using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Imaging;
+﻿using System;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
+using DataTypeObject;
+using Emsys.LogicLayer;
+using Emsys.LogicLayer.ApplicationExceptions;
+using Servicios.Filtros;
 
 namespace Servicios.Controllers
 {
     public class AdjuntosController : ApiController
     {      
-       
-
         /// <summary>
         /// Permite enviar una geo ubicacion al servidor e indicar a que evento o extension le pertenece.
         /// </summary>
@@ -43,6 +32,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 dbAL.adjuntarGeoUbicacion(token, ubicacion);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, null);
             }
@@ -65,7 +55,6 @@ namespace Servicios.Controllers
             }
         }
 
-
         /// <summary>
         /// Agrega un archivo de imagen a una extension del servidor, recibe la imagen y el id de la extension como multipart form data.
         /// </summary>
@@ -84,6 +73,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 dbAL.adjuntarImagen(token, img);              
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
                 //var request = HttpContext.Current.Request;
@@ -141,10 +131,10 @@ namespace Servicios.Controllers
             }
         }
 
-
         /// <summary>
         /// Agrega un archivo de audio a una extension del servidor, recibe el audio y el id de la extension como multipart form data.
         /// </summary>
+        /// <param name="aud"></param>
         /// <returns></returns>
         [CustomAuthorizeAttribute("adjuntarMultimedia")]
         [LogFilter]
@@ -160,6 +150,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 dbAL.adjuntarAudio(token, aud);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
@@ -190,7 +181,6 @@ namespace Servicios.Controllers
             }
         }
 
-
         /// <summary>
         /// Agrega un archivo de video a una extension del servidor, recibe el video y el id de la extension como multipart form data.
         /// </summary>
@@ -209,6 +199,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 dbAL.adjuntarVideo(token, vid);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));                
             }
@@ -239,7 +230,6 @@ namespace Servicios.Controllers
             }
         }
 
-
         /// <summary>
         /// Servicio para obtener un archivo de imagen.
         /// </summary>
@@ -251,8 +241,6 @@ namespace Servicios.Controllers
         [HttpGet]
         public HttpResponseMessage GetImageData(int idImagen)
         {
-            
-        
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
             try
@@ -262,12 +250,14 @@ namespace Servicios.Controllers
                     //return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                     return new HttpResponseMessage(HttpStatusCode.Unauthorized);
                 }
+
                 var img = dbAL.getImageData(token, idImagen);
                 if (img == null)
                 {
                     //return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
+
                 HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
                 var stream = new MemoryStream(img.fileData);
                 responseMessage.Content = new StreamContent(stream);
@@ -327,6 +317,7 @@ namespace Servicios.Controllers
                     // return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
+
                 HttpResponseMessage responseMessage = new HttpResponseMessage(HttpStatusCode.OK);
                 var stream = new MemoryStream(img.fileData);
                 responseMessage.Content = new StreamContent(stream);
@@ -360,7 +351,6 @@ namespace Servicios.Controllers
             }
         }
 
-
         /// <summary>
         /// Servicio para obtener un archivo de video.
         /// </summary>
@@ -387,6 +377,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.VideoInvalidoCod, new Mensaje(MensajesParaFE.VideoInvalido));
                 }
+
                 //var stream = new MemoryStream(vid.fileData);
                 //responseMessage.Content = new StreamContent(stream);
                 //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
@@ -414,7 +405,6 @@ namespace Servicios.Controllers
             }
         }
 
-
         /// <summary>
         /// Servicio para obtener un thumbnail de un archivo de video.
         /// </summary>
@@ -441,6 +431,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.VideoInvalidoCod, new Mensaje(MensajesParaFE.VideoInvalido));
                 }
+
                 //var stream = new MemoryStream(vid.fileData);
                 //responseMessage.Content = new StreamContent(stream);
                 //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
@@ -494,6 +485,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.AudioInvalidoCod, new Mensaje(MensajesParaFE.AudioInvalido));
                 }
+
                 //var stream = new MemoryStream(aud.fileData);
                 //responseMessage.Content = new StreamContent(stream);
                 //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");

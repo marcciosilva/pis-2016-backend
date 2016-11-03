@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Web;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Web;
 using Emsys.LogicLayer;
 using DataTypeObject;
 using Servicios;
-using System.Collections.Generic;
 
 namespace Emsys.ServiceLayer.Filtros
 {

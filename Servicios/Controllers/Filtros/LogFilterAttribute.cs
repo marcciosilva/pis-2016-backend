@@ -1,9 +1,9 @@
-﻿using DataTypeObject;
-using Emsys.LogicLayer;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http.Controllers;
+using DataTypeObject;
+using Emsys.LogicLayer;
 
 namespace Servicios.Filtros
 {
@@ -18,7 +18,7 @@ namespace Servicios.Filtros
             if (actionContext.Request.Method == HttpMethod.Post)
             {
                 var postData = actionContext.ActionArguments;
-                //// Do logging here.
+                //// ToDo logging here.
             }
 
             var actionName = actionContext.ActionDescriptor.ActionName;

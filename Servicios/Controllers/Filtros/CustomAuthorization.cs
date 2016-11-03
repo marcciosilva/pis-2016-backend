@@ -1,9 +1,9 @@
 ﻿using System.Net.Http;
-using System.Web.Http.Controllers;
 using System.Web.Http;
+using System.Web.Http.Controllers;
 using DataTypeObject;
-using Newtonsoft.Json;
 using Emsys.LogicLayer;
+using Newtonsoft.Json;
 
 namespace Servicios.Filtros
 {
@@ -48,6 +48,7 @@ namespace Servicios.Filtros
             {
                 return false;
             }
+
             IMetodos dbAL = new Metodos();
             return dbAL.autorizarUsuario(token, PermisosEtiqueta);            
         }

@@ -1,10 +1,9 @@
-﻿using Emsys.DataAccesLayer.Core;
-using Hangfire;
-using Microsoft.Owin;
-using Owin;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
+using Emsys.DataAccesLayer.Core;
+using Microsoft.Owin;
+using Owin;
 
 [assembly: OwinStartup(typeof(Servicios.Startup))]
 
@@ -16,6 +15,7 @@ namespace Servicios
     public partial class Startup
     {
         private static bool iniciado = false;
+
         /// <summary>
         /// Metodo de configuracion.
         /// </summary>
@@ -39,7 +39,6 @@ namespace Servicios
             }
             catch (Exception)
             {
-
             }
         }
     }

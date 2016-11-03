@@ -3,7 +3,7 @@ using Newtonsoft.Json;
 
 namespace Emsys.ServiceLayer
 {
-    //yyyy-MM-dd'T'hh:mm:ss.SSS
+    // yyyy-MM-dd'T'hh:mm:ss.SSS
     internal class MyDateTimeConverter : JsonConverter
     {
         public override bool CanConvert(Type objectType)

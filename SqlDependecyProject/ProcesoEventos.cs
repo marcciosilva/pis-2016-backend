@@ -84,7 +84,7 @@
                     Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
                     switch (evento.ChangeType)
                     {
-                        // el caso no es util por que si se crea un evento no tiene asignados recursos probablemente
+                        // El caso no es util por que si se crea un evento no tiene asignados recursos probablemente.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoEventos - Accion: Borro, Pk del evento: " + evento.Entity.NombreInformante);
                             AtenderEvento(DataNotificacionesCodigos.CierreEvento, evento, GestorNotificaciones);
