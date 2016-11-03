@@ -1,14 +1,14 @@
 ﻿namespace SqlDependecyProject
 {
     using System;
+    using System.Threading;
+    using DataTypeObject;
+    using Emsys.DataAccesLayer.Core;
+    using Emsys.DataAccesLayer.Model;
+    using Emsys.LogicLayer;
+    using TableDependency.Enums;
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
-    using TableDependency.Enums;
-    using Emsys.DataAccesLayer.Model;
-    using Emsys.DataAccesLayer.Core;
-    using DataTypeObject;
-    using Emsys.LogicLayer;
-    using System.Threading;
 
     public class ProcesoVideos
     {
@@ -119,7 +119,8 @@
                 var videoDEBD = db.Videos.Find(video.Entity.Id);
                 if (videoDEBD != null)
                 {
-                    if (videoDEBD.Evento!=null) {
+                    if (videoDEBD.Evento != null)
+                    {
                         // Para los recursos asociados a la extension genero una notificacion.
                         foreach (var item in videoDEBD.Evento.ExtensionesEvento)
                         {

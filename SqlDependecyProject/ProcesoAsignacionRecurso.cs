@@ -1,14 +1,14 @@
 ﻿namespace SqlDependecyProject
 {
     using System;
+    using System.Threading;
+    using DataTypeObject;
+    using Emsys.DataAccesLayer.Core;
+    using Emsys.DataAccesLayer.Model;
+    using Emsys.LogicLayer;
+    using TableDependency.Enums;
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
-    using TableDependency.Enums;
-    using Emsys.DataAccesLayer.Model;
-    using Emsys.DataAccesLayer.Core;
-    using DataTypeObject;
-    using Emsys.LogicLayer;
-    using System.Threading;
 
     public class ProcesoAsignacionRecurso
     {
@@ -70,7 +70,7 @@
         /// Implementacion del metodo encargado de realizar la operativa de las notificaciones cuando se obtiene un cambvio en la bd.
         /// </summary>
         /// <param name="sender">no se usa</param>
-        /// <param name="videoEnBD">Evento Video generado desde la bd.</param>
+        /// <param name="AsignacionRecursoDB"></param>
         private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<AsignacionRecurso> AsignacionRecursoDB)
         {
             try
