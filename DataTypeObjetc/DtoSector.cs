@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace DataTypeObject
+﻿namespace DataTypeObject
 {
     public class DtoSector
     {

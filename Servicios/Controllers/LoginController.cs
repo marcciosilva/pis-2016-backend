@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 using DataTypeObject;
-using Servicios.Filtros;
 using Emsys.LogicLayer;
 using Emsys.LogicLayer.ApplicationExceptions;
+using Servicios.Filtros;
 
 namespace Servicios.Controllers
 {
@@ -146,6 +143,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioTieneOperacionesNoFinalizadasCod, new Mensaje(MensajesParaFE.UsuarioTieneOperacionesNoFinalizadas));
                 }
+
                 dbAL.cerrarSesion(token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
@@ -174,6 +172,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 dbAL.keepMeAlive(token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }

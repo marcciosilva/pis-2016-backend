@@ -60,6 +60,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationExceptions\ArgumentoInvalidoException.cs" />
+    <Compile Include="ApplicationExceptions\ArriboPrevioException.cs" />
     <Compile Include="ApplicationExceptions\CategoriaInvalidaException.cs" />
     <Compile Include="ApplicationExceptions\FormatoInvalidoException.cs" />
     <Compile Include="ApplicationExceptions\EventoNoEnviadoException.cs" />

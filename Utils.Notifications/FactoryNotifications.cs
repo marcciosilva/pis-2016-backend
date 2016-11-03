@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Utils.Notifications
+﻿namespace Utils.Notifications
 {
     public static class FactoryNotifications
     {
@@ -19,6 +13,7 @@ namespace Utils.Notifications
         private static PushNotificationsSystem _currentNotificationSystem = PushNotificationsSystem.Firebase;
 
         private static INotifications SingleNotificationInstance = null;
+
         /// <summary>
         /// Obtiene la clase concreta para la Factory de notificaciones.
         /// </summary>
@@ -40,7 +35,8 @@ namespace Utils.Notifications
                 {
                     return SingleNotificationInstance;
                 }
-                else {
+                else
+                {
                     SingleNotificationInstance = new NotificationsFirebase();
                     return SingleNotificationInstance;
                     // return new NotificationsFirebase(); 

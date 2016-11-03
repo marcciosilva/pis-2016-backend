@@ -7,6 +7,7 @@
             this.to = channel;
             this.data = d;
         }
+
         public string to { get; set; }
 
         public data data { get; set; }

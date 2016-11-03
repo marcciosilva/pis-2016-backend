@@ -1,6 +1,6 @@
-﻿using Emsys.DataAccesLayer.Core;
+﻿using System.Linq;
+using Emsys.DataAccesLayer.Core;
 using Emsys.DataAccesLayer.Model;
-using System.Linq;
 
 namespace Emsys.LogicLayer.Utils
 {
@@ -38,6 +38,7 @@ namespace Emsys.LogicLayer.Utils
                         }
                     }
                 }
+
                 return false;
             }
         }
@@ -66,6 +67,7 @@ namespace Emsys.LogicLayer.Utils
                         }
                     }
                 }
+
                 return false;
             }
         }
@@ -78,15 +80,18 @@ namespace Emsys.LogicLayer.Utils
                 {
                     return false;
                 }
+
                 if (user.Recurso.Count() == 0)
                 {
                     return false;
                 }
+
                 ExtensionEvento ext = user.Recurso.FirstOrDefault().ExtensionesEventos.FirstOrDefault(e => e.Id == extension.Id);
                 if ((ext != null) && (ext.Estado != EstadoExtension.Cerrado))
                 {
                     return true;
                 }
+
                 return false;
             }
         }
@@ -99,6 +104,7 @@ namespace Emsys.LogicLayer.Utils
                 {
                     return false;
                 }
+
                 if (user.Zonas.Count() == 0)
                 {
                     return false;
@@ -108,6 +114,7 @@ namespace Emsys.LogicLayer.Utils
                 {
                     return true;
                 }
+
                 return false;
             }
         }

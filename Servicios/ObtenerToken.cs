@@ -1,9 +1,9 @@
-﻿using DataTypeObject;
-using Emsys.LogicLayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using DataTypeObject;
+using Emsys.LogicLayer;
 
 namespace Servicios
 {

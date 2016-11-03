@@ -33,7 +33,9 @@ namespace Test.UnitTesting
                 Thread workerThreadAnalysisDataNotifications = new Thread(new ThreadStart(HiloDeScreenShoots));
                 workerThreadAnalysisDataNotifications.Start();
                 //espero a que se disparen todos los hilos y luego empiezo a modificar la base
-                Thread.Sleep(10000);
+                Thread.Sleep(5000);
+               // ModificarBaseDatos();
+                Random r = new Random();
                 EmsysContext db = new EmsysContext();
                 bool PruebaCantidadMaxEnviosConsecutivos = false;
 
@@ -84,9 +86,9 @@ namespace Test.UnitTesting
 
         private void HiloDeScreenShoots()
         {
-            while (true)
-            {
-                Thread.Sleep(60000);//un minuto
+            while (true) {
+                // Un minuto.
+                Thread.Sleep(60000);
                 Util.NotificacionAnalysis.Program.CapturoDatos();
             }
         }
