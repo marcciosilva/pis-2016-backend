@@ -954,7 +954,6 @@ namespace Emsys.LogicLayer
                         return true;
                     }
                 }
-
                 return false;
             }
         }
@@ -1015,12 +1014,15 @@ namespace Emsys.LogicLayer
                             // Si el usuario esta inactivo.
                             if ((ahora.Subtract(user.UltimoSignal.Value)).TotalMinutes > maxTime)
                             {
+                                //doy de baja del servidor de firebase al usuario
+                                unsuscribeTopicsFromFirebase(context, user);
+                                //ahora lo doy de baja en el sistema
                                 cerrarSesion(user.Token);
                                 Console.WriteLine("Se desconecto al usuario <" + user.NombreLogin + ">");
                                 string hora = user.UltimoSignal.Value.ToString();
                                 AgregarLog(user.NombreLogin, "Servidor", "Emsys.LogicLayer", "Usuarios", user.Id, "Se desconecta al usuario indicado.", "Ultimo signal a las " + hora, MensajesParaFE.LogDesconectarUsuarioCod);
-                                //doy de baja del servidor de firebase al usuario
-                                unsuscribeTopicsFromFirebase(context, user);
+                                
+                                
                             }
                         }
                     }

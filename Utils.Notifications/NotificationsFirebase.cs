@@ -8,6 +8,7 @@ using DataTypeObject;
 using Emsys.DataAccesLayer.Model;
 using Newtonsoft.Json;
 using Utils.Notifications.Utils;
+using System.Linq;
 
 namespace Utils.Notifications
 {
@@ -35,33 +36,18 @@ namespace Utils.Notifications
                 var responseString = await response.Content.ReadAsStringAsync();
                 if (!response.IsSuccessStatusCode)
                 {
-                     LogsManager.AgregarLogNotificationDessuscripcionUsuarioError("vacio", "servidor",
-                        "Utils.Notitications", "RemoveUserFromTopic", 0,
-                        "sendNotification", "Error al enviar mensaje por taza superada",
-                        MensajesParaFE.LogNotificacionesDessuscripcionUsuarioTopicErrorGenericoRequest,
-                         topicFinal, nombreUsuario, response.ToString());
-                    throw new Exception("Al enviar una notifiacion la respuesta del servidor NO fue positiva.");
-                }
-
-                string mensaje = responseString.Split(':')[0].ToString();
-                if (mensaje != "{\"message_id\"")
-                {
                     LogsManager.AgregarLogNotificationDessuscripcionUsuarioError("vacio", "servidor",
                        "Utils.Notitications", "RemoveUserFromTopic", 0,
                        "sendNotification", "Error al enviar mensaje por taza superada",
-                       MensajesParaFE.LogNotificacionesDessuscripcionUsuarioTopicError,
+                       MensajesParaFE.LogNotificacionesDessuscripcionUsuarioTopicErrorGenericoRequest,
                         topicFinal, nombreUsuario, response.ToString());
-                    semaforoDessucripcion.WaitOne();
-                    Thread.Sleep(_seconds * 1000);
-                    semaforoDessucripcion.Release();
-                    RemoveUserFromTopic(topic, tokenFirebase, nombreUsuario);
-                    // throw new Exception("Al enviar una notifiacion la respuesta del servidor NO contiene el id del mensjae, entonces la respuesta es negativa.");
+                    throw new Exception("Al enviar una notifiacion la respuesta del servidor NO fue positiva.");
                 }
-                else
-                {
+                else {
+
                     //si se pudo quitar entonces lo quito de la bd el token.
                     Emsys.DataAccesLayer.Core.EmsysContext db = new Emsys.DataAccesLayer.Core.EmsysContext();
-                    var user= db.Usuarios.Find(nombreUsuario);
+                    var user = db.Usuarios.Where(x=>x.Nombre == nombreUsuario).FirstOrDefault();
                     user.RegistrationTokenFirebase = null;
                     db.SaveChanges();
 
@@ -71,6 +57,23 @@ namespace Utils.Notifications
                         MensajesParaFE.LogNotificacionesDessuscripcionUsuarioTopic,
                         topicFinal, nombreUsuario, responseString);
                 }
+
+                //string mensaje = responseString.Split(':')[0].ToString();
+                //if (mensaje != "{\"message_id\"")
+                //{
+                //    LogsManager.AgregarLogNotificationDessuscripcionUsuarioError("vacio", "servidor",
+                //       "Utils.Notitications", "RemoveUserFromTopic", 0,
+                //       "sendNotification", "Error al enviar mensaje por taza superada",
+                //       MensajesParaFE.LogNotificacionesDessuscripcionUsuarioTopicError,
+                //        topicFinal, nombreUsuario, response.ToString());
+                //    semaforoDessucripcion.WaitOne();
+                //    Thread.Sleep(_seconds * 1000);
+                //    semaforoDessucripcion.Release();
+                //    RemoveUserFromTopic(topic, tokenFirebase, nombreUsuario);
+                //    // throw new Exception("Al enviar una notifiacion la respuesta del servidor NO contiene el id del mensjae, entonces la respuesta es negativa.");
+                //}
+                //else
+
             }
         }
 
