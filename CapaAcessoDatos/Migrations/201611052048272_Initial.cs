@@ -3,7 +3,7 @@ namespace Emsys.DataAccesLayer.Core
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Inicio : DbMigration
+    public partial class Initial : DbMigration
     {
         public override void Up()
         {
@@ -49,6 +49,7 @@ namespace Emsys.DataAccesLayer.Core
                         FechaInicioSesion = c.DateTime(),
                         Nombre = c.String(maxLength: 200),
                         Estado = c.Int(nullable: false),
+                        RegistrationTokenFirebase = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -101,6 +102,7 @@ namespace Emsys.DataAccesLayer.Core
                         Id = c.Int(nullable: false, identity: true),
                         Descripcion = c.String(),
                         Fecha = c.DateTime(nullable: false),
+                        agregadaOffline = c.Boolean(nullable: false),
                         AsignacionRecurso_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -351,6 +353,10 @@ namespace Emsys.DataAccesLayer.Core
                         Codigo = c.Int(nullable: false),
                         EsError = c.Boolean(nullable: false),
                         Detalles = c.String(),
+                        Topic = c.String(),
+                        CodigoNotificacion = c.String(),
+                        PKEventoAfectado = c.String(),
+                        responseFireBase = c.String(),
                         LogNotificationPrevio_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -434,6 +440,7 @@ namespace Emsys.DataAccesLayer.Core
                 .ForeignKey("dbo.Usuarios", t => t.Usuario_Id, cascadeDelete: true)
                 .Index(t => t.UnidadEjecutora_Id)
                 .Index(t => t.Usuario_Id);
+            
         }
         
         public override void Down()
