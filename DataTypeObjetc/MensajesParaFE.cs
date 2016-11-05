@@ -54,6 +54,7 @@
         public const string ErrorCerrarExtension = "Ocurrio un error al intentar cerrar una extension de un evento.";
         public const string ErrorActualizarDescripcionDespachador = "Ocurrio un error al intentar actualizar la descripcion.";
         public const string EventoSinZonas = "El evento debe tener almenos una zona";
+        public const string RecursoInvalido = "El recurso indicado no es valido";
 
         // Codigos.
         public const int CorrectoCod = 0;
@@ -77,6 +78,7 @@
         public const int CategoriaInvalidaCod = 18;
         public const int EventoSinZonasCod = 19;
         public const int ArriboPrevioCod = 20;
+        public const int RecursoInvalidoCod = 21;
         public const int ImagenInvalidaCod = 101;
         public const int VideoInvalidoCod = 102;
         public const int AudioInvalidoCod = 103;
@@ -119,6 +121,8 @@
         public const int ErrorAbrirExtensionCod = 3012;
         public const int ErrorCerrarExtensionCod = 3013;
         public const int ErrorActualizarDescripcionDespachadorCod = 3014;
+        public const int ErrorActualizarDescripcionOfflineCod = 3015;
+
 
         // Codigos Logs.
         public const int LogNotificaciones = 901;

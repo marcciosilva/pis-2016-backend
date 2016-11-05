@@ -65,6 +65,7 @@
     <Compile Include="ApplicationExceptions\FormatoInvalidoException.cs" />
     <Compile Include="ApplicationExceptions\EventoNoEnviadoException.cs" />
     <Compile Include="ApplicationExceptions\ExtensionInvalidaException.cs" />
+    <Compile Include="ApplicationExceptions\RecursoInvalidoException.cs" />
     <Compile Include="ApplicationExceptions\UsuarioNoAutorizadoException.cs" />
     <Compile Include="ApplicationExceptions\AudioInvalidoException .cs" />
     <Compile Include="ApplicationExceptions\SeleccionZonasInvalidaException.cs" />
