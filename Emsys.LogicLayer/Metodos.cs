@@ -931,7 +931,7 @@ namespace Emsys.LogicLayer
                     throw new ExtensionInvalidaException();
                 }
 
-                asig.AsignacionRecursoDescripcion.Add(new AsignacionRecursoDescripcion(descParam.descripcion, DateTime.Now, true));
+                asig.AsignacionRecursoDescripcion.Add(new AsignacionRecursoDescripcion(descParam.descripcion, descParam.timeStamp, true));
                 ext.TimeStamp = DateTime.Now;
                 ext.Evento.TimeStamp = DateTime.Now;
                 context.SaveChanges();

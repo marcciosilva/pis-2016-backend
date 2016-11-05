@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System;
 
 namespace DataTypeObject
 {
@@ -11,5 +12,8 @@ namespace DataTypeObject
 
         [JsonProperty(PropertyName = "user_data")]
         public DtoUsuario userData { get; set; }
+
+        [JsonProperty(PropertyName = "time_stamp")]
+        public DateTime timeStamp { get; set; }
     }
 }
