@@ -34,20 +34,6 @@
             };            
         }
 
-        public static DtoApplicationFile GetVideoThumbnail(ApplicationFile file)
-        {
-            var ms = new MemoryStream(file.FileData);
-            Image img = Image.FromStream(ms);
-            Image thumb = img.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
-            ms = new MemoryStream();
-            thumb.Save(ms, ImageFormat.Jpeg);
-            return new DtoApplicationFile()
-            {
-                nombre = file.Nombre,
-                fileData = ms.ToArray()
-            };
-        }
-
         public static DtoAsignacionRecurso getDtoAsignacionesRecursos(AsignacionRecurso asignacionRecurso)
         {
             DtoAsignacionRecurso res = new DtoAsignacionRecurso()
@@ -64,7 +50,8 @@
                 {
                     descripcion = item.Descripcion,
                     fecha = item.Fecha,
-                    origen = OrigenDescripcion.Despachador
+                    origen = OrigenDescripcion.Despachador,
+                    agregadaOffline = item.agregadaOffline
                 });
             }
 

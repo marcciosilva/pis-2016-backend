@@ -1472,6 +1472,81 @@ namespace Test.UnitTesting
             logica.cerrarSesion(token);
         }
 
+        /// <summary>
+        /// Se prueba actualizar una descripcion como recurso.
+        /// </summary>
+        [Test]
+        public void ActualizarDescripcionRecursoOfflineTest()
+        {
+            AppDomain.CurrentDomain.SetData(
+            "DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
+            EmsysContext db = new EmsysContext();
+
+            int cantDescripciones = db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().AsignacionRecursoDescripcion.Count();
+            IMetodos logica = new Metodos();
+
+            DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = new List<DtoRecurso>()};
+
+            // Credenciales invalidas.
+            try
+            {
+                logica.ActualizarDescripcionRecursoOffline(new DtoActualizarDescripcionOffline()
+                {
+                    descripcion = "hola",
+                    idExtension = 1,
+                    userData = new DtoUsuario() { username = "A", password = "incorrecta", roles = rol }
+                });
+            }
+            catch (CredencialesInvalidasException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Extension invalida.
+            try
+            {
+                logica.ActualizarDescripcionRecursoOffline(new DtoActualizarDescripcionOffline()
+                {
+                    descripcion = "hola",
+                    idExtension = -1,
+                    userData = new DtoUsuario() { username = "A", password = "A", roles = rol }
+                });
+            }
+            catch (ExtensionInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
+            // Sin recurso.
+            try
+            {
+                logica.ActualizarDescripcionRecursoOffline(new DtoActualizarDescripcionOffline()
+                {
+                    descripcion = "offline",
+                    idExtension = 1,
+                    userData = new DtoUsuario() { username = "A", password = "A", roles = rol }
+                });
+            }
+            catch (RecursoInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+
+            rol.recursos.Add(new DtoRecurso() { id = 1});
+
+            // Valido.
+            var ok = logica.ActualizarDescripcionRecursoOffline(new DtoActualizarDescripcionOffline()
+            {
+                descripcion = "hola",
+                idExtension = 1,
+                userData = new DtoUsuario() { username = "A", password = "A", roles = rol }
+            });
+
+            db = new EmsysContext();
+            Assert.IsTrue(ok);
+            Assert.IsTrue(db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().AsignacionRecursoDescripcion.Count() == cantDescripciones + 1);
+            Assert.IsTrue(db.AsignacionRecursoDescripcion.FirstOrDefault(a=>a.Descripcion == "offline").agregadaOffline == true);
+
+        }
+
 
         /// <summary>
         /// Se prueba reportar la hora de arribo.

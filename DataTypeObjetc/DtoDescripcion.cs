@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace DataTypeObject
 {
@@ -17,5 +18,8 @@ namespace DataTypeObject
         public string descripcion { get; set; }
 
         public OrigenDescripcion origen { get; set; }
+
+        [JsonProperty(PropertyName = "agregada_offline")]
+        public bool agregadaOffline { get; set; }
     }
 }

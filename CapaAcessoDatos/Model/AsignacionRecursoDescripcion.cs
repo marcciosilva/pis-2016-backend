@@ -11,6 +11,14 @@
         {
             this.Descripcion = desc;
             this.Fecha = fecha;
+            this.agregadaOffline = false;
+        }
+
+        public AsignacionRecursoDescripcion(string desc, DateTime fecha, bool offline)
+        {
+            this.Descripcion = desc;
+            this.Fecha = fecha;
+            this.agregadaOffline = offline;
         }
 
         public AsignacionRecursoDescripcion()
@@ -23,6 +31,8 @@
         public string Descripcion { get; set; }
 
         public DateTime Fecha { get; set; }
+
+        public bool agregadaOffline { get; set; }
 
         public virtual AsignacionRecurso AsignacionRecurso { get; set; }
     }

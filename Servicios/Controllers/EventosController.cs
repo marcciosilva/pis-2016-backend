@@ -123,6 +123,46 @@ namespace Servicios.Controllers
             }
         }
 
+
+        /// <summary>
+        /// Servicio para actualizar la descripcion de un recurso.
+        /// </summary>
+        /// <param name="descParam">Entension y descripcion a agregar.</param>
+        /// <returns>Respuesta definida en el documento de interfaz.</returns>
+        [HttpPost]
+        [Route("eventos/actualizardescripcionrecursooffline")]
+        [LogFilter]
+        public DtoRespuesta ActualizarDescripcionRecursoOffline([FromBody] DtoActualizarDescripcionOffline descParam)
+        {
+            IMetodos dbAL = new Metodos();
+            try
+            {
+                if (dbAL.ActualizarDescripcionRecursoOffline(descParam))
+                {
+                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+                }
+
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+            }
+            catch (CredencialesInvalidasException)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioContraseñaInvalidosCod, new Mensaje(MensajesParaFE.UsuarioContraseñaInvalidos));
+            }
+            catch (ExtensionInvalidaException)
+            {
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+            }
+            catch (RecursoInvalidoException)
+            {
+                return new DtoRespuesta(MensajesParaFE.RecursoInvalidoCod, new Mensaje(MensajesParaFE.RecursoInvalido));
+            }
+            catch (Exception e)
+            {
+                dbAL.AgregarLogError(descParam.userData.username, "", "Emsys.ServiceLayer", "EventosController", 0, "ActualizarDescripcionRecursoOffline", "Hubo un error al intentar actualizar la descripcion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorActualizarDescripcionOfflineCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorActualizarDescripcion));
+            }
+        }
+
         /// <summary>
         /// Servicio para reportar la hora que un recurso arriba a un evento.
         /// </summary>

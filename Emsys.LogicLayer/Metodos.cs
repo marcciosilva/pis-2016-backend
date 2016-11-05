@@ -625,62 +625,7 @@ namespace Emsys.LogicLayer
                 return null;
             }
         }
-
-        public DtoApplicationFile getVideoThumbnail(string token, int idAdjunto)
-        {
-            using (var context = new EmsysContext())
-            {
-                if (token == null)
-                {
-                    throw new TokenInvalidoException();
-                }
-
-                var user = context.Usuarios.FirstOrDefault(u => u.Token == token);
-                if (user == null)
-                {
-                    throw new TokenInvalidoException();
-                }
-
-                Video vid = context.Videos.FirstOrDefault(v => v.Id == idAdjunto);
-                if (vid == null)
-                {
-                    throw new VideoInvalidoException();
-                }
-
-                // Si el video es de una extension.
-                if (vid.ExtensionEvento != null)
-                {
-                    ExtensionEvento ext = context.ExtensionesEvento.FirstOrDefault(e => e.Id == vid.ExtensionEvento.Id);
-                    if (ext != null)
-                    {
-                        if (TieneAcceso.tieneVisionExtension(user, ext))
-                        {
-                            return DtoGetters.GetVideoThumbnail(vid.VideoData);
-                        }
-
-                        throw new UsuarioNoAutorizadoException();
-                    }
-                }
-
-                // Si el video es de un evento.
-                else if (vid.Evento != null)
-                {
-                    Evento ev = context.Evento.FirstOrDefault(e => e.Id == vid.Evento.Id);
-                    if (ev != null)
-                    {
-                        if (TieneAcceso.tieneVisionEvento(user, ev))
-                        {
-                            return DtoGetters.GetVideoThumbnail(vid.VideoData);
-                        }
-
-                        throw new UsuarioNoAutorizadoException();
-                    }
-                }
-
-                return null;
-            }
-        }
-
+        
         public DtoApplicationFile getAudioData(string token, int idAdjunto)
         {
             using (var context = new EmsysContext())
@@ -957,6 +902,43 @@ namespace Emsys.LogicLayer
                 return false;
             }
         }
+
+        public bool ActualizarDescripcionRecursoOffline(DtoActualizarDescripcionOffline descParam)
+        {
+            using (var context = new EmsysContext())
+            {
+
+                var user = context.Usuarios.FirstOrDefault(u => u.NombreLogin == descParam.userData.username);
+                if ((user == null) || ((user.Contraseña != Passwords.GetSHA1(descParam.userData.password))))
+                {
+                    throw new CredencialesInvalidasException();
+                }
+
+                ExtensionEvento ext = context.ExtensionesEvento.FirstOrDefault(e => e.Id == descParam.idExtension);
+                DtoRecurso dtoR = descParam.userData.roles.recursos.FirstOrDefault();
+                Recurso rec = context.Recursos.FirstOrDefault(r => r.Id == dtoR.id);
+                if (ext == null)
+                {
+                    throw new ExtensionInvalidaException();
+                }
+                if (rec == null)
+                {
+                    throw new RecursoInvalidoException();
+                }
+                AsignacionRecurso asig = ext.AsignacionesRecursos.FirstOrDefault(a => a.Recurso.Id == rec.Id);
+                if (asig == null)
+                {
+                    throw new ExtensionInvalidaException();
+                }
+
+                asig.AsignacionRecursoDescripcion.Add(new AsignacionRecursoDescripcion(descParam.descripcion, DateTime.Now, true));
+                ext.TimeStamp = DateTime.Now;
+                ext.Evento.TimeStamp = DateTime.Now;
+                context.SaveChanges();
+                return true;
+            }
+        }
+       
 
         public bool keepMeAlive(string token)
         {
