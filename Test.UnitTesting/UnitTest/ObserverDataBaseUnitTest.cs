@@ -57,7 +57,7 @@ namespace Test.UnitTesting
                     for (int i = 0; i < 500; i++)
                     {
                         Modificaciones(db);
-                        Thread.Sleep(1000);
+                        Thread.Sleep(3000);
                     }
                 }
 
