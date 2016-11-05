@@ -511,6 +511,7 @@ namespace Test.UnitTesting
             controller.Request.Headers.Add("auth", token);
             var resp7 = controller.CrearEvento(ev);
             Assert.IsTrue(resp7.cod == 14);
+            controller2.SetRegistrationToken(new DtoResgistrationToken { registrationTokens="A"});
             controller2.Request = new HttpRequestMessage();
             controller2.Request.Headers.Add("auth", token);
             controller2.CerrarSesion();

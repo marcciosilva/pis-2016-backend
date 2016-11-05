@@ -13,16 +13,17 @@ using System.Collections.Generic;
 
 namespace Test.UnitTesting
 {
-    [TestFixture]
-    public class ObserverDataBaseUnitTest
+    //descomentar esto si falla
+    //[TestFixture]
+    public class ObserverDataBaseUnitTestStress
     {
         private int _seconds = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaEnvioNotificaciones"]);
 
         /// <summary>
         /// prueba la logica de observer database
         /// </summary>
-        [Test]
-        public void PruebaOberverDatabase()
+        //[Test]
+        public void ObserverDataBaseTestStress()
         {
             try
             {
@@ -34,23 +35,22 @@ namespace Test.UnitTesting
                 workerThreadAnalysisDataNotifications.Start();
                 //espero a que se disparen todos los hilos y luego empiezo a modificar la base
                 Thread.Sleep(5000);
-                // ModificarBaseDatos();
-                Random r = new Random();
+
                 EmsysContext db = new EmsysContext();
 
-                for (int j = 0; j < 3; j++)
+                for (int i = 0; i < 500; i++)
                 {
-                    var evento = db.ExtensionesEvento.FirstOrDefault();
-                    evento.DescripcionDespachador = DateTime.Now.Millisecond.ToString();
-                    db.SaveChanges();
+                    Modificaciones(db);
+                    Thread.Sleep(3000);
                 }
-                // 30 segundos despues
-                Thread.Sleep(30000);             
+
+
+                // me quedo colgado por que sino mato todo los threads y no puedo ver si el test fue exitoso.
+                Thread.Sleep(240 * _seconds * 1000 + 10000);
                 workerThread.Abort();
             }
             catch (Exception)
             {
-                //como aborte la oprecion a veces sale por aca.
                 using (EmsysContext db = new EmsysContext())
                 {
                     var cantidadEnviosReales = db.LogNotification.Where(x => x.Codigo == 901).Count();
