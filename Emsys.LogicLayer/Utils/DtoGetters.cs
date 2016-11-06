@@ -20,18 +20,14 @@
             };
         }
 
-        public static DtoApplicationFile GetImageThumbnail(ApplicationFile file)
+        public static byte[] GenerateImageThumbnail(ApplicationFile file)
         {
-            var ms = new MemoryStream(file.FileData);            
+            var ms = new MemoryStream(file.FileData);
             Image img = Image.FromStream(ms);
             Image thumb = img.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
             ms = new MemoryStream();
             thumb.Save(ms, img.RawFormat);
-            return new DtoApplicationFile()
-            {
-                nombre = file.Nombre,
-                fileData = ms.ToArray()
-            };            
+            return ms.ToArray();
         }
 
         public static DtoAsignacionRecurso getDtoAsignacionesRecursos(AsignacionRecurso asignacionRecurso)

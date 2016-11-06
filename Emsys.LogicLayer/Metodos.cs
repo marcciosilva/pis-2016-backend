@@ -8,6 +8,7 @@ using Emsys.DataAccesLayer.Model;
 using Emsys.LogicLayer.ApplicationExceptions;
 using Emsys.LogicLayer.Utils;
 using Utils.Notifications;
+using System.Drawing;
 
 namespace Emsys.LogicLayer
 {
@@ -545,7 +546,7 @@ namespace Emsys.LogicLayer
                     {
                         if (TieneAcceso.tieneVisionExtension(user, ext))
                         {
-                            return DtoGetters.GetImageThumbnail(img.ImagenData);
+                            return DtoGetters.GetDtoApplicationfile(img.ImagenThumbnail);
                         }
 
                         throw new UsuarioNoAutorizadoException();
@@ -560,7 +561,7 @@ namespace Emsys.LogicLayer
                     {
                         if (TieneAcceso.tieneVisionEvento(user, ev))
                         {
-                            return DtoGetters.GetImageThumbnail(img.ImagenData);
+                            return DtoGetters.GetDtoApplicationfile(img.ImagenThumbnail);
                         }
 
                         throw new UsuarioNoAutorizadoException();
@@ -729,9 +730,11 @@ namespace Emsys.LogicLayer
                 {
                     nombre = (context.ApplicationFiles.Max(u => u.Id) + 1).ToString() + extArchivo;
                 }
+                
 
                 var file = new ApplicationFile() { Nombre = nombre, FileData = imgN.fileData };
-                Imagen img = new Imagen() { Usuario = user, FechaEnvio = DateTime.Now, ImagenData = file };
+                var thumbnail = new ApplicationFile() { Nombre = nombre, FileData = DtoGetters.GenerateImageThumbnail(file) };
+                Imagen img = new Imagen() { Usuario = user, FechaEnvio = DateTime.Now, ImagenData = file, ImagenThumbnail = thumbnail };
                 ext.Imagenes.Add(img);
                 ext.TimeStamp = DateTime.Now;
                 ext.Evento.TimeStamp = DateTime.Now;
@@ -888,6 +891,10 @@ namespace Emsys.LogicLayer
                     throw new UsuarioNoAutorizadoException();
                 }
 
+                if (descParam.descripcion.Length == 0)
+                {
+                    return true;
+                }
                 foreach (var item in ext.AsignacionesRecursos)
                 {
                     if (item.Recurso == rec)

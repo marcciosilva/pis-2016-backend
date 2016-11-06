@@ -246,7 +246,7 @@ namespace Emsys.LogicLayer
         bool keepMeAlive(string token);
 
         /// <summary>
-        /// Permite a la aplicacion.
+        /// Permite a la aplicacion desconectar usuarios de firebase.
         /// </summary>
         /// <param name="token">Token de usuario.</param>
         /// <param name="tokenFirebase">Token de firebase.</param>

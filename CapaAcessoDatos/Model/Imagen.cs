@@ -16,6 +16,9 @@
         
         public virtual ApplicationFile ImagenData { get; set; }
 
+        public virtual ApplicationFile ImagenThumbnail { get; set; }
+
+
         public virtual Evento Evento { get; set; }
 
         public virtual ExtensionEvento ExtensionEvento { get; set; }
