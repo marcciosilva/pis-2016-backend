@@ -138,17 +138,9 @@
   <ItemGroup>
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
-    <Compile Include="Migrations\201611012349114_Inicio.cs" />
-    <Compile Include="Migrations\201611012349114_Inicio.Designer.cs">
-      <DependentUpon>201611012349114_Inicio.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201611020053057_AgregoCamposAlLog.cs" />
-    <Compile Include="Migrations\201611020053057_AgregoCamposAlLog.Designer.cs">
-      <DependentUpon>201611020053057_AgregoCamposAlLog.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201611031953534_RegistrationTokenEnUsuarios.cs" />
-    <Compile Include="Migrations\201611031953534_RegistrationTokenEnUsuarios.Designer.cs">
-      <DependentUpon>201611031953534_RegistrationTokenEnUsuarios.cs</DependentUpon>
+    <Compile Include="Migrations\201611052048272_Initial.cs" />
+    <Compile Include="Migrations\201611052048272_Initial.Designer.cs">
+      <DependentUpon>201611052048272_Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\ApplicationFile.cs" />
     <Compile Include="Model\AsignacionRecursoDescripcion.cs" />
@@ -190,14 +182,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201611012349114_Inicio.resx">
-      <DependentUpon>201611012349114_Inicio.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611020053057_AgregoCamposAlLog.resx">
-      <DependentUpon>201611020053057_AgregoCamposAlLog.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611031953534_RegistrationTokenEnUsuarios.resx">
-      <DependentUpon>201611031953534_RegistrationTokenEnUsuarios.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201611052048272_Initial.resx">
+      <DependentUpon>201611052048272_Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

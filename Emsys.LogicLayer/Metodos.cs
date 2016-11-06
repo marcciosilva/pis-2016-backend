@@ -311,6 +311,8 @@ namespace Emsys.LogicLayer
                 {
                     throw new TokenInvalidoException();
                 }
+                //doy de baja del servidor de firebase al usuario
+                unsuscribeTopicsFromFirebase(context, user);
 
                 // Retira las zonas y recursos asociadas al usuario.
                 user.Zonas.Clear();

@@ -98,6 +98,7 @@
     <Compile Include="UnitTest\DataAccesLayerUnitTest.cs" />
     <Compile Include="IntegrationTest\PruebaLiberacion1.cs" />
     <Compile Include="UnitTest\DtosUnitTest.cs" />
+    <Compile Include="UnitTest\ObserverDataBaseUnitTestStress.cs" />
     <Compile Include="UnitTest\ServidorExternoUnitTest.cs" />
     <Compile Include="UnitTest\ServiceLayerUnitTest.cs" />
     <Compile Include="UnitTest\LogicLayerUnitTest.cs" />
