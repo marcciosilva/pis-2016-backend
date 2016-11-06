@@ -14,7 +14,7 @@ using System.Collections.Generic;
 namespace Test.UnitTesting
 {
     //descomentar esto si falla
-    //[TestFixture]
+    [TestFixture]
     public class ObserverDataBaseUnitTestStress
     {
         private int _seconds = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaEnvioNotificaciones"]);
@@ -22,7 +22,7 @@ namespace Test.UnitTesting
         /// <summary>
         /// prueba la logica de observer database
         /// </summary>
-        //[Test]
+        [Test]
         public void ObserverDataBaseTestStress()
         {
             try
@@ -38,13 +38,12 @@ namespace Test.UnitTesting
 
                 EmsysContext db = new EmsysContext();
 
-                for (int i = 0; i < 500; i++)
+                for (int i = 0; i < 1; i++)
                 {
                     Modificaciones(db);
                     Thread.Sleep(3000);
                 }
-
-
+                
                 // me quedo colgado por que sino mato todo los threads y no puedo ver si el test fue exitoso.
                 Thread.Sleep(240 * _seconds * 1000 + 10000);
                 workerThread.Abort();
@@ -78,11 +77,11 @@ namespace Test.UnitTesting
             }
         }
 
-        private static int ModificarBaseDatos()
+        private static void ModificarBaseDatos()
         {
             using (EmsysContext db = new EmsysContext())
             {
-                int contador = Modificaciones(db);
+               Modificaciones(db);
 
                 AsignacionRecurso ar = new AsignacionRecurso
                 {
@@ -105,13 +104,11 @@ namespace Test.UnitTesting
                 test.AdjuntarImagenTest();
                 test.AdjuntarGeoUbicacion();
                 test.ActualizarDescripcionRecursoTest();
-                return contador;
             }
         }
 
-        private static int Modificaciones(EmsysContext db)
+        private static void  Modificaciones(EmsysContext db)
         {
-            var contador = 0;
             foreach (var item in db.Evento)
             {
                 item.Descripcion = DateTime.Now.ToString();
@@ -133,28 +130,28 @@ namespace Test.UnitTesting
             {
                 item.DescripcionDespachador = DateTime.Now.ToString();
             }
-            db.SaveChanges();
-            foreach (var item in db.Videos)
-            {
-                item.FechaEnvio = DateTime.Now;
-            }
-            db.SaveChanges();
-            foreach (var item in db.Audios)
-            {
-                item.FechaEnvio = DateTime.Now;
-            }
-            db.SaveChanges();
-            foreach (var item in db.GeoUbicaciones)
-            {
-                item.FechaEnvio = DateTime.Now;
-            }
-            db.SaveChanges();
-            foreach (var item in db.AsignacionRecursoDescripcion)
-            {
-                item.Fecha = DateTime.Now;
-            }
-            db.SaveChanges();
-            return contador;
+            //db.SaveChanges();
+            //foreach (var item in db.Videos)
+            //{
+            //    item.FechaEnvio = DateTime.Now;
+            //}
+            //db.SaveChanges();
+            //foreach (var item in db.Audios)
+            //{
+            //    item.FechaEnvio = DateTime.Now;
+            //}
+            //db.SaveChanges();
+            //foreach (var item in db.GeoUbicaciones)
+            //{
+            //    item.FechaEnvio = DateTime.Now;
+            //}
+            //db.SaveChanges();
+            //foreach (var item in db.AsignacionRecursoDescripcion)
+            //{
+            //    item.Fecha = DateTime.Now;
+            //}
+            //db.SaveChanges();
+
         }
     }
 }
