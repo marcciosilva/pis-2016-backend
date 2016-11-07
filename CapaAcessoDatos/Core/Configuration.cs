@@ -208,15 +208,7 @@ namespace Emsys.DataAccesLayer.Core
                 user4.UnidadesEjecutoras.Add(ue1);
                 user4.UnidadesEjecutoras.Add(ue2);
 
-                // Origen eventos.
-                //Origen_Evento oe1 = new Origen_Evento()
-                //{
-                //    Id = 1,
-                //    TimeStamp = DateTime.Now,
-                //    TipoOrigen = "test",
-                //    IdOrigen = 1
-                //};
-
+                
                 // Agregar eventos.
                 Evento evento1 = new Evento()
                 {
@@ -233,8 +225,18 @@ namespace Emsys.DataAccesLayer.Core
                     Longitud = 20.5,
                     GeoUbicaciones = new List<GeoUbicacion>(),
                     Departamento = dep1
-                    //Origen_Evento = oe1
                 };
+
+                // Origen eventos.
+                OrigenEvento oe1 = new OrigenEvento()
+                {
+                    Id = 1,
+                    TimeStamp = DateTime.Now,
+                    TipoOrigen = "test",
+                    IdOrigen = 1,
+                    Evento = evento1
+                };
+                evento1.OrigenEvento = oe1;
 
                 Evento evento2 = new Evento()
                 {
@@ -322,6 +324,8 @@ namespace Emsys.DataAccesLayer.Core
                 context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext1);
                 context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext2);
                 context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext3);
+
+                //context.OrigenEventos.AddOrUpdate(x => x.Id, oe1);
             }
             catch (Exception e)
             {

@@ -47,8 +47,7 @@
         public string Numero { get; set; }
 
         public Departamento Departamento { get; set; }
-
-       // [Required]
+        
         public virtual Sector Sector { get; set; }
 
         public double Latitud { get; set; }
@@ -62,7 +61,7 @@
 
         public virtual ICollection<ExtensionEvento> ExtensionesEvento { get; set; }
 
-        public virtual OrigenEvento Origen_Evento { get; set; }
+        public virtual OrigenEvento OrigenEvento { get; set; }
 
         public virtual ICollection<Imagen> Imagenes { get; set; }
 

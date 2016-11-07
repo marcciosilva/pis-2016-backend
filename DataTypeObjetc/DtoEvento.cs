@@ -45,8 +45,8 @@ namespace DataTypeObject
         
         public ICollection<DtoExtension> extensiones { get; set; }
 
-        //[JsonProperty(PropertyName = "origen_evento")]
-        //public DtoOrigenEvento origenEvento { get; set; }
+        [JsonProperty(PropertyName = "origen_evento")]
+        public DtoOrigenEvento origenEvento { get; set; }
 
         public virtual ICollection<DtoImagen> imagenes { get; set; }
 

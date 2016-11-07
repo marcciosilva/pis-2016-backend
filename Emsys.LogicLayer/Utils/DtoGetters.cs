@@ -66,6 +66,17 @@
             };
         }
 
+        public static DtoOrigenEvento getDtoOrigenEvento(OrigenEvento oe)
+        {
+            return new DtoOrigenEvento()
+            {
+                id = oe.Id,
+                idOrigen = oe.IdOrigen,
+                tipoOrigen = oe.TipoOrigen
+            };
+        }
+
+
         public static DtoVideo getDtoVideo(Video vid)
         {
             return new DtoVideo()
@@ -288,7 +299,13 @@
             if (evento.Usuario != null)
             {
                 cread = evento.Usuario.Nombre;
-            }    
+            }
+
+            DtoOrigenEvento oe = null;
+            if (evento.OrigenEvento != null)
+            {
+                oe = getDtoOrigenEvento(evento.OrigenEvento);
+            }  
 
             return new DtoEvento()
             {
@@ -312,7 +329,8 @@
                 extensiones = extensiones,
                 imagenes = imgs,
                 videos = vids,
-                audios = auds
+                audios = auds,
+                origenEvento = oe
             };
         }
 

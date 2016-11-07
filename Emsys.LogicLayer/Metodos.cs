@@ -1249,7 +1249,8 @@ namespace Emsys.LogicLayer
                     Longitud = ev.longitud,
                     Descripcion = ev.descripcion,
                     EnProceso = ev.enProceso,
-                    ExtensionesEvento = new List<ExtensionEvento>()
+                    ExtensionesEvento = new List<ExtensionEvento>(),
+                    OrigenEvento = new OrigenEvento() { TipoOrigen = "app"}
                 };
 
                 // Agrego extensiones.
