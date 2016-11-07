@@ -16,11 +16,13 @@ namespace DataTypeObject
 
         public string estado { get; set; }
 
+        [JsonConverter(typeof(FormatoDate))]
         [JsonProperty(PropertyName = "time_stamp")]
         public DateTime timeStamp { get; set; }
 
         public string creador { get; set; }
 
+        [JsonConverter(typeof(FormatoDate))]
         [JsonProperty(PropertyName = "fecha_creacion")]
         public DateTime fechaCreacion { get; set; }     
 

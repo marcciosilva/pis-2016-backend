@@ -23,6 +23,7 @@ namespace DataTypeObject
 
         public string estado { get; set; }
 
+        [JsonConverter(typeof(FormatoDate))]
         [JsonProperty(PropertyName = "time_stamp")]
         public DateTime timeStamp { get; set; }
 
