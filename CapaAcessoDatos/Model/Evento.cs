@@ -22,8 +22,7 @@
 
         [MaxLength(50)]
         public string TelefonoEvento { get; set; }
-
-        //[Required]
+        
         public virtual Categoria Categoria { get; set; }
 
         [Required]

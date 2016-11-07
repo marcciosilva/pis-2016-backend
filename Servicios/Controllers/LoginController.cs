@@ -158,6 +158,10 @@ namespace Servicios.Controllers
             }
         }
 
+        /// <summary>
+        /// Indica al servidor que determinado usuario se encuentra activo en la aplicacion.
+        /// </summary>
+        /// <returns>Se indico con exito o no</returns>
         [CustomAuthorizeAttribute("login")]
         [HttpPost]
         [LogFilter]
@@ -188,7 +192,11 @@ namespace Servicios.Controllers
         }
 
 
-        
+        /// <summary>
+        /// Permite indicar al servidor el token de firebase de un usuario (usado luego para desactivar notificaciones).
+        /// </summary>
+        /// <param name="dtoToken">Token</param>
+        /// <returns>Exito</returns>
         [HttpPost]
         [LogFilter]
         [Route("users/SetRegistrationToken")]
