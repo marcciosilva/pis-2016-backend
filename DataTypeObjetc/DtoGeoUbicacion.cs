@@ -5,6 +5,7 @@ namespace DataTypeObject
 {
     public class DtoGeoUbicacion
     {
+        [JsonProperty(PropertyName = "id_extension")]
         public int idExtension { get; set; }
 
         public string usuario { get; set; }
