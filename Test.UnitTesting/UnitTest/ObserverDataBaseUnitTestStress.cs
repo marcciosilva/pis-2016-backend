@@ -22,7 +22,7 @@ namespace Test.UnitTesting
         /// <summary>
         /// prueba la logica de observer database
         /// </summary>
-     //   [Test]
+        //[Test]
         public void ObserverDataBaseTestStress()
         {
             try
@@ -41,8 +41,10 @@ namespace Test.UnitTesting
                 for (int i = 0; i < 500; i++)
                 {
                     Modificaciones(db);
-                    Thread.Sleep(2000);
+                    Thread.Sleep(3000);
                 }
+
+
                 // me quedo colgado por que sino mato todo los threads y no puedo ver si el test fue exitoso.
                 Thread.Sleep(240 * _seconds * 1000 + 10000);
                 workerThread.Abort();
