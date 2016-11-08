@@ -43,11 +43,12 @@ namespace Utils.Notifications
                         topicFinal, nombreUsuario, response.ToString());
                     throw new Exception("Al enviar una notifiacion la respuesta del servidor NO fue positiva.");
                 }
-                else {
+                else
+                {
 
                     //si se pudo quitar entonces lo quito de la bd el token.
                     Emsys.DataAccesLayer.Core.EmsysContext db = new Emsys.DataAccesLayer.Core.EmsysContext();
-                    var user = db.Usuarios.Where(x=>x.Nombre == nombreUsuario).FirstOrDefault();
+                    var user = db.Usuarios.Where(x => x.Nombre == nombreUsuario).FirstOrDefault();
                     user.RegistrationTokenFirebase = null;
                     db.SaveChanges();
 
@@ -94,12 +95,12 @@ namespace Utils.Notifications
         /// <param name="topic">Topic/Channel al que se desea enviar una notificacion.</param>
         public void SendMessage(string cod, string pk, string topic)
         {
-            LogsManager.AgregarLogNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase",
+            var log = LogsManager.AgregarLogNotification("vacio", "servidor", "Utils.Notitications", "NotificacionesFirebase",
                 0, "sendNotification",
                 "Se genero una notificacion Real.",
                 MensajesParaFE.LogNotificaciones, topic, cod, pk, "No tengo aun.", null);
             //EstadoSistema();
-            sendNotification(cod, pk, topic, null);
+            sendNotification(cod, pk, topic, log);
         }
 
         private void EstadoSistema()
