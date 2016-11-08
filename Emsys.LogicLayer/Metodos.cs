@@ -110,7 +110,7 @@ namespace Emsys.LogicLayer
                 var user = context.Usuarios.FirstOrDefault(u => u.Token == token);
                 if (user == null)
                 {
-                    return false;
+                    throw new TokenInvalidoException();
                 }
 
                 // Si el token ya expiro.
