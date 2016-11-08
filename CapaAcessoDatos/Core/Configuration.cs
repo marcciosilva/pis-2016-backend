@@ -36,23 +36,14 @@ namespace Emsys.DataAccesLayer.Core
                 UnidadEjecutora ue1 = new UnidadEjecutora() { Id = 1, Nombre = "ue1" };
                 UnidadEjecutora ue2 = new UnidadEjecutora() { Id = 2, Nombre = "ue2" };
                 UnidadEjecutora ue3 = new UnidadEjecutora() { Id = 3, Nombre = "ue3" };
-
-                // No va por que se agrega luego.
-                //context.Unidades_Ejecutoras.AddOrUpdate(x => x.Id, ue1);
-                //context.Unidades_Ejecutoras.AddOrUpdate(x => x.Id, ue2);
-                //context.Unidades_Ejecutoras.AddOrUpdate(x => x.Id, ue3);
+                
 
                 // Agregar zonas.
                 Zona zona1 = new Zona() { Id = 1, Nombre = "zona1", UnidadEjecutora = ue1, Sectores = new List<Sector>() };
                 Zona zona2 = new Zona() { Id = 2, Nombre = "zona2", UnidadEjecutora = ue1, Sectores = new List<Sector>() };
                 Zona zona3 = new Zona() { Id = 3, Nombre = "zona3", UnidadEjecutora = ue2, Sectores = new List<Sector>() };
                 Zona zona4 = new Zona() { Id = 4, Nombre = "zona4", UnidadEjecutora = ue3, Sectores = new List<Sector>() };
-
-                // Se agregan luego.
-                //context.Zonas.AddOrUpdate(y => y.Id, zona1);
-                //context.Zonas.AddOrUpdate(y => y.Id, zona2);
-                //context.Zonas.AddOrUpdate(y => y.Id, zona3);
-                //context.Zonas.AddOrUpdate(y => y.Id, zona4);
+                
 
                 // Agregar Sectores.
                 Sector sector1 = new Sector() { Id = 1, Nombre = "sector1", Zona = zona1 };
@@ -66,12 +57,6 @@ namespace Emsys.DataAccesLayer.Core
                 zona3.Sectores.Add(sector3);
                 zona4.Sectores.Add(sector4);
 
-                // Se agregan luego.
-                //context.Sectores.AddOrUpdate(m => m.Id, sector1);
-                //context.Sectores.AddOrUpdate(m => m.Id, sector2);
-                //context.Sectores.AddOrUpdate(m => m.Id, sector3);
-                //context.Sectores.AddOrUpdate(m => m.Id, sector4);
-
                 // Agregar grupos recursos.
                 GrupoRecurso gr1 = new GrupoRecurso() { Id = 1, Nombre = "gr1" };
                 GrupoRecurso gr2 = new GrupoRecurso() { Id = 2, Nombre = "gr2" };
@@ -81,11 +66,6 @@ namespace Emsys.DataAccesLayer.Core
                 Categoria cat2 = new Categoria() { Id = 2, Codigo = "cod2", Clave = "Categoria de prueba 2", Prioridad = NombrePrioridad.Media, Activo = true };
                 Categoria cat3 = new Categoria() { Id = 3, Codigo = "cod3", Clave = "Categoria de prueba 3", Prioridad = NombrePrioridad.Alta, Activo = true };
                 
-                // Se agregan despues.
-                //context.Categorias.AddOrUpdate(m => m.Id, cat1);
-                //context.Categorias.AddOrUpdate(m => m.Id, cat2);
-                //context.Categorias.AddOrUpdate(m => m.Id, cat3);
-
                 // Agregar recusos.
                 Recurso rec1 = new Recurso() { Id = 1, Codigo = "recurso1", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>(), ExtensionesEventos = new List<ExtensionEvento>() };
                 Recurso rec2 = new Recurso() { Id = 2, Codigo = "recurso2", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>(), ExtensionesEventos = new List<ExtensionEvento>() };
@@ -172,9 +152,7 @@ namespace Emsys.DataAccesLayer.Core
                 rol3.Permisos.Add(permiso15);
                 rol3.Permisos.Add(permiso16);
                 rol3.Permisos.Add(permiso17);
-
-                //context.ApplicationRoles.AddOrUpdate(x => x.Id, rol1);
-
+                
                 // Agregar usuarios.
                 var user1 = new Usuario() { Id = 1, NombreLogin = "A", Contraseña = "6dcd4ce23d88e2ee9568ba546c007c63d9131c1b", Nombre = "Usuario1", ApplicationRoles = new List<Rol>(), UnidadesEjecutoras = new List<UnidadEjecutora>(), GruposRecursos = new List<GrupoRecurso>() };
                 var user2 = new Usuario() { Id = 2, NombreLogin = "B", Contraseña = "ae4f281df5a5d0ff3cad6371f76d5c29b6d953ec", Nombre = "Usuario2", ApplicationRoles = new List<Rol>(), UnidadesEjecutoras = new List<UnidadEjecutora>(), GruposRecursos = new List<GrupoRecurso>() };
@@ -208,15 +186,7 @@ namespace Emsys.DataAccesLayer.Core
                 user4.UnidadesEjecutoras.Add(ue1);
                 user4.UnidadesEjecutoras.Add(ue2);
 
-                // Origen eventos.
-                //Origen_Evento oe1 = new Origen_Evento()
-                //{
-                //    Id = 1,
-                //    TimeStamp = DateTime.Now,
-                //    TipoOrigen = "test",
-                //    IdOrigen = 1
-                //};
-
+                
                 // Agregar eventos.
                 Evento evento1 = new Evento()
                 {
@@ -233,8 +203,18 @@ namespace Emsys.DataAccesLayer.Core
                     Longitud = 20.5,
                     GeoUbicaciones = new List<GeoUbicacion>(),
                     Departamento = dep1
-                    //Origen_Evento = oe1
                 };
+
+                // Origen eventos.
+                OrigenEvento oe1 = new OrigenEvento()
+                {
+                    Id = 1,
+                    TimeStamp = DateTime.Now,
+                    TipoOrigen = "test",
+                    IdOrigen = 1,
+                    Evento = evento1
+                };
+                evento1.OrigenEvento = oe1;
 
                 Evento evento2 = new Evento()
                 {
@@ -261,9 +241,7 @@ namespace Emsys.DataAccesLayer.Core
                     Departamento = dep3,
                     FechaCreacion = DateTime.Now
                 };
-                //context.Evento.AddOrUpdate(x => x.Id, evento1);
-                //context.Evento.AddOrUpdate(x => x.Id, evento2);
-                //context.Evento.AddOrUpdate(x => x.Id, evento3);
+
                 string formato = "yyyy-MM-dd'T'hh:mm:ss.FFF";
                 ExtensionEvento ext1 = new ExtensionEvento()
                 {

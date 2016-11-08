@@ -37,7 +37,6 @@ namespace Emsys.LogicLayer
                 {
                     r.Estado = EstadoRecurso.Disponible;
                 }
-
                 user.Zonas.Clear();
                 user.Recurso.Clear();
                 context.SaveChanges();
@@ -171,6 +170,15 @@ namespace Emsys.LogicLayer
                 {
                     throw new TokenInvalidoException();
                 }
+
+                // Quita posibles logins previos.
+                foreach (Recurso r in user.Recurso)
+                {
+                    r.Estado = EstadoRecurso.Disponible;
+                }
+                user.Zonas.Clear();
+                user.Recurso.Clear();
+                context.SaveChanges();
 
                 // Si el usuario se loguea por recurso.
                 if ((rol.recursos.Count() == 1) && (rol.zonas.Count() == 0))
@@ -1241,7 +1249,8 @@ namespace Emsys.LogicLayer
                     Longitud = ev.longitud,
                     Descripcion = ev.descripcion,
                     EnProceso = ev.enProceso,
-                    ExtensionesEvento = new List<ExtensionEvento>()
+                    ExtensionesEvento = new List<ExtensionEvento>(),
+                    OrigenEvento = new OrigenEvento() { TipoOrigen = "app"}
                 };
 
                 // Agrego extensiones.

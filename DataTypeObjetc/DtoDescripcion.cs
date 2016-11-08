@@ -12,7 +12,8 @@ namespace DataTypeObject
     public class DtoDescripcion
     {
         public string usuario { get; set; }
-        
+
+        [JsonConverter(typeof(FormatoDate))]
         public DateTime fecha { get; set; }
 
         public string descripcion { get; set; }

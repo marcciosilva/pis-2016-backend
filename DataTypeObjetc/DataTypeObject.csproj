@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormatoDate.cs" />
     <Compile Include="DtoActualizarDescripcionOffline.cs" />
     <Compile Include="DtoApplicationFile.cs" />
     <Compile Include="DtoAsignacionRecurso.cs" />

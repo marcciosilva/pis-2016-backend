@@ -6,6 +6,12 @@ namespace Emsys.LogicLayer.Utils
 {
     public class TieneAcceso
     {
+        /// <summary>
+        /// Indica si un usuario tiene vision sobre un evento (atraves de zonas o recurso)
+        /// </summary>
+        /// <param name="user">Usuario en cuestion</param>
+        /// <param name="evento">Evento a verificar</param>
+        /// <returns>Si el usuario tiene vision o no</returns>
         public static bool tieneVisionEvento(Usuario user, Evento evento)
         {
             if (evento == null)
@@ -17,6 +23,7 @@ namespace Emsys.LogicLayer.Utils
             {
                 if (user != null)
                 {
+                    // Si el usuario esta conectado como recurso.
                     if (user.Recurso.Count() > 0)
                     {
                         ExtensionEvento ext = user.Recurso.FirstOrDefault().ExtensionesEventos.FirstOrDefault(e => e.Evento.Id == evento.Id);
@@ -43,6 +50,12 @@ namespace Emsys.LogicLayer.Utils
             }
         }
 
+        /// <summary>
+        /// Indica si un usuario tiene vision sobre una extension.
+        /// </summary>
+        /// <param name="user">Usuario</param>
+        /// <param name="extension">Extension</param>
+        /// <returns>Si tiene vision o no</returns>
         public static bool tieneVisionExtension(Usuario user, ExtensionEvento extension)
         {
             using (var context = new EmsysContext())
@@ -72,6 +85,12 @@ namespace Emsys.LogicLayer.Utils
             }
         }
 
+        /// <summary>
+        /// Indica si un usuario esta logueado como recurso y ese recurso esta asignado a determinada la extension indicada o no.
+        /// </summary>
+        /// <param name="user">Usuario</param>
+        /// <param name="extension">Extension</param>
+        /// <returns>Devuelve verdadero si el usuario esta logueado como recurso y asignado a la extension, falso en caso contrario</returns>
         public static bool estaAsignadoExtension(Usuario user, ExtensionEvento extension)
         {
             using (var context = new EmsysContext())
@@ -96,6 +115,12 @@ namespace Emsys.LogicLayer.Utils
             }
         }
 
+        /// <summary>
+        /// Indica si un usuario esta despachando una extension.
+        /// </summary>
+        /// <param name="user">Usuario</param>
+        /// <param name="extension">Extension</param>
+        /// <returns>Si esta despachando la extension o no</returns>
         public static bool estaDespachandoExtension(Usuario user, ExtensionEvento extension)
         {
             using (var context = new EmsysContext())

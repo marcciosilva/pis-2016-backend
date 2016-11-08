@@ -76,33 +76,6 @@ namespace Servicios.Controllers
 
                 dbAL.adjuntarImagen(token, img);              
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
-                //var request = HttpContext.Current.Request;
-                //if (request.Files.Count == 0)
-                //{
-                //    return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
-                //}
-                //var postedFile = request.Files[0];
-                //string ext = Path.GetExtension(postedFile.FileName);
-                //if ((ext != ".jpg") && (ext != ".png"))
-                //{
-                //    return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
-                //}
-                //string[] idExtension = request.Params.GetValues("idExtension");
-                //if (idExtension.Count() == 0)
-                //{
-                //    return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
-                //}
-                //byte[] bytesImagen;
-                //using (MemoryStream ms = new MemoryStream())
-                //{
-                //    postedFile.InputStream.CopyTo(ms);
-                //    bytesImagen = ms.ToArray();
-                //}
-                //if (dbAL.adjuntarImagen(token, bytesImagen, ext, Int32.Parse(idExtension[0])))
-                //{
-                //    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
-                //}
-                //return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
             catch (TokenInvalidoException e)
             {
@@ -247,14 +220,12 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    //return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                     return new HttpResponseMessage(HttpStatusCode.Unauthorized);
                 }
 
                 var img = dbAL.getImageData(token, idImagen);
                 if (img == null)
-                {
-                    //return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
+                {                    
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
 
@@ -269,23 +240,19 @@ namespace Servicios.Controllers
             }
             catch (ImagenInvalidaException)
             {
-                //return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
             catch (UsuarioNoAutorizadoException)
             {
-                //return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
                 return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
             catch (TokenInvalidoException)
             {
-                //return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
             catch (Exception e)
             {
                 dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
-                //return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo));
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
@@ -307,14 +274,12 @@ namespace Servicios.Controllers
             {
                 if (token == null)
                 {
-                    //return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                     return new HttpResponseMessage(HttpStatusCode.Unauthorized);
                 }
 
                 var img = dbAL.getImageThumbnail(token, idImagen);
                 if (img == null)
                 {
-                    // return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
                     return new HttpResponseMessage(HttpStatusCode.NotFound);
                 }
 
@@ -326,27 +291,22 @@ namespace Servicios.Controllers
                 responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("image/jpeg");
                 responseMessage.Content.Headers.ContentLength = stream.Length;
                 return responseMessage;
-                //return new DtoRespuesta(MensajesParaFE.CorrectoCod, img);
             }
             catch (ImagenInvalidaException)
             {
-                //return new DtoRespuesta(MensajesParaFE.ImagenInvalidaCod, new Mensaje(MensajesParaFE.ImagenInvalida));
                 return new HttpResponseMessage(HttpStatusCode.NotFound);
             }
             catch (UsuarioNoAutorizadoException)
             {
-                //return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
                 return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
             catch (TokenInvalidoException)
             {
-                //return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 return new HttpResponseMessage(HttpStatusCode.Unauthorized);
             }
             catch (Exception e)
             {
                 dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
-                //return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo));
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
@@ -377,13 +337,6 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.VideoInvalidoCod, new Mensaje(MensajesParaFE.VideoInvalido));
                 }
-
-                //var stream = new MemoryStream(vid.fileData);
-                //responseMessage.Content = new StreamContent(stream);
-                //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                //responseMessage.Content.Headers.ContentDisposition.FileName = vid.nombre;
-                //responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                //responseMessage.Content.Headers.ContentLength = stream.Length;
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, vid);
             }
             catch (VideoInvalidoException)
@@ -432,14 +385,6 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.AudioInvalidoCod, new Mensaje(MensajesParaFE.AudioInvalido));
                 }
-
-                //var stream = new MemoryStream(aud.fileData);
-                //responseMessage.Content = new StreamContent(stream);
-                //responseMessage.Content.Headers.ContentDisposition = new ContentDispositionHeaderValue("attachment");
-                //responseMessage.Content.Headers.ContentDisposition.FileName = aud.nombre;
-                //responseMessage.Content.Headers.ContentType = new MediaTypeHeaderValue("application/octet-stream");
-                //responseMessage.Content.Headers.ContentLength = stream.Length;
-                //return responseMessage;
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, aud);
             }
             catch (AudioInvalidoException)

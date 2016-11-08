@@ -17,11 +17,9 @@
     {
         [Key]
         public int Id { get; set; }
-
-        //[Required]
+        
         public virtual Evento Evento { get; set; }
-
-        //[Required]
+        
         public virtual Zona Zona { get; set; }
 
         public virtual Usuario Despachador { get; set; }
