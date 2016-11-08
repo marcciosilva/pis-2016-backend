@@ -11,6 +11,11 @@
 
     public class DtoGetters
     {
+        /// <summary>
+        /// Genera un dto a partir de un ApplicationFile.
+        /// </summary>
+        /// <param name="file">ApplicationFile</param>
+        /// <returns>Dto generado</returns>
         public static DtoApplicationFile GetDtoApplicationfile(ApplicationFile file)
         {
             return new DtoApplicationFile()
@@ -20,6 +25,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un thumbnail de imagen a partir de un ApplicationFile.
+        /// </summary>
+        /// <param name="file">ApplicationFile de una imagen</param>
+        /// <returns>Bytes del thumbnail generado</returns>
         public static byte[] GenerateImageThumbnail(ApplicationFile file)
         {
             try
@@ -37,6 +47,11 @@
             }
         }
 
+        /// <summary>
+        /// Genera un dto a partir de una AsignacionRecurso.
+        /// </summary>
+        /// <param name="asignacionRecurso">AsignacionRecurso</param>
+        /// <returns>Dto generado</returns>
         public static DtoAsignacionRecurso getDtoAsignacionesRecursos(AsignacionRecurso asignacionRecurso)
         {
             DtoAsignacionRecurso res = new DtoAsignacionRecurso()
@@ -62,6 +77,11 @@
             return res;
         }
 
+        /// <summary>
+        /// Genera un dto a partir de una Imagen.
+        /// </summary>
+        /// <param name="img">Imagen</param>
+        /// <returns>Dto generado</returns>
         public static DtoImagen getDtoImagen(Imagen img)
         {
             return new DtoImagen()
@@ -73,6 +93,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de un OrigenEvento.
+        /// </summary>
+        /// <param name="oe">OrigenEvento</param>
+        /// <returns>Dto generado</returns>
         public static DtoOrigenEvento getDtoOrigenEvento(OrigenEvento oe)
         {
             return new DtoOrigenEvento()
@@ -83,7 +108,11 @@
             };
         }
 
-
+        /// <summary>
+        /// Genera un dto a partir de un Video.
+        /// </summary>
+        /// <param name="vid">Video</param>
+        /// <returns>Dto generado</returns>
         public static DtoVideo getDtoVideo(Video vid)
         {
             return new DtoVideo()
@@ -95,6 +124,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de un Audio.
+        /// </summary>
+        /// <param name="aud">Audio</param>
+        /// <returns>dto generado</returns>
         public static DtoAudio getDtoAudio(Audio aud)
         {
             return new DtoAudio()
@@ -106,6 +140,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de una GeoUbicacion.
+        /// </summary>
+        /// <param name="ubicacion">GeoUbicacion</param>
+        /// <returns>Dto generado</returns>
         public static DtoGeoUbicacion getDtoGeoUbicacion(GeoUbicacion ubicacion)
         {
             return new DtoGeoUbicacion()
@@ -116,6 +155,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de un Departamento.
+        /// </summary>
+        /// <param name="dep">Departamento</param>
+        /// <returns>Dto generado</returns>
         public static DtoDepartamento getDtoDepartamento(Departamento dep)
         {
             return new DtoDepartamento()
@@ -125,6 +169,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de un Sector.
+        /// </summary>
+        /// <param name="sector">Sector</param>
+        /// <returns>Dto generado</returns>
         public static DtoSector getDtoSector(Sector sector)
         {
             return new DtoSector()
@@ -134,6 +183,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de una Zona.
+        /// </summary>
+        /// <param name="zona">zona</param>
+        /// <returns>Dto generado</returns>
         public static DtoZona getDtoZona(Zona zona)
         {
             return new DtoZona()
@@ -144,6 +198,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de una Zona que ademas contiene la informacion de los sectores de cada zona.
+        /// </summary>
+        /// <param name="zona">Zona</param>
+        /// <returns>Dto generado</returns>
         public static DtoZona getDtoZonaCompleto(Zona zona)
         {
             ICollection<DtoSector> sects = new List<DtoSector>();
@@ -161,6 +220,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de un Recurso.
+        /// </summary>
+        /// <param name="recurso">Recurso</param>
+        /// <returns>Dto generado</returns>
         public static DtoRecurso getDtoRecurso(Recurso recurso)
         {
             string user = null;
@@ -179,6 +243,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de una Categoria.
+        /// </summary>
+        /// <param name="categoria">Categoria</param>
+        /// <returns>Dto generado</returns>
         public static DtoCategoria getDtoCategoria(Categoria categoria)
         {
             return new DtoCategoria()
@@ -190,7 +259,12 @@
                 activo = categoria.Activo
             };
         }
-        
+
+        /// <summary>
+        /// Genera un dto a partir de una ExtensionEvento.
+        /// </summary>
+        /// <param name="ext">ExtensionEvento</param>
+        /// <returns>Dto generado</returns>
         public static DtoExtension getDtoExtension(ExtensionEvento ext)
         {
             List<string> recursos = new List<string>();
@@ -270,6 +344,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de un Evento.
+        /// </summary>
+        /// <param name="evento">Evento</param>
+        /// <returns>Dto generado</returns>
         public static DtoEvento getDtoEvento(Evento evento)
         {
             List<DtoExtension> extensiones = new List<DtoExtension>();

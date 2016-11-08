@@ -242,13 +242,13 @@ namespace Test.UnitTesting
 
             var controller = new EventosController();
 
-            var resp1 = controller.getEvento(1);
+            var resp1 = controller.GetEvento(1);
             Assert.IsTrue(resp1.cod == 2);
 
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", "tokenInvalido");
 
-            var resp2 = controller.getEvento(1);
+            var resp2 = controller.GetEvento(1);
             Assert.IsTrue(resp2.cod == 2);
 
             DtoUsuario u = new DtoUsuario() { username = "A", password = "A" };
@@ -258,7 +258,7 @@ namespace Test.UnitTesting
 
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
-            var resp4 = controller.getEvento(-1);
+            var resp4 = controller.GetEvento(-1);
             Assert.IsTrue(resp4.cod == 9);
 
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = new List<DtoRecurso>() };
@@ -270,7 +270,7 @@ namespace Test.UnitTesting
 
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
-            var resp5 = controller.getEvento(1);
+            var resp5 = controller.GetEvento(1);
             Assert.IsTrue(resp5.cod == 0);
         }
 

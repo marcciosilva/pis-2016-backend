@@ -481,7 +481,6 @@ namespace Test.UnitTesting
                     Audios = new List<Audio>(),
                     Calle = "PruebaDE",
                     Esquina = "PruebaDE",
-                    GeoUbicaciones = new List<GeoUbicacion>(),
                     Imagenes = new List<Imagen>(),
                     Latitud = 0,
                     Longitud = 0,
@@ -837,11 +836,11 @@ namespace Test.UnitTesting
             var ok = logica.adjuntarGeoUbicacion(token, new DtoGeoUbicacion() { idExtension = 1, latitud = 12, longitud = 120 });
             Assert.IsTrue(ok);
 
-            var geo = db.GeoUbicaciones.FirstOrDefault(g => g.Id == 5);
-            var geo2 = db.ExtensionesEvento.FirstOrDefault().GeoUbicaciones.FirstOrDefault(g => g.Id == 5);
-
+            db = new EmsysContext();
             int cant2 = db.ExtensionesEvento.FirstOrDefault().GeoUbicaciones.Count();
             Assert.IsTrue(cant2 == cant + 1);
+            
+            var geo2 = db.ExtensionesEvento.FirstOrDefault().GeoUbicaciones.FirstOrDefault(g => g.Id == cant2);            
             Assert.IsTrue((geo2.Longitud == 120) && (geo2.Latitud == 12));
             
             logica.cerrarSesion(token);

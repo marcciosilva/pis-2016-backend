@@ -136,7 +136,6 @@ namespace Test.UnitTesting
                 Audios = new List<Audio>(),
                 Calle = "PruebaDE",
                 Esquina = "PruebaDE",
-                GeoUbicaciones = new List<GeoUbicacion>(),
                 Imagenes = new List<Imagen>(),
                 Latitud = 0,
                 Longitud = 0,

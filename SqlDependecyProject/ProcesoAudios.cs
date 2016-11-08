@@ -12,8 +12,6 @@
 
     public class ProcesoAudios
     {
-        private static bool llamo = true;
-
         private static string proceso = "ProcesoMonitoreoAudios";
 
         private static SqlTableDependency<Audio> _dependency;

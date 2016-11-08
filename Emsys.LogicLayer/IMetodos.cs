@@ -16,7 +16,7 @@ namespace Emsys.LogicLayer
         DtoAutenticacion autenticarUsuario(string userName, string password, string token);
 
         /// <summary>
-        /// Obtiene el rol del usuario dado un token.
+        /// Obtiene los posibles roles del usuario dado un token.
         /// </summary>
         /// <param name="token">Identificador unico del usuario.</param>
         /// <returns>Retorna los roles del usuario segun el token.</returns>
@@ -77,88 +77,7 @@ namespace Emsys.LogicLayer
         /// <param name="detalles">Informacion adicional.</param>
         /// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
         void AgregarLogError(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo);
-
-        /// <summary>
-        /// Metodo para agregar al log una nueva accion.
-        /// </summary>
-        /// <param name="token">Identificador unico del usuario.</param>
-        /// <param name="terminal">Identificacion de la terminal del usuario que realizo el resquest.</param>
-        /// <param name="modulo">Identificacion del modulo/proyecto que realizo la operacion de agregar un log.</param>
-        /// <param name="Entidad">Identificacion de la entidad que realiza la operacion de agregar un log.</param>
-        /// <param name="idEntidad">Idnetificador de la entidad que resulto afectada en la accion al agregar un log.</param>
-        /// <param name="accion">Nombre del metodo o funcion que ejecuto una accion y guardo un log.</param>
-        /// <param name="detalles">Informacion adicional.</param>
-        /// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
-        /// <param name="topic"></param>
-        /// <param name="codigoNotificacion"></param>
-        /// <param name="pkEvento"></param>
-        /// <param name="firebaseResponse"></param>
-        /// <param name="logViejo"></param>
-        //void AgregarLogNotification(
-        //    string token, string terminal, string modulo, string Entidad,
-        //    int idEntidad, string accion, string detalles, int codigo,
-        //    string topic, string codigoNotificacion, string pkEvento, 
-        //    string firebaseResponse, LogNotification logViejo = null);
-
-        ///// <summary>
-        ///// Metodo para agregar al log  de error.
-        ///// </summary>
-        ///// <param name="token">Identificador unico del usuario.</param>
-        ///// <param name="terminal">Identificacion de la terminal del usuario que realizo el resquest.</param>
-        ///// <param name="modulo">Identificacion del modulo/proyecto que realizo la operacion de agregar un log.</param>
-        ///// <param name="Entidad">Identificacion de la entidad que realiza la operacion de agregar un log.</param>
-        ///// <param name="idEntidad">Idnetificador de la entidad que resulto afectada en la accion al agregar un log.</param>
-        ///// <param name="accion">Nombre del metodo o funcion que ejecuto una accion y guardo un log.</param>
-        ///// <param name="detalles">Informacion adicional.</param>
-        ///// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
-        ///// <param name="topic"></param>
-        ///// <param name="codigoNotificacion"></param>
-        ///// <param name="pkEvento"></param>
-        ///// <param name="firebaseResponse"></param>
-        ///// <param name="log"></param>
-        ///// <returns></returns>
-        //LogNotification AgregarLogErrorNotification(string token, string terminal, string modulo, string Entidad,
-        //    int idEntidad, string accion, string detalles, int codigo,
-        //    string topic, string codigoNotificacion, string pkEvento, string firebaseResponse, LogNotification log = null);
-
-        ///// <summary>
-        ///// Loguea cuando se dessuscribe un usuario de los topics de firebase.
-        ///// </summary>
-        ///// <param name="token">Identificador unico de usuario en el sistema.</param>
-        ///// <param name="terminal">Identificacion de terminal.</param>
-        ///// <param name="modulo">Modulo del que se realizo la opreacion.</param>
-        ///// <param name="Entidad">Entidad que modifico la operacion.</param>
-        ///// <param name="idEntidad">Identificador de la entidad que realizo la operacion.</param>
-        ///// <param name="accion">Nombre del metodo.</param>
-        ///// <param name="detalles">Informacion adicional.</param>
-        ///// <param name="codigo">Codigo uno de Log.</param>
-        ///// <param name="topicDessuscribir">Nombre del topic del cual se dessuscribio.</param>
-        ///// <param name="nombreUsuario">Nombre del usuario que se dessuscribio.</param>        
-        ///// <param name="firebaseResponse">Respuesta de Firebase.</param>
-        ///// <returns></returns>
-        //void AgregarLogNotificationDessuscripcionUsuario(string token, string terminal, string modulo, string Entidad,
-        //   int idEntidad, string accion, string detalles, int codigo,
-        //   string topicDessuscribir, string nombreUsuario, string firebaseResponse);
-
-        ///// <summary>
-        ///// Loguea cuando se dessuscribe un usuario de los topics de firebase.
-        ///// </summary>
-        ///// <param name="token">Identificador unico de usuario en el sistema.</param>
-        ///// <param name="terminal">Identificacion de terminal.</param>
-        ///// <param name="modulo">Modulo del que se realizo la opreacion.</param>
-        ///// <param name="Entidad">Entidad que modifico la operacion.</param>
-        ///// <param name="idEntidad">Identificador de la entidad que realizo la operacion.</param>
-        ///// <param name="accion">Nombre del metodo.</param>
-        ///// <param name="detalles">Informacion adicional.</param>
-        ///// <param name="codigo">Codigo uno de Log.</param>
-        ///// <param name="topicDessuscribir">Nombre del topic del cual se dessuscribio.</param>
-        ///// <param name="nombreUsuario">Nombre del usuario que se dessuscribio.</param>        
-        ///// <param name="firebaseResponse">Respuesta de Firebase.</param>
-        ///// <returns></returns>
-        //void AgregarLogNotificationDessuscripcionUsuarioError(string token, string terminal, string modulo, string Entidad,
-        //   int idEntidad, string accion, string detalles, int codigo,
-        //   string topicDessuscribir, string nombreUsuario, string firebaseResponse);
-
+        
         /// <summary>
         /// Metodo que dado un evento y un identificador de usuario devuelve la informacion del evento.
         /// </summary>
@@ -168,10 +87,10 @@ namespace Emsys.LogicLayer
         DtoEvento verInfoEvento(string token, int idEvento);
 
         /// <summary>
-        /// Adjunto la geoubicacion a un usuario.
+        /// Adjunta una geo ubicacion a una extension.
         /// </summary>
         /// <param name="token">Identificador unico de usuario.</param>
-        /// <param name="ubicacion">Objeto de ubicacion.</param>
+        /// <param name="ubicacion">Informacion de la geo ubicacion.</param>
         /// <returns>Retorna su pudo realizar la persistencia de la  geoubicacion o no.</returns>
         bool adjuntarGeoUbicacion(string token, DtoGeoUbicacion ubicacion);
 
@@ -209,33 +128,27 @@ namespace Emsys.LogicLayer
         DtoApplicationFile getAudioData(string token, int idAdjunto);
 
         /// <summary>
-        /// Adjunta un archivo de imagen a una extension
+        /// Adjunta un archivo de imagen a una extension.
         /// </summary>
         /// <param name="token">Token del usuario</param>
-        /// <param name="imgN">Bytes de la imagen</param>
-        /// <param name="extArchivo">Extension de la imagen (ej: ".jpg")</param>
-        /// <param name="idExtension">Extension a la cual se desea agregar la imagen</param>
-        /// <returns>Si se realizo correctamente.</returns>
+        /// <param name="imgN">Informacion de la imagen e identificador de la extension</param>
+        /// <returns>Exito o fracaso</returns>
         bool adjuntarImagen(string token, DtoApplicationFile imgN);
 
         /// <summary>
-        /// Adjunta un archivo de imagen a una extension
+        /// Adjunta un archivo de video a una extension,
         /// </summary>
         /// <param name="token">Token del usuario</param>
-        /// <param name="imagenData">Bytes de la imagen</param>
-        /// <param name="extArchivo">Extension de la imagen (ej: ".jpg")</param>
-        /// <param name="idExtension">Extension a la cual se desea agregar la imagen</param>
-        /// <returns>Si se realizo correctamente.</returns>
+        /// <param name="vidN">Informacion del video e identificador de la extension</param>
+        /// <returns>Exito o fracaso</returns>
         bool adjuntarVideo(string token, DtoApplicationFile vidN);
 
         /// <summary>
-        /// Adjunta un archivo de imagen a una extension
+        /// Adjunta un archivo de audio a una extension
         /// </summary>
         /// <param name="token">Token del usuario</param>
-        /// <param name="imagenData">Bytes de la imagen</param>
-        /// <param name="extArchivo">Extension de la imagen (ej: ".jpg")</param>
-        /// <param name="idExtension">Extension a la cual se desea agregar la imagen</param>
-        /// <returns>Si se realizo correctamente.</returns>
+        /// <param name="audN">Informacion del audio e identificador de la extension</param>
+        /// <returns>Exito o fracaso</returns>
         bool adjuntarAudio(string token, DtoApplicationFile audN);
 
         /// <summary>
@@ -254,11 +167,11 @@ namespace Emsys.LogicLayer
         bool SetRegistrationToken(string token, string tokenFirebase);
 
         /// <summary>
-        /// Interfaz Actualizar descripcion implentado por la capa de servicios.
+        /// Actualiza la descripcion de una extension por parte de un recurso.
         /// </summary>
         /// <param name="descParam">Contiene identificador de la extension y la descripcion que se quiere agregar.</param>
         /// <param name="token">token del usuario que desea actualizar descripcion</param>
-        /// <returns>Retorna la respuesta segun el documento de interfaz.</returns>
+        /// <returns>Si se agrego correctamente</returns>
         bool ActualizarDescripcionRecurso(DtoActualizarDescripcion descParam, string token);
 
         /// <summary>

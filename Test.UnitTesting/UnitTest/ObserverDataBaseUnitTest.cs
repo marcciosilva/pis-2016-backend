@@ -32,7 +32,7 @@ namespace Test.UnitTesting
 
                 Thread workerThreadAnalysisDataNotifications = new Thread(new ThreadStart(HiloDeScreenShoots));
                 workerThreadAnalysisDataNotifications.Start();
-                //espero a que se disparen todos los hilos y luego empiezo a modificar la base
+                // Espero a que se disparen todos los hilos y luego empiezo a modificar la base.
                 Thread.Sleep(5000);
                 // ModificarBaseDatos();
                 Random r = new Random();
@@ -82,7 +82,7 @@ namespace Test.UnitTesting
 
                 Thread workerThreadAnalysisDataNotifications = new Thread(new ThreadStart(HiloDeScreenShoots));
                 workerThreadAnalysisDataNotifications.Start();
-                //espero a que se disparen todos los hilos y luego empiezo a modificar la base
+                // Espero a que se disparen todos los hilos y luego empiezo a modificar la base.
                 Thread.Sleep(5000);
                 // ModificarBaseDatos();
                 Random r = new Random();
@@ -101,7 +101,7 @@ namespace Test.UnitTesting
 
                 workerThread.Abort();
             }
-            catch (Exception)
+            catch (Exception e)
             {
                 //como aborte la oprecion a veces sale por aca.
                 using (EmsysContext db = new EmsysContext())
@@ -156,7 +156,7 @@ namespace Test.UnitTesting
                 Thread.Sleep(3000);
                 test.AdjuntarVideoTest();
                 Thread.Sleep(3000);
-               test.AdjuntarImagenTest();
+                test.AdjuntarImagenTest();
                 Thread.Sleep(3000);
                 test.AdjuntarGeoUbicacion();
                 Thread.Sleep(3000);
@@ -174,7 +174,6 @@ namespace Test.UnitTesting
                 item.Descripcion = DateTime.Now.ToString();
                 item.Categoria = new Emsys.DataAccesLayer.Model.Categoria
                 {
-
                     Activo = true,
                     Clave = "key",
                     Codigo = "cod",

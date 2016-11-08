@@ -67,7 +67,5 @@
         public virtual ICollection<Video> Videos { get; set; }
 
         public virtual ICollection<Audio> Audios { get; set; }
-
-        public virtual ICollection<GeoUbicacion> GeoUbicaciones { get; set; }
     }
 }

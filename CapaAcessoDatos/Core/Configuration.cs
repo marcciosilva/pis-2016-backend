@@ -201,7 +201,6 @@ namespace Emsys.DataAccesLayer.Core
                     FechaCreacion = DateTime.Now,
                     Latitud = 19.9,
                     Longitud = 20.5,
-                    GeoUbicaciones = new List<GeoUbicacion>(),
                     Departamento = dep1
                 };
 
@@ -290,8 +289,6 @@ namespace Emsys.DataAccesLayer.Core
                 GeoUbicacion geo4 = new GeoUbicacion() { Latitud = 77.7, Longitud = 88.8, FechaEnvio = DateTime.Now, Usuario = user1 };
 
                 // Agregar geo ubicaciones a eventos y extensiones.
-                evento1.GeoUbicaciones.Add(geo1);
-                evento1.GeoUbicaciones.Add(geo2);
                 ext1.GeoUbicaciones.Add(geo3);
                 ext1.GeoUbicaciones.Add(geo4);
 

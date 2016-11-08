@@ -34,6 +34,9 @@
                 Thread WorkerThreadAudios = new Thread(new ThreadStart(ProcesoAudios.ProcesoMonitoreoAudios));
                 WorkerThreadAudios.Start();
 
+                Thread WorkerThreadGeoUbicacuibes = new Thread(new ThreadStart(ProcesoGeoUbicacion.ProcesoMonitoreoGeoUbicaciones));
+                WorkerThreadGeoUbicacuibes.Start();
+
                 Thread WorkerThreadAsignacionRecursoDescripcion = new Thread(new ThreadStart(ProcesoAsignacionRecursoDescripcion.ProcesoMonitorearAsignacionRecursoDescripcion));
                 WorkerThreadAsignacionRecursoDescripcion.Start();                
                 

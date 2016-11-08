@@ -50,8 +50,7 @@ namespace Emsys.LogicLayer
                 return new DtoAutenticacion(tokenNuevo, MensajesParaFE.Correcto);
             }
         }
-
-        // Metodo legado.
+        
         public DtoRol getRolUsuario(string token)
         {
             using (var context = new EmsysContext())

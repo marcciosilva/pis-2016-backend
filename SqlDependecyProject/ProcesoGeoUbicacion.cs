@@ -21,7 +21,7 @@
         /// <summary>
         /// Funcion que engloba el proceso de atender Videos de la BD para extensiones.
         /// </summary>
-        public static void ProcesoMonitoreoVideos()
+        public static void ProcesoMonitoreoGeoUbicaciones()
         {
             try
             {
@@ -117,29 +117,17 @@
                 var GeoUbicacionDEBD = db.GeoUbicaciones.Find(GeoUbicacionEvento.Entity.Id);
                 if (GeoUbicacionDEBD != null)
                 {
-                    //if (GeoUbicacionDEBD.Evento!=null) {
-                    //    // Para los recursos asociados a la extension genero una notificacion.
-                    //    foreach (var item in GeoUbicacionDEBD.Evento.ExtensionesEvento)
-                    //    {
-                    //        foreach (var recurso in item.Recursos)
-                    //        {
-                    //            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + recurso.Id);
-                    //        }
+                    if (GeoUbicacionDEBD.Extension != null)
+                    {
+                        // Para los recursos de la extension se envia una notificacion.
+                        foreach (var recurso in GeoUbicacionDEBD.Extension.Recursos)
+                        {
+                            GestorNotificaciones.SendMessage(cod, GeoUbicacionDEBD.Extension.Id.ToString(), "recurso-" + recurso.Id);
+                        }
 
-                    //        // Para la zona asociada a la extensen le envia una notificacion.
-                    //        GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    foreach (var recurso in GeoUbicacionDEBD.ExtensionEvento.Recursos)
-                    //    {
-                    //        GestorNotificaciones.SendMessage(cod, GeoUbicacionDEBD.ExtensionEvento.Id.ToString(), "recurso-" + GeoUbicacionDEBD.ExtensionEvento.Id);
-                    //    }
-
-                    //    // Para la zona asociada a la extensen le envia una notificacion.
-                    //    GestorNotificaciones.SendMessage(cod, GeoUbicacionDEBD.ExtensionEvento.Id.ToString(), "zona-" + GeoUbicacionDEBD.ExtensionEvento.Zona.Id);
-                    //}
+                        // Para la zona asociada a la extension le envia una notificacion.
+                        GestorNotificaciones.SendMessage(cod, GeoUbicacionDEBD.Extension.Id.ToString(), "zona-" + GeoUbicacionDEBD.Extension.Zona.Id);
+                    }
                 }
             }
         }

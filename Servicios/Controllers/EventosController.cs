@@ -52,7 +52,7 @@ namespace Servicios.Controllers
         [HttpGet]
         [LogFilter]
         [Route("eventos/obtener")]
-        public DtoRespuesta getEvento(int idEvento)
+        public DtoRespuesta GetEvento(int idEvento)
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
