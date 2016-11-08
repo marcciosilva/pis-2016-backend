@@ -38,12 +38,14 @@ namespace Test.UnitTesting
                 Random r = new Random();
                 EmsysContext db = new EmsysContext();
 
-                var evento = db.ExtensionesEvento.FirstOrDefault();
-                evento.DescripcionDespachador = DateTime.Now.Millisecond.ToString();
-                db.SaveChanges();
-
+                for (int j = 0; j < 3; j++)
+                {
+                    var evento = db.ExtensionesEvento.FirstOrDefault();
+                    evento.DescripcionDespachador = DateTime.Now.Millisecond.ToString();
+                    db.SaveChanges();
+                }
                 // 30 segundos despues
-                Thread.Sleep(30000);
+                Thread.Sleep(30000);             
                 workerThread.Abort();
             }
             catch (Exception)

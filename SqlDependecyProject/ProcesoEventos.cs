@@ -94,7 +94,6 @@
                             AtenderEvento(DataNotificacionesCodigos.AltaEvento, evento, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
-                            
                             Console.WriteLine("ProcesoMonitoreoEventos - Accion update, Pk del evento: " + evento.Entity.Id);
                             AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, evento, GestorNotificaciones);
                             break;

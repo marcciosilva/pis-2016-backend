@@ -55,7 +55,6 @@ namespace Util.NotificacionAnalysis
                 var logs = db.LogNotification.ToList().OrderByDescending(x => x.Id);
                 DateTime tiempoMenor = logs.FirstOrDefault().TimeStamp;
                 DateTime tiempoMayor = logs.FirstOrDefault().TimeStamp;
-                int contadorDeNotificaciones = 0;
                 foreach (var item in logs)
                 {
                     if (item.Codigo == 906)
@@ -78,8 +77,8 @@ namespace Util.NotificacionAnalysis
                         {
                             nivelRecursion = nivel;
                         }
-                        contadorDeNotificaciones++;
-                        tiempoPromedioEnvioNotificacion = (tiempoPromedioEnvioNotificacion + diferencia);
+
+                        tiempoPromedioEnvioNotificacion = (tiempoPromedioEnvioNotificacion + diferencia) / 2;
                         if (tiempoMenor > item.TimeStamp)
                         {
                             tiempoMenor = item.TimeStamp;
@@ -91,8 +90,6 @@ namespace Util.NotificacionAnalysis
                         }
                     }
                 }
-                //ahora dividio por la cantidad de elementos.
-                tiempoPromedioEnvioNotificacion = (tiempoPromedioEnvioNotificacion / contadorDeNotificaciones);
 
                 double duracionRafaga = (tiempoMayor - tiempoMenor).TotalMilliseconds;
                 var cantidadTopics = db.LogNotification.Where(y => y.Codigo == 901).GroupBy(x => x.Topic).Count();
