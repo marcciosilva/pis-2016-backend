@@ -924,7 +924,6 @@ namespace Emsys.LogicLayer
         {
             using (var context = new EmsysContext())
             {
-
                 var user = context.Usuarios.FirstOrDefault(u => u.NombreLogin == descParam.userData.username);
                 if ((user == null) || ((user.Contraseña != Passwords.GetSHA1(descParam.userData.password))))
                 {
@@ -932,12 +931,17 @@ namespace Emsys.LogicLayer
                 }
 
                 ExtensionEvento ext = context.ExtensionesEvento.FirstOrDefault(e => e.Id == descParam.idExtension);
-                DtoRecurso dtoR = descParam.userData.roles.recursos.FirstOrDefault();
-                Recurso rec = context.Recursos.FirstOrDefault(r => r.Id == dtoR.id);
+                
                 if (ext == null)
                 {
                     throw new ExtensionInvalidaException();
                 }
+                DtoRecurso dtoR = descParam.userData.roles.recursos.FirstOrDefault();
+                if (dtoR == null)
+                {
+                    throw new RecursoInvalidoException();
+                }
+                Recurso rec = context.Recursos.FirstOrDefault(r => r.Id == dtoR.id);
                 if (rec == null)
                 {
                     throw new RecursoInvalidoException();
@@ -1250,7 +1254,7 @@ namespace Emsys.LogicLayer
                     Descripcion = ev.descripcion,
                     EnProceso = ev.enProceso,
                     ExtensionesEvento = new List<ExtensionEvento>(),
-                    OrigenEvento = new OrigenEvento() { TipoOrigen = "app"}
+                    OrigenEvento = new OrigenEvento() { TipoOrigen = "app", TimeStamp = DateTime.Now}
                 };
 
                 // Agrego extensiones.

@@ -140,9 +140,7 @@ namespace Test.UnitTesting
                 Imagenes = new List<Imagen>(),
                 Latitud = 0,
                 Longitud = 0,
-                //Origen_Evento = new Origen_Evento(),
                 Videos = new List<Video>(),
-                //Departamento = new Departamento(),
                 Descripcion = "PruebaDE"
             };
 
@@ -159,20 +157,19 @@ namespace Test.UnitTesting
             OrigenEvento oe1 = new OrigenEvento()
             {
                 TimeStamp = DateTime.Now,
-                TipoOrigen = "test",
+                TipoOrigen = "testCOE",
                 IdOrigen = 1,
                 Evento = evento
             };
-            context.OrigenEventos.Add(oe1);
+            evento.OrigenEvento = oe1;
+            context.Evento.Add(evento);
             context.SaveChanges();
 
             context = new EmsysContext();
-            var oe = context.OrigenEventos.FirstOrDefault();
-            Assert.AreEqual(oe.Id, 4);
+            var oe = context.OrigenEventos.FirstOrDefault(o=> o.TipoOrigen == "testCOE");
             Assert.AreNotEqual(oe.TimeStamp, null);
-            Assert.AreEqual(oe.TipoOrigen, "test");
             Assert.AreEqual(oe.IdOrigen, 1);
-            Assert.AreEqual(oe.Evento.Id, 4);
+            Assert.AreEqual(oe.Evento.NombreInformante, "PruebaDE");
         }
     }
 }

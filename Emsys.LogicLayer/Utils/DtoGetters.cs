@@ -22,12 +22,19 @@
 
         public static byte[] GenerateImageThumbnail(ApplicationFile file)
         {
-            var ms = new MemoryStream(file.FileData);
-            Image img = Image.FromStream(ms);
-            Image thumb = img.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
-            ms = new MemoryStream();
-            thumb.Save(ms, img.RawFormat);
-            return ms.ToArray();
+            try
+            {
+                var ms = new MemoryStream(file.FileData);
+                Image img = Image.FromStream(ms);
+                Image thumb = img.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
+                ms = new MemoryStream();
+                thumb.Save(ms, img.RawFormat);
+                return ms.ToArray();
+            }
+            catch (Exception e)
+            {
+                return new byte[0];
+            }
         }
 
         public static DtoAsignacionRecurso getDtoAsignacionesRecursos(AsignacionRecurso asignacionRecurso)

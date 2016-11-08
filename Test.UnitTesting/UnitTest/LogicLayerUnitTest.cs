@@ -179,10 +179,10 @@ namespace Test.UnitTesting
 
                 // Pruebo loguearme con otro usuario que tenga el mismo recurso asignado
                 var autent2 = logica.autenticarUsuario("usuarioPruebaRecursoNoDisponible", "usuarioPruebaRecursoNoDisponible", null);
-                string token2 = autent.accessToken;
+                string token2 = autent2.accessToken;
                 try
                 {
-                    logica.loguearUsuario(token, rol);
+                    logica.loguearUsuario(token2, rol);
                     Assert.Fail();
                 }
                 catch (RecursoNoDisponibleException)
@@ -915,7 +915,7 @@ namespace Test.UnitTesting
            
             Assert.IsTrue(ok);
             Assert.IsTrue(db.ExtensionesEvento.FirstOrDefault().Imagenes.Count() == cantAdjImagen + 1);
-            Assert.IsTrue(db.ApplicationFiles.Count() == cantFiles + 1);
+            Assert.IsTrue(db.ApplicationFiles.Count() == cantFiles + 2);
 
             // Obtener data de la imagen.
             try
@@ -1467,7 +1467,7 @@ namespace Test.UnitTesting
             db = new EmsysContext();
             Assert.IsTrue(ok);
             Assert.IsTrue(db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().AsignacionRecursoDescripcion.Count() == cantDescripciones + 1);
-            Assert.AreEqual(db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().AsignacionRecursoDescripcion.FirstOrDefault().Descripcion, "hola");
+            Assert.AreEqual(db.ExtensionesEvento.FirstOrDefault().AsignacionesRecursos.FirstOrDefault().AsignacionRecursoDescripcion.ToArray()[cantDescripciones].Descripcion, "hola");
 
             logica.cerrarSesion(token);
         }
@@ -1492,8 +1492,9 @@ namespace Test.UnitTesting
             {
                 logica.ActualizarDescripcionRecursoOffline(new DtoActualizarDescripcionOffline()
                 {
-                    descripcion = "hola",
+                    descripcion = "offline",
                     idExtension = 1,
+                    timeStamp = DateTime.Parse(" 2016-11-07T19:54:45.123"),
                     userData = new DtoUsuario() { username = "A", password = "incorrecta", roles = rol }
                 });
             }
@@ -1506,8 +1507,9 @@ namespace Test.UnitTesting
             {
                 logica.ActualizarDescripcionRecursoOffline(new DtoActualizarDescripcionOffline()
                 {
-                    descripcion = "hola",
+                    descripcion = "offline",
                     idExtension = -1,
+                    timeStamp = DateTime.Parse(" 2016-11-07T19:54:45.123"),
                     userData = new DtoUsuario() { username = "A", password = "A", roles = rol }
                 });
             }
@@ -1522,6 +1524,7 @@ namespace Test.UnitTesting
                 {
                     descripcion = "offline",
                     idExtension = 1,
+                    timeStamp = DateTime.Parse(" 2016-11-07T19:54:45.123"),
                     userData = new DtoUsuario() { username = "A", password = "A", roles = rol }
                 });
             }
@@ -1535,8 +1538,9 @@ namespace Test.UnitTesting
             // Valido.
             var ok = logica.ActualizarDescripcionRecursoOffline(new DtoActualizarDescripcionOffline()
             {
-                descripcion = "hola",
+                descripcion = "offline",
                 idExtension = 1,
+                timeStamp = DateTime.Parse(" 2016-11-07T19:54:45.123"),
                 userData = new DtoUsuario() { username = "A", password = "A", roles = rol }
             });
 
