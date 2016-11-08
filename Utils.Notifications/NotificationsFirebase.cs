@@ -41,7 +41,7 @@ namespace Utils.Notifications
                        "sendNotification", "Error al enviar mensaje por taza superada",
                        MensajesParaFE.LogNotificacionesDessuscripcionUsuarioTopicErrorGenericoRequest,
                         topicFinal, nombreUsuario, response.ToString());
-                    throw new Exception("Al enviar una notifiacion la respuesta del servidor NO fue positiva.");
+                    //throw new Exception("Al enviar una notifiacion la respuesta del servidor NO fue positiva.");
                 }
                 else {
 
@@ -159,7 +159,7 @@ namespace Utils.Notifications
                         MensajesParaFE.LogNotificacionesErrorReenvio,
                          topicFinal, cod, pk, response.ToString(), logPrevio);
                     _pool.WaitOne();
-                    Thread.Sleep(_seconds * 1000);
+                    Thread.Sleep(_seconds );
                     _pool.Release();
                     sendNotification(cod, pk, topic, logActual);
                     // throw new Exception("Al enviar una notifiacion la respuesta del servidor NO contiene el id del mensjae, entonces la respuesta es negativa.");

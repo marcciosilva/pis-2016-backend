@@ -41,12 +41,17 @@ namespace Test.UnitTesting
                 for (int i = 0; i < 500; i++)
                 {
                     Modificaciones(db);
-                    Thread.Sleep(3000);
+                    Thread.Sleep(1000);
                 }
 
-
-                // me quedo colgado por que sino mato todo los threads y no puedo ver si el test fue exitoso.
-                Thread.Sleep(240 * _seconds * 1000 + 10000);
+                var cantidadEnviosReales = 0;
+                var cantidadEnviosExitosos = 1;
+                while (cantidadEnviosReales != cantidadEnviosExitosos)
+                {
+                    Thread.Sleep(20000);
+                    cantidadEnviosReales = db.LogNotification.Where(x => x.Codigo == 901).Count();
+                    cantidadEnviosExitosos = db.LogNotification.Where(x => x.Codigo == 906).Count();
+                }
                 workerThread.Abort();
             }
             catch (Exception)

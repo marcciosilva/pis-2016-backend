@@ -958,7 +958,7 @@ namespace Test.UnitTesting
             Assert.IsNotNull(f2);
             Assert.IsTrue(f2.nombre == db.Imagenes.FirstOrDefault().ImagenData.Id.ToString() + ".jpg");
 
-            logica.cerrarSesion(token);
+          //  logica.cerrarSesion(token);
         }
 
         /// <summary>
@@ -1073,7 +1073,7 @@ namespace Test.UnitTesting
             Assert.IsNotNull(f2);
             Assert.IsTrue(f2.nombre == db.Audios.FirstOrDefault().AudioData.Id.ToString() + ".mp3");
 
-            logica.cerrarSesion(token);
+           // logica.cerrarSesion(token);
         }
 
         /// <summary>
@@ -1197,7 +1197,7 @@ namespace Test.UnitTesting
             Assert.IsNotNull(f2);
             Assert.IsTrue(f2.nombre == db.Videos.FirstOrDefault().VideoData.Id.ToString() + ".mp4");
 
-            logica.cerrarSesion(token);
+          //  logica.cerrarSesion(token);
         }
 
 
