@@ -58,22 +58,6 @@ namespace Utils.Notifications
                         topicFinal, nombreUsuario, responseString);
                 }
 
-                //string mensaje = responseString.Split(':')[0].ToString();
-                //if (mensaje != "{\"message_id\"")
-                //{
-                //    LogsManager.AgregarLogNotificationDessuscripcionUsuarioError("vacio", "servidor",
-                //       "Utils.Notitications", "RemoveUserFromTopic", 0,
-                //       "sendNotification", "Error al enviar mensaje por taza superada",
-                //       MensajesParaFE.LogNotificacionesDessuscripcionUsuarioTopicError,
-                //        topicFinal, nombreUsuario, response.ToString());
-                //    semaforoDessucripcion.WaitOne();
-                //    Thread.Sleep(_seconds * 1000);
-                //    semaforoDessucripcion.Release();
-                //    RemoveUserFromTopic(topic, tokenFirebase, nombreUsuario);
-                //    // throw new Exception("Al enviar una notifiacion la respuesta del servidor NO contiene el id del mensjae, entonces la respuesta es negativa.");
-                //}
-                //else
-
             }
         }
 
@@ -101,18 +85,7 @@ namespace Utils.Notifications
             //EstadoSistema();
             sendNotification(cod, pk, topic, null);
         }
-
-        private void EstadoSistema()
-        {
-            MaximoPermitidoConsecutivo++;
-            if (MaximoPermitidoConsecutivo == 5)
-            {
-                semaforo.WaitOne();
-                Thread.Sleep(1000);
-                _pool.Release();
-                MaximoPermitidoConsecutivo = 0;
-            }
-        }
+        
 
         /// <summary>
         /// Implementacion para enviar de forma asyncronica.
