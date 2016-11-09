@@ -18,6 +18,6 @@
 
         public double Latitud { get; set; }
 
-        public virtual ExtensionEvento Extension { get; set; }
+        public virtual ExtensionEvento ExtensionEvento { get; set; }
     }
 }

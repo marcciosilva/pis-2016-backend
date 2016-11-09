@@ -119,29 +119,23 @@
                 var videoDEBD = db.Videos.Find(video.Entity.Id);
                 if (videoDEBD != null)
                 {
-                    if (videoDEBD.Evento != null)
+                    if (videoDEBD.ExtensionEvento != null)
                     {
-                        // Para los recursos asociados a la extension genero una notificacion.
-                        foreach (var item in videoDEBD.Evento.ExtensionesEvento)
+                        // Para cada extension del evento modificado.
+                        foreach (var item in videoDEBD.ExtensionEvento.Evento.ExtensionesEvento)
                         {
+                            // Para cada recurso de la extension.
                             foreach (var recurso in item.Recursos)
                             {
-                                GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + recurso.Id);
-                            }
-
+                                // Si hay un usuario conectado con ese recurso.
+                                if (recurso.Estado == EstadoRecurso.NoDisponible)
+                                {
+                                    GestorNotificaciones.SendMessage(cod, videoDEBD.ExtensionEvento.Id.ToString(), "recurso-" + recurso.Id);
+                                }
+                            }                            
                             // Para la zona asociada a la extensen le envia una notificacion.
-                            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
+                            GestorNotificaciones.SendMessage(cod, videoDEBD.ExtensionEvento.Id.ToString(), "zona-" + item.Zona.Id);
                         }
-                    }
-                    else
-                    {
-                        foreach (var recurso in videoDEBD.ExtensionEvento.Recursos)
-                        {
-                            GestorNotificaciones.SendMessage(cod, videoDEBD.ExtensionEvento.Id.ToString(), "recurso-" + videoDEBD.ExtensionEvento.Id);
-                        }
-
-                        // Para la zona asociada a la extensen le envia una notificacion.
-                        GestorNotificaciones.SendMessage(cod, videoDEBD.ExtensionEvento.Id.ToString(), "zona-" + videoDEBD.ExtensionEvento.Zona.Id);
                     }
                 }
             }

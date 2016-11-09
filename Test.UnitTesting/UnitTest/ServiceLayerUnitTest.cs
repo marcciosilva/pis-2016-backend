@@ -717,8 +717,9 @@ namespace Test.UnitTesting
             var controller = new EventosController();
 
             DtoActualizarDescripcion descr = new DtoActualizarDescripcion() { descripcion = "descripcion", idExtension = 1 };
-
+                       
             // No autenticado.
+            controller.Request = new HttpRequestMessage();
             var resp1 = controller.ActualizarSegundaCategoria(1, 1);
             Assert.IsTrue(resp1.cod == 2);
 
@@ -733,6 +734,17 @@ namespace Test.UnitTesting
             var controller2 = new LoginController();
             var resp3 = controller2.Login(u);
             string token = ((DtoAutenticacion)resp3.response).accessToken;
+
+            // No autenticado.
+            controller.Request = new HttpRequestMessage();
+            var respC1 = controller.GetCategorias();
+            Assert.IsTrue(respC1.cod == 2);
+
+            // Correcto.
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Headers.Add("auth", token);
+            var respC2 = controller.GetCategorias();
+            Assert.IsTrue(respC2.cod == 0);
 
             // Loguear.
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = new List<DtoRecurso>() };
@@ -1117,23 +1129,37 @@ namespace Test.UnitTesting
             controller.Request = new HttpRequestMessage();
             var resp11 = controller.GetImageData(1);
             Assert.IsTrue(resp11.StatusCode == HttpStatusCode.Unauthorized);
+            var resp11T = controller.GetImageThumbnail(1);
+            Assert.IsTrue(resp11T.StatusCode == HttpStatusCode.Unauthorized);
 
             // Token invalido.
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", "tokenInvalido");
             var resp12 = controller.GetImageData(1);
-            Assert.IsTrue(resp12.StatusCode == HttpStatusCode.Unauthorized);            
+            Assert.IsTrue(resp12.StatusCode == HttpStatusCode.Unauthorized);
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Headers.Add("auth", "tokenInvalido");
+            var resp12T = controller.GetImageThumbnail(1);
+            Assert.IsTrue(resp12T.StatusCode == HttpStatusCode.Unauthorized);
 
             // Imagen invalida.
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             var resp14 = controller.GetImageData(-1);
             Assert.IsTrue(resp14.StatusCode == HttpStatusCode.NotFound);
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Headers.Add("auth", token);
+            var resp14T = controller.GetImageThumbnail(-1);
+            Assert.IsTrue(resp14T.StatusCode == HttpStatusCode.NotFound);
 
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             var resp16 = controller.GetImageData(1);
             Assert.IsTrue(resp16.StatusCode == HttpStatusCode.OK);
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Headers.Add("auth", token);
+            var resp16T = controller.GetImageThumbnail(1);
+            Assert.IsTrue(resp16T.StatusCode == HttpStatusCode.OK);
 
             controller2.Request = new HttpRequestMessage();
             controller2.Request.Headers.Add("auth", token);
@@ -1148,6 +1174,10 @@ namespace Test.UnitTesting
             controller.Request.Headers.Add("auth", token);
             var resp13 = controller.GetImageData(1);
             Assert.IsTrue(resp13.StatusCode == HttpStatusCode.Unauthorized);
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Headers.Add("auth", token);
+            var resp13T = controller.GetImageThumbnail(1);
+            Assert.IsTrue(resp13T.StatusCode == HttpStatusCode.Unauthorized);
         }
 
 

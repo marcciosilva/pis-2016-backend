@@ -213,7 +213,7 @@ namespace Servicios.Controllers
         /// Servicio para obtener informacion necesaria para crear un evento.
         /// </summary>
         /// <returns>Lista de zonas y sectores, categorias y departamentos</returns>
-        [CustomAuthorizeAttribute("infoCreacionEvento")]
+        [CustomAuthorizeAttribute("crearEvento")]
         [HttpGet]
         [Route("eventos/infocreacionevento")]
         [LogFilter]
@@ -449,6 +449,36 @@ namespace Servicios.Controllers
             {
                 dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "GestionarRecursos", "Hubo un error al intentar gestionar recursos de una extension, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorGestionarRecursosCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorGestionarRecursos));
+            }
+        }
+
+
+        /// <summary>
+        /// Servicio para obtener informacion necesaria para crear un evento.
+        /// </summary>
+        /// <returns>Lista de zonas y sectores, categorias y departamentos</returns>
+        [CustomAuthorizeAttribute("actualizarSegundaCategoria")]
+        [HttpGet]
+        [Route("eventos/getcategorias")]
+        [LogFilter]
+        public DtoRespuesta GetCategorias()
+        {
+            IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
+            try
+            {
+                if (token == null)
+                {
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                }
+
+                var info = dbAL.getCategorias();
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, info);
+            }
+            catch (Exception e)
+            {
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "GetInfoCreacionEvento", "Hubo un error al intentar obtener la informacion para crear un evento, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorInfoCreacionEventoCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorInfoCreacionEvento));
             }
         }
 

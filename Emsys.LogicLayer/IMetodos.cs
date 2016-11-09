@@ -245,6 +245,12 @@ namespace Emsys.LogicLayer
         bool gestionarRecursos(string token, DtoRecursosExtension recursos);
 
         /// <summary>
+        /// Devuelve una lista con las categorias existentes.
+        /// </summary>
+        /// <returns>Lista con los dto de las categorias</returns>
+        ICollection<DtoCategoria> getCategorias();
+
+        /// <summary>
         /// Permite a un despachador actualizar la segunda categoria de una extension.
         /// </summary>
         /// <param name="token">Token del despachador</param>

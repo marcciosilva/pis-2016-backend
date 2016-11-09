@@ -59,7 +59,7 @@ namespace Servicios.Controllers
         /// Agrega un archivo de imagen a una extension del servidor, recibe la imagen y el id de la extension como multipart form data.
         /// </summary>
         /// <returns></returns>
-        [CustomAuthorizeAttribute("adjuntarMultimedia")]
+        [CustomAuthorizeAttribute("adjuntarImagen")]
         [LogFilter]
         [HttpPost]
         [Route("adjuntos/adjuntarimagen")]
@@ -109,7 +109,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="aud"></param>
         /// <returns></returns>
-        [CustomAuthorizeAttribute("adjuntarMultimedia")]
+        [CustomAuthorizeAttribute("adjuntarAudio")]
         [LogFilter]
         [HttpPost]
         [Route("adjuntos/adjuntaraudio")]
@@ -158,7 +158,7 @@ namespace Servicios.Controllers
         /// Agrega un archivo de video a una extension del servidor, recibe el video y el id de la extension como multipart form data.
         /// </summary>
         /// <returns></returns>
-        [CustomAuthorizeAttribute("adjuntarMultimedia")]
+        [CustomAuthorizeAttribute("adjuntarVideo")]
         [LogFilter]
         [HttpPost]
         [Route("adjuntos/adjuntarvideo")]

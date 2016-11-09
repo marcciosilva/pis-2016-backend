@@ -125,14 +125,20 @@
                 var extensionEnBD = db.ExtensionesEvento.Find(extension.Entity.Id);
                 if (extensionEnBD != null)
                 {
-                    // Para los recursos asociados a la extension genero una notificacion.
-                    foreach (var item in extensionEnBD.Recursos)
+                    // Para cada extension del evento modificado.
+                    foreach (var item in extensionEnBD.Evento.ExtensionesEvento)
                     {
-                        GestorNotificaciones.SendMessage(cod, extension.Entity.Id.ToString(), "recurso-" + item.Id);
+                        // Para cada recurso de la extension.
+                        foreach (var recurso in item.Recursos)
+                        {
+                            if (recurso.Estado == EstadoRecurso.NoDisponible)
+                            {
+                                GestorNotificaciones.SendMessage(cod, extensionEnBD.Id.ToString(), "recurso-" + recurso.Id);
+                            }
+                        }
+                        // Para la zona asociada a la extensen le envia una notificacion.
+                        GestorNotificaciones.SendMessage(cod, extensionEnBD.Id.ToString(), "zona-" + item.Zona.Id);
                     }
-
-                    // Para la zona asociada a la extensen le envia una notificacion.
-                    GestorNotificaciones.SendMessage(cod, extension.Entity.Id.ToString(), "zona-" + extensionEnBD.Zona.Id);
                 }
             }
         }

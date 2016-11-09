@@ -925,11 +925,27 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+            try
+            {
+                logica.getImageThumbnail(null, 1);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
 
             // Token invalido.
             try
             {
                 logica.getImageData("tokenIncorrecto", 1);
+            }
+            catch (TokenInvalidoException e)
+            {
+                Assert.IsTrue(true);
+            }
+            try
+            {
+                logica.getImageThumbnail("tokenIncorrecto", 1);
             }
             catch (TokenInvalidoException e)
             {
@@ -945,16 +961,28 @@ namespace Test.UnitTesting
             {
                 Assert.IsTrue(true);
             }
+            try
+            {
+                logica.getImageThumbnail(token, -1);
+            }
+            catch (ImagenInvalidaException e)
+            {
+                Assert.IsTrue(true);
+            }
 
             DtoApplicationFile f = logica.getImageData(token, 1);
+            DtoApplicationFile fT = logica.getImageThumbnail(token, 1);
             Assert.IsNotNull(f);
+            Assert.IsNotNull(fT);
             Assert.IsTrue(f.nombre == db.Imagenes.FirstOrDefault().ImagenData.Id.ToString() + ".jpg");
 
             // Imagen en evento.
-            db.Evento.FirstOrDefault().Imagenes.Add(new Imagen() { Evento = db.Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, ImagenData = db.ExtensionesEvento.FirstOrDefault().Imagenes.FirstOrDefault().ImagenData, Usuario = db.Usuarios.FirstOrDefault() });
+            db.Evento.FirstOrDefault().Imagenes.Add(new Imagen() { Evento = db.Evento.FirstOrDefault(), FechaEnvio = DateTime.Now, ImagenThumbnail = db.ExtensionesEvento.FirstOrDefault().Imagenes.FirstOrDefault().ImagenThumbnail, ImagenData = db.ExtensionesEvento.FirstOrDefault().Imagenes.FirstOrDefault().ImagenData, Usuario = db.Usuarios.FirstOrDefault() });
             db.SaveChanges();
             DtoApplicationFile f2 = logica.getImageData(token, 2);
             Assert.IsNotNull(f2);
+            DtoApplicationFile fT2 = logica.getImageThumbnail(token, 2);
+            Assert.IsNotNull(fT2);
             Assert.IsTrue(f2.nombre == db.Imagenes.FirstOrDefault().ImagenData.Id.ToString() + ".jpg");
 
           //  logica.cerrarSesion(token);
@@ -1031,7 +1059,7 @@ namespace Test.UnitTesting
             Assert.IsTrue(db.ExtensionesEvento.FirstOrDefault().Audios.Count() == cantAdjAudio + 1);
             Assert.IsTrue(db.ApplicationFiles.Count() == cantFiles + 1);
 
-            // Obtener data de la imagen.
+            // Obtener data del audio.
             try
             {
                 logica.getAudioData(null, 1);
@@ -1155,7 +1183,7 @@ namespace Test.UnitTesting
             Assert.IsTrue(db.ApplicationFiles.Count() == cantFiles + 1);
 
 
-            // Obtener data de la imagen.
+            // Obtener data del video.
             try
             {
                 logica.getVideoData(null, 1);
@@ -1999,6 +2027,9 @@ namespace Test.UnitTesting
 
             var ok = logic.tomarExtension(token, 1);
 
+            var ok2 = logic.getCategorias();
+            Assert.IsTrue(ok2 != null);
+
             // Sin token.
             try
             {
@@ -2055,7 +2086,7 @@ namespace Test.UnitTesting
             Categoria cat3 = e1.SegundaCategoria;
             Assert.IsTrue(cat3 == null);
 
-            var ok2 = logic.liberarExtension(token, 1);
+            var ok3 = logic.liberarExtension(token, 1);
             logic.cerrarSesion(token);
         }
 

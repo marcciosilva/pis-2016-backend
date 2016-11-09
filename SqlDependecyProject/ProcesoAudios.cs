@@ -117,29 +117,22 @@
                 var audioEnDb = db.Audios.Find(audio.Entity.Id);
                 if (audioEnDb != null)
                 {
-                    if (audioEnDb.Evento != null)
+                    if (audioEnDb.ExtensionEvento != null)
                     {
-                        // Para los recursos asociados a la extension genero una notificacion.
-                        foreach (var item in audioEnDb.Evento.ExtensionesEvento)
+                        // Para cada extension del evento modificado.
+                        foreach (var item in audioEnDb.ExtensionEvento.Evento.ExtensionesEvento)
                         {
+                            // Para cada recurso de la extension.
                             foreach (var recurso in item.Recursos)
                             {
-                                GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + item.Id);
+                                if (recurso.Estado == EstadoRecurso.NoDisponible)
+                                {
+                                    GestorNotificaciones.SendMessage(cod, audioEnDb.ExtensionEvento.Id.ToString(), "recurso-" + recurso.Id);
+                                }
                             }
-
                             // Para la zona asociada a la extensen le envia una notificacion.
-                            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
+                            GestorNotificaciones.SendMessage(cod, audioEnDb.ExtensionEvento.Id.ToString(), "zona-" + item.Zona.Id);
                         }
-                    }
-                    else
-                    {
-                        foreach (var recurso in audioEnDb.ExtensionEvento.Recursos)
-                        {
-                            GestorNotificaciones.SendMessage(cod, audioEnDb.ExtensionEvento.Id.ToString(), "recurso-" + audioEnDb.ExtensionEvento.Id);
-                        }
-
-                        // Para la zona asociada a la extensen le envia una notificacion.
-                        GestorNotificaciones.SendMessage(cod, audioEnDb.ExtensionEvento.Id.ToString(), "zona-" + audioEnDb.ExtensionEvento.Zona.Id);
                     }
                 }
             }

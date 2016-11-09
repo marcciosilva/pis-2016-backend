@@ -1466,6 +1466,21 @@ namespace Emsys.LogicLayer
             }
         }
 
+        public ICollection<DtoCategoria> getCategorias()
+        {
+            using (var context = new EmsysContext())
+            {               
+                ICollection<DtoCategoria> cats = new List<DtoCategoria>();
+               
+                // Obtiene categorias.
+                foreach (Categoria c in context.Categorias)
+                {
+                    cats.Add(DtoGetters.getDtoCategoria(c));
+                }               
+                return cats;
+            }
+        }
+
         public bool actualizarSegundaCategoria(string token, int idExtension, int idCategoria)
         {
             using (var context = new EmsysContext())

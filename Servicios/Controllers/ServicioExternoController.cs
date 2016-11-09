@@ -7,6 +7,7 @@ using DataTypeObject;
 using Emsys.LogicLayer;
 using Servicios.Filtros;
 using Servicios.ServicioExterno;
+using System.ServiceModel;
 
 namespace Servicios.Controllers
 {
@@ -40,6 +41,12 @@ namespace Servicios.Controllers
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, result);
             }
             catch (SoapException e)
+            {
+                IMetodos dbAL = new Metodos();
+                dbAL.AgregarLogError(ObtenerToken.GetToken(Request), "", "Emsys.ServiceLayer", "ServicioExternoController", 0, "ConsumirServicioExterno", "Hubo un error al intentar consumir comunicarse con el servidor externo, se adjunta excepcion: " + e.Message, MensajesParaFE.ServicioExternoNoDisponibleCod);
+                return new DtoRespuesta(MensajesParaFE.ServicioExternoNoDisponibleCod, new Mensaje(MensajesParaFE.ServicioExternoNoDisponible));
+            }
+            catch (EndpointNotFoundException e)
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError(ObtenerToken.GetToken(Request), "", "Emsys.ServiceLayer", "ServicioExternoController", 0, "ConsumirServicioExterno", "Hubo un error al intentar consumir comunicarse con el servidor externo, se adjunta excepcion: " + e.Message, MensajesParaFE.ServicioExternoNoDisponibleCod);
