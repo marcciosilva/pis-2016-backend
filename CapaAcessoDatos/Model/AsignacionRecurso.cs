@@ -16,8 +16,6 @@
 
         public virtual ExtensionEvento Extension { get; set; }
         
-        public string Descripcion { get; set; }
-
         public DateTime? HoraArribo { get; set; }
         
         public bool ActualmenteAsignado { get; set; }

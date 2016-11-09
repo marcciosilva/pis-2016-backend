@@ -264,8 +264,7 @@ namespace Emsys.DataAccesLayer.Core
                     AsignacionRecursoDescripcion = new List<AsignacionRecursoDescripcion>(),
                     Extension = ext1,
                     Recurso = rec1,
-                    HoraArribo = null,
-                    Descripcion = string.Empty
+                    HoraArribo = null
                 });
                 ExtensionEvento ext2 = new ExtensionEvento()
                 {

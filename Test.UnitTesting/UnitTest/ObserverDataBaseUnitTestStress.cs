@@ -93,14 +93,12 @@ namespace Test.UnitTesting
                 {
                     ActualmenteAsignado = true,
                     AsignacionRecursoDescripcion = new List<AsignacionRecursoDescripcion>(),
-                    Descripcion = "",
                     Extension = db.ExtensionesEvento.FirstOrDefault(),
                     HoraArribo = DateTime.Now,
                     Recurso = db.Recursos.FirstOrDefault(),
                 };
                 db.AsignacionesRecursos.Add(ar);
                 db.SaveChanges();
-                ar.Descripcion = "nueva";
                 db.SaveChanges();
 
                 ////Thread.Sleep(10000);

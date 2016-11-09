@@ -139,20 +139,18 @@ namespace Test.UnitTesting
                 {
                     ActualmenteAsignado = true,
                     AsignacionRecursoDescripcion = new List<AsignacionRecursoDescripcion>(),
-                    Descripcion = "",
                     Extension = db.ExtensionesEvento.FirstOrDefault(),
                     HoraArribo = DateTime.Now,
                     Recurso = db.Recursos.FirstOrDefault(),
                 };
                 db.AsignacionesRecursos.Add(ar);
                 db.SaveChanges();
-                ar.Descripcion = "nueva";
                 db.SaveChanges();
                 Thread.Sleep(3000);
 
                 ////Thread.Sleep(10000);
                 LogicLayerUnitTest test = new LogicLayerUnitTest();
-                test.AdjuntarAudioTest();//  1
+                test.AdjuntarAudioTest();
                 Thread.Sleep(3000);
                 test.AdjuntarVideoTest();
                 Thread.Sleep(3000);
