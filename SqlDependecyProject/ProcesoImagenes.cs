@@ -125,12 +125,12 @@
                         foreach (var item in imagenEnBD.ExtensionEvento.Evento.ExtensionesEvento)
                         {
                             // Para cada recurso de la extension.
-                            foreach (var recurso in item.Recursos)
+                            foreach (var asig in item.AsignacionesRecursos)
                             {
                                 // Si hay un usuario conectado con ese recurso.
-                                if (recurso.Estado == EstadoRecurso.NoDisponible)
+                                if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
                                 {
-                                    GestorNotificaciones.SendMessage(cod, imagenEnBD.ExtensionEvento.Id.ToString(), "recurso-" + recurso.Id);
+                                    GestorNotificaciones.SendMessage(cod, imagenEnBD.ExtensionEvento.Id.ToString(), "recurso-" + asig.Recurso.Id);
                                 }
                             }
 

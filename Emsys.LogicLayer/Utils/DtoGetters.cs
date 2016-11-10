@@ -268,9 +268,12 @@
         public static DtoExtension getDtoExtension(ExtensionEvento ext)
         {
             List<string> recursos = new List<string>();
-            foreach (Recurso r in ext.Recursos)
+            foreach (AsignacionRecurso a in ext.AsignacionesRecursos)
             {
-                recursos.Add(r.Codigo);
+                if (a.ActualmenteAsignado == true)
+                {
+                    recursos.Add(a.Recurso.Codigo);
+                }
             }
 
             List<DtoAsignacionRecurso> asignaciones = new List<DtoAsignacionRecurso>();

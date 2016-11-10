@@ -274,12 +274,12 @@ namespace Emsys.LogicLayer
                 // Si el usuario esta conectado como recurso.
                 if (user.Recurso.Count() > 0)
                 {
-                    foreach (ExtensionEvento ext in user.Recurso.FirstOrDefault().ExtensionesEventos)
+                    foreach (AsignacionRecurso asig in user.Recurso.FirstOrDefault().AsignacionesRecurso)
                     {
-                        if ((ext.Estado != EstadoExtension.Cerrado) && (!eventosAgregados.Contains(ext.Evento.Id)))
+                        if ((asig.Extension.Estado != EstadoExtension.Cerrado) && (!eventosAgregados.Contains(asig.Extension.Evento.Id)))
                         {
-                            eventos.Add(DtoGetters.getDtoEvento(ext.Evento));
-                            eventosAgregados.Add(ext.Evento.Id);
+                            eventos.Add(DtoGetters.getDtoEvento(asig.Extension.Evento));
+                            eventosAgregados.Add(asig.Extension.Evento.Id);
                         }
                     }
                 }
@@ -456,10 +456,19 @@ namespace Emsys.LogicLayer
                 {
                     throw new ExtensionInvalidaException();
                 }
-
-                if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                if (user.Recurso.Count > 0)
                 {
-                    throw new UsuarioNoAutorizadoException();
+                    if (!TieneAcceso.estaAsignadoExtension(user.Recurso.FirstOrDefault(), ext))
+                    {
+                        throw new UsuarioNoAutorizadoException();
+                    }
+                }
+                else
+                {
+                    if (!TieneAcceso.estaDespachandoExtension(user, ext))
+                    {
+                        throw new UsuarioNoAutorizadoException();
+                    }
                 }
 
                 GeoUbicacion geoU = new GeoUbicacion() { Usuario = user, FechaEnvio = DateTime.Now, Latitud = ubicacion.latitud, Longitud = ubicacion.longitud };
@@ -717,9 +726,19 @@ namespace Emsys.LogicLayer
                     throw new ExtensionInvalidaException();
                 }
 
-                if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                if (user.Recurso.Count > 0)
                 {
-                    throw new UsuarioNoAutorizadoException();
+                    if (!TieneAcceso.estaAsignadoExtension(user.Recurso.FirstOrDefault(), ext))
+                    {
+                        throw new UsuarioNoAutorizadoException();
+                    }
+                }
+                else
+                {
+                    if (!TieneAcceso.estaDespachandoExtension(user, ext))
+                    {
+                        throw new UsuarioNoAutorizadoException();
+                    }
                 }
 
                 string extArchivo = Path.GetExtension(imgN.nombre);
@@ -779,9 +798,19 @@ namespace Emsys.LogicLayer
                     throw new ExtensionInvalidaException();
                 }
 
-                if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                if (user.Recurso.Count > 0)
                 {
-                    throw new UsuarioNoAutorizadoException();
+                    if (!TieneAcceso.estaAsignadoExtension(user.Recurso.FirstOrDefault(), ext))
+                    {
+                        throw new UsuarioNoAutorizadoException();
+                    }
+                }
+                else
+                {
+                    if (!TieneAcceso.estaDespachandoExtension(user, ext))
+                    {
+                        throw new UsuarioNoAutorizadoException();
+                    }
                 }
 
                 string extArchivo = Path.GetExtension(vidN.nombre);
@@ -839,9 +868,19 @@ namespace Emsys.LogicLayer
                     throw new ExtensionInvalidaException();
                 }
 
-                if ((!TieneAcceso.estaAsignadoExtension(user, ext)) && (!TieneAcceso.estaDespachandoExtension(user, ext)))
+                if (user.Recurso.Count > 0)
                 {
-                    throw new UsuarioNoAutorizadoException();
+                    if (!TieneAcceso.estaAsignadoExtension(user.Recurso.FirstOrDefault(), ext))
+                    {
+                        throw new UsuarioNoAutorizadoException();
+                    }
+                }
+                else
+                {
+                    if (!TieneAcceso.estaDespachandoExtension(user, ext))
+                    {
+                        throw new UsuarioNoAutorizadoException();
+                    }
                 }
 
                 string extArchivo = Path.GetExtension(audN.nombre);
@@ -895,7 +934,7 @@ namespace Emsys.LogicLayer
                     return false;
                 }
 
-                if (!TieneAcceso.estaAsignadoExtension(user, ext))
+                if (!TieneAcceso.estaAsignadoExtension(user.Recurso.FirstOrDefault(), ext))
                 {
                     throw new UsuarioNoAutorizadoException();
                 }
@@ -1072,7 +1111,7 @@ namespace Emsys.LogicLayer
                     return false;
                 }
 
-                if (!TieneAcceso.estaAsignadoExtension(user, ext))
+                if (!TieneAcceso.estaAsignadoExtension(user.Recurso.FirstOrDefault(), ext))
                 {
                     throw new ExtensionInvalidaException();
                 }
@@ -1369,7 +1408,7 @@ namespace Emsys.LogicLayer
 
                 foreach (Recurso r in context.Recursos)
                 {
-                    if (r.ExtensionesEventos.Contains(ext))
+                    if (TieneAcceso.estaAsignadoExtension(r, ext))
                     {
                         asignados.Add(DtoGetters.getDtoRecurso(r));
                     }
@@ -1419,20 +1458,17 @@ namespace Emsys.LogicLayer
                 foreach (DtoRecurso r in recursos.recursosAsignados)
                 {
                     Recurso rec = context.Recursos.FirstOrDefault(rb => rb.Id == r.id);
-                    if ((rec == null) || (rec.EstadoAsignacion == EstadoAsignacionRecurso.Operativo) || (ext.Recursos.Contains(rec)))
+                    AsignacionRecurso ar = ext.AsignacionesRecursos.FirstOrDefault(a => a.Recurso.Id == rec.Id);
+                    if ((rec == null) || (rec.EstadoAsignacion == EstadoAsignacionRecurso.Operativo) || ((ar != null) && (ar.ActualmenteAsignado == true)))
                     {
                         throw new ArgumentoInvalidoException();
                     }
-
-                    ext.Recursos.Add(rec);
-                    AsignacionRecurso ar = ext.AsignacionesRecursos.FirstOrDefault(a => a.Recurso.Id == rec.Id);
-
+                    
                     // Si el recurso no habia estado asignado a la extension crea una nueva AsignacionRecurso.
                     if (ar == null)
                     {
                         ext.AsignacionesRecursos.Add(new AsignacionRecurso() { Recurso = rec, Extension = ext, ActualmenteAsignado = true });
                     }
-
                     // Si ya estuvo asignado.
                     else
                     {
@@ -1445,18 +1481,13 @@ namespace Emsys.LogicLayer
                 foreach (DtoRecurso r in recursos.recursosNoAsignados)
                 {
                     Recurso rec = context.Recursos.FirstOrDefault(rb => rb.Id == r.id);
-                    if ((rec == null) || (!ext.Recursos.Contains(rec)))
+                    AsignacionRecurso ar = ext.AsignacionesRecursos.FirstOrDefault(a => a.Recurso.Id == rec.Id);
+                    if ((rec == null) || (ar == null))
                     {
                         throw new ArgumentoInvalidoException();
-                    }
-
-                    ext.Recursos.Remove(rec);
-                    AsignacionRecurso ar = ext.AsignacionesRecursos.FirstOrDefault(a => a.Recurso.Id == rec.Id);
-                    if (ar != null)
-                    {
-                        ar.ActualmenteAsignado = false;
-                        ar.HoraArribo = null;
-                    }
+                    }                    
+                    ar.ActualmenteAsignado = false;
+                    ar.HoraArribo = null;
                 }
 
                 ext.TimeStamp = DateTime.Now;
@@ -1632,10 +1663,10 @@ namespace Emsys.LogicLayer
                 }
 
                 // Libero recursos de extension.
-                foreach (Recurso r in ext.Recursos)
+                foreach (AsignacionRecurso ar in ext.AsignacionesRecursos)
                 {
-                    r.ExtensionesEventos.Remove(ext);
-                    r.EstadoAsignacion = EstadoAsignacionRecurso.Libre;
+                    ar.ActualmenteAsignado = false;
+                    ar.Recurso.EstadoAsignacion = EstadoAsignacionRecurso.Libre;
                 }
 
                 // Libero al despachador.

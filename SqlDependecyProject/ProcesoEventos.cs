@@ -127,11 +127,11 @@
                     foreach (var extension in eventoBD.ExtensionesEvento)
                     {
                         // Para cada recurso de la extension.
-                        foreach (var recurso in extension.Recursos)
+                        foreach (var asig in extension.AsignacionesRecursos)
                         {
-                            if (recurso.Estado == EstadoRecurso.NoDisponible)
+                            if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
                             {
-                                GestorNotificaciones.SendMessage(cod, eventoBD.Id.ToString(), "recurso-" + recurso.Id.ToString());
+                                GestorNotificaciones.SendMessage(cod, eventoBD.Id.ToString(), "recurso-" + asig.Recurso.Id.ToString());
                             }
                         }
 

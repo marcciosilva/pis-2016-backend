@@ -37,9 +37,7 @@
         public DateTime TimeStamp { get; set; }
 
         public virtual Categoria SegundaCategoria { get; set; }
-
-        public virtual ICollection<Recurso> Recursos { get; set; }
-
+        
         public virtual ICollection<Imagen> Imagenes { get; set; }
 
         public virtual ICollection<Video> Videos { get; set; }

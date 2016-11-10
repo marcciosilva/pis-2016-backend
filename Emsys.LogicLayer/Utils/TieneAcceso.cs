@@ -26,8 +26,8 @@ namespace Emsys.LogicLayer.Utils
                     // Si el usuario esta conectado como recurso.
                     if (user.Recurso.Count() > 0)
                     {
-                        ExtensionEvento ext = user.Recurso.FirstOrDefault().ExtensionesEventos.FirstOrDefault(e => e.Evento.Id == evento.Id);
-                        if ((ext != null) && (ext.Estado != EstadoExtension.Cerrado))
+                        AsignacionRecurso asig = user.Recurso.FirstOrDefault().AsignacionesRecurso.FirstOrDefault(a=>a.Extension.Evento.Id == evento.Id);
+                        if ((asig != null) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
                         {
                             return true;
                         }
@@ -64,8 +64,8 @@ namespace Emsys.LogicLayer.Utils
                 {
                     if (user.Recurso.Count() > 0)
                     {
-                        ExtensionEvento ext = user.Recurso.FirstOrDefault().ExtensionesEventos.FirstOrDefault(e => e.Evento.Id == extension.Id);
-                        if ((ext != null) && (ext.Estado != EstadoExtension.Cerrado))
+                        AsignacionRecurso asig = user.Recurso.FirstOrDefault().AsignacionesRecurso.FirstOrDefault(a => a.Extension.Id == extension.Id);
+                        if ((asig != null) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
                         {
                             return true;
                         }
@@ -91,22 +91,17 @@ namespace Emsys.LogicLayer.Utils
         /// <param name="user">Usuario</param>
         /// <param name="extension">Extension</param>
         /// <returns>Devuelve verdadero si el usuario esta logueado como recurso y asignado a la extension, falso en caso contrario</returns>
-        public static bool estaAsignadoExtension(Usuario user, ExtensionEvento extension)
+        public static bool estaAsignadoExtension(Recurso rec, ExtensionEvento extension)
         {
             using (var context = new EmsysContext())
             {
-                if (user == null)
+                if (rec == null)
                 {
                     return false;
                 }
 
-                if (user.Recurso.Count() == 0)
-                {
-                    return false;
-                }
-
-                ExtensionEvento ext = user.Recurso.FirstOrDefault().ExtensionesEventos.FirstOrDefault(e => e.Id == extension.Id);
-                if ((ext != null) && (ext.Estado != EstadoExtension.Cerrado))
+                AsignacionRecurso asig = rec.AsignacionesRecurso.FirstOrDefault(a => a.Extension.Id == extension.Id);
+                if ((asig != null) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
                 {
                     return true;
                 }

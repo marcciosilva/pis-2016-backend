@@ -121,11 +121,11 @@
                     foreach (var item in asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Evento.ExtensionesEvento)
                     {
                         // Para cada recurso de la extension.
-                        foreach (var recurso in item.Recursos)
+                        foreach (var asig in item.AsignacionesRecursos)
                         {
-                            if (recurso.Estado == EstadoRecurso.NoDisponible)
+                            if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
                             {
-                                GestorNotificaciones.SendMessage(cod, asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Id.ToString(), "recurso-" + recurso.Id);
+                                GestorNotificaciones.SendMessage(cod, asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Id.ToString(), "recurso-" + asig.Recurso.Id);
                             }
                         }
                         // Para la zona asociada a la extensen le envia una notificacion.
