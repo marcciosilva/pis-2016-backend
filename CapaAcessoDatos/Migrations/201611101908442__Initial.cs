@@ -83,7 +83,6 @@ namespace Emsys.DataAccesLayer.Core
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Descripcion = c.String(),
                         HoraArribo = c.DateTime(),
                         ActualmenteAsignado = c.Boolean(nullable: false),
                         Extension_Id = c.Int(),
@@ -445,124 +444,7 @@ namespace Emsys.DataAccesLayer.Core
         
         public override void Down()
         {
-            DropForeignKey("dbo.LogNotification", "LogNotificationPrevio_Id", "dbo.LogNotification");
-            DropForeignKey("dbo.Zonas", "Usuario_Id", "dbo.Usuarios");
-            DropForeignKey("dbo.Logs", "Usuario_Id", "dbo.Usuarios");
-            DropForeignKey("dbo.GeoUbicaciones", "Usuario_Id", "dbo.Usuarios");
-            DropForeignKey("dbo.GeoUbicaciones", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
-            DropForeignKey("dbo.Extensiones_Evento", "Despachador_Id", "dbo.Usuarios");
-            DropForeignKey("dbo.Audios", "Usuario_Id", "dbo.Usuarios");
-            DropForeignKey("dbo.Audios", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
-            DropForeignKey("dbo.Videos", "VideoData_Id", "dbo.ApplicationFiles");
-            DropForeignKey("dbo.Videos", "Usuario_Id", "dbo.Usuarios");
-            DropForeignKey("dbo.Videos", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
-            DropForeignKey("dbo.Videos", "Evento_Id", "dbo.Eventos");
-            DropForeignKey("dbo.Eventos", "Usuario_Id", "dbo.Usuarios");
-            DropForeignKey("dbo.Zonas", "UnidadEjecutora_Id", "dbo.Unidades_Ejecutoras");
-            DropForeignKey("dbo.UnidadEjecutoraUsuarios", "Usuario_Id", "dbo.Usuarios");
-            DropForeignKey("dbo.UnidadEjecutoraUsuarios", "UnidadEjecutora_Id", "dbo.Unidades_Ejecutoras");
-            DropForeignKey("dbo.Sectores", "Zona_Id", "dbo.Zonas");
-            DropForeignKey("dbo.Extensiones_Evento", "Zona_Id", "dbo.Zonas");
-            DropForeignKey("dbo.Eventos", "Sector_Id", "dbo.Sectores");
-            DropForeignKey("dbo.Origen_Eventos", "Id", "dbo.Eventos");
-            DropForeignKey("dbo.Imagenes", "Usuario_Id", "dbo.Usuarios");
-            DropForeignKey("dbo.Imagenes", "ImagenThumbnail_Id", "dbo.ApplicationFiles");
-            DropForeignKey("dbo.Imagenes", "ImagenData_Id", "dbo.ApplicationFiles");
-            DropForeignKey("dbo.Imagenes", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
-            DropForeignKey("dbo.Imagenes", "Evento_Id", "dbo.Eventos");
-            DropForeignKey("dbo.Extensiones_Evento", "Evento_Id", "dbo.Eventos");
-            DropForeignKey("dbo.Eventos", "Departamento_Id", "dbo.Departamentos");
-            DropForeignKey("dbo.Extensiones_Evento", "SegundaCategoria_Id", "dbo.Categorias");
-            DropForeignKey("dbo.Eventos", "Categoria_Id", "dbo.Categorias");
-            DropForeignKey("dbo.Audios", "Evento_Id", "dbo.Eventos");
-            DropForeignKey("dbo.Audios", "AudioData_Id", "dbo.ApplicationFiles");
-            DropForeignKey("dbo.AsignacionesRecursos", "Recurso_Id", "dbo.Recursos");
-            DropForeignKey("dbo.Recursos", "Usuario_Id", "dbo.Usuarios");
-            DropForeignKey("dbo.GrupoRecursoUsuarios", "Usuario_Id", "dbo.Usuarios");
-            DropForeignKey("dbo.GrupoRecursoUsuarios", "GrupoRecurso_Id", "dbo.Grupos_Recursos");
-            DropForeignKey("dbo.GrupoRecursoRecursoes", "Recurso_Id", "dbo.Recursos");
-            DropForeignKey("dbo.GrupoRecursoRecursoes", "GrupoRecurso_Id", "dbo.Grupos_Recursos");
-            DropForeignKey("dbo.RecursoExtensionEventoes", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
-            DropForeignKey("dbo.RecursoExtensionEventoes", "Recurso_Id", "dbo.Recursos");
-            DropForeignKey("dbo.AsignacionesRecursos", "Extension_Id", "dbo.Extensiones_Evento");
-            DropForeignKey("dbo.AsignacionRecursoDescripcion", "AsignacionRecurso_Id", "dbo.AsignacionesRecursos");
-            DropForeignKey("dbo.UsuarioRols", "Rol_Id", "dbo.ApplicationRoles");
-            DropForeignKey("dbo.UsuarioRols", "Usuario_Id", "dbo.Usuarios");
-            DropForeignKey("dbo.PermisoRols", "Rol_Id", "dbo.ApplicationRoles");
-            DropForeignKey("dbo.PermisoRols", "Permiso_Id", "dbo.Permisos");
-            DropIndex("dbo.UnidadEjecutoraUsuarios", new[] { "Usuario_Id" });
-            DropIndex("dbo.UnidadEjecutoraUsuarios", new[] { "UnidadEjecutora_Id" });
-            DropIndex("dbo.GrupoRecursoUsuarios", new[] { "Usuario_Id" });
-            DropIndex("dbo.GrupoRecursoUsuarios", new[] { "GrupoRecurso_Id" });
-            DropIndex("dbo.GrupoRecursoRecursoes", new[] { "Recurso_Id" });
-            DropIndex("dbo.GrupoRecursoRecursoes", new[] { "GrupoRecurso_Id" });
-            DropIndex("dbo.RecursoExtensionEventoes", new[] { "ExtensionEvento_Id" });
-            DropIndex("dbo.RecursoExtensionEventoes", new[] { "Recurso_Id" });
-            DropIndex("dbo.UsuarioRols", new[] { "Rol_Id" });
-            DropIndex("dbo.UsuarioRols", new[] { "Usuario_Id" });
-            DropIndex("dbo.PermisoRols", new[] { "Rol_Id" });
-            DropIndex("dbo.PermisoRols", new[] { "Permiso_Id" });
-            DropIndex("dbo.LogNotification", new[] { "LogNotificationPrevio_Id" });
-            DropIndex("dbo.Logs", new[] { "Usuario_Id" });
-            DropIndex("dbo.GeoUbicaciones", new[] { "Usuario_Id" });
-            DropIndex("dbo.GeoUbicaciones", new[] { "ExtensionEvento_Id" });
-            DropIndex("dbo.Videos", new[] { "VideoData_Id" });
-            DropIndex("dbo.Videos", new[] { "Usuario_Id" });
-            DropIndex("dbo.Videos", new[] { "ExtensionEvento_Id" });
-            DropIndex("dbo.Videos", new[] { "Evento_Id" });
-            DropIndex("dbo.Zonas", new[] { "Usuario_Id" });
-            DropIndex("dbo.Zonas", new[] { "UnidadEjecutora_Id" });
-            DropIndex("dbo.Sectores", new[] { "Zona_Id" });
-            DropIndex("dbo.Origen_Eventos", new[] { "Id" });
-            DropIndex("dbo.Imagenes", new[] { "Usuario_Id" });
-            DropIndex("dbo.Imagenes", new[] { "ImagenThumbnail_Id" });
-            DropIndex("dbo.Imagenes", new[] { "ImagenData_Id" });
-            DropIndex("dbo.Imagenes", new[] { "ExtensionEvento_Id" });
-            DropIndex("dbo.Imagenes", new[] { "Evento_Id" });
-            DropIndex("dbo.Eventos", new[] { "Usuario_Id" });
-            DropIndex("dbo.Eventos", new[] { "Sector_Id" });
-            DropIndex("dbo.Eventos", new[] { "Departamento_Id" });
-            DropIndex("dbo.Eventos", new[] { "Categoria_Id" });
-            DropIndex("dbo.Audios", new[] { "Usuario_Id" });
-            DropIndex("dbo.Audios", new[] { "ExtensionEvento_Id" });
-            DropIndex("dbo.Audios", new[] { "Evento_Id" });
-            DropIndex("dbo.Audios", new[] { "AudioData_Id" });
-            DropIndex("dbo.Recursos", new[] { "Usuario_Id" });
-            DropIndex("dbo.AsignacionRecursoDescripcion", new[] { "AsignacionRecurso_Id" });
-            DropIndex("dbo.AsignacionesRecursos", new[] { "Recurso_Id" });
-            DropIndex("dbo.AsignacionesRecursos", new[] { "Extension_Id" });
-            DropIndex("dbo.Extensiones_Evento", new[] { "Despachador_Id" });
-            DropIndex("dbo.Extensiones_Evento", new[] { "Zona_Id" });
-            DropIndex("dbo.Extensiones_Evento", new[] { "Evento_Id" });
-            DropIndex("dbo.Extensiones_Evento", new[] { "SegundaCategoria_Id" });
-            DropTable("dbo.UnidadEjecutoraUsuarios");
-            DropTable("dbo.GrupoRecursoUsuarios");
-            DropTable("dbo.GrupoRecursoRecursoes");
-            DropTable("dbo.RecursoExtensionEventoes");
-            DropTable("dbo.UsuarioRols");
-            DropTable("dbo.PermisoRols");
-            DropTable("dbo.LogNotification");
-            DropTable("dbo.Logs");
-            DropTable("dbo.GeoUbicaciones");
-            DropTable("dbo.Videos");
-            DropTable("dbo.Unidades_Ejecutoras");
-            DropTable("dbo.Zonas");
-            DropTable("dbo.Sectores");
-            DropTable("dbo.Origen_Eventos");
-            DropTable("dbo.Imagenes");
-            DropTable("dbo.Departamentos");
-            DropTable("dbo.Categorias");
-            DropTable("dbo.Eventos");
-            DropTable("dbo.Audios");
-            DropTable("dbo.Grupos_Recursos");
-            DropTable("dbo.Recursos");
-            DropTable("dbo.AsignacionRecursoDescripcion");
-            DropTable("dbo.AsignacionesRecursos");
-            DropTable("dbo.Extensiones_Evento");
-            DropTable("dbo.Usuarios");
-            DropTable("dbo.Permisos");
-            DropTable("dbo.ApplicationRoles");
-            DropTable("dbo.ApplicationFiles");
+            
         }
     }
 }
