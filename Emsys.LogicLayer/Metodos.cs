@@ -271,6 +271,8 @@ namespace Emsys.LogicLayer
                 List<DtoEvento> eventos = new List<DtoEvento>();
                 List<int> eventosAgregados = new List<int>();
 
+                bool multimedia = autorizarUsuario(token, new string[]{"verMultimedia"});
+
                 // Si el usuario esta conectado como recurso.
                 if (user.Recurso.Count() > 0)
                 {
@@ -278,7 +280,7 @@ namespace Emsys.LogicLayer
                     {
                         if ((asig.Extension.Estado != EstadoExtension.Cerrado) && (!eventosAgregados.Contains(asig.Extension.Evento.Id)))
                         {
-                            eventos.Add(DtoGetters.getDtoEvento(asig.Extension.Evento));
+                            eventos.Add(DtoGetters.getDtoEvento(asig.Extension.Evento, multimedia));
                             eventosAgregados.Add(asig.Extension.Evento.Id);
                         }
                     }
@@ -293,7 +295,7 @@ namespace Emsys.LogicLayer
                         {
                             if ((ext.Estado != EstadoExtension.Cerrado) && (!eventosAgregados.Contains(ext.Evento.Id)))
                             {
-                                eventos.Add(DtoGetters.getDtoEvento(ext.Evento));
+                                eventos.Add(DtoGetters.getDtoEvento(ext.Evento, multimedia));
                                 eventosAgregados.Add(ext.Evento.Id);
                             }
                         }
@@ -431,8 +433,8 @@ namespace Emsys.LogicLayer
                 {
                     throw new EventoInvalidoException();
                 }
-
-                return DtoGetters.getDtoEvento(evento);
+                bool multimedia = autorizarUsuario(token, new string[] { "verMultimedia" });
+                return DtoGetters.getDtoEvento(evento, multimedia);
             }
         }
 
