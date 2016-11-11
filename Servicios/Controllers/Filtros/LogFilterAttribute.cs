@@ -35,8 +35,8 @@ namespace Servicios.Filtros
         /// <returns>Retorna el identificador del dispositivo.</returns>
         private string GetIp(HttpRequestMessage request)
         {
-            String ip;
-            if (!String.IsNullOrEmpty(HttpContext.Current.Request.ServerVariables["HTTP_CLIENT_IP"]))
+            string ip;
+            if (!string.IsNullOrEmpty(HttpContext.Current.Request.ServerVariables["HTTP_CLIENT_IP"]))
             {
                 ip = HttpContext.Current.Request.ServerVariables["HTTP_CLIENT_IP"];
             }

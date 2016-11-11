@@ -116,7 +116,7 @@ namespace Test.UnitTesting
         public void CrearOrigenEventoTest()
         {
             AppDomain.CurrentDomain.SetData("DataDirectory", Path.Combine(AppDomain.CurrentDomain.BaseDirectory, ""));
-            
+
             var context = new EmsysContext();
 
             // Evento y extensiones.
@@ -165,7 +165,7 @@ namespace Test.UnitTesting
             context.SaveChanges();
 
             context = new EmsysContext();
-            var oe = context.OrigenEventos.FirstOrDefault(o=> o.TipoOrigen == "testCOE");
+            var oe = context.OrigenEventos.FirstOrDefault(o => o.TipoOrigen == "testCOE");
             Assert.AreNotEqual(oe.TimeStamp, null);
             Assert.AreEqual(oe.IdOrigen, 1);
             Assert.AreEqual(oe.Evento.NombreInformante, "PruebaDE");

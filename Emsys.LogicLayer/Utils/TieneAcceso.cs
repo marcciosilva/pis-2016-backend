@@ -32,10 +32,9 @@ namespace Emsys.LogicLayer.Utils
                             return true;
                         }
                     }
-
-                    // Si el usuario esta conectado por zonas.
                     else if (user.Zonas.Count() > 0)
                     {
+                        //// Si el usuario esta conectado por zonas.
                         foreach (ExtensionEvento ext in evento.ExtensionesEvento)
                         {
                             if ((ext.Estado != EstadoExtension.Cerrado) && (user.Zonas.Contains(ext.Zona)))
@@ -69,11 +68,10 @@ namespace Emsys.LogicLayer.Utils
                         {
                             return true;
                         }
-                    }
-
-                    // Si el usuario esta conectado por zonas.
+                    }                   
                     else if (user.Zonas.Count() > 0)
                     {
+                        //// Si el usuario esta conectado por zonas.
                         if (tieneVisionEvento(user, extension.Evento))
                         {
                             return true;

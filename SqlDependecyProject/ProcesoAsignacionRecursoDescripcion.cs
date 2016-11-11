@@ -12,7 +12,7 @@
 
     public class ProcesoAsignacionRecursoDescripcion
     {
-        private static string proceso = "ProcesoAsignacionRecursoDescripcion";
+        private static string _proceso = "ProcesoAsignacionRecursoDescripcion";
 
         private static SqlTableDependency<AsignacionRecursoDescripcion> _dependency;
 
@@ -25,9 +25,8 @@
         {
             try
             {
-                Console.WriteLine(proceso + "- Observo la BD:\n");
+                Console.WriteLine(_proceso + "- Observo la BD:\n");
                 Listener();
-
                 while (true)
                 {
                     Thread.Sleep(10000);
@@ -49,8 +48,8 @@
             var mapper = new ModelToTableMapper<AsignacionRecursoDescripcion>();
             mapper.AddMapping(model => model.Id, "Id");
             _dependency = new SqlTableDependency<AsignacionRecursoDescripcion>(_connectionString, "AsignacionRecursoDescripcion", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
-            _dependency.OnError += _dependency_OnError;
+            _dependency.OnChanged += DependencyOnChanged;
+            _dependency.OnError += DependencyOnError;
             _dependency.Start();
         }
 
@@ -59,7 +58,7 @@
         /// </summary>
         /// <param name="sender">No se utiliza.</param>
         /// <param name="e">Excepcion generada por el sistema de error.</param>
-        private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
+        private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
             throw e.Error;
         }
@@ -69,7 +68,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="AsignacionRecursoDescripcionEnDb">evento en AsignacionRecursoDescripcion generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<AsignacionRecursoDescripcion> AsignacionRecursoDescripcionEnDb)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<AsignacionRecursoDescripcion> AsignacionRecursoDescripcionEnDb)
         {
             try
             {

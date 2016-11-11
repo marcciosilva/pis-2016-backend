@@ -12,14 +12,6 @@
 
     public class ProcesoExtensiones
     {
-        private enum TablaMonitorar
-        {
-            Eventos,
-            Extensiones
-        }
-
-        private static bool llamo = true;
-
         private static SqlTableDependency<ExtensionEvento> _dependency;
 
         private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
@@ -55,19 +47,17 @@
             var mapper = new ModelToTableMapper<ExtensionEvento>();
             mapper.AddMapping(model => model.Id, "Id");
             _dependency = new SqlTableDependency<ExtensionEvento>(_connectionString, "Extensiones_Evento", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
-            _dependency.OnError += _dependency_OnError;
+            _dependency.OnChanged += DependencyOnChanged;
+            _dependency.OnError += DependencyOnError;
             _dependency.Start();
         }
-
-        //private static IList<Model.Evento> _stocks;
 
         /// <summary>
         /// Metodo que se dispara cuando ocurre un error al detectar los cambios en la base de datos.
         /// </summary>
         /// <param name="sender">No se utiliza.</param>
         /// <param name="e">Excepcion generada por el sistema de error.</param>
-        private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
+        private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
             throw e.Error;
         }
@@ -77,7 +67,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="eventoEnBD">Evento generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<ExtensionEvento> eventoEnBD)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<ExtensionEvento> eventoEnBD)
         {
             try
             {

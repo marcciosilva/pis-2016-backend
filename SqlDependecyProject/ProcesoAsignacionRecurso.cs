@@ -12,9 +12,7 @@
 
     public class ProcesoAsignacionRecurso
     {
-        private static bool llamo = true;
-
-        private static string proceso = "ProcesoMonitoreoAsignacionRecurso";
+        private static string _proceso = "ProcesoMonitoreoAsignacionRecurso";
 
         private static SqlTableDependency<AsignacionRecurso> _dependency;
 
@@ -27,7 +25,7 @@
         {
             try
             {
-                Console.WriteLine(proceso + "- Observo la BD:\n");
+                Console.WriteLine(_proceso + "- Observo la BD:\n");
                 Listener();
 
                 while (true)
@@ -51,8 +49,8 @@
             var mapper = new ModelToTableMapper<AsignacionRecurso>();
             mapper.AddMapping(model => model.Id, "Id");
             _dependency = new SqlTableDependency<AsignacionRecurso>(_connectionString, "AsignacionesRecursos", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
-            _dependency.OnError += _dependency_OnError;
+            _dependency.OnChanged += DependencyOnChanged;
+            _dependency.OnError += DependencyOnError;
             _dependency.Start();
         }
 
@@ -61,7 +59,7 @@
         /// </summary>
         /// <param name="sender">No se utiliza.</param>
         /// <param name="e">Excepcion generada por el sistema de error.</param>
-        private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
+        private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
             throw e.Error;
         }
@@ -71,7 +69,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="AsignacionRecursoDB"></param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<AsignacionRecurso> AsignacionRecursoDB)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<AsignacionRecurso> AsignacionRecursoDB)
         {
             try
             {

@@ -23,12 +23,12 @@ namespace Servicios.Controllers
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
             try
-            {                
+            {
                 if (token == null)
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-                                
+
                 ICollection<DtoEvento> lista = dbAL.listarEventos(token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, lista);
             }
@@ -38,7 +38,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorListarEventosCod);
+                dbAL.AgregarLogError(token, string.Empty, "Emsys.ServiceLayer", "EventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorListarEventosCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorListarEventos));
             }
         }
@@ -76,7 +76,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "getEvento", "Hubo un error al intentar obtener un evento, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorObtenerEventoCod);
+                dbAL.AgregarLogError(token, string.Empty, "Emsys.ServiceLayer", "EventosController", 0, "getEvento", "Hubo un error al intentar obtener un evento, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorObtenerEventoCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorObtenerEvento));
             }
         }
@@ -118,7 +118,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "ActualizarDescripcionRecurso", "Hubo un error al intentar actualizar la descripcion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorActualizarDescripcionCod);
+                dbAL.AgregarLogError(token, string.Empty, "Emsys.ServiceLayer", "EventosController", 0, "ActualizarDescripcionRecurso", "Hubo un error al intentar actualizar la descripcion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorActualizarDescripcionCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorActualizarDescripcion));
             }
         }
@@ -158,7 +158,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(descParam.userData.username, "", "Emsys.ServiceLayer", "EventosController", 0, "ActualizarDescripcionRecursoOffline", "Hubo un error al intentar actualizar la descripcion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorActualizarDescripcionOfflineCod);
+                dbAL.AgregarLogError(descParam.userData.username, string.Empty, "Emsys.ServiceLayer", "EventosController", 0, "ActualizarDescripcionRecursoOffline", "Hubo un error al intentar actualizar la descripcion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorActualizarDescripcionOfflineCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorActualizarDescripcion));
             }
         }
@@ -277,7 +277,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ArgumentoInvalidoException e)
+            catch (ArgumentoInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.ArgumentoInvalidoCod, new Mensaje(MensajesParaFE.ArgumentoInvalido));
             }
@@ -293,10 +293,10 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="idExtension">Extension a despachar</param>
         /// <returns>Dto indicando si se realizo con exito</returns>
-        [CustomAuthorizeAttribute("despacharExtension")]        
+        [CustomAuthorizeAttribute("despacharExtension")]
         [HttpPost]
         [Route("eventos/tomarextension")]
-        [LogFilter]                
+        [LogFilter]
         public DtoRespuesta TomarExtension(int idExtension)
         {
             IMetodos dbAL = new Metodos();
@@ -315,11 +315,11 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (UsuarioNoAutorizadoException e)
+            catch (UsuarioNoAutorizadoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
@@ -361,7 +361,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -399,7 +399,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -437,11 +437,11 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (ArgumentoInvalidoException e)
+            catch (ArgumentoInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.ArgumentoInvalidoCod, new Mensaje(MensajesParaFE.ArgumentoInvalido));
             }
@@ -505,7 +505,7 @@ namespace Servicios.Controllers
 
                 dbAL.actualizarSegundaCategoria(token, idExtension, idCategoria);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
-            }            
+            }
             catch (CategoriaInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.CategoriaInvalidaCod, new Mensaje(MensajesParaFE.CategoriaInvalida));
@@ -514,7 +514,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -552,7 +552,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -591,11 +591,11 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (ZonaInvalidaException e)
+            catch (ZonaInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ZonaInvalidaCod, new Mensaje(MensajesParaFE.ZonaInvalida));
             }
@@ -633,11 +633,11 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (EventoNoEnviadoException e)
+            catch (EventoNoEnviadoException)
             {
                 return new DtoRespuesta(MensajesParaFE.EventoNoEnviadoCod, new Mensaje(MensajesParaFE.EventoNoEnviado));
             }
@@ -675,7 +675,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }

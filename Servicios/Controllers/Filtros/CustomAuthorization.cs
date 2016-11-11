@@ -10,11 +10,15 @@ namespace Servicios.Filtros
 {
     public class CustomAuthorizeAttribute : AuthorizeAttribute
     {
-        private readonly string[] PermisosEtiqueta;
+        private readonly string[] _permisosEtiqueta;
 
+        /// <summary>
+        /// Metodo encargado de guardar los datos de la equita como permisos para comparar en OnAuthorization.
+        /// </summary>
+        /// <param name="permisos"></param>
         public CustomAuthorizeAttribute(params string[] permisos)
         {
-            PermisosEtiqueta = permisos;
+            _permisosEtiqueta = permisos;
         }
 
         /// <summary>
@@ -62,7 +66,7 @@ namespace Servicios.Filtros
             }
 
             IMetodos dbAL = new Metodos();
-            return dbAL.autorizarUsuario(token, PermisosEtiqueta);            
+            return dbAL.autorizarUsuario(token, _permisosEtiqueta);            
         }
     }
 }

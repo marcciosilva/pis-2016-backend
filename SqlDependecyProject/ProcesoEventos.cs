@@ -12,13 +12,8 @@
 
     public class ProcesoEventos
     {
-        private enum TablaMonitorar
-        {
-            Eventos,
-            Extensiones
-        }
-
-        private static bool llamo = true;
+        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        private static SqlTableDependency<Evento> _dependency;
 
         /// <summary>
         /// Funcion que engloba el proceso de atender eventos de la BD para Eventos.
@@ -50,22 +45,19 @@
             var mapper = new ModelToTableMapper<Evento>();
             mapper.AddMapping(model => model.NombreInformante, "NombreInformante");
             _dependency = new SqlTableDependency<Evento>(_connectionString, "Eventos", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
-            _dependency.OnError += _dependency_OnError;
+            _dependency.OnChanged += DependencyOnChanged;
+            _dependency.OnError += DependencyOnError;
             _dependency.Start();
         }
 
-        // private static IList<Model.Evento> _stocks;
-        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-        // "data source=DESKTOP-T27K22L\\SQLExpressLocal;initial catalog=Prototipo1;integrated security=True";
-        private static SqlTableDependency<Evento> _dependency;
+        
 
         /// <summary>
         /// Metodo que se dispara cuando ocurre un error al detectar los cambios en la base de datos.
         /// </summary>
         /// <param name="sender">No se utiliza.</param>
         /// <param name="e">Excepcion generada por el sistema de error.</param>
-        private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
+        private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
             throw e.Error;
         }
@@ -75,7 +67,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="evento">Evento generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Evento> evento)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Evento> evento)
         {
             try
             {
@@ -134,7 +126,6 @@
                                 GestorNotificaciones.SendMessage(cod, eventoBD.Id.ToString(), "recurso-" + recurso.Id.ToString());
                             }
                         }
-
                         // Para las zonas de las extensiones envio una notificacion.
                         GestorNotificaciones.SendMessage(cod, eventoBD.Id.ToString(), "zona-" + extension.Zona.Id);
                     }

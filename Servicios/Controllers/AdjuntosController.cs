@@ -12,7 +12,9 @@ using Servicios.Filtros;
 namespace Servicios.Controllers
 {
     public class AdjuntosController : ApiController
-    {      
+    {
+        private const string Modulo = "Emsys.ServiceLayer";
+
         /// <summary>
         /// Permite enviar una geo ubicacion al servidor e indicar a que evento o extension le pertenece.
         /// </summary>
@@ -50,7 +52,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarGeoUbicacion", "Hubo un error al intentar adjuntar una geo ubicacion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarGeoUbicacionCod);
+                dbAL.AgregarLogError(token, string.Empty, Modulo, "AdjuntosController", 0, "AdjuntarGeoUbicacion", "Hubo un error al intentar adjuntar una geo ubicacion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarGeoUbicacionCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorAdjuntarGeoUbicacion));
             }
         }
@@ -77,29 +79,29 @@ namespace Servicios.Controllers
                 dbAL.adjuntarImagen(token, img);              
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
-            catch (TokenInvalidoException e)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (FormatoInvalidoException e)
+            catch (FormatoInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
             }
-            catch (ImagenInvalidaException e)
+            catch (ImagenInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ErrorAdjuntarImagenCod, new Mensaje(MensajesParaFE.ErrorAdjuntarImagen));
             }
-            catch (UsuarioNoAutorizadoException e)
+            catch (UsuarioNoAutorizadoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarImagenCod);
+                dbAL.AgregarLogError(token, string.Empty, Modulo, "AdjuntosController", 0, "AdjuntarImagen", "Hubo un error al intentar adjuntar una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarImagenCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorAdjuntarImagen));
             }
         }
@@ -127,29 +129,29 @@ namespace Servicios.Controllers
                 dbAL.adjuntarAudio(token, aud);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
-            catch (TokenInvalidoException e)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (FormatoInvalidoException e)
+            catch (FormatoInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
             }
-            catch (AudioInvalidoException e)
+            catch (AudioInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.ErrorAdjuntarAudioCod, new Mensaje(MensajesParaFE.ErrorAdjuntarAudio));
             }
-            catch (UsuarioNoAutorizadoException e)
+            catch (UsuarioNoAutorizadoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarAudio", "Hubo un error al intentar adjuntar un audio, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarAudioCod);
+                dbAL.AgregarLogError(token, string.Empty, Modulo, "AdjuntosController", 0, "AdjuntarAudio", "Hubo un error al intentar adjuntar un audio, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarAudioCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorAdjuntarAudio));
             }
         }
@@ -176,29 +178,29 @@ namespace Servicios.Controllers
                 dbAL.adjuntarVideo(token, vid);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));                
             }
-            catch (TokenInvalidoException e)
+            catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (FormatoInvalidoException e)
+            catch (FormatoInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.FormatoNoSoportadoCod, new Mensaje(MensajesParaFE.FormatoNoSoportado));
             }
-            catch (VideoInvalidoException e)
+            catch (VideoInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.ErrorAdjuntarVideoCod, new Mensaje(MensajesParaFE.ErrorAdjuntarVideo));
             }
-            catch (UsuarioNoAutorizadoException e)
+            catch (UsuarioNoAutorizadoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "AdjuntarVideo", "Hubo un error al intentar adjuntar un video, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarVideoCod);
+                dbAL.AgregarLogError(token, string.Empty, Modulo, "AdjuntosController", 0, "AdjuntarVideo", "Hubo un error al intentar adjuntar un video, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorAdjuntarVideoCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorAdjuntarVideo));
             }
         }
@@ -252,7 +254,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
+                dbAL.AgregarLogError(token, string.Empty, Modulo, "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
@@ -306,7 +308,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
+                dbAL.AgregarLogError(token, string.Empty, Modulo, "AdjuntosController", 0, "GetImageData", "Hubo un error al intentar obtener los datos de una imagen, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
                 return new HttpResponseMessage(HttpStatusCode.InternalServerError);
             }
         }
@@ -353,7 +355,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetVideoData", "Hubo un error al intentar obtener los datos de un video, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
+                dbAL.AgregarLogError(token, string.Empty, Modulo, "AdjuntosController", 0, "GetVideoData", "Hubo un error al intentar obtener los datos de un video, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo));
             }
         }
@@ -401,7 +403,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "AdjuntosController", 0, "GetAudioData", "Hubo un error al intentar obtener los datos de un audio, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
+                dbAL.AgregarLogError(token, string.Empty, Modulo, "AdjuntosController", 0, "GetAudioData", "Hubo un error al intentar obtener los datos de un audio, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorDescargarArchivoCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorDescargarArchivo));
             }
         }

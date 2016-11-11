@@ -10,9 +10,7 @@ namespace Utils.Notifications.Utils
 {
     public class LogsManager
     {
-        public static LogNotification AgregarLogNotification(string token, string terminal, string modulo, string Entidad, 
-            int idEntidad, string accion, string detalles, int codigo,
-            string topic, string codigoNotificacion, string pkEvento, string firebaseResponse, LogNotification logViejo = null)
+        public static LogNotification AgregarLogNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo, string topic, string codigoNotificacion, string pkEvento, string firebaseResponse, LogNotification logViejo = null)
         {
             try
             {
@@ -49,16 +47,13 @@ namespace Utils.Notifications.Utils
                     return log;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
-                Console.WriteLine(e.Message);
             }
         }
 
-        public static LogNotification AgregarLogErrorNotification(string token, string terminal, string modulo,
-            string Entidad, int idEntidad, string accion, string detalles, int codigo, string topicFinal,
-            string codigoNotificacion, string pkEvento, string responseFirebase, LogNotification logViejo = null)
+        public static LogNotification AgregarLogErrorNotification(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo, string topicFinal, string codigoNotificacion, string pkEvento, string responseFirebase, LogNotification logViejo = null)
         {
             try
             {
@@ -95,16 +90,13 @@ namespace Utils.Notifications.Utils
                     return log;
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return null;
-                Console.WriteLine(e.Message);
             }
         }
 
-        public static void AgregarLogNotificationDessuscripcionUsuario(string token, string terminal,
-            string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo,
-            string topicDessuscribir, string nombreUsuario, string firebaseResponse)
+        public static void AgregarLogNotificationDessuscripcionUsuario(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo, string topicDessuscribir, string nombreUsuario, string firebaseResponse)
         {
             try
             {
@@ -143,9 +135,7 @@ namespace Utils.Notifications.Utils
             }
         }
 
-        public static void AgregarLogNotificationDessuscripcionUsuarioError(string token, string terminal,
-            string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo,
-            string topicDessuscribir, string nombreUsuario, string firebaseResponse)
+        public static void AgregarLogNotificationDessuscripcionUsuarioError(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo, string topicDessuscribir, string nombreUsuario, string firebaseResponse)
         {
             try
             {

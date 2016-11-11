@@ -59,15 +59,12 @@ namespace Emsys.LogicLayer
                 {
                     throw new TokenInvalidoException();
                 }
-
                 var user = context.Usuarios.FirstOrDefault(u => u.Token == token);
-
                 // Si no encuentra el token.
                 if (user == null)
                 {
                     throw new TokenInvalidoException();
                 }
-
                 // Agrega las zonas disponibles para el usuario mediante sus unidades ejecutoras.
                 ICollection<DtoZona> zonas = new List<DtoZona>();
                 foreach (UnidadEjecutora ue in user.UnidadesEjecutoras)
@@ -77,7 +74,6 @@ namespace Emsys.LogicLayer
                         zonas.Add(DtoGetters.getDtoZona(z));
                     }
                 }
-
                 // Agrega los recursos disponibles para el usuario mediante sus grupos_recursos.
                 ICollection<DtoRecurso> recursos = new List<DtoRecurso>();
                 List<int> recursosAgregados = new List<int>();
@@ -92,7 +88,6 @@ namespace Emsys.LogicLayer
                         }
                     }
                 }
-
                 DtoRol rol = new DtoRol() { zonas = zonas, recursos = recursos };
                 return rol;
             }
@@ -320,14 +315,12 @@ namespace Emsys.LogicLayer
                 }
                 //doy de baja del servidor de firebase al usuario
                 unsuscribeTopicsFromFirebase(context, user);
-
                 // Retira las zonas y recursos asociadas al usuario.
                 user.Zonas.Clear();
                 foreach (Recurso r in user.Recurso)
                 {
                     r.Estado = EstadoRecurso.Disponible;
                 }
-
                 user.Recurso.Clear();
                 user.Token = null;
                 user.FechaInicioSesion = null;
@@ -486,7 +479,7 @@ namespace Emsys.LogicLayer
                     throw new TokenInvalidoException();
                 }
 
-                Imagen img = context.Imagenes.FirstOrDefault(i => i.Id == idAdjunto);
+                Imagen img = context.imagenes.FirstOrDefault(i => i.Id == idAdjunto);
                 if (img == null)
                 {
                     throw new ImagenInvalidaException();
@@ -541,7 +534,7 @@ namespace Emsys.LogicLayer
                     throw new TokenInvalidoException();
                 }
 
-                Imagen img = context.Imagenes.FirstOrDefault(i => i.Id == idAdjunto);
+                Imagen img = context.imagenes.FirstOrDefault(i => i.Id == idAdjunto);
                 if (img == null)
                 {
                     throw new ImagenInvalidaException();

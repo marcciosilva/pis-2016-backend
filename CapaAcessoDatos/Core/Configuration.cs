@@ -11,7 +11,6 @@ namespace Emsys.DataAccesLayer.Core
         public Configuration()
         {
             this.AutomaticMigrationsEnabled = true;
-            //AutomaticMigrationDataLossAllowed = true;
         }
 
         /// <summary>
@@ -20,7 +19,7 @@ namespace Emsys.DataAccesLayer.Core
         /// <param name="context">Contecto a la base de datos.</param>
         protected override void Seed(EmsysContext context)
         {
-            bool DatosTesting = Convert.ToBoolean( WebConfigurationManager.AppSettings["DatosTesting"]);
+            bool DatosTesting = Convert.ToBoolean(WebConfigurationManager.AppSettings["DatosTesting"]);
             if (DatosTesting)
             {
                 try
@@ -308,7 +307,7 @@ namespace Emsys.DataAccesLayer.Core
                 catch (Exception e)
                 {
                     Console.WriteLine(e.ToString());
-                } 
+                }
             }
         }
     }

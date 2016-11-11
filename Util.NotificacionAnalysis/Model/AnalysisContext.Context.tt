@@ -202,7 +202,7 @@ public class CodeStringGenerator
     
     public string AccessibilityAndVirtual(string accessibility)
     {
-        return accessibility + (accessibility != "private" ? " virtual" : "");
+        return accessibility + (accessibility != "private" ? " virtual" : string.Empty);
     }
     
     public string EntityClassOpening(EntityType entity)
@@ -232,8 +232,8 @@ public class CodeStringGenerator
         foreach (var parameter in parameters.Where(p => p.NeedsLocalVariable))
         {
             var isNotNull = parameter.IsNullableOfT ? parameter.FunctionParameterName + ".HasValue" : parameter.FunctionParameterName + " != null";
-            var notNullInit = "new ObjectParameter(\"" + parameter.EsqlParameterName + "\", " + parameter.FunctionParameterName + ")";
-            var nullInit = "new ObjectParameter(\"" + parameter.EsqlParameterName + "\", typeof(" + TypeMapper.FixNamespaces(parameter.RawClrTypeName) + "))";
+            var notNullInit = "new ObjectParameter(\string.Empty + parameter.EsqlParameterName + "\", " + parameter.FunctionParameterName + ")";
+            var nullInit = "new ObjectParameter(\string.Empty + parameter.EsqlParameterName + "\", typeof(" + TypeMapper.FixNamespaces(parameter.RawClrTypeName) + "))";
             writeParameter(parameter.LocalVariableName, isNotNull, notNullInit, nullInit);
         }
     }
@@ -299,7 +299,7 @@ public class CodeStringGenerator
         return string.Format(
             CultureInfo.InvariantCulture,
             "return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction{0}(\"{1}\"{2});",
-            returnType == null ? "" : "<" + _typeMapper.GetTypeName(returnType, modelNamespace) + ">",
+            returnType == null ? string.Empty : "<" + _typeMapper.GetTypeName(returnType, modelNamespace) + ">",
             edmFunction.Name,
             callParams);
     }
@@ -330,10 +330,10 @@ public class CodeStringGenerator
                 CultureInfo.InvariantCulture,
                 "{0}using System;{1}" +
                 "{2}",
-                inHeader ? Environment.NewLine : "",
-                includeCollections ? (Environment.NewLine + "using System.Collections.Generic;") : "",
-                inHeader ? "" : Environment.NewLine)
-            : "";
+                inHeader ? Environment.NewLine : string.Empty,
+                includeCollections ? (Environment.NewLine + "using System.Collections.Generic;") : string.Empty,
+                inHeader ? string.Empty : Environment.NewLine)
+            : string.Empty;
     }
 }
 
