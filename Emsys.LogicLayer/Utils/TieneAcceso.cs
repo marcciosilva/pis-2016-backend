@@ -26,10 +26,12 @@ namespace Emsys.LogicLayer.Utils
                     // Si el usuario esta conectado como recurso.
                     if (user.Recurso.Count() > 0)
                     {
-                        AsignacionRecurso asig = user.Recurso.FirstOrDefault().AsignacionesRecurso.FirstOrDefault(a=>a.Extension.Evento.Id == evento.Id);
-                        if ((asig != null) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
+                        foreach (AsignacionRecurso asig in user.Recurso.FirstOrDefault().AsignacionesRecurso)
                         {
-                            return true;
+                            if ((asig.Extension.Evento.Id == evento.Id) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
+                            {
+                                return true;
+                            }
                         }
                     }
                     else if (user.Zonas.Count() > 0)
@@ -63,10 +65,12 @@ namespace Emsys.LogicLayer.Utils
                 {
                     if (user.Recurso.Count() > 0)
                     {
-                        AsignacionRecurso asig = user.Recurso.FirstOrDefault().AsignacionesRecurso.FirstOrDefault(a => a.Extension.Id == extension.Id);
-                        if ((asig != null) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
+                        foreach (AsignacionRecurso asig in user.Recurso.FirstOrDefault().AsignacionesRecurso)
                         {
-                            return true;
+                            if ((asig.Extension.Id == extension.Id) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
+                            {
+                                return true;
+                            }
                         }
                     }                   
                     else if (user.Zonas.Count() > 0)
@@ -76,6 +80,43 @@ namespace Emsys.LogicLayer.Utils
                         {
                             return true;
                         }
+                    }
+                }
+
+                return false;
+            }
+        }
+
+        public static bool tieneVisionExtensionListar(Usuario user, int idExtension)
+        {
+            using (var context = new EmsysContext())
+            {
+                ExtensionEvento extension = context.ExtensionesEvento.FirstOrDefault(e=> e.Id == idExtension);
+                if (extension == null)
+                {
+                    return false;
+                }
+                if (user != null)
+                {
+                    // Si esta logueado como recurso.
+                    if (user.Recurso.Count() > 0)
+                    {
+                        // Verifica que esta asignado a la extension.
+                        AsignacionRecurso asig = user.Recurso.FirstOrDefault().AsignacionesRecurso.FirstOrDefault(a => a.Extension.Id == extension.Id);
+                        if ((asig != null) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
+                        {
+                            return true;
+                        }
+                    }
+                    // Si esta logueado como zona.
+                    else if (user.Zonas.Count() > 0)
+                    {
+                        // Verifica que esta logueado en la zona de la extension.
+                        var zone = user.Zonas.FirstOrDefault(z => z.Id == extension.Zona.Id);
+                        if (zone != null)
+                        {
+                            return true;
+                        }                        
                     }
                 }
 

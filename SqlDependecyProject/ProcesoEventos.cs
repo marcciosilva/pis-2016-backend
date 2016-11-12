@@ -76,10 +76,8 @@
                     Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
                     switch (evento.ChangeType)
                     {
-                        // El caso no es util por que si se crea un evento no tiene asignados recursos probablemente.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoEventos - Accion: Borro, Pk del evento: " + evento.Entity.NombreInformante);
-                            AtenderEvento(DataNotificacionesCodigos.CierreEvento, evento, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoEventos - Accion Insert, Pk del evento: " + evento.Entity.Id);
@@ -87,7 +85,6 @@
                             break;
                         case ChangeType.Update:
                             Console.WriteLine("ProcesoMonitoreoEventos - Accion update, Pk del evento: " + evento.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, evento, GestorNotificaciones);
                             break;
                     }
                 }
@@ -115,19 +112,23 @@
                 var eventoBD = db.Evento.Find(evento.Entity.Id);
                 if (eventoBD != null)
                 {
+                    int idEvento = eventoBD.Id;                    
                     // Para cada extension del evento modificado.
                     foreach (var extension in eventoBD.ExtensionesEvento)
                     {
+                        int idExtension = extension.Id;
+                        int idZona = extension.Zona.Id;
+                        string nombreZona = extension.Zona.Nombre;
                         // Para cada recurso de la extension.
                         foreach (var asig in extension.AsignacionesRecursos)
                         {
                             if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
                             {
-                                GestorNotificaciones.SendMessage(cod, eventoBD.Id.ToString(), "recurso-" + asig.Recurso.Id.ToString());
+                                GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id.ToString());
                             }
                         }
                         // Para las zonas de las extensiones envio una notificacion.
-                        GestorNotificaciones.SendMessage(cod, eventoBD.Id.ToString(), "zona-" + extension.Zona.Id);
+                        GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + extension.Zona.Id);
                     }
                 }
             }

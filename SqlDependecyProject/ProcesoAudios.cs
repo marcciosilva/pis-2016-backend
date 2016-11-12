@@ -81,15 +81,13 @@
                         // El caso no es util por que si se crea un Audios no tiene asignados recursos probablemte.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoAudios - Accion: Borro, Pk del Audios: " + AudioEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AudioEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoAudios - Accion Insert, Pk del Audios: " + AudioEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AudioEnBD, GestorNotificaciones);
+                            AtenderEvento(DataNotificacionesCodigos.AltaAudio, AudioEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
                             Console.WriteLine("ProcesoMonitoreoAudios - Accion update, Pk del Audios: " + AudioEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AudioEnBD, GestorNotificaciones);
                             break;
                     }
                 }
@@ -97,7 +95,7 @@
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys._dependency_OnChangedVideos", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys._dependency_OnChangedAudios", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
                 throw e;
             }
         }
@@ -119,6 +117,10 @@
                 {
                     if (audioEnDb.ExtensionEvento != null)
                     {
+                        int idEvento = audioEnDb.ExtensionEvento.Evento.Id;
+                        int idExtension = audioEnDb.ExtensionEvento.Id;
+                        int idZona = audioEnDb.ExtensionEvento.Zona.Id;
+                        string nombreZona = audioEnDb.ExtensionEvento.Zona.Nombre;
                         // Para cada extension del evento modificado.
                         foreach (var item in audioEnDb.ExtensionEvento.Evento.ExtensionesEvento)
                         {
@@ -127,11 +129,11 @@
                             {
                                 if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
                                 {
-                                    GestorNotificaciones.SendMessage(cod, audioEnDb.ExtensionEvento.Id.ToString(), "recurso-" + asig.Recurso.Id);
+                                    GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
                                 }
                             }
                             // Para la zona asociada a la extensen le envia una notificacion.
-                            GestorNotificaciones.SendMessage(cod, audioEnDb.ExtensionEvento.Id.ToString(), "zona-" + item.Zona.Id);
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
                         }
                     }
                 }

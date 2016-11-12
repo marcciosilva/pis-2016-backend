@@ -80,7 +80,6 @@
                         // El caso no es util por que si se crea un evento no tiene asignados recursos probablemte.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitorearAsignacionRecursoDescripcion - Accion: Borro, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AsignacionRecursoDescripcionEnDb, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitorearAsignacionRecursoDescripcion - Accion Insert, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
@@ -88,7 +87,6 @@
                             break;
                         case ChangeType.Update:
                             Console.WriteLine("ProcesoMonitorearAsignacionRecursoDescripcion - Accion update, Pk del evento: " + AsignacionRecursoDescripcionEnDb.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AsignacionRecursoDescripcionEnDb, GestorNotificaciones);
                             break;
                     }
                 }
@@ -116,6 +114,10 @@
                 var asignacionRecursoDescripcionEnDB = db.AsignacionRecursoDescripcion.Find(asignacionRecursoDescripcion.Entity.Id);
                 if (asignacionRecursoDescripcionEnDB != null)
                 {
+                    int idEvento = asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Evento.Id;
+                    int idExtension = asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Id;
+                    int idZona = asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Zona.Id;
+                    string nombreZona = asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Zona.Nombre;
                     // Para cada extension del evento modificado.
                     foreach (var item in asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Evento.ExtensionesEvento)
                     {
@@ -124,11 +126,11 @@
                         {
                             if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
                             {
-                                GestorNotificaciones.SendMessage(cod, asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Id.ToString(), "recurso-" + asig.Recurso.Id);
+                                GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
                             }
                         }
                         // Para la zona asociada a la extensen le envia una notificacion.
-                        GestorNotificaciones.SendMessage(cod, asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Id.ToString(), "zona-" + item.Zona.Id);
+                        GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
                     }
                 }
             }

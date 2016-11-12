@@ -81,15 +81,13 @@
                         // El caso no es util por que si se crea un evento no tiene asignados recursos probablemente.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoVideos - Accion: Borro, Pk del evento: " + videoEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, videoEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoVideos - Accion Insert, Pk del evento: " + videoEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, videoEnBD, GestorNotificaciones);
+                            AtenderEvento(DataNotificacionesCodigos.AltaVideo, videoEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
                             Console.WriteLine("ProcesoMonitoreoVideos - Accion update, Pk del evento: " + videoEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, videoEnBD, GestorNotificaciones);
                             break;
                     }
                 }
@@ -115,10 +113,14 @@
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Video", video.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", MensajesParaFE.LogCapturarCambioEventoCod);
                 var videoDEBD = db.Videos.Find(video.Entity.Id);
-                if (videoDEBD != null)
+                if (videoDEBD != null) 
                 {
                     if (videoDEBD.ExtensionEvento != null)
                     {
+                        int idEvento = videoDEBD.ExtensionEvento.Evento.Id;
+                        int idExtension = videoDEBD.ExtensionEvento.Id;
+                        int idZona = videoDEBD.ExtensionEvento.Zona.Id;
+                        string nombreZona = videoDEBD.ExtensionEvento.Zona.Nombre;
                         // Para cada extension del evento modificado.
                         foreach (var item in videoDEBD.ExtensionEvento.Evento.ExtensionesEvento)
                         {
@@ -128,11 +130,11 @@
                                 // Si hay un usuario conectado con ese recurso.
                                 if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
                                 {
-                                    GestorNotificaciones.SendMessage(cod, videoDEBD.ExtensionEvento.Id.ToString(), "recurso-" + asig.Recurso.Id);
+                                    GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
                                 }
                             }
                             // Para la zona asociada a la extensen le envia una notificacion.
-                            GestorNotificaciones.SendMessage(cod, videoDEBD.ExtensionEvento.Id.ToString(), "zona-" + item.Zona.Id);
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
                         }
                     }
                 }

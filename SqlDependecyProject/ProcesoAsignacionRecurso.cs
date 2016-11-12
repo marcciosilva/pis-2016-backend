@@ -81,7 +81,6 @@
                         // El caso no es util por que si se crea un evento no tiene asignados recursos probablemte.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoAsignacionRecursoMonitoreo - Accion: Borro, Pk del evento: " + AsignacionRecursoDB.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.AsignacionEvento, AsignacionRecursoDB, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoAsignacionRecursoMonitoreo - Accion Insert, Pk del evento: " + AsignacionRecursoDB.Entity.Id);
@@ -89,7 +88,7 @@
                             break;
                         case ChangeType.Update:
                             Console.WriteLine("ProcesoAsignacionRecursoMonitoreo - Accion update, Pk del evento: " + AsignacionRecursoDB.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.AsignacionEvento, AsignacionRecursoDB, GestorNotificaciones);
+                            AtenderEvento(DataNotificacionesCodigos.RetiradoEvento, AsignacionRecursoDB, GestorNotificaciones);
                             break;
                     }
                 }
@@ -117,19 +116,25 @@
                 var asgnacionRecursoEnDB = db.AsignacionesRecursos.Find(asinacionRecurso.Entity.Id);
                 if (asgnacionRecursoEnDB != null)
                 {
-                    // Para cada extension del evento modificado.
-                    foreach (var item in asgnacionRecursoEnDB.Extension.Evento.ExtensionesEvento)
+                    int idEvento = asgnacionRecursoEnDB.Extension.Evento.Id;
+                    int idExtension = asgnacionRecursoEnDB.Extension.Id;
+                    int idZona = asgnacionRecursoEnDB.Extension.Zona.Id;
+                    string nombreZona = asgnacionRecursoEnDB.Extension.Zona.Nombre;
+                    if (cod == DataNotificacionesCodigos.AsignacionEvento)
                     {
-                        // Para cada recurso de la extension.
-                        foreach (var asig in asgnacionRecursoEnDB.Extension.AsignacionesRecursos)
+                        // Notifico al usuario que ha sido asignado.
+                        if ((asgnacionRecursoEnDB.ActualmenteAsignado == true) && (asgnacionRecursoEnDB.Recurso.Estado == EstadoRecurso.NoDisponible))
                         {
-                            if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
-                            {
-                                GestorNotificaciones.SendMessage(cod, asgnacionRecursoEnDB.Extension.Id.ToString(), "recurso-" + asig.Recurso.Id);
-                            }
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asgnacionRecursoEnDB.Recurso.Id);
                         }
-                        // Para la zona asociada a la extensen le envia una notificacion.
-                        GestorNotificaciones.SendMessage(cod, asgnacionRecursoEnDB.Extension.Id.ToString(), "zona-" + item.Zona.Id);
+                    }
+                    else if (cod == DataNotificacionesCodigos.RetiradoEvento)
+                    {
+                        // Si el recurso no esta asignado notifico al usuario que ha sido retirado.
+                        if ((asgnacionRecursoEnDB.ActualmenteAsignado == false) && (asgnacionRecursoEnDB.Recurso.Estado == EstadoRecurso.NoDisponible))
+                        {
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asgnacionRecursoEnDB.Recurso.Id);
+                        }
                     }
                 }
             }

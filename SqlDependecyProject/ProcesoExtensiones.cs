@@ -79,7 +79,6 @@
                         // El caso no es util por que si se crea un evento no tiene asignados recursos probablemte.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del evento: " + eventoEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.CierreEvento, eventoEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoExtensiones - Accion Insert, Pk del evento: " + eventoEnBD.Entity.Id);
@@ -115,20 +114,41 @@
                 var extensionEnBD = db.ExtensionesEvento.Find(extension.Entity.Id);
                 if (extensionEnBD != null)
                 {
-                    // Para cada extension del evento modificado.
-                    foreach (var item in extensionEnBD.Evento.ExtensionesEvento)
-                    {
+                    int idEvento = extensionEnBD.Evento.Id;
+                    int idExtension = extensionEnBD.Id;
+                    int idZona = extensionEnBD.Zona.Id;
+                    string nombreZona = extensionEnBD.Zona.Nombre;
+                    // Si es un alta notifica solamente a los usuarios de la zona de la nueva extension y recursos asociados.
+                    if (cod == DataNotificacionesCodigos.AltaEvento)
+                    {                        
                         // Para cada recurso de la extension.
-                        foreach (var asig in item.AsignacionesRecursos)
+                        foreach (var asig in extensionEnBD.AsignacionesRecursos)
                         {
                             if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
                             {
-                                GestorNotificaciones.SendMessage(cod, extensionEnBD.Id.ToString(), "recurso-" + asig.Recurso.Id);
+                                GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
                             }
                         }
                         // Para la zona asociada a la extensen le envia una notificacion.
-                        GestorNotificaciones.SendMessage(cod, extensionEnBD.Id.ToString(), "zona-" + item.Zona.Id);
-                    }
+                        GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + extensionEnBD.Zona.Id);                        
+                    }                    
+                    else if (cod == DataNotificacionesCodigos.ModificacionEvento)
+                    {
+                        // Para cada extension del evento modificado.
+                        foreach (var item in extensionEnBD.Evento.ExtensionesEvento)
+                        {
+                            // Para cada recurso de la extension.
+                            foreach (var asig in item.AsignacionesRecursos)
+                            {
+                                if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
+                                {
+                                    GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
+                                }
+                            }
+                            // Para la zona asociada a la extensen le envia una notificacion.
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
+                        }
+                    }                    
                 }
             }
         }

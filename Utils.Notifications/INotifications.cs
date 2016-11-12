@@ -8,7 +8,7 @@
         /// <param name="cod">Codigo definido en Codigos.</param>
         /// <param name="pk">Primary Key del elemento que se desea realizar una notificacion.</param>
         /// <param name="topic">Nombre del topic / channel que se desea enviar la notificacion.</param>
-        void SendMessage(string cod, string pk, string topic);
+        void SendMessage(string cod, int evento, int extension, int zona, string zonaNombre, string topic);
 
         /// <summary>
         /// Remueve del topic al usuario con tokenFirebase como registration token.

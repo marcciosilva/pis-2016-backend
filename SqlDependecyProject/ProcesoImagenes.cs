@@ -80,15 +80,13 @@
                         // El caso no es util por que si se crea un Imagenes no tiene asignados recursos probablemente.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoImagenes - Accion: Borro, Pk del Imagenes: " + imagenEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, imagenEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoImagenes - Accion Insert, Pk del Imagenes: " + imagenEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, imagenEnBD, GestorNotificaciones);
+                            AtenderEvento(DataNotificacionesCodigos.AltaImagen, imagenEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
                             Console.WriteLine("ProcesoMonitoreoImagenes - Accion update, Pk del Imagenes: " + imagenEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, imagenEnBD, GestorNotificaciones);
                             break;
                     }
                 }
@@ -96,7 +94,7 @@
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys._dependency_OnChangedVideos", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys._dependency_OnChangedImagenes", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
                 throw e;
             }
         }
@@ -118,6 +116,10 @@
                 {
                     if (imagenEnBD.ExtensionEvento != null)
                     {
+                        int idEvento = imagenEnBD.ExtensionEvento.Evento.Id;
+                        int idExtension = imagenEnBD.ExtensionEvento.Id;
+                        int idZona = imagenEnBD.ExtensionEvento.Zona.Id;
+                        string nombreZona = imagenEnBD.ExtensionEvento.Zona.Nombre;
                         // Para cada extension del evento modificado.
                         foreach (var item in imagenEnBD.ExtensionEvento.Evento.ExtensionesEvento)
                         {
@@ -127,12 +129,12 @@
                                 // Si hay un usuario conectado con ese recurso.
                                 if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
                                 {
-                                    GestorNotificaciones.SendMessage(cod, imagenEnBD.ExtensionEvento.Id.ToString(), "recurso-" + asig.Recurso.Id);
+                                    GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
                                 }
                             }
 
                             // Para la zona asociada a la extensen le envia una notificacion.
-                            GestorNotificaciones.SendMessage(cod, imagenEnBD.ExtensionEvento.Id.ToString(), "zona-" + item.Zona.Id);
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
                         }
                     }
                 }

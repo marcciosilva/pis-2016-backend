@@ -81,15 +81,13 @@
                         // El caso no es util por que si se crea un evento no tiene asignados recursos probablemente.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoVideos - Accion: Borro, Pk del evento: " + geoubicacionesEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, geoubicacionesEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoVideos - Accion Insert, Pk del evento: " + geoubicacionesEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, geoubicacionesEnBD, GestorNotificaciones);
+                            AtenderEvento(DataNotificacionesCodigos.AltaGeoubicacion, geoubicacionesEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
                             Console.WriteLine("ProcesoMonitoreoVideos - Accion update, Pk del evento: " + geoubicacionesEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, geoubicacionesEnBD, GestorNotificaciones);
                             break;
                     }
                 }
@@ -119,6 +117,10 @@
                 {
                     if (GeoUbicacionDEBD.ExtensionEvento != null)
                     {
+                        int idEvento = GeoUbicacionDEBD.ExtensionEvento.Evento.Id;
+                        int idExtension = GeoUbicacionDEBD.ExtensionEvento.Id;
+                        int idZona = GeoUbicacionDEBD.ExtensionEvento.Zona.Id;
+                        string nombreZona = GeoUbicacionDEBD.ExtensionEvento.Zona.Nombre;
                         // Para cada extension del evento modificado.
                         foreach (var item in GeoUbicacionDEBD.ExtensionEvento.Evento.ExtensionesEvento)
                         {
@@ -127,11 +129,11 @@
                             {
                                 if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
                                 {
-                                    GestorNotificaciones.SendMessage(cod, GeoUbicacionDEBD.ExtensionEvento.Id.ToString(), "recurso-" + asig.Recurso.Id);
+                                    GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
                                 }
                             }
                             // Para la zona asociada a la extension le envia una notificacion.
-                            GestorNotificaciones.SendMessage(cod, GeoUbicacionDEBD.ExtensionEvento.Id.ToString(), "zona-" + item.Zona.Id);
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
                         }
                     }
                 }

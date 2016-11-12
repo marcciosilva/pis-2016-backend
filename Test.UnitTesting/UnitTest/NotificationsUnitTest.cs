@@ -20,7 +20,7 @@ namespace Test.UnitTesting
         public void PruebaNotificar()
         {
             INotifications manejadorNotificaciones = FactoryNotifications.GetInstance();
-            manejadorNotificaciones.SendMessage("Esto es una prueba", "#####", "Prueba");
+            manejadorNotificaciones.SendMessage("Esto es una prueba", 1, 1 ,1, "zona1", "Prueba");
             Assert.IsTrue(true);
         }
         

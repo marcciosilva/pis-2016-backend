@@ -275,7 +275,12 @@ namespace Emsys.LogicLayer
                     {
                         if ((asig.Extension.Estado != EstadoExtension.Cerrado) && (!eventosAgregados.Contains(asig.Extension.Evento.Id)))
                         {
-                            eventos.Add(DtoGetters.getDtoEvento(asig.Extension.Evento, multimedia));
+                            DtoEvento ev = DtoGetters.getDtoEvento(asig.Extension.Evento, multimedia);
+                            foreach (var ext in ev.extensiones)
+                            {
+                                ext.isAssigned = TieneAcceso.tieneVisionExtensionListar(user, ext.id);                             
+                            }
+                            eventos.Add(ev);
                             eventosAgregados.Add(asig.Extension.Evento.Id);
                         }
                     }
@@ -290,7 +295,12 @@ namespace Emsys.LogicLayer
                         {
                             if ((ext.Estado != EstadoExtension.Cerrado) && (!eventosAgregados.Contains(ext.Evento.Id)))
                             {
-                                eventos.Add(DtoGetters.getDtoEvento(ext.Evento, multimedia));
+                                DtoEvento ev = DtoGetters.getDtoEvento(ext.Evento, multimedia);
+                                foreach (var exte in ev.extensiones)
+                                {
+                                    exte.isAssigned = TieneAcceso.tieneVisionExtensionListar(user, exte.id);
+                                }
+                                eventos.Add(ev);
                                 eventosAgregados.Add(ext.Evento.Id);
                             }
                         }
@@ -427,7 +437,12 @@ namespace Emsys.LogicLayer
                     throw new EventoInvalidoException();
                 }
                 bool multimedia = autorizarUsuario(token, new string[] { "verMultimedia" });
-                return DtoGetters.getDtoEvento(evento, multimedia);
+                DtoEvento ev = DtoGetters.getDtoEvento(evento, multimedia);
+                foreach (var ext in ev.extensiones)
+                {
+                    ext.isAssigned = TieneAcceso.tieneVisionExtensionListar(user, ext.id);
+                }
+                return ev;
             }
         }
 
