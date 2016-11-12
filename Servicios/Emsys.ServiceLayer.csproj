@@ -16,7 +16,7 @@
     <RootNamespace>Servicios</RootNamespace>
     <AssemblyName>Servicios</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
-    <UseIISExpress>true</UseIISExpress>
+    <UseIISExpress>false</UseIISExpress>
     <IISExpressSSLPort>44316</IISExpressSSLPort>
     <IISExpressAnonymousAuthentication>enabled</IISExpressAnonymousAuthentication>
     <IISExpressWindowsAuthentication>disabled</IISExpressWindowsAuthentication>
@@ -221,6 +221,7 @@
     <Content Include="Global.asax" />
     <Content Include="scripts\ai.0.22.19-build00125.js" />
     <Content Include="scripts\ai.0.22.19-build00125.min.js" />
+    <None Include="Properties\PublishProfiles\FileSystem.pubxml" />
     <None Include="Properties\PublishProfiles\pis-Liberacion2-api - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\pis-Liberacion2-api - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\pis-liberacion203-api - Web Deploy.pubxml" />
@@ -299,6 +300,10 @@
       <Project>{ee8bc402-8fc4-4d4c-889a-210fc71dfc0a}</Project>
       <Name>Emsys.LogicLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SqlDependecyProject\Emsys.ObserverDataBase.csproj">
+      <Project>{1ddb2c9b-93db-4962-8dcc-e8615fdb1068}</Project>
+      <Name>Emsys.ObserverDataBase</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -321,7 +326,7 @@
           <AutoAssignPort>True</AutoAssignPort>
           <DevelopmentServerPort>2956</DevelopmentServerPort>
           <DevelopmentServerVPath>/</DevelopmentServerVPath>
-          <IISUrl>http://localhost:2956/</IISUrl>
+          <IISUrl>http://localhost/Emsys</IISUrl>
           <NTLMAuthentication>False</NTLMAuthentication>
           <UseCustomServer>False</UseCustomServer>
           <CustomServerUrl>

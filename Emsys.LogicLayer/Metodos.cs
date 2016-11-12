@@ -326,6 +326,11 @@ namespace Emsys.LogicLayer
                 user.FechaInicioSesion = null;
                 user.UltimoSignal = null;
                 context.SaveChanges();
+
+                ////si se pudo quitar entonces lo quito de la bd el token.
+                user.RegistrationTokenFirebase = null;
+                context.SaveChanges();
+
                 return true;
             }
         }

@@ -32,6 +32,12 @@ namespace Servicios
                     Thread UserAdminThread = new Thread(new ThreadStart(Emsys.LogicLayer.Program.Main));
                     UserAdminThread.IsBackground = true;
                     UserAdminThread.Start();
+
+                    Thread SQlMonitorThread = new Thread(new ThreadStart(SqlDependecyProject.Program.Main));
+                    SQlMonitorThread.IsBackground = true;
+                    SQlMonitorThread.Start();
+
+
                     _iniciado = true;
                 }
             }

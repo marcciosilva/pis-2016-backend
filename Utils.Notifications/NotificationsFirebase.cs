@@ -52,12 +52,7 @@ namespace Utils.Notifications
                        response.ToString());
                 }
                 else
-                {
-                    ////si se pudo quitar entonces lo quito de la bd el token.
-                    Emsys.DataAccesLayer.Core.EmsysContext db = new Emsys.DataAccesLayer.Core.EmsysContext();
-                    var user = db.Usuarios.Where(x => x.Nombre == nombreUsuario).FirstOrDefault();
-                    user.RegistrationTokenFirebase = null;
-                    db.SaveChanges();
+                {                                     
 
                     LogsManager.AgregarLogNotificationDessuscripcionUsuario(
                         "vacio", 
