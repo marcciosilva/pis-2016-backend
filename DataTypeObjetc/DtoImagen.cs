@@ -7,7 +7,8 @@ namespace DataTypeObject
     {
         public int id { get; set; }
 
-        public int id_imagen { get; set; }
+        [JsonProperty(PropertyName = "id_imagen")]
+        public int idImagen { get; set; }
 
         public string usuario { get; set; }
 

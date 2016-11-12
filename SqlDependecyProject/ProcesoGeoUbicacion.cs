@@ -12,7 +12,7 @@
 
     public class ProcesoGeoUbicacion
     {
-        private static string proceso = "ProcesoMonitoreoGeoUbicacion";
+        private static string _proceso = "ProcesoMonitoreoGeoUbicacion";
 
         private static SqlTableDependency<GeoUbicacion> _dependency;
 
@@ -25,7 +25,7 @@
         {
             try
             {
-                Console.WriteLine(proceso + "- Observo la BD:\n");
+                Console.WriteLine(_proceso + "- Observo la BD:\n");
                 Listener();
 
                 while (true)
@@ -49,8 +49,8 @@
             var mapper = new ModelToTableMapper<GeoUbicacion>();
             mapper.AddMapping(model => model.Id, "Id");
             _dependency = new SqlTableDependency<GeoUbicacion>(_connectionString, "GeoUbicaciones", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
-            _dependency.OnError += _dependency_OnError;
+            _dependency.OnChanged += DependencyOnChanged;
+            _dependency.OnError += DependencyOnError;
             _dependency.Start();
         }
 
@@ -59,7 +59,7 @@
         /// </summary>
         /// <param name="sender">No se utiliza.</param>
         /// <param name="e">Excepcion generada por el sistema de error.</param>
-        private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
+        private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
             throw e.Error;
         }
@@ -69,7 +69,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="geoubicacionesEnBD">Evento Video generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<GeoUbicacion> geoubicacionesEnBD)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<GeoUbicacion> geoubicacionesEnBD)
         {
             try
             {
@@ -130,7 +130,6 @@
                                     GestorNotificaciones.SendMessage(cod, GeoUbicacionDEBD.ExtensionEvento.Id.ToString(), "recurso-" + asig.Recurso.Id);
                                 }
                             }
-
                             // Para la zona asociada a la extension le envia una notificacion.
                             GestorNotificaciones.SendMessage(cod, GeoUbicacionDEBD.ExtensionEvento.Id.ToString(), "zona-" + item.Zona.Id);
                         }

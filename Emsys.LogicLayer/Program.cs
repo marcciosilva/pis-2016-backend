@@ -6,14 +6,15 @@ namespace Emsys.LogicLayer
 {
     public class Program
     {
+        /// <summary>
+        /// Metodo de la aplicacion de consola encargada de desloguear a los usuarios.
+        /// </summary>
         public static void Main()
         {
             // Tiempo para el cual se desonectan usuarios (inactivos por mas de "maxTime" minutos). 
             var maxTime = Convert.ToInt32(WebConfigurationManager.AppSettings["maxTime"]);
-
             // Tiempo cada el cual el servidor checkea por usuarios inactivos (cada "refreshTime" minutos).
             var refreshTime = Convert.ToInt32(WebConfigurationManager.AppSettings["refreshTime"]);
-
             Console.WriteLine("Started...");
             IMetodos logica = new Metodos();
             while (true)

@@ -21,29 +21,24 @@ namespace Test.UnitTesting
         public void ConfiguracionInicial()
         {
             string nombreBD = "EmsysBackendTestingDB";
-            //string scriptInicial = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), @"App_Data\DatosBD.sql");
-            CrearBaseDatos(nombreBD, "DatosBD.sql");
+            this.CrearBaseDatos(nombreBD, "DatosBD.sql");
 
-            CrearBaseDatos("NotificationsAnalysisData", "NotificationsAnalysisData.sql");
+            this.CrearBaseDatos("NotificationsAnalysisData", "NotificationsAnalysisData.sql");
             Assert.IsTrue(true);
         }
 
         private void CrearBaseDatos(string nombreBD, string NombreArchivoIniciar)
         {
-            //string scriptInicial = Environment.CurrentDirectory + "\\App_Data\\DatosBD.sql";
             string scriptInicial = AppDomain.CurrentDomain.BaseDirectory + "\\App_Data\\" + NombreArchivoIniciar;
-            string connectionString = String.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;Integrated Security=True;MultipleActiveResultSets=True;");
-
+            string connectionString = string.Format(@"Data Source=(LocalDB)\MSSQLLocalDB;Integrated Security=True;MultipleActiveResultSets=True;");
             using (var con = new SqlConnection(connectionString))
             {
                 try
                 {
                     con.Open();
-
-                    // Se crea la BD y si existe una se borra.
-                    CrearBD(con, nombreBD);
-
-                    // Se carga la BD con el script inicial.
+                    //// Se crea la BD y si existe una se borra.
+                    this.CrearBD(con, nombreBD);
+                    //// Se carga la BD con el script inicial.
                     using (var context = new EmsysContext())
                     {
                         Database db = context.Database;
@@ -51,7 +46,7 @@ namespace Test.UnitTesting
                         context.SaveChanges();
                     }
 
-                    EjecutarSQL(con, scriptInicial);
+                    this.EjecutarSQL(con, scriptInicial);
                 }
                 catch (Exception e)
                 {
@@ -75,7 +70,7 @@ namespace Test.UnitTesting
                         ALTER DATABASE " + nombreBD + @" SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
                         GO
                         DROP DATABASE [" + nombreBD + "]";
-                    EjecutarSQL(con, "", scriptBorrar);                    
+                    this.EjecutarSQL(con, "", scriptBorrar);
                     Create(con, nombreBD);
                 }
             }
@@ -97,7 +92,7 @@ namespace Test.UnitTesting
             try
             {
                 string script;
-                if (String.IsNullOrEmpty(sql))
+                if (string.IsNullOrEmpty(sql))
                 {
                     script = System.IO.File.ReadAllText(nomreArchivoSQL);
                 }

@@ -19,14 +19,9 @@ namespace Emsys.ServiceLayer
             GlobalConfiguration.Configuration
                 .EnableSwagger(c =>
                     {
-
                         c.SingleApiVersion("v1", "Servicios");
-
                     })
-                .EnableSwaggerUi(c =>
-                    {
-
-                    });
+                .EnableSwaggerUi(c => { });
         }
     }
 }

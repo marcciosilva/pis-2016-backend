@@ -12,7 +12,7 @@
 
     public class ProcesoAudios
     {
-        private static string proceso = "ProcesoMonitoreoAudios";
+        private static string _proceso = "ProcesoMonitoreoAudios";
 
         private static SqlTableDependency<Audio> _dependency;
 
@@ -25,7 +25,7 @@
         {
             try
             {
-                Console.WriteLine(proceso + "- Observo la BD:\n");
+                Console.WriteLine(_proceso + "- Observo la BD:\n");
                 Listener();
 
                 while (true)
@@ -49,8 +49,8 @@
             var mapper = new ModelToTableMapper<Audio>();
             mapper.AddMapping(model => model.Id, "Id");
             _dependency = new SqlTableDependency<Audio>(_connectionString, "Audios", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
-            _dependency.OnError += _dependency_OnError;
+            _dependency.OnChanged += DependencyOnChanged;
+            _dependency.OnError += DependencyOnError;
             _dependency.Start();
         }
 
@@ -59,7 +59,7 @@
         /// </summary>
         /// <param name="sender">No se utiliza.</param>
         /// <param name="e">Excepcion generada por el sistema de error.</param>
-        private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
+        private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
             throw e.Error;
         }
@@ -69,7 +69,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="AudioEnBD">Audios generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Audio> AudioEnBD)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Audio> AudioEnBD)
         {
             try
             {

@@ -6,13 +6,7 @@
     using Emsys.DataAccesLayer.Core;
 
     public class Program
-    {
-        private enum TablaMonitorar
-        {
-            Eventos,
-            Extensiones
-        }
-        
+    {        
         /// <summary>
         /// Metodo principal para el proyecto ObserverDatabase encargado de manejar las notificaciones de los cambios de la bd.
         /// </summary>
@@ -58,7 +52,6 @@
             catch (Exception e)
             {
                 Console.WriteLine(e.ToString());
-                Console.ReadLine();
             }
         }
     }

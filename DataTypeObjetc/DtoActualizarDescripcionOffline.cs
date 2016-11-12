@@ -1,8 +1,8 @@
-﻿using Newtonsoft.Json;
-using System;
-
-namespace DataTypeObject
+﻿namespace DataTypeObject
 {
+    using Newtonsoft.Json;
+    using System;
+
     public class DtoActualizarDescripcionOffline
     {
         public string descripcion { get; set; }

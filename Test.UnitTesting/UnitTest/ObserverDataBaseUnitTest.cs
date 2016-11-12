@@ -29,28 +29,26 @@ namespace Test.UnitTesting
                 string[] entrada = new string[1];
                 Thread workerThread = new Thread(new ThreadStart(SqlDependecyProject.Program.Main));
                 workerThread.Start();
-
-                Thread workerThreadAnalysisDataNotifications = new Thread(new ThreadStart(HiloDeScreenShoots));
+                Thread workerThreadAnalysisDataNotifications = new Thread(new ThreadStart(this.HiloDeScreenShoots));
                 workerThreadAnalysisDataNotifications.Start();
-                // Espero a que se disparen todos los hilos y luego empiezo a modificar la base.
+                //// Espero a que se disparen todos los hilos y luego empiezo a modificar la base.
                 Thread.Sleep(5000);
-                // ModificarBaseDatos();
                 Random r = new Random();
                 EmsysContext db = new EmsysContext();
-
                 for (int j = 0; j < 3; j++)
                 {
                     var evento = db.ExtensionesEvento.FirstOrDefault();
                     evento.DescripcionDespachador = DateTime.Now.Millisecond.ToString();
                     db.SaveChanges();
                 }
-                // 30 segundos despues
+
+                //// 30 segundos despues
                 Thread.Sleep(30000);
                 workerThread.Abort();
             }
             catch (Exception)
             {
-                //como aborte la oprecion a veces sale por aca.
+                ////como aborte la oprecion a veces sale por aca.
                 using (EmsysContext db = new EmsysContext())
                 {
                     var cantidadEnviosReales = db.LogNotification.Where(x => x.Codigo == 901).Count();
@@ -80,11 +78,11 @@ namespace Test.UnitTesting
                 Thread workerThread = new Thread(new ThreadStart(SqlDependecyProject.Program.Main));
                 workerThread.Start();
 
-                Thread workerThreadAnalysisDataNotifications = new Thread(new ThreadStart(HiloDeScreenShoots));
+                Thread workerThreadAnalysisDataNotifications = new Thread(new ThreadStart(this.HiloDeScreenShoots));
                 workerThreadAnalysisDataNotifications.Start();
-                // Espero a que se disparen todos los hilos y luego empiezo a modificar la base.
+                //// Espero a que se disparen todos los hilos y luego empiezo a modificar la base.
                 Thread.Sleep(5000);
-                // ModificarBaseDatos();
+                //// ModificarBaseDatos();
                 Random r = new Random();
                 EmsysContext db = new EmsysContext();
 
@@ -101,9 +99,9 @@ namespace Test.UnitTesting
 
                 workerThread.Abort();
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                //como aborte la oprecion a veces sale por aca.
+                ////como aborte la oprecion a veces sale por aca.
                 using (EmsysContext db = new EmsysContext())
                 {
                     var cantidadEnviosReales = db.LogNotification.Where(x => x.Codigo == 901).Count();

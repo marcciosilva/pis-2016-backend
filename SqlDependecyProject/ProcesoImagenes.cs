@@ -12,9 +12,7 @@
 
     public class ProcesoImagenes
     {
-        private static bool llamo = true;
-
-        private static string proceso = "ProcesoMonitoreoImagenes";
+        private static string _proceso = "ProcesoMonitoreoImagenes";
 
         private static SqlTableDependency<Imagen> _dependency;
 
@@ -27,9 +25,8 @@
         {
             try
             {
-                Console.WriteLine(proceso + "- Observo la BD:\n");
+                Console.WriteLine(_proceso + "- Observo la BD:\n");
                 Listener();
-
                 while (true)
                 {
                     Thread.Sleep(10000);
@@ -51,8 +48,8 @@
             var mapper = new ModelToTableMapper<Imagen>();
             mapper.AddMapping(model => model.Id, "Id");
             _dependency = new SqlTableDependency<Imagen>(_connectionString, "Imagenes", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
-            _dependency.OnError += _dependency_OnError;
+            _dependency.OnChanged += DependencyOnChanged;
+            _dependency.OnError += DependencyOnError;
             _dependency.Start();
         }
 
@@ -61,7 +58,7 @@
         /// </summary>
         /// <param name="sender">No se utiliza.</param>
         /// <param name="e">Excepcion generada por el sistema de error.</param>
-        private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
+        private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
             throw e.Error;
         }
@@ -71,7 +68,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="imagenEnBD">imagen generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Imagen> imagenEnBD)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Imagen> imagenEnBD)
         {
             try
             {
@@ -116,10 +113,10 @@
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Imagenes", imagen.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", MensajesParaFE.LogCapturarCambioEventoCod);
-                var imagenEnBD = db.Imagenes.Find(imagen.Entity.Id);
+                var imagenEnBD = db.imagenes.Find(imagen.Entity.Id);
                 if (imagenEnBD != null)
                 {
-                    if (imagenEnBD.ExtensionEvento!=null)
+                    if (imagenEnBD.ExtensionEvento != null)
                     {
                         // Para cada extension del evento modificado.
                         foreach (var item in imagenEnBD.ExtensionEvento.Evento.ExtensionesEvento)

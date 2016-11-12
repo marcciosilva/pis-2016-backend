@@ -14,7 +14,7 @@ namespace Servicios
     /// </summary>
     public partial class Startup
     {
-        private static bool iniciado = false;
+        private static bool _iniciado = false;
 
         /// <summary>
         /// Metodo de configuracion.
@@ -24,12 +24,11 @@ namespace Servicios
         {
             try
             {
-                if (!iniciado)
+                if (!_iniciado)
                 {
                     // Para iniciar la bd si no esta creada.
                     EmsysContext db = new EmsysContext();
                     db.Evento.ToList();
-
                     Thread UserAdminThread = new Thread(new ThreadStart(Emsys.LogicLayer.Program.Main));
                     UserAdminThread.IsBackground = true;
                     UserAdminThread.Start();

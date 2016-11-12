@@ -1,28 +1,23 @@
-﻿using System;
-using System.Linq;
-using Emsys.DataAccesLayer.Core;
-using NUnit.Framework;
-using System.IO;
-using Emsys.LogicLayer;
-using Utils.Notifications;
-using System.Data.Entity.Validation;
-using System.Threading;
-using System.Web.Configuration;
-using Emsys.DataAccesLayer.Model;
-using System.Collections.Generic;
-
-namespace Test.UnitTesting
+﻿namespace Test.UnitTesting
 {
-    //descomentar esto si falla
-    //[TestFixture]
+    using System;
+    using System.Linq;
+    using Emsys.DataAccesLayer.Core;
+    using NUnit.Framework;
+    using System.Threading;
+    using System.Web.Configuration;
+    using Emsys.DataAccesLayer.Model;
+    using System.Collections.Generic;
+
+    ////descomentar esto para correr el stress
+    ////[TestFixture]
     public class ObserverDataBaseUnitTestStress
     {
         private int _seconds = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaEnvioNotificaciones"]);
-
         /// <summary>
         /// prueba la logica de observer database
         /// </summary>
-        //[Test]
+        ////[Test]
         public void ObserverDataBaseTestStress()
         {
             try
@@ -31,9 +26,9 @@ namespace Test.UnitTesting
                 Thread workerThread = new Thread(new ThreadStart(SqlDependecyProject.Program.Main));
                 workerThread.Start();
 
-                Thread workerThreadAnalysisDataNotifications = new Thread(new ThreadStart(HiloDeScreenShoots));
+                Thread workerThreadAnalysisDataNotifications = new Thread(new ThreadStart(this.HiloDeScreenShoots));
                 workerThreadAnalysisDataNotifications.Start();
-                //espero a que se disparen todos los hilos y luego empiezo a modificar la base
+                ////espero a que se disparen todos los hilos y luego empiezo a modificar la base
                 Thread.Sleep(5000);
 
                 EmsysContext db = new EmsysContext();
@@ -88,7 +83,6 @@ namespace Test.UnitTesting
             using (EmsysContext db = new EmsysContext())
             {
                 int contador = Modificaciones(db);
-
                 AsignacionRecurso ar = new AsignacionRecurso
                 {
                     ActualmenteAsignado = true,
@@ -100,10 +94,8 @@ namespace Test.UnitTesting
                 db.AsignacionesRecursos.Add(ar);
                 db.SaveChanges();
                 db.SaveChanges();
-
-                ////Thread.Sleep(10000);
                 LogicLayerUnitTest test = new LogicLayerUnitTest();
-                test.AdjuntarAudioTest();//  1
+                test.AdjuntarAudioTest();
                 test.AdjuntarVideoTest();
                 test.AdjuntarImagenTest();
                 test.AdjuntarGeoUbicacion();

@@ -12,9 +12,7 @@
 
     public class ProcesoVideos
     {
-        private static bool llamo = true;
-
-        private static string proceso = "ProcesoMonitoreoVideos";
+        private static string _proceso = "ProcesoMonitoreoVideos";
 
         private static SqlTableDependency<Video> _dependency;
 
@@ -27,7 +25,7 @@
         {
             try
             {
-                Console.WriteLine(proceso + "- Observo la BD:\n");
+                Console.WriteLine(_proceso + "- Observo la BD:\n");
                 Listener();
 
                 while (true)
@@ -51,7 +49,7 @@
             var mapper = new ModelToTableMapper<Video>();
             mapper.AddMapping(model => model.Id, "Id");
             _dependency = new SqlTableDependency<Video>(_connectionString, "Videos", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
+            _dependency.OnChanged += DependencyOnChanged;
             _dependency.OnError += _dependency_OnError;
             _dependency.Start();
         }
@@ -71,7 +69,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="videoEnBD">Evento Video generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Video> videoEnBD)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Video> videoEnBD)
         {
             try
             {
@@ -132,7 +130,7 @@
                                 {
                                     GestorNotificaciones.SendMessage(cod, videoDEBD.ExtensionEvento.Id.ToString(), "recurso-" + asig.Recurso.Id);
                                 }
-                            }                            
+                            }
                             // Para la zona asociada a la extensen le envia una notificacion.
                             GestorNotificaciones.SendMessage(cod, videoDEBD.ExtensionEvento.Id.ToString(), "zona-" + item.Zona.Id);
                         }

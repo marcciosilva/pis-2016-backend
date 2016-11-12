@@ -41,7 +41,7 @@
                 thumb.Save(ms, img.RawFormat);
                 return ms.ToArray();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new byte[0];
             }
@@ -87,7 +87,7 @@
             return new DtoImagen()
             {
                 id = img.Id,
-                id_imagen = img.ImagenData.Id,
+                idImagen = img.ImagenData.Id,
                 usuario = img.Usuario.Nombre,
                 fechaEnvio = img.FechaEnvio
             };

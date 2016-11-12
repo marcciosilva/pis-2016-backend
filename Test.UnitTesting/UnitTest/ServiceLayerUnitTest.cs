@@ -718,7 +718,7 @@ namespace Test.UnitTesting
             var controller = new EventosController();
 
             DtoActualizarDescripcion descr = new DtoActualizarDescripcion() { descripcion = "descripcion", idExtension = 1 };
-                       
+
             // No autenticado.
             controller.Request = new HttpRequestMessage();
             var resp1 = controller.ActualizarSegundaCategoria(1, 1);
@@ -1304,32 +1304,29 @@ namespace Test.UnitTesting
             servicio1RequestBody = new Servicios.ServicioExterno.Servicio1RequestBody("", "", "");
             var Servicio1Request = new Servicios.ServicioExterno.Servicio1Request();
             Servicio1Request = new Servicios.ServicioExterno.Servicio1Request(new Servicios.ServicioExterno.Servicio1RequestBody());
-            // var serviciosSoapClient = new Servicios.ServicioExterno.ServiciosSoapClient();
-            // var serviciosSoapClient = new Servicios.ServicioExterno.ServiciosSoapClient("");
-            // serviciosSoapClient = new Servicios.ServicioExterno.ServiciosSoapClient("", "");
-            //  serviciosSoapClient = new Servicios.ServicioExterno.ServiciosSoapClient("", new System.ServiceModel.EndpointAddress(""));
-            // serviciosSoapClient = new Servicios.ServicioExterno.ServiciosSoapClient();
-            //    var dos = serviciosSoapClient.Servicio1("", "", "");
-            // var uno = serviciosSoapClient.Servicio1Async("", "", "");
-            // var filtros = new Servicios.Filtros.LogFilter();
-            //filtros.OnActionExecuting(new HttpActionContext());
             var CustomAuthorizeAttribute = new Servicios.Filtros.CustomAuthorizeAttribute("hola");
             CustomAuthorizeAttribute.OnAuthorization(new HttpActionContext());
             var RequireHttpsAttribute = new Emsys.ServiceLayer.Filtros.RequireHttpsAttribute();
-            //RequireHttpsAttribute.OnAuthorization(new HttpActionContext());
             var delegateHandler = new Emsys.ServiceLayer.Filtros.DelegateHandler();
-            //  Emsys.ServiceLayer.SwaggerConfig.Register();
             Emsys.ServiceLayer.WebApiConfig.Register(new System.Web.Http.HttpConfiguration());
             Emsys.ServiceLayer.SwaggerConfig.Register();
-            var servicioExternoController= new Servicios.Controllers.ServicioExternoController();
-            servicioExternoController.ConsumirServicioExterno(new DtoConsultaExterna { param1="", param2="",param3=""});
-            Utils.Notifications.Utils.LogsManager.AgregarLogNotificationDessuscripcionUsuario("vacio", "servidor", "Utils.Notitications",
-                        "NotificacionesFirebase", 0, "sendNotification",
-                        "Se genero una notificacion exitosamente.",
-                        901,
-                        "", "", "");
+            var servicioExternoController = new Servicios.Controllers.ServicioExternoController();
+            servicioExternoController.ConsumirServicioExterno(new DtoConsultaExterna { param1 = "", param2 = "", param3 = "" });
+            Utils.Notifications.Utils.LogsManager.AgregarLogNotificationDessuscripcionUsuario(
+                "vacio", 
+                "servidor", 
+                "Utils.Notitications",
+                "NotificacionesFirebase", 
+                0, 
+                "sendNotification",
+                "Se genero una notificacion exitosamente.",
+                901,
+                "", 
+                "", 
+                "");
             Assert.IsTrue(true);
         }
+
         /// <summary>
         /// Test adjuntar audio.
         /// </summary>
@@ -1434,38 +1431,5 @@ namespace Test.UnitTesting
             var resp13 = controller.GetAudioData(1);
             Assert.IsTrue(resp13.cod == 15);
         }
-
-
-        ///// <summary>
-        ///// Prueba servicio externo.
-        ///// </summary>
-        //[Test]
-        //public void ServicioExternoTesto()
-        //{
-        //    ServidorExterno.Servicios s = new ServidorExterno.Servicios();
-        //    var controller = new ServicioExternoController();
-        //    var resp = controller.ConsumirServicioExterno(new DtoConsultaExterna() { param1 = "uno", param2 = "dos", param3 = "tres" });
-        //    var lista = (List<DtoRespuestaExterna>)resp.response;
-        //    Assert.IsTrue(lista.Count == 2);
-        //    Assert.AreEqual(lista[0].field1, "uno");
-        //    Assert.AreEqual(lista[0].field2, "dos");
-        //    Assert.AreEqual(lista[0].field3, "tres");
-        //    Assert.AreEqual(lista[0].field4, "DDD");
-        //    Assert.AreEqual(lista[0].field5, "EEE");
-        //    Assert.AreEqual(lista[0].field6, "FFF");
-        //    Assert.AreEqual(lista[0].field7, "GGG");
-        //    Assert.AreEqual(lista[0].field8, "HHH");
-        //    Assert.AreEqual(lista[0].field9, "III");
-        //    Assert.AreEqual(lista[0].field10, "JJJ");
-
-        //    //try
-        //    //{
-        //    //    controller.ConsumirServicioExterno(new DtoConsultaExterna() { param1 = "uno", param2 = "dos", param3 = "tres" });
-        //    //}
-        //    //catch (SoapException e)
-        //    //{
-        //    //    Assert.IsTrue(true);
-        //    //}
-        //}
     }
 }
