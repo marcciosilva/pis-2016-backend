@@ -64,15 +64,15 @@ namespace Emsys.DataAccesLayer.Core
                     GrupoRecurso gr1 = new GrupoRecurso() { Id = 1, Nombre = "gr1" };
                     GrupoRecurso gr2 = new GrupoRecurso() { Id = 2, Nombre = "gr2" };
 
-                // Agregar categorias.
-                Categoria cat1 = new Categoria() { Id = 1, Codigo = "cod1", Clave = "Categoria de prueba 1", Prioridad = NombrePrioridad.Baja, Activo = true };
-                Categoria cat2 = new Categoria() { Id = 2, Codigo = "cod2", Clave = "Categoria de prueba 2", Prioridad = NombrePrioridad.Media, Activo = true };
-                Categoria cat3 = new Categoria() { Id = 3, Codigo = "cod3", Clave = "Categoria de prueba 3", Prioridad = NombrePrioridad.Alta, Activo = true };
-                
-                // Agregar recusos.
-                Recurso rec1 = new Recurso() { Id = 1, Codigo = "recurso1", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>()};
-                Recurso rec2 = new Recurso() { Id = 2, Codigo = "recurso2", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>()};
-                Recurso rec3 = new Recurso() { Id = 3, Codigo = "recurso3", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>()};
+                    // Agregar categorias.
+                    Categoria cat1 = new Categoria() { Id = 1, Codigo = "cod1", Clave = "Categoria de prueba 1", Prioridad = NombrePrioridad.Baja, Activo = true };
+                    Categoria cat2 = new Categoria() { Id = 2, Codigo = "cod2", Clave = "Categoria de prueba 2", Prioridad = NombrePrioridad.Media, Activo = true };
+                    Categoria cat3 = new Categoria() { Id = 3, Codigo = "cod3", Clave = "Categoria de prueba 3", Prioridad = NombrePrioridad.Alta, Activo = true };
+
+                    // Agregar recusos.
+                    Recurso rec1 = new Recurso() { Id = 1, Codigo = "recurso1", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>() };
+                    Recurso rec2 = new Recurso() { Id = 2, Codigo = "recurso2", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>() };
+                    Recurso rec3 = new Recurso() { Id = 3, Codigo = "recurso3", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>() };
 
                     // Agregar recursos a grupos recursos. No se agregan directo.
                     rec1.GruposRecursos.Add(gr1);
@@ -248,44 +248,44 @@ namespace Emsys.DataAccesLayer.Core
                         FechaCreacion = DateTime.Now
                     };
 
-                string formato = "yyyy-MM-dd'T'hh:mm:ss.FFF";
-                ExtensionEvento ext1 = new ExtensionEvento()
-                {
-                    Id = 1,
-                    DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
-                    Evento = evento1,
-                    Zona = zona1,
-                    Estado = EstadoExtension.FaltaDespachar,
-                    TimeStamp = DateTime.Now,
-                    GeoUbicaciones = new List<GeoUbicacion>(),
-                    AsignacionesRecursos = new List<AsignacionRecurso>()
-                };
-                ext1.AsignacionesRecursos.Add(new AsignacionRecurso
-                {
-                    ActualmenteAsignado = true,
-                    AsignacionRecursoDescripcion = new List<AsignacionRecursoDescripcion>(),
-                    Extension = ext1,
-                    Recurso = rec1,
-                    HoraArribo = null
-                });
-                ExtensionEvento ext2 = new ExtensionEvento()
-                {
-                    Id = 2,
-                    DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
-                    Evento = evento2,
-                    Zona = zona2,
-                    Estado = EstadoExtension.FaltaDespachar,
-                    TimeStamp = DateTime.Now
-                };
-                ExtensionEvento ext3 = new ExtensionEvento()
-                {
-                    Id = 3,
-                    DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
-                    Evento = evento3,
-                    Zona = zona4,
-                    Estado = EstadoExtension.FaltaDespachar,
-                    TimeStamp = DateTime.Now
-                };
+                    string formato = "yyyy-MM-dd'T'hh:mm:ss.FFF";
+                    ExtensionEvento ext1 = new ExtensionEvento()
+                    {
+                        Id = 1,
+                        DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
+                        Evento = evento1,
+                        Zona = zona1,
+                        Estado = EstadoExtension.FaltaDespachar,
+                        TimeStamp = DateTime.Now,
+                        GeoUbicaciones = new List<GeoUbicacion>(),
+                        AsignacionesRecursos = new List<AsignacionRecurso>()
+                    };
+                    ext1.AsignacionesRecursos.Add(new AsignacionRecurso
+                    {
+                        ActualmenteAsignado = true,
+                        AsignacionRecursoDescripcion = new List<AsignacionRecursoDescripcion>(),
+                        Extension = ext1,
+                        Recurso = rec1,
+                        HoraArribo = null
+                    });
+                    ExtensionEvento ext2 = new ExtensionEvento()
+                    {
+                        Id = 2,
+                        DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
+                        Evento = evento2,
+                        Zona = zona2,
+                        Estado = EstadoExtension.FaltaDespachar,
+                        TimeStamp = DateTime.Now
+                    };
+                    ExtensionEvento ext3 = new ExtensionEvento()
+                    {
+                        Id = 3,
+                        DescripcionDespachador = DateTime.Now.ToString(formato) + "\\UsuarioDespachador\\descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra descripcion de evento\\" + DateTime.Now.ToString(formato) + "\\UsuarioDespachador2\\otra mas",
+                        Evento = evento3,
+                        Zona = zona4,
+                        Estado = EstadoExtension.FaltaDespachar,
+                        TimeStamp = DateTime.Now
+                    };
 
                     // Agregar geo ubicaciones.
                     GeoUbicacion geo1 = new GeoUbicacion() { Latitud = 11.1, Longitud = 22.2, FechaEnvio = DateTime.Now, Usuario = user1 };
@@ -293,17 +293,18 @@ namespace Emsys.DataAccesLayer.Core
                     GeoUbicacion geo3 = new GeoUbicacion() { Latitud = 55.5, Longitud = 66.6, FechaEnvio = DateTime.Now, Usuario = user1 };
                     GeoUbicacion geo4 = new GeoUbicacion() { Latitud = 77.7, Longitud = 88.8, FechaEnvio = DateTime.Now, Usuario = user1 };
 
-                // Agregar geo ubicaciones a eventos y extensiones.
-                ext1.GeoUbicaciones.Add(geo3);
-                ext1.GeoUbicaciones.Add(geo4);
-                
-                context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext1);
-                context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext2);
-                context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext3);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
+                    // Agregar geo ubicaciones a eventos y extensiones.
+                    ext1.GeoUbicaciones.Add(geo3);
+                    ext1.GeoUbicaciones.Add(geo4);
+
+                    context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext1);
+                    context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext2);
+                    context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext3);
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.ToString());
+                }
             }
         }
     }

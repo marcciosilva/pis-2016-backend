@@ -37,7 +37,7 @@ namespace Servicios
                     DBObserverThread.IsBackground = true;
                     DBObserverThread.Start();
 
-                    iniciado = true;
+                    _iniciado = true;
                 }
             }
             catch (Exception)
