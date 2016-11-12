@@ -34,6 +34,10 @@ namespace Servicios
                     UserAdminThread.IsBackground = true;
                     UserAdminThread.Start();
 
+                    Thread DBObserverThread = new Thread(new ThreadStart(SqlDependecyProject.Program.Main));
+                    DBObserverThread.IsBackground = true;
+                    DBObserverThread.Start();
+
                     iniciado = true;
                 }
             }

@@ -300,6 +300,10 @@
       <Project>{ee8bc402-8fc4-4d4c-889a-210fc71dfc0a}</Project>
       <Name>Emsys.LogicLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\SqlDependecyProject\Emsys.ObserverDataBase.csproj">
+      <Project>{1ddb2c9b-93db-4962-8dcc-e8615fdb1068}</Project>
+      <Name>Emsys.ObserverDataBase</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
