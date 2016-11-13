@@ -437,7 +437,7 @@ namespace Test.UnitTesting
             {
                 // Se crea un usuario con un recurso asociado en la BD.
                 var user = new Usuario() { NombreLogin = "usuarioDE", Nombre = "usuarioDE", Contraseña = Passwords.GetSHA1("usuarioDE"), GruposRecursos = new List<GrupoRecurso>(), UnidadesEjecutoras = new List<UnidadEjecutora>() };
-                var recursoDisponible = new Recurso() { Codigo = "recursoDE", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, ExtensionesEventos = new List<ExtensionEvento>() };
+                var recursoDisponible = new Recurso() { Codigo = "recursoDE", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, AsignacionesRecurso = new List<AsignacionRecurso>() };
                 var gr = new GrupoRecurso() { Nombre = "grDEPrueba", Recursos = new List<Recurso>() };
                 var zona1 = new Zona() { Nombre = "zonaDE1" };
                 var unidadEjecutora1 = new UnidadEjecutora() { Nombre = "ueDEPrueba", Zonas = new List<Zona>() };
@@ -496,8 +496,8 @@ namespace Test.UnitTesting
                 {
                     u.Token = null;
                 }
-
-                recursoDisponible.ExtensionesEventos.Add(ext1);
+                
+                recursoDisponible.AsignacionesRecurso.Add(new AsignacionRecurso() { ActualmenteAsignado = true, Extension = ext1, Recurso = recursoDisponible });
                 try
                 {
                     context.SaveChanges();
@@ -583,7 +583,7 @@ namespace Test.UnitTesting
 
             // Se crea un usuario con un recurso asociado en la BD.
             var user = new Usuario() { NombreLogin = "usuarioListarEventoRecurso", Nombre = "usuarioListarEventoRecurso", Contraseña = Passwords.GetSHA1("usuarioListarEventoRecurso"), GruposRecursos = new List<GrupoRecurso>(), UnidadesEjecutoras = new List<UnidadEjecutora>() };
-            var recursoDisponible = new Recurso() { Codigo = "recursoListarEvento", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, ExtensionesEventos = new List<ExtensionEvento>() };
+            var recursoDisponible = new Recurso() { Codigo = "recursoListarEvento", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, AsignacionesRecurso = new List<AsignacionRecurso>() };
             var gr = new GrupoRecurso() { Nombre = "grPrueba", Recursos = new List<Recurso>() };
             var zona1 = new Zona() { Nombre = "zona1" };
             var zona2 = new Zona() { Nombre = "zona2" };
@@ -677,8 +677,8 @@ namespace Test.UnitTesting
             string token = autent.accessToken;
 
             // Se prueba que se listen las extensiones asociadas a un recurso
-            recursoDisponible.ExtensionesEventos.Add(ext1);
-            recursoDisponible.ExtensionesEventos.Add(ext2);
+            recursoDisponible.AsignacionesRecurso.Add(new AsignacionRecurso() { ActualmenteAsignado = true, Extension = ext1, Recurso = recursoDisponible });
+            recursoDisponible.AsignacionesRecurso.Add(new AsignacionRecurso() { ActualmenteAsignado = true, Extension = ext2, Recurso = recursoDisponible });
             try
             {
                 context.SaveChanges();
@@ -2181,7 +2181,7 @@ namespace Test.UnitTesting
             Assert.IsTrue(db.Evento.FirstOrDefault().ExtensionesEvento.ToArray()[cantPrevia].Zona.Id == zonas.FirstOrDefault().id);
 
             int idExtNueva = db.ExtensionesEvento.Max(e => e.Id);
-            db.ExtensionesEvento.FirstOrDefault(e => e.Id == idExtNueva).Recursos.Add(db.Recursos.FirstOrDefault());
+            db.ExtensionesEvento.FirstOrDefault(e => e.Id == idExtNueva).AsignacionesRecursos.Add(new AsignacionRecurso() { Extension = db.ExtensionesEvento.FirstOrDefault(e => e.Id == idExtNueva), Recurso = db.Recursos.FirstOrDefault(), ActualmenteAsignado = true });
             db.SaveChanges();
             var ok5 = logic.tomarExtension(token, idExtNueva);
 

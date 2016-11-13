@@ -40,5 +40,8 @@ namespace DataTypeObject
 
         [JsonProperty(PropertyName = "geo_ubicaciones")]
         public virtual ICollection<DtoGeoUbicacion> geoUbicaciones { get; set; }
+
+        [JsonProperty(PropertyName = "is_assigned")]
+        public bool isAssigned { get; set; }
     }
 }

@@ -26,10 +26,12 @@ namespace Emsys.LogicLayer.Utils
                     // Si el usuario esta conectado como recurso.
                     if (user.Recurso.Count() > 0)
                     {
-                        ExtensionEvento ext = user.Recurso.FirstOrDefault().ExtensionesEventos.FirstOrDefault(e => e.Evento.Id == evento.Id);
-                        if ((ext != null) && (ext.Estado != EstadoExtension.Cerrado))
+                        foreach (AsignacionRecurso asig in user.Recurso.FirstOrDefault().AsignacionesRecurso)
                         {
-                            return true;
+                            if ((asig.Extension.Evento.Id == evento.Id) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
+                            {
+                                return true;
+                            }
                         }
                     }
                     else if (user.Zonas.Count() > 0)
@@ -63,10 +65,12 @@ namespace Emsys.LogicLayer.Utils
                 {
                     if (user.Recurso.Count() > 0)
                     {
-                        ExtensionEvento ext = user.Recurso.FirstOrDefault().ExtensionesEventos.FirstOrDefault(e => e.Evento.Id == extension.Id);
-                        if ((ext != null) && (ext.Estado != EstadoExtension.Cerrado))
+                        foreach (AsignacionRecurso asig in user.Recurso.FirstOrDefault().AsignacionesRecurso)
                         {
-                            return true;
+                            if ((asig.Extension.Id == extension.Id) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
+                            {
+                                return true;
+                            }
                         }
                     }                   
                     else if (user.Zonas.Count() > 0)
@@ -83,28 +87,60 @@ namespace Emsys.LogicLayer.Utils
             }
         }
 
+        public static bool tieneVisionExtensionListar(Usuario user, int idExtension)
+        {
+            using (var context = new EmsysContext())
+            {
+                ExtensionEvento extension = context.ExtensionesEvento.FirstOrDefault(e=> e.Id == idExtension);
+                if (extension == null)
+                {
+                    return false;
+                }
+                if (user != null)
+                {
+                    // Si esta logueado como recurso.
+                    if (user.Recurso.Count() > 0)
+                    {
+                        // Verifica que esta asignado a la extension.
+                        AsignacionRecurso asig = user.Recurso.FirstOrDefault().AsignacionesRecurso.FirstOrDefault(a => a.Extension.Id == extension.Id);
+                        if ((asig != null) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
+                        {
+                            return true;
+                        }
+                    }
+                    // Si esta logueado como zona.
+                    else if (user.Zonas.Count() > 0)
+                    {
+                        // Verifica que esta logueado en la zona de la extension.
+                        var zone = user.Zonas.FirstOrDefault(z => z.Id == extension.Zona.Id);
+                        if (zone != null)
+                        {
+                            return true;
+                        }                        
+                    }
+                }
+
+                return false;
+            }
+        }
+
         /// <summary>
         /// Indica si un usuario esta logueado como recurso y ese recurso esta asignado a determinada la extension indicada o no.
         /// </summary>
         /// <param name="user">Usuario</param>
         /// <param name="extension">Extension</param>
         /// <returns>Devuelve verdadero si el usuario esta logueado como recurso y asignado a la extension, falso en caso contrario</returns>
-        public static bool estaAsignadoExtension(Usuario user, ExtensionEvento extension)
+        public static bool estaAsignadoExtension(Recurso rec, ExtensionEvento extension)
         {
             using (var context = new EmsysContext())
             {
-                if (user == null)
+                if (rec == null)
                 {
                     return false;
                 }
 
-                if (user.Recurso.Count() == 0)
-                {
-                    return false;
-                }
-
-                ExtensionEvento ext = user.Recurso.FirstOrDefault().ExtensionesEventos.FirstOrDefault(e => e.Id == extension.Id);
-                if ((ext != null) && (ext.Estado != EstadoExtension.Cerrado))
+                AsignacionRecurso asig = rec.AsignacionesRecurso.FirstOrDefault(a => a.Extension.Id == extension.Id);
+                if ((asig != null) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
                 {
                     return true;
                 }

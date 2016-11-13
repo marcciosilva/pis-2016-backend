@@ -88,7 +88,7 @@ namespace Utils.Notifications
         /// <param name="cod">Codigo definido en Codigos para enviar una notificacion.</param>
         /// <param name="pk">Primary Key del elemento que se realizo la notificacion y se desea enviar.</param>
         /// <param name="topic">Topic/Channel al que se desea enviar una notificacion.</param>
-        public void SendMessage(string cod, string pk, string topic)
+        public void SendMessage(string cod, int evento, int extension, int zona, string zonaNombre, string topic)
         {
             LogsManager.AgregarLogNotification(
                 "vacio", 
@@ -100,11 +100,11 @@ namespace Utils.Notifications
                 "Se genero una notificacion Real.",
                 MensajesParaFE.LogNotificaciones, 
                 topic, 
-                cod, 
-                pk, 
+                cod,
+                evento.ToString(), 
                 "No tengo aun.", 
                 null);
-            this.sendNotification(cod, pk, topic, null);
+            this.sendNotification(cod, evento, extension, zona, zonaNombre, topic, null);
         }
 
 
@@ -115,7 +115,7 @@ namespace Utils.Notifications
         /// <param name="pk">Primary Key de elemento a informar que cambio.</param>
         /// <param name="topic">Topic/Channel de elemento que fue modificado.</param>
         /// <param name="logPrevio"></param>
-        private async void sendNotification(string cod, string pk, string topic, LogNotification logPrevio = null)
+        private async void sendNotification(string cod, int evento, int extension, int zona, string zonaNombre, string topic, LogNotification logPrevio = null)
         {
             using (var client = new HttpClient())
             {
@@ -129,7 +129,7 @@ namespace Utils.Notifications
                 client.DefaultRequestHeaders.TryAddWithoutValidation("Authorization", "key = " + keyFireBase);
                 client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
                 var topicFinal = "/topics/" + topic;
-                var notificationJSon = JsonConvert.SerializeObject(new Notificacion(topicFinal, new data(cod, pk)));
+                var notificationJSon = JsonConvert.SerializeObject(new Notificacion(topicFinal, new data(cod, evento, extension, zona, zonaNombre)));
                 var content = new StringContent(notificationJSon, Encoding.UTF8, "application/json");
                 request.Content = content;
                 var response = await client.SendAsync(request);
@@ -146,7 +146,7 @@ namespace Utils.Notifications
                         MensajesParaFE.LogNotificacionesErrorGenerico, 
                         topicFinal, 
                         cod,
-                        pk,
+                        evento.ToString(),
                         response.ToString(), 
                         logPrevio);
                     throw new Exception("Al enviar una notifiacion la respuesta del servidor NO fue positiva.");
@@ -166,13 +166,13 @@ namespace Utils.Notifications
                         MensajesParaFE.LogNotificacionesErrorReenvio,
                          topicFinal,
                          cod, 
-                         pk, 
+                         evento.ToString(), 
                          response.ToString(), 
                          logPrevio);
                     this._pool.WaitOne();
                     Thread.Sleep(this._seconds);
                     this._pool.Release();
-                    this.sendNotification(cod, pk, topic, logActual);
+                    this.sendNotification(cod, evento, extension, zona, zonaNombre, topic, logActual);
                 }
                 else
                 {
@@ -187,7 +187,7 @@ namespace Utils.Notifications
                         MensajesParaFE.LogNotificacionesCierreEnvio,
                         topicFinal, 
                         cod, 
-                        pk, 
+                        evento.ToString(), 
                         responseString,
                         logPrevio);
                 }

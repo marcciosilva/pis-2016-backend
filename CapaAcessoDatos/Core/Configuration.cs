@@ -70,9 +70,9 @@ namespace Emsys.DataAccesLayer.Core
                     Categoria cat3 = new Categoria() { Id = 3, Codigo = "cod3", Clave = "Categoria de prueba 3", Prioridad = NombrePrioridad.Alta, Activo = true };
 
                     // Agregar recusos.
-                    Recurso rec1 = new Recurso() { Id = 1, Codigo = "recurso1", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>(), ExtensionesEventos = new List<ExtensionEvento>() };
-                    Recurso rec2 = new Recurso() { Id = 2, Codigo = "recurso2", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>(), ExtensionesEventos = new List<ExtensionEvento>() };
-                    Recurso rec3 = new Recurso() { Id = 3, Codigo = "recurso3", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>(), ExtensionesEventos = new List<ExtensionEvento>() };
+                    Recurso rec1 = new Recurso() { Id = 1, Codigo = "recurso1", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>() };
+                    Recurso rec2 = new Recurso() { Id = 2, Codigo = "recurso2", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>() };
+                    Recurso rec3 = new Recurso() { Id = 3, Codigo = "recurso3", Estado = EstadoRecurso.Disponible, EstadoAsignacion = EstadoAsignacionRecurso.Libre, GruposRecursos = new List<GrupoRecurso>() };
 
                     // Agregar recursos a grupos recursos. No se agregan directo.
                     rec1.GruposRecursos.Add(gr1);
@@ -258,8 +258,7 @@ namespace Emsys.DataAccesLayer.Core
                         Estado = EstadoExtension.FaltaDespachar,
                         TimeStamp = DateTime.Now,
                         GeoUbicaciones = new List<GeoUbicacion>(),
-                        Recursos = new List<Recurso>(),
-                        AsignacionesRecursos = new List<AsignacionRecurso>(),
+                        AsignacionesRecursos = new List<AsignacionRecurso>()
                     };
                     ext1.AsignacionesRecursos.Add(new AsignacionRecurso
                     {
@@ -297,8 +296,6 @@ namespace Emsys.DataAccesLayer.Core
                     // Agregar geo ubicaciones a eventos y extensiones.
                     ext1.GeoUbicaciones.Add(geo3);
                     ext1.GeoUbicaciones.Add(geo4);
-
-                    ext1.Recursos.Add(rec1);
 
                     context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext1);
                     context.ExtensionesEvento.AddOrUpdate(x => x.Id, ext2);

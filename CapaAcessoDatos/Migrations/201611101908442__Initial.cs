@@ -389,19 +389,6 @@ namespace Emsys.DataAccesLayer.Core
                 .Index(t => t.Rol_Id);
             
             CreateTable(
-                "dbo.RecursoExtensionEventoes",
-                c => new
-                    {
-                        Recurso_Id = c.Int(nullable: false),
-                        ExtensionEvento_Id = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.Recurso_Id, t.ExtensionEvento_Id })
-                .ForeignKey("dbo.Recursos", t => t.Recurso_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Extensiones_Evento", t => t.ExtensionEvento_Id, cascadeDelete: true)
-                .Index(t => t.Recurso_Id)
-                .Index(t => t.ExtensionEvento_Id);
-            
-            CreateTable(
                 "dbo.GrupoRecursoRecursoes",
                 c => new
                     {

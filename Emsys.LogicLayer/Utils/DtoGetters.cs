@@ -265,12 +265,15 @@
         /// </summary>
         /// <param name="ext">ExtensionEvento</param>
         /// <returns>Dto generado</returns>
-        public static DtoExtension getDtoExtension(ExtensionEvento ext)
+        public static DtoExtension getDtoExtension(ExtensionEvento ext, bool multimedia)
         {
             List<string> recursos = new List<string>();
-            foreach (Recurso r in ext.Recursos)
+            foreach (AsignacionRecurso a in ext.AsignacionesRecursos)
             {
-                recursos.Add(r.Codigo);
+                if (a.ActualmenteAsignado == true)
+                {
+                    recursos.Add(a.Recurso.Codigo);
+                }
             }
 
             List<DtoAsignacionRecurso> asignaciones = new List<DtoAsignacionRecurso>();
@@ -290,24 +293,24 @@
             {
                 desp = ext.Despachador.Nombre;
             }
-
             List<DtoImagen> imgs = new List<DtoImagen>();
-            foreach (Imagen i in ext.Imagenes)
-            {
-                imgs.Add(getDtoImagen(i));
-            } 
-
             List<DtoVideo> vids = new List<DtoVideo>();
-            foreach (Video v in ext.Videos)
-            {
-                vids.Add(getDtoVideo(v));
-            }    
-
             List<DtoAudio> auds = new List<DtoAudio>();
-            foreach (Audio a in ext.Audios)
-            {
-                auds.Add(getDtoAudio(a));
-            }    
+            if (multimedia)
+            {                
+                foreach (Imagen i in ext.Imagenes)
+                {
+                    imgs.Add(getDtoImagen(i));
+                }                               
+                foreach (Video v in ext.Videos)
+                {
+                    vids.Add(getDtoVideo(v));
+                }                
+                foreach (Audio a in ext.Audios)
+                {
+                    auds.Add(getDtoAudio(a));
+                }
+            }
 
             List<DtoGeoUbicacion> geos = new List<DtoGeoUbicacion>();
             foreach (GeoUbicacion g in ext.GeoUbicaciones)
@@ -349,36 +352,36 @@
         /// </summary>
         /// <param name="evento">Evento</param>
         /// <returns>Dto generado</returns>
-        public static DtoEvento getDtoEvento(Evento evento)
+        public static DtoEvento getDtoEvento(Evento evento, bool multimedia)
         {
             List<DtoExtension> extensiones = new List<DtoExtension>();
             foreach (ExtensionEvento e in evento.ExtensionesEvento)
             {
-                extensiones.Add(getDtoExtension(e));
+                extensiones.Add(getDtoExtension(e, multimedia));
             }
 
             string dep = string.Empty;
             if (evento.Departamento != null)
             {
                 dep = evento.Departamento.Nombre;
-            }  
-
+            }
             List<DtoImagen> imgs = new List<DtoImagen>();
-            foreach (Imagen i in evento.Imagenes)
-            {
-                imgs.Add(getDtoImagen(i));
-            }   
-
             List<DtoVideo> vids = new List<DtoVideo>();
-            foreach (Video v in evento.Videos)
-            {
-                vids.Add(getDtoVideo(v));
-            }  
-
             List<DtoAudio> auds = new List<DtoAudio>();
-            foreach (Audio a in evento.Audios)
-            {
-                auds.Add(getDtoAudio(a));
+            if (multimedia)
+            {                
+                foreach (Imagen i in evento.Imagenes)
+                {
+                    imgs.Add(getDtoImagen(i));
+                }                
+                foreach (Video v in evento.Videos)
+                {
+                    vids.Add(getDtoVideo(v));
+                }                
+                foreach (Audio a in evento.Audios)
+                {
+                    auds.Add(getDtoAudio(a));
+                }
             }
 
             string cread = null;

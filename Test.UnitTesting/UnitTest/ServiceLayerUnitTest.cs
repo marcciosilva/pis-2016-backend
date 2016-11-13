@@ -913,8 +913,8 @@ namespace Test.UnitTesting
             db.ExtensionesEvento.FirstOrDefault(ex => ex.Id == nuevaExt).Evento.Estado = Emsys.DataAccesLayer.Model.EstadoEvento.Enviado;
             db.SaveChanges();
 
-            db.ExtensionesEvento.FirstOrDefault(ex => ex.Id == nuevaExt).Recursos.Add(db.Recursos.FirstOrDefault());
-            db.SaveChanges();
+            //db.ExtensionesEvento.FirstOrDefault(ex => ex.Id == nuevaExt).Recursos.Add(db.Recursos.FirstOrDefault());
+            //db.SaveChanges();
 
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
