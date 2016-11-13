@@ -8,7 +8,7 @@
     using DataTypeObject;
 
     public class Program
-    {        
+    {
         /// <summary>
         /// Metodo principal para el proyecto ObserverDatabase encargado de manejar las notificaciones de los cambios de la bd.
         /// </summary>
@@ -34,8 +34,8 @@
                 WorkerThreadGeoUbicacuibes.Start();
 
                 Thread WorkerThreadAsignacionRecursoDescripcion = new Thread(new ThreadStart(ProcesoAsignacionRecursoDescripcion.ProcesoMonitorearAsignacionRecursoDescripcion));
-                WorkerThreadAsignacionRecursoDescripcion.Start();                
-                
+                WorkerThreadAsignacionRecursoDescripcion.Start();
+
                 Thread WorkerThreadImagenes = new Thread(new ThreadStart(ProcesoImagenes.ProcesoMonitoreoImagenes));
                 WorkerThreadImagenes.Start();
 
@@ -54,8 +54,8 @@
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "ObserverDataBase", "No hay entidad expecifica", 0, "Program", "Error generico en observerDatabase", MensajesParaFE.LogErrorObserverDataBaseeGenerico);
-             }
+                dbAL.AgregarLogError("vacio", "servidor", "ObserverDataBase", "No hay entidad expecifica", 0, "Program", "Error generico en observerDatabase: " + e.ToString(), MensajesParaFE.LogErrorObserverDataBaseeGenerico);
+            }
         }
     }
 }
