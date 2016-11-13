@@ -35,8 +35,7 @@
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoAsignacionRecursoDescripcion", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un AsignacionRecursoDescripcion en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoAsignacionRecursoDescripcion", "ProcesoAsignacionRecursoDescripcion", 0, "_dependency_OnChanged", "Error al intentar capturar un AsignacionRecursoDescripcion en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseAsignacionRecursoDescripcion);
             }
         }
 
@@ -60,7 +59,8 @@
         /// <param name="e">Excepcion generada por el sistema de error.</param>
         private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
-            throw e.Error;
+            IMetodos dbAL = new Metodos();
+            dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoAsignacionRecursoDescripcion", "ProcesoAsignacionRecursoDescripcion", 0, "_dependency_OnChanged", "Error al intentar capturar un AsignacionRecursoDescripcion en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseAsignacionRecursoDescripcionDependencyOnError);
         }
 
         /// <summary>
