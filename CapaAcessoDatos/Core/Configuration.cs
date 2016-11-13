@@ -181,6 +181,7 @@ namespace Emsys.DataAccesLayer.Core
                     // Agregar usuarios a unidades ejecutoras y grupos recursos.
                     user1.GruposRecursos.Add(gr1);
                     user1.GruposRecursos.Add(gr2);
+                    user2.GruposRecursos.Add(gr1);
                     user2.GruposRecursos.Add(gr2);
                     user3.GruposRecursos.Add(gr2);
                     user4.GruposRecursos.Add(gr1);
@@ -188,6 +189,7 @@ namespace Emsys.DataAccesLayer.Core
                     user1.UnidadesEjecutoras.Add(ue1);
                     user1.UnidadesEjecutoras.Add(ue2);
                     user1.UnidadesEjecutoras.Add(ue3);
+                    user2.UnidadesEjecutoras.Add(ue1);
                     user2.UnidadesEjecutoras.Add(ue2);
                     user3.UnidadesEjecutoras.Add(ue3);
                     user4.UnidadesEjecutoras.Add(ue1);
