@@ -37,7 +37,7 @@
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoVideos", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un Video en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
+                //throw e;
             }
         }
 
@@ -61,7 +61,7 @@
         /// <param name="e">Excepcion generada por el sistema de error.</param>
         private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
-            throw e.Error;
+           // throw e.Error;
         }
 
         /// <summary>
