@@ -136,6 +136,25 @@
         public const int LogNotificacionesDessuscripcionUsuarioTopicError = 914;
         public const int LogNotificacionesDessuscripcionUsuarioTopicErrorGenericoRequest = 914;
 
+        //codigos de observerDatabase
+        public const int LogErrorObserverDataBaseAsignacionRecurso = 15001;
+        public const int LogErrorObserverDataBaseAsignacionRecursoDependencyOnError = 15002;
+        public const int LogErrorObserverDataBaseAsignacionRecursoDescripcion = 15003;
+        public const int LogErrorObserverDataBaseAsignacionRecursoDescripcionDependencyOnError = 15004;
+        public const int LogErrorObserverDataBaseAudio = 15005;
+        public const int LogErrorObserverDataBaseAudionDependencyOnError = 15006;
+        public const int LogErrorObserverDataBaseEvento = 15007;
+        public const int LogErrorObserverDataBaseEventoDependencyOnError = 15008;
+        public const int LogErrorObserverDataBaseExtensiones = 15009;
+        public const int LogErrorObserverDataBaseExtensionesDependencyOnError = 15010;
+        public const int LogErrorObserverDataBaseGeoUbicaciones = 15011;
+        public const int LogErrorObserverDataBaseeGeoUbicacionesDependencyOnError = 15012;
+        public const int LogErrorObserverDataBaseImagenes = 15013;
+        public const int LogErrorObserverDataBaseeImagenesDependencyOnError = 15014;
+        public const int LogErrorObserverDataBaseVideo = 15015;
+        public const int LogErrorObserverDataBaseeVideoDependencyOnError = 15016;
+        public const int LogErrorObserverDataBaseeGenerico = 15017;
+
         // Desconectar inactivos
         public const int LogDesconectarUsuarioCod = 904;
     }

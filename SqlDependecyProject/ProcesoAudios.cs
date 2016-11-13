@@ -36,8 +36,7 @@
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoAudios", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un Audios en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoAudios", "ProcesoMonitoreoAudios", 0, "_dependency_OnChanged", "Error al intentar capturar un Audios en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseAudio);
             }
         }
 
@@ -61,7 +60,8 @@
         /// <param name="e">Excepcion generada por el sistema de error.</param>
         private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
-            throw e.Error;
+            IMetodos dbAL = new Metodos();
+            dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoAudios", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un Audios en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseAudionDependencyOnError);
         }
 
         /// <summary>

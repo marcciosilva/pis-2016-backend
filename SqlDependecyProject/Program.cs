@@ -4,6 +4,8 @@
     using System.Linq;
     using System.Threading;
     using Emsys.DataAccesLayer.Core;
+    using Emsys.LogicLayer;
+    using DataTypeObject;
 
     public class Program
     {        
@@ -51,8 +53,9 @@
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
-            }
+                IMetodos dbAL = new Metodos();
+                dbAL.AgregarLogError("vacio", "servidor", "ObserverDataBase", "No hay entidad expecifica", 0, "Program", "Error generico en observerDatabase", MensajesParaFE.LogErrorObserverDataBaseeGenerico);
+             }
         }
     }
 }
