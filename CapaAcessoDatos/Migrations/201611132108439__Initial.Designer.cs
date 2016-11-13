@@ -13,7 +13,7 @@ namespace Emsys.DataAccesLayer.Core
         
         string IMigrationMetadata.Id
         {
-            get { return "201611122258165__Initial"; }
+            get { return "201611132108439__Initial"; }
         }
         
         string IMigrationMetadata.Source

@@ -12,9 +12,17 @@
 
     public class ProcesoAsignacionRecurso
     {
+        public partial class AsignacionRecursoMapeado
+        {
+            public int Id { get; set; }
+
+            public bool ActualmenteAsignado { get; set; }            
+        }
+
+
         private static string _proceso = "ProcesoMonitoreoAsignacionRecurso";
 
-        private static SqlTableDependency<AsignacionRecurso> _dependency;
+        private static SqlTableDependency<AsignacionRecursoMapeado> _dependency;
 
         private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
@@ -46,9 +54,10 @@
         /// </summary>
         public static void Listener()
         {
-            var mapper = new ModelToTableMapper<AsignacionRecurso>();
+            var mapper = new ModelToTableMapper<AsignacionRecursoMapeado>();
             mapper.AddMapping(model => model.Id, "Id");
-            _dependency = new SqlTableDependency<AsignacionRecurso>(_connectionString, "AsignacionesRecursos", mapper);
+            mapper.AddMapping(model => model.ActualmenteAsignado, "ActualmenteAsignado");
+            _dependency = new SqlTableDependency<AsignacionRecursoMapeado>(_connectionString, "AsignacionesRecursos", mapper);
             _dependency.OnChanged += DependencyOnChanged;
             _dependency.OnError += DependencyOnError;
             _dependency.Start();
@@ -69,7 +78,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="AsignacionRecursoDB"></param>
-        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<AsignacionRecurso> AsignacionRecursoDB)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<AsignacionRecursoMapeado> AsignacionRecursoDB)
         {
             try
             {
@@ -88,7 +97,7 @@
                             break;
                         case ChangeType.Update:
                             Console.WriteLine("ProcesoAsignacionRecursoMonitoreo - Accion update, Pk del evento: " + AsignacionRecursoDB.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.RetiradoEvento, AsignacionRecursoDB, GestorNotificaciones);
+                            AtenderEvento("cambio", AsignacionRecursoDB, GestorNotificaciones);
                             break;
                     }
                 }
@@ -107,7 +116,7 @@
         /// <param name="cod">Codigo que se desea notificar a la aplicacion dado el Video.</param>
         /// <param name="asinacionRecurso">Identificador del Video que fue modificado/alta/baja.</param>
         /// <param name="GestorNotificaciones">Instancia de INotification.</param>
-        private static void AtenderEvento(string cod, TableDependency.EventArgs.RecordChangedEventArgs<AsignacionRecurso> asinacionRecurso, Utils.Notifications.INotifications GestorNotificaciones)
+        private static void AtenderEvento(string cod, TableDependency.EventArgs.RecordChangedEventArgs<AsignacionRecursoMapeado> asinacionRecurso, Utils.Notifications.INotifications GestorNotificaciones)
         {
             using (EmsysContext db = new EmsysContext())
             {
@@ -128,12 +137,16 @@
                             GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asgnacionRecursoEnDB.Recurso.Id);
                         }
                     }
-                    else if (cod == DataNotificacionesCodigos.RetiradoEvento)
+                    // Si el evento fue de modificacion, se fija si el recurso fue asignado o retirado.
+                    else if (cod == "cambio")
                     {
-                        // Si el recurso no esta asignado notifico al usuario que ha sido retirado.
                         if ((asgnacionRecursoEnDB.ActualmenteAsignado == false) && (asgnacionRecursoEnDB.Recurso.Estado == EstadoRecurso.NoDisponible))
                         {
-                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asgnacionRecursoEnDB.Recurso.Id);
+                            GestorNotificaciones.SendMessage(DataNotificacionesCodigos.RetiradoEvento, idEvento, idExtension, idZona, nombreZona, "recurso-" + asgnacionRecursoEnDB.Recurso.Id);
+                        }
+                        else if ((asgnacionRecursoEnDB.ActualmenteAsignado == true) && (asgnacionRecursoEnDB.Recurso.Estado == EstadoRecurso.NoDisponible))
+                        {
+                            GestorNotificaciones.SendMessage(DataNotificacionesCodigos.AsignacionEvento, idEvento, idExtension, idZona, nombreZona, "recurso-" + asgnacionRecursoEnDB.Recurso.Id);
                         }
                     }
                 }

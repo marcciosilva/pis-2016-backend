@@ -12,7 +12,7 @@
 
     public class ProcesoExtensiones
     {
-        private static SqlTableDependency<ExtensionEvento> _dependency;
+        private static SqlTableDependency<ExtensionEventoMapeado> _dependency;
 
         private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
@@ -39,14 +39,32 @@
             }
         }
 
+        public partial class ExtensionEventoMapeado
+        {
+            public int Id { get; set; }
+            
+            public string DescripcionDespachador { get; set; }
+
+            public string DescripcionSupervisor { get; set; }
+
+            public EstadoExtension Estado { get; set; }
+
+            public int SegundaCategoria { get; set; }
+        }
+
         /// <summary>
         /// Implentacion con sql table dependency para noticiar los cambios en la bd.
         /// </summary>
         public static void Listener()
         {
-            var mapper = new ModelToTableMapper<ExtensionEvento>();
+            var mapper = new ModelToTableMapper<ExtensionEventoMapeado>();
             mapper.AddMapping(model => model.Id, "Id");
-            _dependency = new SqlTableDependency<ExtensionEvento>(_connectionString, "Extensiones_Evento", mapper);
+            mapper.AddMapping(model => model.DescripcionDespachador, "DescripcionDespachador");
+            mapper.AddMapping(model => model.DescripcionSupervisor, "DescripcionSupervisor");
+            mapper.AddMapping(model => model.Estado, "Estado");
+            mapper.AddMapping(model => model.SegundaCategoria, "SegundaCategoria_Id");
+
+            _dependency = new SqlTableDependency<ExtensionEventoMapeado>(_connectionString, "Extensiones_Evento", mapper);
             _dependency.OnChanged += DependencyOnChanged;
             _dependency.OnError += DependencyOnError;
             _dependency.Start();
@@ -67,7 +85,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="eventoEnBD">Evento generado desde la bd.</param>
-        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<ExtensionEvento> eventoEnBD)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<ExtensionEventoMapeado> eventoEnBD)
         {
             try
             {
@@ -98,6 +116,7 @@
                 throw e;
             }
         }
+        
 
         /// <summary>
         /// Metodo que se utiliza para enviar una notificaion a un evento.
@@ -105,7 +124,7 @@
         /// <param name="cod">Codigo que se desea notificar a la aplicacion dado el evento.</param>
         /// <param name="extension">Identificador del evento que fue modificado/alta/baja.</param>
         /// <param name="GestorNotificaciones">Instancia de INotification.</param>
-        private static void AtenderEvento(string cod, TableDependency.EventArgs.RecordChangedEventArgs<ExtensionEvento> extension, Utils.Notifications.INotifications GestorNotificaciones)
+        private static void AtenderEvento(string cod, TableDependency.EventArgs.RecordChangedEventArgs<ExtensionEventoMapeado> extension, Utils.Notifications.INotifications GestorNotificaciones)
         {
             using (EmsysContext db = new EmsysContext())
             {
@@ -134,6 +153,11 @@
                     }                    
                     else if (cod == DataNotificacionesCodigos.ModificacionEvento)
                     {
+                        // Si hubo una modificacion, y el estado de la extension es "Cerrado" asume que la modificacion fue el cierre de la extension (no deberian ocurrir cambios en una extension cerrada).
+                        if (extensionEnBD.Estado == EstadoExtension.Cerrado)
+                        {
+                            cod = DataNotificacionesCodigos.CierreEvento;
+                        }
                         // Para cada extension del evento modificado.
                         foreach (var item in extensionEnBD.Evento.ExtensionesEvento)
                         {
