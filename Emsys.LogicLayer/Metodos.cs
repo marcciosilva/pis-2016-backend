@@ -325,7 +325,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new TokenInvalidoException();
                 }
-                //doy de baja del servidor de firebase al usuario
+                // Doy de baja del servidor de firebase al usuario.
                 unsuscribeTopicsFromFirebase(context, user);
                 // Retira las zonas y recursos asociadas al usuario.
                 user.Zonas.Clear();
@@ -337,6 +337,7 @@ namespace Emsys.LogicLayer
                 user.Token = null;
                 user.FechaInicioSesion = null;
                 user.UltimoSignal = null;
+                user.RegistrationTokenFirebase = null;
                 context.SaveChanges();
                 return true;
             }
@@ -1065,21 +1066,18 @@ namespace Emsys.LogicLayer
                             // Si el usuario esta inactivo.
                             if ((ahora.Subtract(user.UltimoSignal.Value)).TotalMinutes > maxTime)
                             {
-                                //doy de baja del servidor de firebase al usuario
-                                unsuscribeTopicsFromFirebase(context, user);
-                                //ahora lo doy de baja en el sistema
+                                // Desconecto al usuario.
                                 cerrarSesion(user.Token);
                                 Console.WriteLine("Se desconecto al usuario <" + user.NombreLogin + ">");
                                 string hora = user.UltimoSignal.Value.ToString();
-                                AgregarLog(user.NombreLogin, "Servidor", "Emsys.LogicLayer", "Usuarios", user.Id, "Se desconecta al usuario indicado.", "Ultimo signal a las " + hora, MensajesParaFE.LogDesconectarUsuarioCod);
-                                
-                                
+                                AgregarLog(user.NombreLogin, "Servidor", "Emsys.LogicLayer", "Usuarios", user.Id, "Se desconecta al usuario indicado.", "Ultimo signal a las " + hora, MensajesParaFE.LogDesconectarUsuarioCod);  
                             }
                         }
                     }
                     catch (Exception e)
                     {
                         Console.WriteLine("Ocurrio un error: " + e.ToString());
+                        AgregarLogError("", "", "Emsys.LogicLayer", "desconectarAusentes", 0, "desconectarAusentes", "Hubo un error al intentar desconectar usuarios ausentes: " + e.Message, 9990);
                     }
                 }
             }
@@ -1095,8 +1093,7 @@ namespace Emsys.LogicLayer
             foreach (var item in user.Zonas)
             {
                 GestorNotificaciones.RemoveUserFromTopic(user.RegistrationTokenFirebase, "zona-" + item.Id, user.Nombre);
-            }
-           
+            }           
         }
 
         public bool reportarHoraArribo(string token, int idExtension)

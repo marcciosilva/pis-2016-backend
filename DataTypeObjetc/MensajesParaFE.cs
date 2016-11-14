@@ -41,6 +41,7 @@
         public const string ErrorDescargarArchivo = "Ocurrio un error al intentar descargar el archivo.";
         public const string ErrorElegirRoles = "Ocurrio un error al intentar elegir los roles.";
         public const string ErrorKeepMeAlive = "Ocurrio un error al intentar indicarle actividad al servidor.";
+        public const string ErrorSetRegistrationToken = "Ocurrio un error al intentar setear el token de firebase.";
         public const string ErrorReportarHoraArribo = "Ocurrio un error al intentar reportar la hora de arribo.";
         public const string ErrorCrearEvento = "Ocurrio un error al intentar crear un evento.";
         public const string ErrorInfoCreacionEvento = "Ocurrio un error al intentar obtener la informacion para crear un evento.";
@@ -95,6 +96,7 @@
         public const int ErrorElegirRolesCod = 1003;
         public const int ErrorKeepMeAliveCod = 1004;
         public const int ErrorCerrarSesionCod = 1005;
+        public const int ErrorSetRegistrationTokenCod = 1006;
         public const int ErrorAlGenerarTokenCod = 1000;
 
         // Adjuntos.

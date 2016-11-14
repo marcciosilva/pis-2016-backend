@@ -19,9 +19,16 @@ namespace Emsys.LogicLayer
             IMetodos logica = new Metodos();
             while (true)
             {
-                logica.desconectarAusentes(maxTime);
-                Console.WriteLine("Sleeping...");
-                Thread.Sleep(refreshTime * 60 * 1000);
+                try
+                {
+                    logica.desconectarAusentes(maxTime);
+                    Console.WriteLine("Sleeping...");
+                    Thread.Sleep(refreshTime * 60 * 1000);
+                }
+                catch (Exception e)
+                {
+                    logica.AgregarLogError("", "", "Emsys.LogicLayer", "Main", 0, "desconectarAusentes", "Hubo un error al intentar desconectar usuarios ausentes: " + e.Message, 9991);
+                }
             }
         }
     }

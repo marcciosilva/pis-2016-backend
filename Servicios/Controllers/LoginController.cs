@@ -186,7 +186,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "KeepMeAlive", "Hubo un error al intentar llaar al keepAlive: " + e.Message, MensajesParaFE.ErrorKeepMeAliveCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "KeepMeAlive", "Hubo un error al intentar llamar al keepAlive: " + e.Message, MensajesParaFE.ErrorKeepMeAliveCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorKeepMeAlive));
             }
         }
@@ -220,8 +220,8 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "KeepMeAlive", "Hubo un error al intentar llaar al keepAlive: " + e.Message, MensajesParaFE.ErrorKeepMeAliveCod);
-                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorKeepMeAlive));
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "SetRegistrationToken", "Hubo un error al intentar setear el token de firebase: " + e.Message, MensajesParaFE.ErrorSetRegistrationTokenCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorSetRegistrationToken));
             }
         }
     }
