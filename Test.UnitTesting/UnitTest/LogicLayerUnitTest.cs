@@ -1642,7 +1642,7 @@ namespace Test.UnitTesting
             LogsManager.AgregarLogErrorNotification("hola", "hola", "hola", "hola", 1, "hola", "hola", 1, "hola", "hola", "hola", "hola");
             db = new EmsysContext();
             int cant2 = db.LogNotification.Count();
-            Assert.IsTrue(cant2 == cantLogs + 1);
+            Assert.IsTrue(cant2 >= cantLogs + 1);
             db.Usuarios.FirstOrDefault().Token = null;
         }
 
@@ -2247,7 +2247,7 @@ namespace Test.UnitTesting
             DtoZona dtoZona1 = new DtoZona() { id = 1 };
             lZonas.Add(dtoZona1);
             DtoRol rol = new DtoRol() { zonas = lZonas, recursos = new List<DtoRecurso>() };
-
+            
 
             // Loguear.
             var log = logic.loguearUsuario(token, rol);

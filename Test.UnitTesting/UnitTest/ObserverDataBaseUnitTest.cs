@@ -74,7 +74,6 @@ namespace Test.UnitTesting
         {
             try
             {
-                string[] entrada = new string[1];
                 Thread workerThread = new Thread(new ThreadStart(SqlDependecyProject.Program.Main));
                 workerThread.Start();
 
@@ -82,8 +81,6 @@ namespace Test.UnitTesting
                 workerThreadAnalysisDataNotifications.Start();
                 //// Espero a que se disparen todos los hilos y luego empiezo a modificar la base.
                 Thread.Sleep(5000);
-                //// ModificarBaseDatos();
-                Random r = new Random();
                 EmsysContext db = new EmsysContext();
 
                 ModificarBaseDatos();
@@ -101,13 +98,6 @@ namespace Test.UnitTesting
             }
             catch (Exception)
             {
-                ////como aborte la oprecion a veces sale por aca.
-                using (EmsysContext db = new EmsysContext())
-                {
-                    var cantidadEnviosReales = db.LogNotification.Where(x => x.Codigo == 901).Count();
-                    var cantidadEnviosExitosos = db.LogNotification.Where(x => x.Codigo == 906).Count();
-                    var cantidadEnviosError = db.LogNotification.Where(x => x.Codigo == 904).Count();
-                }
             }
             using (EmsysContext db = new EmsysContext())
             {
@@ -143,6 +133,7 @@ namespace Test.UnitTesting
                 };
                 db.AsignacionesRecursos.Add(ar);
                 db.SaveChanges();
+                ar.ActualmenteAsignado = false;
                 db.SaveChanges();
                 Thread.Sleep(3000);
 
@@ -184,7 +175,7 @@ namespace Test.UnitTesting
             Thread.Sleep(3000);
             foreach (var item in db.ExtensionesEvento)
             {
-                item.DescripcionDespachador = DateTime.Now.ToString();
+                item.DescripcionDespachador = DateTime.Now.ToString() + "\\usuario\\descripcion";
             }
             db.SaveChanges();
             Thread.Sleep(3000);
