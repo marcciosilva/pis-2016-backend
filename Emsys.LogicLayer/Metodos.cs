@@ -116,13 +116,8 @@ namespace Emsys.LogicLayer
                     (user.FechaInicioSesion.Value.Hour < DateTime.Now.Hour - 8))
                 {
                     // Libero recursos y expiro el token.
-                    user.Recurso.ToList().ForEach(x => x.Estado = EstadoRecurso.Disponible);
-                    user.Recurso.Clear();
-                    user.Zonas.Clear();
-                    user.Token = null;
-                    user.FechaInicioSesion = null;
-                    context.SaveChanges();
-                    return false;
+                    cerrarSesion(token);
+                    throw new TokenInvalidoException();
                 }
 
                 // Si no hay etiquetas.
