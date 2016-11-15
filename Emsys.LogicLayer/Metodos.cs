@@ -9,6 +9,7 @@ using Emsys.LogicLayer.ApplicationExceptions;
 using Emsys.LogicLayer.Utils;
 using Utils.Notifications;
 using System.Drawing;
+using System.Web.Configuration;
 
 namespace Emsys.LogicLayer
 {
@@ -1464,9 +1465,24 @@ namespace Emsys.LogicLayer
                 // Agrego los recursos asignados.
                 foreach (DtoRecurso r in recursos.recursosAsignados)
                 {
+                    var maxAsignaciones = Convert.ToInt32(WebConfigurationManager.AppSettings["maxAsignacionesPorRecurso"]);                    
                     Recurso rec = context.Recursos.FirstOrDefault(rb => rb.Id == r.id);
+                    if (rec == null)
+                    {
+                        throw new ArgumentoInvalidoException();
+                    }
+                    // Verifico la cantidad de asignaciones actuales del recurso.
+                    var cantActual = rec.AsignacionesRecurso.Where(a => (a.ActualmenteAsignado == true) && (a.Extension.Estado != EstadoExtension.Cerrado)).Count();
+                    if (cantActual < maxAsignaciones)
+                    {
+                        rec.EstadoAsignacion = EstadoAsignacionRecurso.Libre;
+                    }
+                    else
+                    {
+                        rec.EstadoAsignacion = EstadoAsignacionRecurso.Operativo;
+                    }
                     AsignacionRecurso ar = ext.AsignacionesRecursos.FirstOrDefault(a => a.Recurso.Id == rec.Id);
-                    if ((rec == null) || (rec.EstadoAsignacion == EstadoAsignacionRecurso.Operativo) || ((ar != null) && (ar.ActualmenteAsignado == true)))
+                    if ((rec.EstadoAsignacion == EstadoAsignacionRecurso.Operativo) || ((ar != null) && (ar.ActualmenteAsignado == true)))
                     {
                         throw new ArgumentoInvalidoException();
                     }
@@ -1492,7 +1508,18 @@ namespace Emsys.LogicLayer
                     if ((rec == null) || (ar == null))
                     {
                         throw new ArgumentoInvalidoException();
-                    }                    
+                    }
+                    var maxAsignaciones = Convert.ToInt32(WebConfigurationManager.AppSettings["maxAsignacionesPorRecurso"]);
+                    // Verifico la cantidad de asignaciones actuales del recurso.
+                    var cantActual = rec.AsignacionesRecurso.Where(a => (a.ActualmenteAsignado == true) && (a.Extension.Estado != EstadoExtension.Cerrado)).Count();
+                    if (cantActual < maxAsignaciones)
+                    {
+                        rec.EstadoAsignacion = EstadoAsignacionRecurso.Libre;
+                    }
+                    else
+                    {
+                        rec.EstadoAsignacion = EstadoAsignacionRecurso.Operativo;
+                    }
                     ar.ActualmenteAsignado = false;
                     ar.HoraArribo = null;
                 }
@@ -1669,12 +1696,21 @@ namespace Emsys.LogicLayer
                     throw new EventoNoEnviadoException();
                 }
 
-                // Libero recursos de extension.
+                var maxAsignaciones = Convert.ToInt32(WebConfigurationManager.AppSettings["maxAsignacionesPorRecurso"]);
+                // Verifica si los recursos de la extension pasan a estar Libres.
                 foreach (AsignacionRecurso ar in ext.AsignacionesRecursos)
                 {
-                    ar.ActualmenteAsignado = false;
-                    ar.Recurso.EstadoAsignacion = EstadoAsignacionRecurso.Libre;
-                }
+                    // Verifico la cantidad de asignaciones actuales del recurso.
+                    var cantActual = ar.Recurso.AsignacionesRecurso.Where(a => (a.ActualmenteAsignado == true) && (a.Extension.Estado != EstadoExtension.Cerrado)).Count();
+                    if (cantActual < maxAsignaciones)
+                    {
+                        ar.Recurso.EstadoAsignacion = EstadoAsignacionRecurso.Libre;
+                    }
+                    else
+                    {
+                        ar.Recurso.EstadoAsignacion = EstadoAsignacionRecurso.Operativo;
+                    }
+                }            
 
                 // Libero al despachador.
                 user.Despachando.Remove(ext);

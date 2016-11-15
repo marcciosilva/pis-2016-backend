@@ -26,12 +26,9 @@ namespace Emsys.LogicLayer.Utils
                     // Si el usuario esta conectado como recurso.
                     if (user.Recurso.Count() > 0)
                     {
-                        foreach (AsignacionRecurso asig in user.Recurso.FirstOrDefault().AsignacionesRecurso)
+                        if (user.Recurso.FirstOrDefault().AsignacionesRecurso.Where(a => (a.Extension.Evento.Id == evento.Id) && (a.ActualmenteAsignado == true) && (a.Extension.Estado != EstadoExtension.Cerrado)) != null)
                         {
-                            if ((asig.Extension.Evento.Id == evento.Id) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
-                            {
-                                return true;
-                            }
+                            return true;
                         }
                     }
                     else if (user.Zonas.Count() > 0)
@@ -67,7 +64,7 @@ namespace Emsys.LogicLayer.Utils
                     {
                         foreach (AsignacionRecurso asig in user.Recurso.FirstOrDefault().AsignacionesRecurso)
                         {
-                            if ((asig.Extension.Id == extension.Id) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
+                            if ((asig.Extension.Evento.Id == extension.Evento.Id) && (asig.ActualmenteAsignado == true) && (asig.Extension.Estado != EstadoExtension.Cerrado))
                             {
                                 return true;
                             }
@@ -113,7 +110,7 @@ namespace Emsys.LogicLayer.Utils
                     {
                         // Verifica que esta logueado en la zona de la extension.
                         var zone = user.Zonas.FirstOrDefault(z => z.Id == extension.Zona.Id);
-                        if (zone != null)
+                        if ((zone != null) && (extension.Estado != EstadoExtension.Cerrado))
                         {
                             return true;
                         }                        

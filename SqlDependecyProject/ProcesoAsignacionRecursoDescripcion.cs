@@ -9,6 +9,7 @@
     using TableDependency.Enums;
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
+    using System.Collections.Generic;
 
     public class ProcesoAsignacionRecursoDescripcion
     {
@@ -113,6 +114,7 @@
                 var asignacionRecursoDescripcionEnDB = db.AsignacionRecursoDescripcion.Find(asignacionRecursoDescripcion.Entity.Id);
                 if (asignacionRecursoDescripcionEnDB != null)
                 {
+                    List<int> recursosNotificados = new List<int>();
                     int idEvento = asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Evento.Id;
                     int idExtension = asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Id;
                     int idZona = asignacionRecursoDescripcionEnDB.AsignacionRecurso.Extension.Zona.Id;
@@ -123,13 +125,17 @@
                         // Para cada recurso de la extension.
                         foreach (var asig in item.AsignacionesRecursos)
                         {
-                            if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
+                            if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible) && (!recursosNotificados.Contains(asig.Recurso.Id)))
                             {
                                 GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
+                                recursosNotificados.Add(asig.Recurso.Id);
                             }
                         }
-                        // Para la zona asociada a la extensen le envia una notificacion.
-                        GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
+                        if (item.Zona.Usuarios.Count != 0)
+                        {
+                            // Para la zona asociada a la extensen le envia una notificacion.
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
+                        }
                     }
                 }
             }

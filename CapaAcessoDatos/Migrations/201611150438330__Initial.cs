@@ -261,13 +261,10 @@ namespace Emsys.DataAccesLayer.Core
                         Id = c.Int(nullable: false, identity: true),
                         Nombre = c.String(nullable: false, maxLength: 200),
                         UnidadEjecutora_Id = c.Int(nullable: false),
-                        Usuario_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Unidades_Ejecutoras", t => t.UnidadEjecutora_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Usuarios", t => t.Usuario_Id)
-                .Index(t => t.UnidadEjecutora_Id)
-                .Index(t => t.Usuario_Id);
+                .Index(t => t.UnidadEjecutora_Id);
             
             CreateTable(
                 "dbo.Unidades_Ejecutoras",
@@ -427,12 +424,24 @@ namespace Emsys.DataAccesLayer.Core
                 .Index(t => t.UnidadEjecutora_Id)
                 .Index(t => t.Usuario_Id);
             
+            CreateTable(
+                "dbo.ZonaUsuarios",
+                c => new
+                    {
+                        Zona_Id = c.Int(nullable: false),
+                        Usuario_Id = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.Zona_Id, t.Usuario_Id })
+                .ForeignKey("dbo.Zonas", t => t.Zona_Id, cascadeDelete: true)
+                .ForeignKey("dbo.Usuarios", t => t.Usuario_Id, cascadeDelete: true)
+                .Index(t => t.Zona_Id)
+                .Index(t => t.Usuario_Id);
+            
         }
         
         public override void Down()
         {
             DropForeignKey("dbo.LogNotification", "LogNotificationPrevio_Id", "dbo.LogNotification");
-            DropForeignKey("dbo.Zonas", "Usuario_Id", "dbo.Usuarios");
             DropForeignKey("dbo.Logs", "Usuario_Id", "dbo.Usuarios");
             DropForeignKey("dbo.GeoUbicaciones", "Usuario_Id", "dbo.Usuarios");
             DropForeignKey("dbo.GeoUbicaciones", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
@@ -444,6 +453,8 @@ namespace Emsys.DataAccesLayer.Core
             DropForeignKey("dbo.Videos", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
             DropForeignKey("dbo.Videos", "Evento_Id", "dbo.Eventos");
             DropForeignKey("dbo.Eventos", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.ZonaUsuarios", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.ZonaUsuarios", "Zona_Id", "dbo.Zonas");
             DropForeignKey("dbo.Zonas", "UnidadEjecutora_Id", "dbo.Unidades_Ejecutoras");
             DropForeignKey("dbo.UnidadEjecutoraUsuarios", "Usuario_Id", "dbo.Usuarios");
             DropForeignKey("dbo.UnidadEjecutoraUsuarios", "UnidadEjecutora_Id", "dbo.Unidades_Ejecutoras");
@@ -474,6 +485,8 @@ namespace Emsys.DataAccesLayer.Core
             DropForeignKey("dbo.UsuarioRols", "Usuario_Id", "dbo.Usuarios");
             DropForeignKey("dbo.PermisoRols", "Rol_Id", "dbo.ApplicationRoles");
             DropForeignKey("dbo.PermisoRols", "Permiso_Id", "dbo.Permisos");
+            DropIndex("dbo.ZonaUsuarios", new[] { "Usuario_Id" });
+            DropIndex("dbo.ZonaUsuarios", new[] { "Zona_Id" });
             DropIndex("dbo.UnidadEjecutoraUsuarios", new[] { "Usuario_Id" });
             DropIndex("dbo.UnidadEjecutoraUsuarios", new[] { "UnidadEjecutora_Id" });
             DropIndex("dbo.GrupoRecursoUsuarios", new[] { "Usuario_Id" });
@@ -492,7 +505,6 @@ namespace Emsys.DataAccesLayer.Core
             DropIndex("dbo.Videos", new[] { "Usuario_Id" });
             DropIndex("dbo.Videos", new[] { "ExtensionEvento_Id" });
             DropIndex("dbo.Videos", new[] { "Evento_Id" });
-            DropIndex("dbo.Zonas", new[] { "Usuario_Id" });
             DropIndex("dbo.Zonas", new[] { "UnidadEjecutora_Id" });
             DropIndex("dbo.Sectores", new[] { "Zona_Id" });
             DropIndex("dbo.Origen_Eventos", new[] { "Id" });
@@ -517,6 +529,7 @@ namespace Emsys.DataAccesLayer.Core
             DropIndex("dbo.Extensiones_Evento", new[] { "Zona_Id" });
             DropIndex("dbo.Extensiones_Evento", new[] { "Evento_Id" });
             DropIndex("dbo.Extensiones_Evento", new[] { "SegundaCategoria_Id" });
+            DropTable("dbo.ZonaUsuarios");
             DropTable("dbo.UnidadEjecutoraUsuarios");
             DropTable("dbo.GrupoRecursoUsuarios");
             DropTable("dbo.GrupoRecursoRecursoes");

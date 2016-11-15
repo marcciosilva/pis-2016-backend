@@ -126,8 +126,11 @@
                                 GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id.ToString());
                             }
                         }
-                        // Para las zonas de las extensiones envio una notificacion.
-                        GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + extension.Zona.Id);
+                        if (extension.Zona.Usuarios.Count != 0)
+                        {
+                            // Para las zonas de las extensiones envio una notificacion.
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + extension.Zona.Id);
+                        }
                     }
                 }
             }
