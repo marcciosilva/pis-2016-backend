@@ -136,7 +136,7 @@
                             foreach (var asig in item.AsignacionesRecursos)
                             {
                                 // Si hay un usuario conectado con ese recurso.
-                                if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible) && (!recursosNotificados.Contains(asig.Recurso.Id)))
+                                if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible) && (!recursosNotificados.Contains(asig.Recurso.Id)) && (asig.Recurso.Usuario.Id != videoDEBD.Usuario.Id))
                                 {
                                     GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
                                     recursosNotificados.Add(asig.Recurso.Id);
