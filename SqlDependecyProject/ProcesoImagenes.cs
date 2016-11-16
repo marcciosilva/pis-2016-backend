@@ -42,7 +42,9 @@
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoImagenes", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un Imagenes en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseImagenes);
                 _dependency.Stop();
-                ProcesoMonitoreoImagenes();
+                Thread UserAdminThread = new Thread(new ThreadStart(ProcesoMonitoreoImagenes));
+                UserAdminThread.IsBackground = true;
+                UserAdminThread.Start();
             }
         }
 

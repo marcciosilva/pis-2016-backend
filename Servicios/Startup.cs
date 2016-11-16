@@ -27,8 +27,10 @@ namespace Servicios
                 if (!_iniciado)
                 {
                     // Para iniciar la bd si no esta creada.
-                    EmsysContext db = new EmsysContext();
-                    db.Evento.ToList();
+                    using (EmsysContext db = new EmsysContext())
+                    {
+                        db.Evento.ToList();
+                    }
                     Thread UserAdminThread = new Thread(new ThreadStart(Emsys.LogicLayer.Program.Main));
                     UserAdminThread.IsBackground = true;
                     UserAdminThread.Start();

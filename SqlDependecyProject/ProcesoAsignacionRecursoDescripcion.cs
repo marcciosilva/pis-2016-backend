@@ -42,7 +42,9 @@
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoAsignacionRecursoDescripcion", "ProcesoAsignacionRecursoDescripcion", 0, "_dependency_OnChanged", "Error al intentar capturar un AsignacionRecursoDescripcion en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseAsignacionRecursoDescripcion);
                 _dependency.Stop();
-                ProcesoMonitorearAsignacionRecursoDescripcion();
+                Thread UserAdminThread = new Thread(new ThreadStart(ProcesoMonitorearAsignacionRecursoDescripcion));
+                UserAdminThread.IsBackground = true;
+                UserAdminThread.Start();
             }
         }
 

@@ -39,7 +39,9 @@
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase.ProcesoMonitoreoEventos", "ProcesoMonitoreoEventos", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseEvento);
                 _dependency.Stop();
-                ProcesoMonitoreoEventos();
+                Thread UserAdminThread = new Thread(new ThreadStart(ProcesoMonitoreoEventos));
+                UserAdminThread.IsBackground = true;
+                UserAdminThread.Start();
             }
         }
 

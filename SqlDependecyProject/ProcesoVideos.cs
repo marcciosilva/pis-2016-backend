@@ -43,7 +43,9 @@
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoVideos", "ProcesoMonitoreoVideos", 0, "_dependency_OnChanged", "Error al intentar capturar un Video en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseVideo);
                 _dependency.Stop();
-                ProcesoMonitoreoVideos();
+                Thread UserAdminThread = new Thread(new ThreadStart(ProcesoMonitoreoVideos));
+                UserAdminThread.IsBackground = true;
+                UserAdminThread.Start();
             }
         }
 

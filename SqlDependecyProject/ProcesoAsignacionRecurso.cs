@@ -51,7 +51,9 @@
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoAsignacionRecurso", "ProcesoAsignacionRecursoMonitoreo", 0, "_dependency_OnChanged", "Error al intentar capturar un Video en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseAsignacionRecurso);
                 _dependency.Stop();
-                ProcesoAsignacionRecursoMonitoreo();
+                Thread UserAdminThread = new Thread(new ThreadStart(ProcesoAsignacionRecursoMonitoreo));
+                UserAdminThread.IsBackground = true;
+                UserAdminThread.Start();
             }
         }
 

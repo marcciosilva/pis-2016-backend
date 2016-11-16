@@ -41,7 +41,9 @@
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoExtensiones", "ProcesoMonitoreoExtensiones", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseExtensiones);
                 _dependency.Stop();
-                ProcesoMonitoreoExtensiones();
+                Thread UserAdminThread = new Thread(new ThreadStart(ProcesoMonitoreoExtensiones));
+                UserAdminThread.IsBackground = true;
+                UserAdminThread.Start();
             }
         }
 
