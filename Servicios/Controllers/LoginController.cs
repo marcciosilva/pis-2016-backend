@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
 using DataTypeObject;
-using Servicios.Filtros;
 using Emsys.LogicLayer;
 using Emsys.LogicLayer.ApplicationExceptions;
+using Servicios.Filtros;
 
 namespace Servicios.Controllers
 {
@@ -146,6 +143,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioTieneOperacionesNoFinalizadasCod, new Mensaje(MensajesParaFE.UsuarioTieneOperacionesNoFinalizadas));
                 }
+
                 dbAL.cerrarSesion(token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
@@ -160,6 +158,10 @@ namespace Servicios.Controllers
             }
         }
 
+        /// <summary>
+        /// Indica al servidor que determinado usuario se encuentra activo en la aplicacion.
+        /// </summary>
+        /// <returns>Se indico con exito o no</returns>
         [CustomAuthorizeAttribute("login")]
         [HttpPost]
         [LogFilter]
@@ -174,6 +176,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 dbAL.keepMeAlive(token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
@@ -183,8 +186,42 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "KeepMeAlive", "Hubo un error al intentar llaar al keepAlive: " + e.Message, MensajesParaFE.ErrorKeepMeAliveCod);
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "KeepMeAlive", "Hubo un error al intentar llamar al keepAlive: " + e.Message, MensajesParaFE.ErrorKeepMeAliveCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorKeepMeAlive));
+            }
+        }
+
+
+        /// <summary>
+        /// Permite indicar al servidor el token de firebase de un usuario (usado luego para desactivar notificaciones).
+        /// </summary>
+        /// <param name="dtoToken">Token</param>
+        /// <returns>Exito</returns>
+        [HttpPost]
+        [LogFilter]
+        [Route("users/SetRegistrationToken")]
+        public DtoRespuesta SetRegistrationToken(DtoResgistrationToken dtoToken)
+        {
+            IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
+            try
+            {
+                if (token == null)
+                {
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                }
+
+                dbAL.SetRegistrationToken(token, dtoToken.registrationTokens);
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+            }
+            catch (TokenInvalidoException)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+            }
+            catch (Exception e)
+            {
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "LoginController", 0, "SetRegistrationToken", "Hubo un error al intentar setear el token de firebase: " + e.Message, MensajesParaFE.ErrorSetRegistrationTokenCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorSetRegistrationToken));
             }
         }
     }

@@ -1,5 +1,5 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
+using Newtonsoft.Json;
 
 namespace DataTypeObject
 {
@@ -12,6 +12,7 @@ namespace DataTypeObject
 
         public string usuario { get; set; }
 
+        [JsonConverter(typeof(FormatoDate))]
         [JsonProperty(PropertyName = "fecha_envio")]
         public DateTime fechaEnvio { get; set; }
 

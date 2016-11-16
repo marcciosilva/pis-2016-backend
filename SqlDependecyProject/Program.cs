@@ -1,18 +1,14 @@
 ﻿namespace SqlDependecyProject
 {
     using System;
-    using Emsys.DataAccesLayer.Core;
     using System.Linq;
     using System.Threading;
+    using Emsys.DataAccesLayer.Core;
+    using Emsys.LogicLayer;
+    using DataTypeObject;
 
     public class Program
     {
-        private enum TablaMonitorar
-        {
-            Eventos,
-            Extensiones
-        }
-        
         /// <summary>
         /// Metodo principal para el proyecto ObserverDatabase encargado de manejar las notificaciones de los cambios de la bd.
         /// </summary>
@@ -24,7 +20,6 @@
                 EmsysContext db = new EmsysContext();
                 db.Evento.ToList();
 
-
                 // Para cada tabla a ser monitoreada inicio un thread.
                 Thread WorkerThreadExtensiones = new Thread(new ThreadStart(ProcesoExtensiones.ProcesoMonitoreoExtensiones));
                 WorkerThreadExtensiones.Start();
@@ -35,9 +30,12 @@
                 Thread WorkerThreadAudios = new Thread(new ThreadStart(ProcesoAudios.ProcesoMonitoreoAudios));
                 WorkerThreadAudios.Start();
 
+                Thread WorkerThreadGeoUbicacuibes = new Thread(new ThreadStart(ProcesoGeoUbicacion.ProcesoMonitoreoGeoUbicaciones));
+                WorkerThreadGeoUbicacuibes.Start();
+
                 Thread WorkerThreadAsignacionRecursoDescripcion = new Thread(new ThreadStart(ProcesoAsignacionRecursoDescripcion.ProcesoMonitorearAsignacionRecursoDescripcion));
-                WorkerThreadAsignacionRecursoDescripcion.Start();                
-                
+                WorkerThreadAsignacionRecursoDescripcion.Start();
+
                 Thread WorkerThreadImagenes = new Thread(new ThreadStart(ProcesoImagenes.ProcesoMonitoreoImagenes));
                 WorkerThreadImagenes.Start();
 
@@ -55,8 +53,8 @@
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.ToString());
-                Console.ReadLine();
+                IMetodos dbAL = new Metodos();
+                dbAL.AgregarLogError("vacio", "servidor", "ObserverDataBase", "No hay entidad expecifica", 0, "Program", "Error generico en observerDatabase: " + e.ToString(), MensajesParaFE.LogErrorObserverDataBaseeGenerico);
             }
         }
     }

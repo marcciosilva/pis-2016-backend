@@ -22,6 +22,19 @@
 
         public string field10 { get; set; }
 
+        /// <summary>
+        /// constructor de DToRespuestaExterna.
+        /// </summary>
+        /// <param name="param1">Generico.</param>
+        /// <param name="param2">Generico.</param>
+        /// <param name="param3">Generico.</param>
+        /// <param name="param4">Generico.</param>
+        /// <param name="param5">Generico.</param>
+        /// <param name="param6">Generico.</param>
+        /// <param name="param7">Generico.</param>
+        /// <param name="param8">Generico.</param>
+        /// <param name="param9">Generico.</param>
+        /// <param name="param10">Generico.</param>
         public DtoRespuestaExterna(string param1, string param2, string param3, string param4, string param5, string param6, string param7, string param8, string param9, string param10)
         {
             this.field1 = param1;

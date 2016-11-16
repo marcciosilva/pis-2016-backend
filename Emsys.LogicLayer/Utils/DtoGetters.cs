@@ -1,16 +1,21 @@
 ﻿namespace Emsys.LogicLayer.Utils
 {
-    using DataAccesLayer.Model;
-    using DataTypeObject;
     using System;
     using System.Collections.Generic;
-    using System.IO;
-    using System.Linq;
     using System.Drawing;
     using System.Drawing.Imaging;
+    using System.IO;
+    using System.Linq;
+    using DataAccesLayer.Model;
+    using DataTypeObject;
 
     public class DtoGetters
     {
+        /// <summary>
+        /// Genera un dto a partir de un ApplicationFile.
+        /// </summary>
+        /// <param name="file">ApplicationFile</param>
+        /// <returns>Dto generado</returns>
         public static DtoApplicationFile GetDtoApplicationfile(ApplicationFile file)
         {
             return new DtoApplicationFile()
@@ -20,34 +25,33 @@
             };
         }
 
-        public static DtoApplicationFile GetImageThumbnail(ApplicationFile file)
+        /// <summary>
+        /// Genera un thumbnail de imagen a partir de un ApplicationFile.
+        /// </summary>
+        /// <param name="file">ApplicationFile de una imagen</param>
+        /// <returns>Bytes del thumbnail generado</returns>
+        public static byte[] GenerateImageThumbnail(ApplicationFile file)
         {
-            var ms = new MemoryStream(file.FileData);            
-            Image img = Image.FromStream(ms);
-            Image thumb = img.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
-            ms = new MemoryStream();
-            thumb.Save(ms, img.RawFormat);
-            return new DtoApplicationFile()
+            try
             {
-                nombre = file.Nombre,
-                fileData = ms.ToArray()
-            };            
+                var ms = new MemoryStream(file.FileData);
+                Image img = Image.FromStream(ms);
+                Image thumb = img.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
+                ms = new MemoryStream();
+                thumb.Save(ms, img.RawFormat);
+                return ms.ToArray();
+            }
+            catch (Exception)
+            {
+                return new byte[0];
+            }
         }
 
-        public static DtoApplicationFile GetVideoThumbnail(ApplicationFile file)
-        {
-            var ms = new MemoryStream(file.FileData);
-            Image img = Image.FromStream(ms);
-            Image thumb = img.GetThumbnailImage(120, 120, () => false, IntPtr.Zero);
-            ms = new MemoryStream();
-            thumb.Save(ms, ImageFormat.Jpeg);
-            return new DtoApplicationFile()
-            {
-                nombre = file.Nombre,
-                fileData = ms.ToArray()
-            };
-        }
-
+        /// <summary>
+        /// Genera un dto a partir de una AsignacionRecurso.
+        /// </summary>
+        /// <param name="asignacionRecurso">AsignacionRecurso</param>
+        /// <returns>Dto generado</returns>
         public static DtoAsignacionRecurso getDtoAsignacionesRecursos(AsignacionRecurso asignacionRecurso)
         {
             DtoAsignacionRecurso res = new DtoAsignacionRecurso()
@@ -64,24 +68,51 @@
                 {
                     descripcion = item.Descripcion,
                     fecha = item.Fecha,
-                    origen = OrigenDescripcion.Despachador
+                    origen = OrigenDescripcion.Despachador,
+                    agregadaOffline = item.agregadaOffline
                 });
             }
+
             res.descripcion = desc;
             return res;
         }
 
+        /// <summary>
+        /// Genera un dto a partir de una Imagen.
+        /// </summary>
+        /// <param name="img">Imagen</param>
+        /// <returns>Dto generado</returns>
         public static DtoImagen getDtoImagen(Imagen img)
         {
             return new DtoImagen()
             {
                 id = img.Id,
-                id_imagen = img.ImagenData.Id,
+                idImagen = img.ImagenData.Id,
                 usuario = img.Usuario.Nombre,
                 fechaEnvio = img.FechaEnvio
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de un OrigenEvento.
+        /// </summary>
+        /// <param name="oe">OrigenEvento</param>
+        /// <returns>Dto generado</returns>
+        public static DtoOrigenEvento getDtoOrigenEvento(OrigenEvento oe)
+        {
+            return new DtoOrigenEvento()
+            {
+                id = oe.Id,
+                idOrigen = oe.IdOrigen,
+                tipoOrigen = oe.TipoOrigen
+            };
+        }
+
+        /// <summary>
+        /// Genera un dto a partir de un Video.
+        /// </summary>
+        /// <param name="vid">Video</param>
+        /// <returns>Dto generado</returns>
         public static DtoVideo getDtoVideo(Video vid)
         {
             return new DtoVideo()
@@ -93,6 +124,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de un Audio.
+        /// </summary>
+        /// <param name="aud">Audio</param>
+        /// <returns>dto generado</returns>
         public static DtoAudio getDtoAudio(Audio aud)
         {
             return new DtoAudio()
@@ -104,16 +140,26 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de una GeoUbicacion.
+        /// </summary>
+        /// <param name="ubicacion">GeoUbicacion</param>
+        /// <returns>Dto generado</returns>
         public static DtoGeoUbicacion getDtoGeoUbicacion(GeoUbicacion ubicacion)
         {
             return new DtoGeoUbicacion()
             {
                 longitud = ubicacion.Longitud,
                 latitud = ubicacion.Latitud,
-                fechaEnvio=ubicacion.FechaEnvio                
+                fechaEnvio = ubicacion.FechaEnvio                
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de un Departamento.
+        /// </summary>
+        /// <param name="dep">Departamento</param>
+        /// <returns>Dto generado</returns>
         public static DtoDepartamento getDtoDepartamento(Departamento dep)
         {
             return new DtoDepartamento()
@@ -123,6 +169,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de un Sector.
+        /// </summary>
+        /// <param name="sector">Sector</param>
+        /// <returns>Dto generado</returns>
         public static DtoSector getDtoSector(Sector sector)
         {
             return new DtoSector()
@@ -132,6 +183,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de una Zona.
+        /// </summary>
+        /// <param name="zona">zona</param>
+        /// <returns>Dto generado</returns>
         public static DtoZona getDtoZona(Zona zona)
         {
             return new DtoZona()
@@ -142,6 +198,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de una Zona que ademas contiene la informacion de los sectores de cada zona.
+        /// </summary>
+        /// <param name="zona">Zona</param>
+        /// <returns>Dto generado</returns>
         public static DtoZona getDtoZonaCompleto(Zona zona)
         {
             ICollection<DtoSector> sects = new List<DtoSector>();
@@ -149,6 +210,7 @@
             {
                 sects.Add(getDtoSector(s));
             }
+
             return new DtoZona()
             {
                 id = zona.Id,
@@ -158,6 +220,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de un Recurso.
+        /// </summary>
+        /// <param name="recurso">Recurso</param>
+        /// <returns>Dto generado</returns>
         public static DtoRecurso getDtoRecurso(Recurso recurso)
         {
             string user = null;
@@ -165,6 +232,7 @@
             {
                 user = recurso.Usuario.Nombre;
             }
+
             return new DtoRecurso()
             {
                 id = recurso.Id,
@@ -175,6 +243,11 @@
             };
         }
 
+        /// <summary>
+        /// Genera un dto a partir de una Categoria.
+        /// </summary>
+        /// <param name="categoria">Categoria</param>
+        /// <returns>Dto generado</returns>
         public static DtoCategoria getDtoCategoria(Categoria categoria)
         {
             return new DtoCategoria()
@@ -186,13 +259,21 @@
                 activo = categoria.Activo
             };
         }
-        
-        public static DtoExtension getDtoExtension(ExtensionEvento ext)
+
+        /// <summary>
+        /// Genera un dto a partir de una ExtensionEvento.
+        /// </summary>
+        /// <param name="ext">ExtensionEvento</param>
+        /// <returns>Dto generado</returns>
+        public static DtoExtension getDtoExtension(ExtensionEvento ext, bool multimedia)
         {
             List<string> recursos = new List<string>();
-            foreach (Recurso r in ext.Recursos)
+            foreach (AsignacionRecurso a in ext.AsignacionesRecursos)
             {
-                recursos.Add(r.Codigo);
+                if (a.ActualmenteAsignado == true)
+                {
+                    recursos.Add(a.Recurso.Codigo);
+                }
             }
 
             List<DtoAsignacionRecurso> asignaciones = new List<DtoAsignacionRecurso>();
@@ -212,24 +293,24 @@
             {
                 desp = ext.Despachador.Nombre;
             }
-
             List<DtoImagen> imgs = new List<DtoImagen>();
-            foreach (Imagen i in ext.Imagenes)
-            {
-                imgs.Add(getDtoImagen(i));
-            } 
-
             List<DtoVideo> vids = new List<DtoVideo>();
-            foreach (Video v in ext.Videos)
-            {
-                vids.Add(getDtoVideo(v));
-            }    
-
             List<DtoAudio> auds = new List<DtoAudio>();
-            foreach (Audio a in ext.Audios)
-            {
-                auds.Add(getDtoAudio(a));
-            }    
+            if (multimedia)
+            {                
+                foreach (Imagen i in ext.Imagenes)
+                {
+                    imgs.Add(getDtoImagen(i));
+                }                               
+                foreach (Video v in ext.Videos)
+                {
+                    vids.Add(getDtoVideo(v));
+                }                
+                foreach (Audio a in ext.Audios)
+                {
+                    auds.Add(getDtoAudio(a));
+                }
+            }
 
             List<DtoGeoUbicacion> geos = new List<DtoGeoUbicacion>();
             foreach (GeoUbicacion g in ext.GeoUbicaciones)
@@ -266,43 +347,54 @@
             };
         }
 
-        public static DtoEvento getDtoEvento(Evento evento)
+        /// <summary>
+        /// Genera un dto a partir de un Evento.
+        /// </summary>
+        /// <param name="evento">Evento</param>
+        /// <returns>Dto generado</returns>
+        public static DtoEvento getDtoEvento(Evento evento, bool multimedia)
         {
             List<DtoExtension> extensiones = new List<DtoExtension>();
             foreach (ExtensionEvento e in evento.ExtensionesEvento)
             {
-                extensiones.Add(getDtoExtension(e));
+                extensiones.Add(getDtoExtension(e, multimedia));
             }
 
             string dep = string.Empty;
             if (evento.Departamento != null)
             {
                 dep = evento.Departamento.Nombre;
-            }  
-
+            }
             List<DtoImagen> imgs = new List<DtoImagen>();
-            foreach (Imagen i in evento.Imagenes)
-            {
-                imgs.Add(getDtoImagen(i));
-            }   
-
             List<DtoVideo> vids = new List<DtoVideo>();
-            foreach (Video v in evento.Videos)
-            {
-                vids.Add(getDtoVideo(v));
-            }  
-
             List<DtoAudio> auds = new List<DtoAudio>();
-            foreach (Audio a in evento.Audios)
-            {
-                auds.Add(getDtoAudio(a));
+            if (multimedia)
+            {                
+                foreach (Imagen i in evento.Imagenes)
+                {
+                    imgs.Add(getDtoImagen(i));
+                }                
+                foreach (Video v in evento.Videos)
+                {
+                    vids.Add(getDtoVideo(v));
+                }                
+                foreach (Audio a in evento.Audios)
+                {
+                    auds.Add(getDtoAudio(a));
+                }
             }
 
             string cread = null;
             if (evento.Usuario != null)
             {
                 cread = evento.Usuario.Nombre;
-            }    
+            }
+
+            DtoOrigenEvento oe = null;
+            if (evento.OrigenEvento != null)
+            {
+                oe = getDtoOrigenEvento(evento.OrigenEvento);
+            }  
 
             return new DtoEvento()
             {
@@ -326,7 +418,8 @@
                 extensiones = extensiones,
                 imagenes = imgs,
                 videos = vids,
-                audios = auds
+                audios = auds,
+                origenEvento = oe
             };
         }
 

@@ -61,6 +61,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FormatoDate.cs" />
+    <Compile Include="DtoActualizarDescripcionOffline.cs" />
     <Compile Include="DtoApplicationFile.cs" />
     <Compile Include="DtoAsignacionRecurso.cs" />
     <Compile Include="DtoAutenticacion.cs" />
@@ -71,6 +73,8 @@
     <Compile Include="DtoDescripcion.cs" />
     <Compile Include="DtoOrigenEvento.cs" />
     <Compile Include="DtoRecursosExtension.cs" />
+    <Compile Include="DtoUnsuscribeTokenFirebase.cs" />
+    <Compile Include="DtoResgistrationToken.cs" />
     <Compile Include="DtoSector.cs" />
     <Compile Include="DtoVideo.cs" />
     <Compile Include="DtoImagen.cs" />

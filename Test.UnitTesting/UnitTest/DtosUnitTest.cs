@@ -1,14 +1,14 @@
-﻿using DataTypeObject;
-using NUnit.Framework;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using DataTypeObject;
+using NUnit.Framework;
+
 
 namespace Test.UnitTesting
 {
     [TestFixture]
     public class DtosUnitTest
     {
-      
         /// <summary>
         /// Prueba dto.
         /// </summary>
@@ -17,7 +17,7 @@ namespace Test.UnitTesting
         {
             DtoDescripcion desc = new DtoDescripcion() { descripcion = "desc", fecha = DateTime.Now, origen = OrigenDescripcion.Recurso, usuario = "usuario" };
 
-            var dto = new DtoActualizarDescripcion() {descripcion = "algo", idExtension = 1 };
+            var dto = new DtoActualizarDescripcion() { descripcion = "algo", idExtension = 1 };
 
             Assert.IsTrue(dto.idExtension == 1);
             Assert.IsTrue(dto.descripcion == "algo");

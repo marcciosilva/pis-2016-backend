@@ -3,7 +3,7 @@ namespace Emsys.DataAccesLayer.Core
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Inicio : DbMigration
+    public partial class _Initial : DbMigration
     {
         public override void Up()
         {
@@ -49,6 +49,7 @@ namespace Emsys.DataAccesLayer.Core
                         FechaInicioSesion = c.DateTime(),
                         Nombre = c.String(maxLength: 200),
                         Estado = c.Int(nullable: false),
+                        RegistrationTokenFirebase = c.String(),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -82,7 +83,6 @@ namespace Emsys.DataAccesLayer.Core
                 c => new
                     {
                         Id = c.Int(nullable: false, identity: true),
-                        Descripcion = c.String(),
                         HoraArribo = c.DateTime(),
                         ActualmenteAsignado = c.Boolean(nullable: false),
                         Extension_Id = c.Int(),
@@ -101,6 +101,7 @@ namespace Emsys.DataAccesLayer.Core
                         Id = c.Int(nullable: false, identity: true),
                         Descripcion = c.String(),
                         Fecha = c.DateTime(nullable: false),
+                        agregadaOffline = c.Boolean(nullable: false),
                         AsignacionRecurso_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -205,26 +206,6 @@ namespace Emsys.DataAccesLayer.Core
                 .PrimaryKey(t => t.Id);
             
             CreateTable(
-                "dbo.GeoUbicaciones",
-                c => new
-                    {
-                        Id = c.Int(nullable: false, identity: true),
-                        FechaEnvio = c.DateTime(nullable: false),
-                        Longitud = c.Double(nullable: false),
-                        Latitud = c.Double(nullable: false),
-                        Usuario_Id = c.Int(),
-                        Evento_Id = c.Int(),
-                        ExtensionEvento_Id = c.Int(),
-                    })
-                .PrimaryKey(t => t.Id)
-                .ForeignKey("dbo.Usuarios", t => t.Usuario_Id)
-                .ForeignKey("dbo.Eventos", t => t.Evento_Id)
-                .ForeignKey("dbo.Extensiones_Evento", t => t.ExtensionEvento_Id)
-                .Index(t => t.Usuario_Id)
-                .Index(t => t.Evento_Id)
-                .Index(t => t.ExtensionEvento_Id);
-            
-            CreateTable(
                 "dbo.Imagenes",
                 c => new
                     {
@@ -233,16 +214,19 @@ namespace Emsys.DataAccesLayer.Core
                         Evento_Id = c.Int(),
                         ExtensionEvento_Id = c.Int(),
                         ImagenData_Id = c.Int(),
+                        ImagenThumbnail_Id = c.Int(),
                         Usuario_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
                 .ForeignKey("dbo.Eventos", t => t.Evento_Id)
                 .ForeignKey("dbo.Extensiones_Evento", t => t.ExtensionEvento_Id)
                 .ForeignKey("dbo.ApplicationFiles", t => t.ImagenData_Id)
+                .ForeignKey("dbo.ApplicationFiles", t => t.ImagenThumbnail_Id)
                 .ForeignKey("dbo.Usuarios", t => t.Usuario_Id)
                 .Index(t => t.Evento_Id)
                 .Index(t => t.ExtensionEvento_Id)
                 .Index(t => t.ImagenData_Id)
+                .Index(t => t.ImagenThumbnail_Id)
                 .Index(t => t.Usuario_Id);
             
             CreateTable(
@@ -316,6 +300,23 @@ namespace Emsys.DataAccesLayer.Core
                 .Index(t => t.VideoData_Id);
             
             CreateTable(
+                "dbo.GeoUbicaciones",
+                c => new
+                    {
+                        Id = c.Int(nullable: false, identity: true),
+                        FechaEnvio = c.DateTime(nullable: false),
+                        Longitud = c.Double(nullable: false),
+                        Latitud = c.Double(nullable: false),
+                        ExtensionEvento_Id = c.Int(),
+                        Usuario_Id = c.Int(),
+                    })
+                .PrimaryKey(t => t.Id)
+                .ForeignKey("dbo.Extensiones_Evento", t => t.ExtensionEvento_Id)
+                .ForeignKey("dbo.Usuarios", t => t.Usuario_Id)
+                .Index(t => t.ExtensionEvento_Id)
+                .Index(t => t.Usuario_Id);
+            
+            CreateTable(
                 "dbo.Logs",
                 c => new
                     {
@@ -351,6 +352,10 @@ namespace Emsys.DataAccesLayer.Core
                         Codigo = c.Int(nullable: false),
                         EsError = c.Boolean(nullable: false),
                         Detalles = c.String(),
+                        Topic = c.String(),
+                        CodigoNotificacion = c.String(),
+                        PKEventoAfectado = c.String(),
+                        responseFireBase = c.String(),
                         LogNotificationPrevio_Id = c.Int(),
                     })
                 .PrimaryKey(t => t.Id)
@@ -382,19 +387,6 @@ namespace Emsys.DataAccesLayer.Core
                 .ForeignKey("dbo.ApplicationRoles", t => t.Rol_Id, cascadeDelete: true)
                 .Index(t => t.Usuario_Id)
                 .Index(t => t.Rol_Id);
-            
-            CreateTable(
-                "dbo.RecursoExtensionEventoes",
-                c => new
-                    {
-                        Recurso_Id = c.Int(nullable: false),
-                        ExtensionEvento_Id = c.Int(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.Recurso_Id, t.ExtensionEvento_Id })
-                .ForeignKey("dbo.Recursos", t => t.Recurso_Id, cascadeDelete: true)
-                .ForeignKey("dbo.Extensiones_Evento", t => t.ExtensionEvento_Id, cascadeDelete: true)
-                .Index(t => t.Recurso_Id)
-                .Index(t => t.ExtensionEvento_Id);
             
             CreateTable(
                 "dbo.GrupoRecursoRecursoes",
@@ -442,6 +434,7 @@ namespace Emsys.DataAccesLayer.Core
             DropForeignKey("dbo.LogNotification", "LogNotificationPrevio_Id", "dbo.LogNotification");
             DropForeignKey("dbo.Zonas", "Usuario_Id", "dbo.Usuarios");
             DropForeignKey("dbo.Logs", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.GeoUbicaciones", "Usuario_Id", "dbo.Usuarios");
             DropForeignKey("dbo.GeoUbicaciones", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
             DropForeignKey("dbo.Extensiones_Evento", "Despachador_Id", "dbo.Usuarios");
             DropForeignKey("dbo.Audios", "Usuario_Id", "dbo.Usuarios");
@@ -459,11 +452,10 @@ namespace Emsys.DataAccesLayer.Core
             DropForeignKey("dbo.Eventos", "Sector_Id", "dbo.Sectores");
             DropForeignKey("dbo.Origen_Eventos", "Id", "dbo.Eventos");
             DropForeignKey("dbo.Imagenes", "Usuario_Id", "dbo.Usuarios");
+            DropForeignKey("dbo.Imagenes", "ImagenThumbnail_Id", "dbo.ApplicationFiles");
             DropForeignKey("dbo.Imagenes", "ImagenData_Id", "dbo.ApplicationFiles");
             DropForeignKey("dbo.Imagenes", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
             DropForeignKey("dbo.Imagenes", "Evento_Id", "dbo.Eventos");
-            DropForeignKey("dbo.GeoUbicaciones", "Evento_Id", "dbo.Eventos");
-            DropForeignKey("dbo.GeoUbicaciones", "Usuario_Id", "dbo.Usuarios");
             DropForeignKey("dbo.Extensiones_Evento", "Evento_Id", "dbo.Eventos");
             DropForeignKey("dbo.Eventos", "Departamento_Id", "dbo.Departamentos");
             DropForeignKey("dbo.Extensiones_Evento", "SegundaCategoria_Id", "dbo.Categorias");
@@ -476,8 +468,6 @@ namespace Emsys.DataAccesLayer.Core
             DropForeignKey("dbo.GrupoRecursoUsuarios", "GrupoRecurso_Id", "dbo.Grupos_Recursos");
             DropForeignKey("dbo.GrupoRecursoRecursoes", "Recurso_Id", "dbo.Recursos");
             DropForeignKey("dbo.GrupoRecursoRecursoes", "GrupoRecurso_Id", "dbo.Grupos_Recursos");
-            DropForeignKey("dbo.RecursoExtensionEventoes", "ExtensionEvento_Id", "dbo.Extensiones_Evento");
-            DropForeignKey("dbo.RecursoExtensionEventoes", "Recurso_Id", "dbo.Recursos");
             DropForeignKey("dbo.AsignacionesRecursos", "Extension_Id", "dbo.Extensiones_Evento");
             DropForeignKey("dbo.AsignacionRecursoDescripcion", "AsignacionRecurso_Id", "dbo.AsignacionesRecursos");
             DropForeignKey("dbo.UsuarioRols", "Rol_Id", "dbo.ApplicationRoles");
@@ -490,14 +480,14 @@ namespace Emsys.DataAccesLayer.Core
             DropIndex("dbo.GrupoRecursoUsuarios", new[] { "GrupoRecurso_Id" });
             DropIndex("dbo.GrupoRecursoRecursoes", new[] { "Recurso_Id" });
             DropIndex("dbo.GrupoRecursoRecursoes", new[] { "GrupoRecurso_Id" });
-            DropIndex("dbo.RecursoExtensionEventoes", new[] { "ExtensionEvento_Id" });
-            DropIndex("dbo.RecursoExtensionEventoes", new[] { "Recurso_Id" });
             DropIndex("dbo.UsuarioRols", new[] { "Rol_Id" });
             DropIndex("dbo.UsuarioRols", new[] { "Usuario_Id" });
             DropIndex("dbo.PermisoRols", new[] { "Rol_Id" });
             DropIndex("dbo.PermisoRols", new[] { "Permiso_Id" });
             DropIndex("dbo.LogNotification", new[] { "LogNotificationPrevio_Id" });
             DropIndex("dbo.Logs", new[] { "Usuario_Id" });
+            DropIndex("dbo.GeoUbicaciones", new[] { "Usuario_Id" });
+            DropIndex("dbo.GeoUbicaciones", new[] { "ExtensionEvento_Id" });
             DropIndex("dbo.Videos", new[] { "VideoData_Id" });
             DropIndex("dbo.Videos", new[] { "Usuario_Id" });
             DropIndex("dbo.Videos", new[] { "ExtensionEvento_Id" });
@@ -507,12 +497,10 @@ namespace Emsys.DataAccesLayer.Core
             DropIndex("dbo.Sectores", new[] { "Zona_Id" });
             DropIndex("dbo.Origen_Eventos", new[] { "Id" });
             DropIndex("dbo.Imagenes", new[] { "Usuario_Id" });
+            DropIndex("dbo.Imagenes", new[] { "ImagenThumbnail_Id" });
             DropIndex("dbo.Imagenes", new[] { "ImagenData_Id" });
             DropIndex("dbo.Imagenes", new[] { "ExtensionEvento_Id" });
             DropIndex("dbo.Imagenes", new[] { "Evento_Id" });
-            DropIndex("dbo.GeoUbicaciones", new[] { "ExtensionEvento_Id" });
-            DropIndex("dbo.GeoUbicaciones", new[] { "Evento_Id" });
-            DropIndex("dbo.GeoUbicaciones", new[] { "Usuario_Id" });
             DropIndex("dbo.Eventos", new[] { "Usuario_Id" });
             DropIndex("dbo.Eventos", new[] { "Sector_Id" });
             DropIndex("dbo.Eventos", new[] { "Departamento_Id" });
@@ -532,18 +520,17 @@ namespace Emsys.DataAccesLayer.Core
             DropTable("dbo.UnidadEjecutoraUsuarios");
             DropTable("dbo.GrupoRecursoUsuarios");
             DropTable("dbo.GrupoRecursoRecursoes");
-            DropTable("dbo.RecursoExtensionEventoes");
             DropTable("dbo.UsuarioRols");
             DropTable("dbo.PermisoRols");
             DropTable("dbo.LogNotification");
             DropTable("dbo.Logs");
+            DropTable("dbo.GeoUbicaciones");
             DropTable("dbo.Videos");
             DropTable("dbo.Unidades_Ejecutoras");
             DropTable("dbo.Zonas");
             DropTable("dbo.Sectores");
             DropTable("dbo.Origen_Eventos");
             DropTable("dbo.Imagenes");
-            DropTable("dbo.GeoUbicaciones");
             DropTable("dbo.Departamentos");
             DropTable("dbo.Categorias");
             DropTable("dbo.Eventos");

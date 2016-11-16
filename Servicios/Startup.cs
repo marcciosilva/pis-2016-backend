@@ -1,10 +1,9 @@
-﻿using Emsys.DataAccesLayer.Core;
-using Hangfire;
-using Microsoft.Owin;
-using Owin;
-using System;
+﻿using System;
 using System.Linq;
 using System.Threading;
+using Emsys.DataAccesLayer.Core;
+using Microsoft.Owin;
+using Owin;
 
 [assembly: OwinStartup(typeof(Servicios.Startup))]
 
@@ -15,7 +14,8 @@ namespace Servicios
     /// </summary>
     public partial class Startup
     {
-        private static bool iniciado = false;
+        private static bool _iniciado = false;
+
         /// <summary>
         /// Metodo de configuracion.
         /// </summary>
@@ -24,22 +24,24 @@ namespace Servicios
         {
             try
             {
-                if (!iniciado)
+                if (!_iniciado)
                 {
                     // Para iniciar la bd si no esta creada.
                     EmsysContext db = new EmsysContext();
                     db.Evento.ToList();
-
                     Thread UserAdminThread = new Thread(new ThreadStart(Emsys.LogicLayer.Program.Main));
                     UserAdminThread.IsBackground = true;
                     UserAdminThread.Start();
 
-                    iniciado = true;
+                    Thread DBObserverThread = new Thread(new ThreadStart(SqlDependecyProject.Program.Main));
+                    DBObserverThread.IsBackground = true;
+                    DBObserverThread.Start();
+
+                    _iniciado = true;
                 }
             }
             catch (Exception)
             {
-
             }
         }
     }

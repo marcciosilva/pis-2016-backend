@@ -1,20 +1,19 @@
 ﻿namespace SqlDependecyProject
 {
     using System;
+    using System.Threading;
+    using DataTypeObject;
+    using Emsys.DataAccesLayer.Core;
+    using Emsys.DataAccesLayer.Model;
+    using Emsys.LogicLayer;
+    using TableDependency.Enums;
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
-    using TableDependency.Enums;
-    using Emsys.DataAccesLayer.Model;
-    using Emsys.DataAccesLayer.Core;
-    using DataTypeObject;
-    using Emsys.LogicLayer;
-    using System.Threading;
+    using System.Web.Configuration;
 
     public class ProcesoImagenes
     {
-        private static bool llamo = true;
-
-        private static string proceso = "ProcesoMonitoreoImagenes";
+        private static string _proceso = "ProcesoMonitoreoImagenes";
 
         private static SqlTableDependency<Imagen> _dependency;
 
@@ -27,19 +26,23 @@
         {
             try
             {
-                Console.WriteLine(proceso + "- Observo la BD:\n");
+                Console.WriteLine(_proceso + "- Observo la BD:\n");
                 Listener();
-
                 while (true)
                 {
-                    Thread.Sleep(10000);
+                    //esta logica lo que hacer es reinciar la conexion a la base de datos.
+                    int _milisegundosDuermo = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaReiniciarConexionBdObservers"]);
+                    Thread.Sleep(_milisegundosDuermo);
+                    _dependency.Stop();
+                    Listener();
                 }
             }
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoImagenes", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un Imagenes en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoImagenes", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un Imagenes en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseImagenes);
+                _dependency.Stop();
+                ProcesoMonitoreoImagenes();
             }
         }
 
@@ -51,8 +54,8 @@
             var mapper = new ModelToTableMapper<Imagen>();
             mapper.AddMapping(model => model.Id, "Id");
             _dependency = new SqlTableDependency<Imagen>(_connectionString, "Imagenes", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
-            _dependency.OnError += _dependency_OnError;
+            _dependency.OnChanged += DependencyOnChanged;
+            _dependency.OnError += DependencyOnError;
             _dependency.Start();
         }
 
@@ -61,9 +64,10 @@
         /// </summary>
         /// <param name="sender">No se utiliza.</param>
         /// <param name="e">Excepcion generada por el sistema de error.</param>
-        private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
+        private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
-            throw e.Error;
+            IMetodos dbAL = new Metodos();
+            dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoImagenes", "ProcesoMonitoreoImagenes", 0, "_dependency_OnChanged", "Error al intentar capturar un Imagenes en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseeImagenesDependencyOnError);
         }
 
         /// <summary>
@@ -71,7 +75,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="imagenEnBD">imagen generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Imagen> imagenEnBD)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Imagen> imagenEnBD)
         {
             try
             {
@@ -80,18 +84,16 @@
                     Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
                     switch (imagenEnBD.ChangeType)
                     {
-                        // El caso no es util por que si se crea un Imagenes no tiene asignados recursos probablemte.
+                        // El caso no es util por que si se crea un Imagenes no tiene asignados recursos probablemente.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoImagenes - Accion: Borro, Pk del Imagenes: " + imagenEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, imagenEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoImagenes - Accion Insert, Pk del Imagenes: " + imagenEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, imagenEnBD, GestorNotificaciones);
+                            AtenderEvento(DataNotificacionesCodigos.AltaImagen, imagenEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
                             Console.WriteLine("ProcesoMonitoreoImagenes - Accion update, Pk del Imagenes: " + imagenEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, imagenEnBD, GestorNotificaciones);
                             break;
                     }
                 }
@@ -99,8 +101,7 @@
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys._dependency_OnChangedVideos", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys._dependency_OnChangedImagenes", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
             }
         }
 
@@ -116,32 +117,31 @@
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Imagenes", imagen.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", MensajesParaFE.LogCapturarCambioEventoCod);
-                var imagenEnBD = db.Imagenes.Find(imagen.Entity.Id);
+                var imagenEnBD = db.imagenes.Find(imagen.Entity.Id);
                 if (imagenEnBD != null)
                 {
-                    if (imagenEnBD.Evento!=null)
+                    if (imagenEnBD.ExtensionEvento != null)
                     {
-                        // Para los recursos asociados a la extension genero una notificacion.
-                        foreach (var item in imagenEnBD.Evento.ExtensionesEvento)
+                        int idEvento = imagenEnBD.ExtensionEvento.Evento.Id;
+                        int idExtension = imagenEnBD.ExtensionEvento.Id;
+                        int idZona = imagenEnBD.ExtensionEvento.Zona.Id;
+                        string nombreZona = imagenEnBD.ExtensionEvento.Zona.Nombre;
+                        // Para cada extension del evento modificado.
+                        foreach (var item in imagenEnBD.ExtensionEvento.Evento.ExtensionesEvento)
                         {
-                            foreach (var recurso in item.Recursos)
+                            // Para cada recurso de la extension.
+                            foreach (var asig in item.AsignacionesRecursos)
                             {
-                                GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + item.Id);
+                                // Si hay un usuario conectado con ese recurso.
+                                if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
+                                {
+                                    GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
+                                }
                             }
 
                             // Para la zona asociada a la extensen le envia una notificacion.
-                            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
                         }
-                    }
-                    else
-                    {
-                        foreach (var recurso in imagenEnBD.ExtensionEvento.Recursos)
-                        {
-                            GestorNotificaciones.SendMessage(cod, imagenEnBD.ExtensionEvento.Id.ToString(), "recurso-" + imagenEnBD.ExtensionEvento.Id);
-                        }
-
-                        // Para la zona asociada a la extensen le envia una notificacion.
-                        GestorNotificaciones.SendMessage(cod, imagenEnBD.ExtensionEvento.Id.ToString(), "zona-" + imagenEnBD.ExtensionEvento.Zona.Id);
                     }
                 }
             }

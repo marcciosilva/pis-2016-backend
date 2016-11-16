@@ -11,6 +11,8 @@ using System.Threading;
 using Newtonsoft.Json;
 using System.Web.Services.Protocols;
 using System.Collections.Generic;
+using System.Net;
+using System.Web.Http.Controllers;
 
 namespace Test.UnitTesting
 {
@@ -172,7 +174,7 @@ namespace Test.UnitTesting
             var resp3 = controller.Login(u);
             string token = ((DtoAutenticacion)resp3.response).accessToken;
 
-            
+
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             var resp4 = controller.KeepMeAlive();
@@ -193,7 +195,7 @@ namespace Test.UnitTesting
             db.SaveChanges();
 
             var controller = new EventosController();
-                       
+
             // No autenticado.
             var resp1 = controller.ListarEventos();
             Assert.IsTrue(resp1.cod == 2);
@@ -209,7 +211,7 @@ namespace Test.UnitTesting
             var controller2 = new LoginController();
             var resp3 = controller2.Login(u);
             string token = ((DtoAutenticacion)resp3.response).accessToken;
-            
+
             // Loguear.
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = new List<DtoRecurso>() };
             DtoRecurso r = new DtoRecurso() { id = 1 };
@@ -241,13 +243,13 @@ namespace Test.UnitTesting
 
             var controller = new EventosController();
 
-            var resp1 = controller.getEvento(1);
+            var resp1 = controller.GetEvento(1);
             Assert.IsTrue(resp1.cod == 2);
 
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", "tokenInvalido");
 
-            var resp2 = controller.getEvento(1);
+            var resp2 = controller.GetEvento(1);
             Assert.IsTrue(resp2.cod == 2);
 
             DtoUsuario u = new DtoUsuario() { username = "A", password = "A" };
@@ -257,7 +259,7 @@ namespace Test.UnitTesting
 
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
-            var resp4 = controller.getEvento(-1);
+            var resp4 = controller.GetEvento(-1);
             Assert.IsTrue(resp4.cod == 9);
 
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = new List<DtoRecurso>() };
@@ -269,7 +271,7 @@ namespace Test.UnitTesting
 
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
-            var resp5 = controller.getEvento(1);
+            var resp5 = controller.GetEvento(1);
             Assert.IsTrue(resp5.cod == 0);
         }
 
@@ -305,7 +307,7 @@ namespace Test.UnitTesting
             var controller2 = new LoginController();
             var resp3 = controller2.Login(u);
             string token = ((DtoAutenticacion)resp3.response).accessToken;
-            
+
 
             // Loguear.
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = new List<DtoRecurso>() };
@@ -318,7 +320,7 @@ namespace Test.UnitTesting
             // Sin tener vision.
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
-            var resp6 = controller.ActualizarDescripcionRecurso(new DtoActualizarDescripcion() { idExtension = 2, descripcion = "hola"});
+            var resp6 = controller.ActualizarDescripcionRecurso(new DtoActualizarDescripcion() { idExtension = 2, descripcion = "hola" });
             Assert.IsTrue(resp6.cod == 15);
 
             // Extension invalida.
@@ -345,6 +347,7 @@ namespace Test.UnitTesting
             EmsysContext db = new EmsysContext();
             db.Usuarios.FirstOrDefault(us => us.NombreLogin == "A").Token = null;
             db.Recursos.FirstOrDefault().Estado = Emsys.DataAccesLayer.Model.EstadoRecurso.Disponible;
+            db.AsignacionesRecursos.FirstOrDefault().HoraArribo = null;
             db.SaveChanges();
 
             var controller = new EventosController();
@@ -426,7 +429,7 @@ namespace Test.UnitTesting
             var controller2 = new LoginController();
             var resp3 = controller2.Login(u);
             string token = ((DtoAutenticacion)resp3.response).accessToken;
-                                    
+
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             var resp5 = controller.GetInfoCreacionEvento();
@@ -469,7 +472,7 @@ namespace Test.UnitTesting
 
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
-            DtoInfoCreacionEvento info = (DtoInfoCreacionEvento) ((DtoRespuesta) controller.GetInfoCreacionEvento()).response;
+            DtoInfoCreacionEvento info = (DtoInfoCreacionEvento)((DtoRespuesta)controller.GetInfoCreacionEvento()).response;
             List<int> idZonas = new List<int>();
             idZonas.Add(info.zonasSectores.FirstOrDefault().id);
             DtoEvento ev = new DtoEvento()
@@ -509,6 +512,7 @@ namespace Test.UnitTesting
             controller.Request.Headers.Add("auth", token);
             var resp7 = controller.CrearEvento(ev);
             Assert.IsTrue(resp7.cod == 14);
+            controller2.SetRegistrationToken(new DtoResgistrationToken { registrationTokens = "A" });
             controller2.Request = new HttpRequestMessage();
             controller2.Request.Headers.Add("auth", token);
             controller2.CerrarSesion();
@@ -547,7 +551,7 @@ namespace Test.UnitTesting
             var controller2 = new LoginController();
             var resp3 = controller2.Login(u);
             string token = ((DtoAutenticacion)resp3.response).accessToken;
-            
+
             // Loguear.
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = new List<DtoRecurso>() };
             DtoZona z = new DtoZona() { id = 1 };
@@ -652,12 +656,12 @@ namespace Test.UnitTesting
             controller.Request.Headers.Add("auth", token);
             var resp5 = controller.GetRecursosExtension(-1);
             Assert.IsTrue(resp5.cod == 12);
-            
+
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             controller.GetRecursosExtension(1);
             Assert.IsTrue(resp7.cod == 0);
-            
+
 
             // No autenticado.
             controller.Request = new HttpRequestMessage();
@@ -716,6 +720,7 @@ namespace Test.UnitTesting
             DtoActualizarDescripcion descr = new DtoActualizarDescripcion() { descripcion = "descripcion", idExtension = 1 };
 
             // No autenticado.
+            controller.Request = new HttpRequestMessage();
             var resp1 = controller.ActualizarSegundaCategoria(1, 1);
             Assert.IsTrue(resp1.cod == 2);
 
@@ -730,6 +735,17 @@ namespace Test.UnitTesting
             var controller2 = new LoginController();
             var resp3 = controller2.Login(u);
             string token = ((DtoAutenticacion)resp3.response).accessToken;
+
+            // No autenticado.
+            controller.Request = new HttpRequestMessage();
+            var respC1 = controller.GetCategorias();
+            Assert.IsTrue(respC1.cod == 2);
+
+            // Correcto.
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Headers.Add("auth", token);
+            var respC2 = controller.GetCategorias();
+            Assert.IsTrue(respC2.cod == 0);
 
             // Loguear.
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = new List<DtoRecurso>() };
@@ -765,7 +781,7 @@ namespace Test.UnitTesting
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             controller.ActualizarSegundaCategoria(1, 1);
-                        
+
             // Liberar extension
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
@@ -859,10 +875,10 @@ namespace Test.UnitTesting
             controller.Request.Headers.Add("auth", token);
             var resp12 = controller.AbrirExtension(1, 2);
             Assert.IsTrue(resp12.cod == 0);
-            
+
             db = new EmsysContext();
             int nuevaExt = db.ExtensionesEvento.Max(e => e.Id);
-            
+
             // Tomar extension.
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
@@ -897,8 +913,8 @@ namespace Test.UnitTesting
             db.ExtensionesEvento.FirstOrDefault(ex => ex.Id == nuevaExt).Evento.Estado = Emsys.DataAccesLayer.Model.EstadoEvento.Enviado;
             db.SaveChanges();
 
-            db.ExtensionesEvento.FirstOrDefault(ex => ex.Id == nuevaExt).Recursos.Add(db.Recursos.FirstOrDefault());
-            db.SaveChanges();
+            //db.ExtensionesEvento.FirstOrDefault(ex => ex.Id == nuevaExt).Recursos.Add(db.Recursos.FirstOrDefault());
+            //db.SaveChanges();
 
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
@@ -932,7 +948,7 @@ namespace Test.UnitTesting
             DtoActualizarDescripcion descr = new DtoActualizarDescripcion() { descripcion = "descripcion", idExtension = 1 };
 
             // No autenticado.
-            var resp1 = controller.ActualizarDescripcionDespachador(new DtoActualizarDescripcion() { idExtension = 1, descripcion = "hola"});
+            var resp1 = controller.ActualizarDescripcionDespachador(new DtoActualizarDescripcion() { idExtension = 1, descripcion = "hola" });
             Assert.IsTrue(resp1.cod == 2);
 
             // Token invalido.
@@ -971,7 +987,7 @@ namespace Test.UnitTesting
             var resp7 = controller.ActualizarDescripcionDespachador(new DtoActualizarDescripcion() { idExtension = 1, descripcion = "hola" });
             Assert.IsTrue(resp7.cod == 0);
 
-         
+
             // Liberar extension
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
@@ -997,7 +1013,7 @@ namespace Test.UnitTesting
             var controller = new AdjuntosController();
 
             // No autenticado.
-            var resp1 = controller.AdjuntarGeoUbicacion(new DtoGeoUbicacion() { latitud = 10, longitud = 10, idExtension = 1});
+            var resp1 = controller.AdjuntarGeoUbicacion(new DtoGeoUbicacion() { latitud = 10, longitud = 10, idExtension = 1 });
             Assert.IsTrue(resp1.cod == 2);
 
             // Token invalido.
@@ -1011,7 +1027,7 @@ namespace Test.UnitTesting
             var controller2 = new LoginController();
             var resp3 = controller2.Login(u);
             string token = ((DtoAutenticacion)resp3.response).accessToken;
-            
+
             // Loguear.
             DtoRol rol = new DtoRol() { zonas = new List<DtoZona>(), recursos = new List<DtoRecurso>() };
             DtoRecurso r = new DtoRecurso() { id = 1 };
@@ -1113,24 +1129,38 @@ namespace Test.UnitTesting
             // No autenticado.
             controller.Request = new HttpRequestMessage();
             var resp11 = controller.GetImageData(1);
-            Assert.IsTrue(resp11.cod == 2);
+            Assert.IsTrue(resp11.StatusCode == HttpStatusCode.Unauthorized);
+            var resp11T = controller.GetImageThumbnail(1);
+            Assert.IsTrue(resp11T.StatusCode == HttpStatusCode.Unauthorized);
 
             // Token invalido.
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", "tokenInvalido");
             var resp12 = controller.GetImageData(1);
-            Assert.IsTrue(resp12.cod == 2);            
+            Assert.IsTrue(resp12.StatusCode == HttpStatusCode.Unauthorized);
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Headers.Add("auth", "tokenInvalido");
+            var resp12T = controller.GetImageThumbnail(1);
+            Assert.IsTrue(resp12T.StatusCode == HttpStatusCode.Unauthorized);
 
             // Imagen invalida.
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             var resp14 = controller.GetImageData(-1);
-            Assert.IsTrue(resp14.cod == 101);
+            Assert.IsTrue(resp14.StatusCode == HttpStatusCode.NotFound);
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Headers.Add("auth", token);
+            var resp14T = controller.GetImageThumbnail(-1);
+            Assert.IsTrue(resp14T.StatusCode == HttpStatusCode.NotFound);
 
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             var resp16 = controller.GetImageData(1);
-            Assert.IsTrue(resp16.cod == 0);
+            Assert.IsTrue(resp16.StatusCode == HttpStatusCode.OK);
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Headers.Add("auth", token);
+            var resp16T = controller.GetImageThumbnail(1);
+            Assert.IsTrue(resp16T.StatusCode == HttpStatusCode.OK);
 
             controller2.Request = new HttpRequestMessage();
             controller2.Request.Headers.Add("auth", token);
@@ -1144,7 +1174,11 @@ namespace Test.UnitTesting
             controller.Request = new HttpRequestMessage();
             controller.Request.Headers.Add("auth", token);
             var resp13 = controller.GetImageData(1);
-            Assert.IsTrue(resp13.cod == 15);
+            Assert.IsTrue(resp13.StatusCode == HttpStatusCode.Unauthorized);
+            controller.Request = new HttpRequestMessage();
+            controller.Request.Headers.Add("auth", token);
+            var resp13T = controller.GetImageThumbnail(1);
+            Assert.IsTrue(resp13T.StatusCode == HttpStatusCode.Unauthorized);
         }
 
 
@@ -1251,8 +1285,47 @@ namespace Test.UnitTesting
             controller.Request.Headers.Add("auth", token);
             var resp13 = controller.GetVideoData(1);
             Assert.IsTrue(resp13.cod == 15);
+
+
         }
 
+
+        /// <summary>
+        /// Test adjuntar audio.
+        /// </summary>
+        [Test]
+        public void PruebaConfiguraciones()
+        {
+            var Servicio1ResponseBody = new Servicios.ServicioExterno.Servicio1ResponseBody();
+            Servicio1ResponseBody = new Servicios.ServicioExterno.Servicio1ResponseBody(new Servicios.ServicioExterno.ArrayOfString[1]);
+            var servicio1Response = new Servicios.ServicioExterno.Servicio1Response();
+            servicio1Response = new Servicios.ServicioExterno.Servicio1Response(new Servicios.ServicioExterno.Servicio1ResponseBody());
+            var servicio1RequestBody = new Servicios.ServicioExterno.Servicio1RequestBody();
+            servicio1RequestBody = new Servicios.ServicioExterno.Servicio1RequestBody("", "", "");
+            var Servicio1Request = new Servicios.ServicioExterno.Servicio1Request();
+            Servicio1Request = new Servicios.ServicioExterno.Servicio1Request(new Servicios.ServicioExterno.Servicio1RequestBody());
+            var CustomAuthorizeAttribute = new Servicios.Filtros.CustomAuthorizeAttribute("hola");
+            CustomAuthorizeAttribute.OnAuthorization(new HttpActionContext());
+            var RequireHttpsAttribute = new Emsys.ServiceLayer.Filtros.RequireHttpsAttribute();
+            var delegateHandler = new Emsys.ServiceLayer.Filtros.DelegateHandler();
+            Emsys.ServiceLayer.WebApiConfig.Register(new System.Web.Http.HttpConfiguration());
+            Emsys.ServiceLayer.SwaggerConfig.Register();
+            var servicioExternoController = new Servicios.Controllers.ServicioExternoController();
+            servicioExternoController.ConsumirServicioExterno(new DtoConsultaExterna { param1 = "", param2 = "", param3 = "" });
+            Utils.Notifications.Utils.LogsManager.AgregarLogNotificationDessuscripcionUsuario(
+                "vacio", 
+                "servidor", 
+                "Utils.Notitications",
+                "NotificacionesFirebase", 
+                0, 
+                "sendNotification",
+                "Se genero una notificacion exitosamente.",
+                901,
+                "", 
+                "", 
+                "");
+            Assert.IsTrue(true);
+        }
 
         /// <summary>
         /// Test adjuntar audio.
@@ -1358,38 +1431,5 @@ namespace Test.UnitTesting
             var resp13 = controller.GetAudioData(1);
             Assert.IsTrue(resp13.cod == 15);
         }
-
-
-        ///// <summary>
-        ///// Prueba servicio externo.
-        ///// </summary>
-        //[Test]
-        //public void ServicioExternoTesto()
-        //{
-        //    ServidorExterno.Servicios s = new ServidorExterno.Servicios();
-        //    var controller = new ServicioExternoController();
-        //    var resp = controller.ConsumirServicioExterno(new DtoConsultaExterna() { param1 = "uno", param2 = "dos", param3 = "tres" });
-        //    var lista = (List<DtoRespuestaExterna>)resp.response;
-        //    Assert.IsTrue(lista.Count == 2);
-        //    Assert.AreEqual(lista[0].field1, "uno");
-        //    Assert.AreEqual(lista[0].field2, "dos");
-        //    Assert.AreEqual(lista[0].field3, "tres");
-        //    Assert.AreEqual(lista[0].field4, "DDD");
-        //    Assert.AreEqual(lista[0].field5, "EEE");
-        //    Assert.AreEqual(lista[0].field6, "FFF");
-        //    Assert.AreEqual(lista[0].field7, "GGG");
-        //    Assert.AreEqual(lista[0].field8, "HHH");
-        //    Assert.AreEqual(lista[0].field9, "III");
-        //    Assert.AreEqual(lista[0].field10, "JJJ");
-
-        //    //try
-        //    //{
-        //    //    controller.ConsumirServicioExterno(new DtoConsultaExterna() { param1 = "uno", param2 = "dos", param3 = "tres" });
-        //    //}
-        //    //catch (SoapException e)
-        //    //{
-        //    //    Assert.IsTrue(true);
-        //    //}
-        //}
     }
 }

@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace DataTypeObject
 {
@@ -23,6 +23,7 @@ namespace DataTypeObject
 
         public string estado { get; set; }
 
+        [JsonConverter(typeof(FormatoDate))]
         [JsonProperty(PropertyName = "time_stamp")]
         public DateTime timeStamp { get; set; }
 
@@ -39,5 +40,8 @@ namespace DataTypeObject
 
         [JsonProperty(PropertyName = "geo_ubicaciones")]
         public virtual ICollection<DtoGeoUbicacion> geoUbicaciones { get; set; }
+
+        [JsonProperty(PropertyName = "is_assigned")]
+        public bool isAssigned { get; set; }
     }
 }

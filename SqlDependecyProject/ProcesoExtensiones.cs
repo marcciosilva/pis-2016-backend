@@ -1,26 +1,19 @@
 ﻿namespace SqlDependecyProject
 {
     using System;
+    using System.Threading;
+    using DataTypeObject;
+    using Emsys.DataAccesLayer.Core;
+    using Emsys.DataAccesLayer.Model;
+    using Emsys.LogicLayer;
+    using TableDependency.Enums;
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
-    using TableDependency.Enums;
-    using Emsys.DataAccesLayer.Model;
-    using Emsys.DataAccesLayer.Core;
-    using DataTypeObject;
-    using Emsys.LogicLayer;
-    using System.Threading;
+    using System.Web.Configuration;
 
     public class ProcesoExtensiones
     {
-        private enum TablaMonitorar
-        {
-            Eventos,
-            Extensiones
-        }
-
-        private static bool llamo = true;
-
-        private static SqlTableDependency<ExtensionEvento> _dependency;
+        private static SqlTableDependency<ExtensionEventoMapeado> _dependency;
 
         private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
 
@@ -36,15 +29,33 @@
 
                 while (true)
                 {
-                    Thread.Sleep(10000);
+                    //esta logica lo que hacer es reinciar la conexion a la base de datos.
+                    int _milisegundosDuermo = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaReiniciarConexionBdObservers"]);
+                    Thread.Sleep(_milisegundosDuermo);
+                    _dependency.Stop();
+                    Listener();
                 }
             }
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoExtensiones", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoExtensiones", "ProcesoMonitoreoExtensiones", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseExtensiones);
+                _dependency.Stop();
+                ProcesoMonitoreoExtensiones();
             }
+        }
+
+        public partial class ExtensionEventoMapeado
+        {
+            public int Id { get; set; }
+            
+            public string DescripcionDespachador { get; set; }
+
+            public string DescripcionSupervisor { get; set; }
+
+            public EstadoExtension Estado { get; set; }
+
+            public int SegundaCategoria { get; set; }
         }
 
         /// <summary>
@@ -52,24 +63,28 @@
         /// </summary>
         public static void Listener()
         {
-            var mapper = new ModelToTableMapper<ExtensionEvento>();
+            var mapper = new ModelToTableMapper<ExtensionEventoMapeado>();
             mapper.AddMapping(model => model.Id, "Id");
-            _dependency = new SqlTableDependency<ExtensionEvento>(_connectionString, "Extensiones_Evento", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
-            _dependency.OnError += _dependency_OnError;
+            mapper.AddMapping(model => model.DescripcionDespachador, "DescripcionDespachador");
+            mapper.AddMapping(model => model.DescripcionSupervisor, "DescripcionSupervisor");
+            mapper.AddMapping(model => model.Estado, "Estado");
+            mapper.AddMapping(model => model.SegundaCategoria, "SegundaCategoria_Id");
+
+            _dependency = new SqlTableDependency<ExtensionEventoMapeado>(_connectionString, "Extensiones_Evento", mapper);
+            _dependency.OnChanged += DependencyOnChanged;
+            _dependency.OnError += DependencyOnError;
             _dependency.Start();
         }
-
-        // private static IList<Model.Evento> _stocks;
 
         /// <summary>
         /// Metodo que se dispara cuando ocurre un error al detectar los cambios en la base de datos.
         /// </summary>
         /// <param name="sender">No se utiliza.</param>
         /// <param name="e">Excepcion generada por el sistema de error.</param>
-        private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
+        private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
-            throw e.Error;
+            IMetodos dbAL = new Metodos();
+            dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoExtensiones", "ProcesoMonitoreoExtensiones", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseExtensionesDependencyOnError);
         }
 
         /// <summary>
@@ -77,7 +92,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="eventoEnBD">Evento generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<ExtensionEvento> eventoEnBD)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<ExtensionEventoMapeado> eventoEnBD)
         {
             try
             {
@@ -86,10 +101,9 @@
                     Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
                     switch (eventoEnBD.ChangeType)
                     {
-                        //// el caso no es util por que si se crea un evento no tiene asignados recursos probablemte
+                        // El caso no es util por que si se crea un evento no tiene asignados recursos probablemte.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoExtensiones - Accion: Borro, Pk del evento: " + eventoEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.CierreEvento, eventoEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoExtensiones - Accion Insert, Pk del evento: " + eventoEnBD.Entity.Id);
@@ -106,9 +120,9 @@
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoExtensiones.ObserverDataBase", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
             }
         }
+        
 
         /// <summary>
         /// Metodo que se utiliza para enviar una notificaion a un evento.
@@ -116,7 +130,7 @@
         /// <param name="cod">Codigo que se desea notificar a la aplicacion dado el evento.</param>
         /// <param name="extension">Identificador del evento que fue modificado/alta/baja.</param>
         /// <param name="GestorNotificaciones">Instancia de INotification.</param>
-        private static void AtenderEvento(string cod, TableDependency.EventArgs.RecordChangedEventArgs<ExtensionEvento> extension, Utils.Notifications.INotifications GestorNotificaciones)
+        private static void AtenderEvento(string cod, TableDependency.EventArgs.RecordChangedEventArgs<ExtensionEventoMapeado> extension, Utils.Notifications.INotifications GestorNotificaciones)
         {
             using (EmsysContext db = new EmsysContext())
             {
@@ -125,14 +139,46 @@
                 var extensionEnBD = db.ExtensionesEvento.Find(extension.Entity.Id);
                 if (extensionEnBD != null)
                 {
-                    // Para los recursos asociados a la extension genero una notificacion.
-                    foreach (var item in extensionEnBD.Recursos)
+                    int idEvento = extensionEnBD.Evento.Id;
+                    int idExtension = extensionEnBD.Id;
+                    int idZona = extensionEnBD.Zona.Id;
+                    string nombreZona = extensionEnBD.Zona.Nombre;
+                    // Si es un alta notifica solamente a los usuarios de la zona de la nueva extension y recursos asociados.
+                    if (cod == DataNotificacionesCodigos.AltaEvento)
+                    {                        
+                        // Para cada recurso de la extension.
+                        foreach (var asig in extensionEnBD.AsignacionesRecursos)
+                        {
+                            if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
+                            {
+                                GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
+                            }
+                        }
+                        // Para la zona asociada a la extensen le envia una notificacion.
+                        GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + extensionEnBD.Zona.Id);                        
+                    }                    
+                    else if (cod == DataNotificacionesCodigos.ModificacionEvento)
                     {
-                        GestorNotificaciones.SendMessage(cod, extension.Entity.Id.ToString(), "recurso-" + item.Id);
-                    }
-
-                    // Para la zona asociada a la extensen le envia una notificacion.
-                    GestorNotificaciones.SendMessage(cod, extension.Entity.Id.ToString(), "zona-" + extensionEnBD.Zona.Id);
+                        // Si hubo una modificacion, y el estado de la extension es "Cerrado" asume que la modificacion fue el cierre de la extension (no deberian ocurrir cambios en una extension cerrada).
+                        if (extensionEnBD.Estado == EstadoExtension.Cerrado)
+                        {
+                            cod = DataNotificacionesCodigos.CierreEvento;
+                        }
+                        // Para cada extension del evento modificado.
+                        foreach (var item in extensionEnBD.Evento.ExtensionesEvento)
+                        {
+                            // Para cada recurso de la extension.
+                            foreach (var asig in item.AsignacionesRecursos)
+                            {
+                                if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
+                                {
+                                    GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
+                                }
+                            }
+                            // Para la zona asociada a la extensen le envia una notificacion.
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
+                        }
+                    }                    
                 }
             }
         }

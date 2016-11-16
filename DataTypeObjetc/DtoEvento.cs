@@ -1,6 +1,6 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace DataTypeObject
 {
@@ -16,11 +16,13 @@ namespace DataTypeObject
 
         public string estado { get; set; }
 
+        [JsonConverter(typeof(FormatoDate))]
         [JsonProperty(PropertyName = "time_stamp")]
         public DateTime timeStamp { get; set; }
 
         public string creador { get; set; }
 
+        [JsonConverter(typeof(FormatoDate))]
         [JsonProperty(PropertyName = "fecha_creacion")]
         public DateTime fechaCreacion { get; set; }     
 
@@ -45,8 +47,8 @@ namespace DataTypeObject
         
         public ICollection<DtoExtension> extensiones { get; set; }
 
-        //[JsonProperty(PropertyName = "origen_evento")]
-        //public DtoOrigenEvento origenEvento { get; set; }
+        [JsonProperty(PropertyName = "origen_evento")]
+        public DtoOrigenEvento origenEvento { get; set; }
 
         public virtual ICollection<DtoImagen> imagenes { get; set; }
 
@@ -62,6 +64,5 @@ namespace DataTypeObject
 
         [JsonProperty(PropertyName = "id_sector")]
         public int idSector { get; set; }
-
     }
 }

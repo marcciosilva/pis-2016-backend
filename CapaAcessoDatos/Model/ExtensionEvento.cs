@@ -17,11 +17,9 @@
     {
         [Key]
         public int Id { get; set; }
-
-        //[Required]
+        
         public virtual Evento Evento { get; set; }
-
-        //[Required]
+        
         public virtual Zona Zona { get; set; }
 
         public virtual Usuario Despachador { get; set; }
@@ -39,9 +37,7 @@
         public DateTime TimeStamp { get; set; }
 
         public virtual Categoria SegundaCategoria { get; set; }
-
-        public virtual ICollection<Recurso> Recursos { get; set; }
-
+        
         public virtual ICollection<Imagen> Imagenes { get; set; }
 
         public virtual ICollection<Video> Videos { get; set; }

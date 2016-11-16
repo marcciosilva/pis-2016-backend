@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace DataTypeObject
 {
@@ -11,11 +12,15 @@ namespace DataTypeObject
     public class DtoDescripcion
     {
         public string usuario { get; set; }
-        
+
+        [JsonConverter(typeof(FormatoDate))]
         public DateTime fecha { get; set; }
 
         public string descripcion { get; set; }
 
         public OrigenDescripcion origen { get; set; }
+
+        [JsonProperty(PropertyName = "agregada_offline")]
+        public bool agregadaOffline { get; set; }
     }
 }

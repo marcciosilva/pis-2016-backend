@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Web;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Threading;
+using System.Web;
 using Emsys.LogicLayer;
 using DataTypeObject;
 using Servicios;
-using System.Collections.Generic;
 
 namespace Emsys.ServiceLayer.Filtros
 {
@@ -43,8 +42,8 @@ namespace Emsys.ServiceLayer.Filtros
         /// <returns>Identificacion del dispositivo que realizo el request.</returns>
         private string GetClientIp(HttpRequestMessage request)
         {
-            String ip;
-            if (!String.IsNullOrEmpty(HttpContext.Current.Request.ServerVariables["HTTP_CLIENT_IP"]))
+            string ip;
+            if (!string.IsNullOrEmpty(HttpContext.Current.Request.ServerVariables["HTTP_CLIENT_IP"]))
             {
                 ip = HttpContext.Current.Request.ServerVariables["HTTP_CLIENT_IP"];
             }

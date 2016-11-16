@@ -18,7 +18,7 @@ namespace Emsys.DataAccesLayer.Core
 
         public DbSet<ApplicationFile> ApplicationFiles { get; set; }
 
-        public DbSet<Imagen> Imagenes { get; set; }
+        public DbSet<Imagen> imagenes { get; set; }
 
         public DbSet<Audio> Audios { get; set; }
 

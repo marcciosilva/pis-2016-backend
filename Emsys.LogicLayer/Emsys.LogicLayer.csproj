@@ -60,10 +60,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ApplicationExceptions\ArgumentoInvalidoException.cs" />
+    <Compile Include="ApplicationExceptions\ArriboPrevioException.cs" />
     <Compile Include="ApplicationExceptions\CategoriaInvalidaException.cs" />
     <Compile Include="ApplicationExceptions\FormatoInvalidoException.cs" />
     <Compile Include="ApplicationExceptions\EventoNoEnviadoException.cs" />
     <Compile Include="ApplicationExceptions\ExtensionInvalidaException.cs" />
+    <Compile Include="ApplicationExceptions\RecursoInvalidoException.cs" />
     <Compile Include="ApplicationExceptions\UsuarioNoAutorizadoException.cs" />
     <Compile Include="ApplicationExceptions\AudioInvalidoException .cs" />
     <Compile Include="ApplicationExceptions\SeleccionZonasInvalidaException.cs" />
@@ -92,6 +94,10 @@
     <ProjectReference Include="..\DataTypeObjetc\DataTypeObject.csproj">
       <Project>{4FAD5DED-34A2-42F7-9513-54B4CD1F9AA6}</Project>
       <Name>DataTypeObject</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utils.Notifications\Utils.Notifications.csproj">
+      <Project>{a10bb2f4-e63f-40d5-a9b7-52bae04a6316}</Project>
+      <Name>Utils.Notifications</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

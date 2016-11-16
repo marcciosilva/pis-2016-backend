@@ -30,6 +30,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Ibt.Ortc.Api, Version=2.1.20.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Ibt.Ortc.Api.dll.2.1.20\lib\net40\Ibt.Ortc.Api.dll</HintPath>
       <Private>True</Private>
@@ -47,6 +55,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Web" />
@@ -63,6 +72,7 @@
     <Compile Include="INotifications.cs" />
     <Compile Include="NotificationsFirebase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utils\LogsManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
@@ -77,10 +87,6 @@
     <ProjectReference Include="..\DataTypeObjetc\DataTypeObject.csproj">
       <Project>{4fad5ded-34a2-42f7-9513-54b4cd1f9aa6}</Project>
       <Name>DataTypeObject</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Emsys.LogicLayer\Emsys.LogicLayer.csproj">
-      <Project>{EE8BC402-8FC4-4D4C-889A-210FC71DFC0A}</Project>
-      <Name>Emsys.LogicLayer</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,9 +1,9 @@
-﻿using DataTypeObject;
-using Emsys.LogicLayer;
-using System;
+﻿using System;
 using System.Net.Http;
 using System.Web;
 using System.Web.Http.Controllers;
+using DataTypeObject;
+using Emsys.LogicLayer;
 
 namespace Servicios.Filtros
 {
@@ -18,7 +18,7 @@ namespace Servicios.Filtros
             if (actionContext.Request.Method == HttpMethod.Post)
             {
                 var postData = actionContext.ActionArguments;
-                //// Do logging here.
+                //// ToDo logging here.
             }
 
             var actionName = actionContext.ActionDescriptor.ActionName;
@@ -35,8 +35,8 @@ namespace Servicios.Filtros
         /// <returns>Retorna el identificador del dispositivo.</returns>
         private string GetIp(HttpRequestMessage request)
         {
-            String ip;
-            if (!String.IsNullOrEmpty(HttpContext.Current.Request.ServerVariables["HTTP_CLIENT_IP"]))
+            string ip;
+            if (!string.IsNullOrEmpty(HttpContext.Current.Request.ServerVariables["HTTP_CLIENT_IP"]))
             {
                 ip = HttpContext.Current.Request.ServerVariables["HTTP_CLIENT_IP"];
             }

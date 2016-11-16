@@ -79,6 +79,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -98,7 +99,9 @@
   <ItemGroup>
     <Compile Include="ProcesoAsignacionRecursoDescripcion.cs" />
     <Compile Include="ProcesoImagenes.cs" />
-    <Compile Include="ProcesoAsignacionRecurso.cs" />
+    <Compile Include="ProcesoAsignacionRecurso.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="ProcesoGeoUbicacion.cs" />
     <Compile Include="ProcesoVideos.cs" />
     <Compile Include="ProcesoAudios.cs" />

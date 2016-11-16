@@ -7,13 +7,13 @@ namespace Emsys.DataAccesLayer.Core
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class AgregoCamposAlLog : IMigrationMetadata
+    public sealed partial class _Initial : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(AgregoCamposAlLog));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(_Initial));
         
         string IMigrationMetadata.Id
         {
-            get { return "201611020053057_AgregoCamposAlLog"; }
+            get { return "201611132108439__Initial"; }
         }
         
         string IMigrationMetadata.Source

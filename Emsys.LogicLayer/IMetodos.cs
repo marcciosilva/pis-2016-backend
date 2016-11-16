@@ -1,6 +1,6 @@
-﻿using DataTypeObject;
+﻿using System.Collections.Generic;
+using DataTypeObject;
 using Emsys.DataAccesLayer.Model;
-using System.Collections.Generic;
 
 namespace Emsys.LogicLayer
 {
@@ -11,11 +11,12 @@ namespace Emsys.LogicLayer
         /// </summary>
         /// <param name="userName">Nombre de usuario que se desea autenticar.</param>
         /// <param name="password">Contraseña no encriptada de usuario que se desea autenticar.</param>
+        /// <param name="token">Identificador unico del usuario.</param>
         /// <returns>Retorna la respuesta segun el documento de interfaz.</returns>
         DtoAutenticacion autenticarUsuario(string userName, string password, string token);
 
         /// <summary>
-        /// Obtiene el rol del usuario dado un token.
+        /// Obtiene los posibles roles del usuario dado un token.
         /// </summary>
         /// <param name="token">Identificador unico del usuario.</param>
         /// <returns>Retorna los roles del usuario segun el token.</returns>
@@ -76,38 +77,7 @@ namespace Emsys.LogicLayer
         /// <param name="detalles">Informacion adicional.</param>
         /// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
         void AgregarLogError(string token, string terminal, string modulo, string Entidad, int idEntidad, string accion, string detalles, int codigo);
-
-        /// <summary>
-        /// Metodo para agregar al log una nueva accion.
-        /// </summary>
-        /// <param name="token">Identificador unico del usuario.</param>
-        /// <param name="terminal">Identificacion de la terminal del usuario que realizo el resquest.</param>
-        /// <param name="modulo">Identificacion del modulo/proyecto que realizo la operacion de agregar un log.</param>
-        /// <param name="Entidad">Identificacion de la entidad que realiza la operacion de agregar un log.</param>
-        /// <param name="idEntidad">Idnetificador de la entidad que resulto afectada en la accion al agregar un log.</param>
-        /// <param name="accion">Nombre del metodo o funcion que ejecuto una accion y guardo un log.</param>
-        /// <param name="detalles">Informacion adicional.</param>
-        /// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
-        void AgregarLogNotification(string token, string terminal, string modulo, string Entidad,
-            int idEntidad, string accion, string detalles, int codigo,
-            string topic, string codigoNotificacion, string pkEvento, string firebaseResponse
-            , LogNotification logViejo = null);
-
-        /// <summary>
-        /// Metodo para agregar al log  de error.
-        /// </summary>
-        /// <param name="token">Identificador unico del usuario.</param>
-        /// <param name="terminal">Identificacion de la terminal del usuario que realizo el resquest.</param>
-        /// <param name="modulo">Identificacion del modulo/proyecto que realizo la operacion de agregar un log.</param>
-        /// <param name="Entidad">Identificacion de la entidad que realiza la operacion de agregar un log.</param>
-        /// <param name="idEntidad">Idnetificador de la entidad que resulto afectada en la accion al agregar un log.</param>
-        /// <param name="accion">Nombre del metodo o funcion que ejecuto una accion y guardo un log.</param>
-        /// <param name="detalles">Informacion adicional.</param>
-        /// <param name="codigo">Codigo unico definido en Mensajes que es unico para poder referenciar rapido el luagr donde se genero el log.</param>
-        LogNotification AgregarLogErrorNotification(string token, string terminal, string modulo, string Entidad,
-            int idEntidad, string accion, string detalles, int codigo,
-            string topic, string codigoNotificacion, string pkEvento, string firebaseResponse, LogNotification log = null);
-
+        
         /// <summary>
         /// Metodo que dado un evento y un identificador de usuario devuelve la informacion del evento.
         /// </summary>
@@ -117,13 +87,12 @@ namespace Emsys.LogicLayer
         DtoEvento verInfoEvento(string token, int idEvento);
 
         /// <summary>
-        /// Adjunto la geoubicacion a un usuario.
+        /// Adjunta una geo ubicacion a una extension.
         /// </summary>
         /// <param name="token">Identificador unico de usuario.</param>
-        /// <param name="ubicacion">Objeto de ubicacion.</param>
+        /// <param name="ubicacion">Informacion de la geo ubicacion.</param>
         /// <returns>Retorna su pudo realizar la persistencia de la  geoubicacion o no.</returns>
         bool adjuntarGeoUbicacion(string token, DtoGeoUbicacion ubicacion);
-
 
         /// <summary>
         /// Devuelve el nombre y datos de el archivo de imagen indicado.
@@ -148,14 +117,7 @@ namespace Emsys.LogicLayer
         /// <param name="idAdjunto">Id del video solicitada</param>
         /// <returns>DtoApplicationFile con los bytes y nombre del archivo</returns>
         DtoApplicationFile getVideoData(string token, int idAdjunto);
-
-        /// <summary>
-        /// Devuelve el nombre y datos de el thumbnail del archivo de video indicado.
-        /// </summary>
-        /// <param name="token">Token del usuario que solicita el video</param>
-        /// <param name="idAdjunto">Id del video solicitada</param>
-        /// <returns>DtoApplicationFile con los bytes y nombre del archivo</returns>
-        DtoApplicationFile getVideoThumbnail(string token, int idAdjunto);
+        
 
         /// <summary>
         /// Devuelve el nombre y datos de el archivo de audio indicado.
@@ -166,33 +128,27 @@ namespace Emsys.LogicLayer
         DtoApplicationFile getAudioData(string token, int idAdjunto);
 
         /// <summary>
-        /// Adjunta un archivo de imagen a una extension
+        /// Adjunta un archivo de imagen a una extension.
         /// </summary>
         /// <param name="token">Token del usuario</param>
-        /// <param name="imagenData">Bytes de la imagen</param>
-        /// <param name="extArchivo">Extension de la imagen (ej: ".jpg")</param>
-        /// <param name="idExtension">Extension a la cual se desea agregar la imagen</param>
-        /// <returns></returns>
+        /// <param name="imgN">Informacion de la imagen e identificador de la extension</param>
+        /// <returns>Exito o fracaso</returns>
         bool adjuntarImagen(string token, DtoApplicationFile imgN);
 
         /// <summary>
-        /// Adjunta un archivo de imagen a una extension
+        /// Adjunta un archivo de video a una extension,
         /// </summary>
         /// <param name="token">Token del usuario</param>
-        /// <param name="imagenData">Bytes de la imagen</param>
-        /// <param name="extArchivo">Extension de la imagen (ej: ".jpg")</param>
-        /// <param name="idExtension">Extension a la cual se desea agregar la imagen</param>
-        /// <returns></returns>
+        /// <param name="vidN">Informacion del video e identificador de la extension</param>
+        /// <returns>Exito o fracaso</returns>
         bool adjuntarVideo(string token, DtoApplicationFile vidN);
 
         /// <summary>
-        /// Adjunta un archivo de imagen a una extension
+        /// Adjunta un archivo de audio a una extension
         /// </summary>
         /// <param name="token">Token del usuario</param>
-        /// <param name="imagenData">Bytes de la imagen</param>
-        /// <param name="extArchivo">Extension de la imagen (ej: ".jpg")</param>
-        /// <param name="idExtension">Extension a la cual se desea agregar la imagen</param>
-        /// <returns></returns>
+        /// <param name="audN">Informacion del audio e identificador de la extension</param>
+        /// <returns>Exito o fracaso</returns>
         bool adjuntarAudio(string token, DtoApplicationFile audN);
 
         /// <summary>
@@ -203,12 +159,28 @@ namespace Emsys.LogicLayer
         bool keepMeAlive(string token);
 
         /// <summary>
-        /// Interfaz Actualizar descripcion implentado por la capa de servicios.
+        /// Permite a la aplicacion desconectar usuarios de firebase.
+        /// </summary>
+        /// <param name="token">Token de usuario.</param>
+        /// <param name="tokenFirebase">Token de firebase.</param>
+        /// <returns></returns>
+        bool SetRegistrationToken(string token, string tokenFirebase);
+
+        /// <summary>
+        /// Actualiza la descripcion de una extension por parte de un recurso.
         /// </summary>
         /// <param name="descParam">Contiene identificador de la extension y la descripcion que se quiere agregar.</param>
         /// <param name="token">token del usuario que desea actualizar descripcion</param>
-        /// <returns>Retorna la respuesta segun el documento de interfaz.</returns>
+        /// <returns>Si se agrego correctamente</returns>
         bool ActualizarDescripcionRecurso(DtoActualizarDescripcion descParam, string token);
+
+        /// <summary>
+        /// Permite a la aplicacion actualizar la descripcion de una extension por un recurso en modo offline.
+        /// </summary>
+        /// <param name="descParam">Informacion de la descripcion, y el usuario que la agrega</param>
+        /// <returns>Correcto o incorrecto</returns>
+        bool ActualizarDescripcionRecursoOffline(DtoActualizarDescripcionOffline descParam);
+
 
         /// <summary>
         /// Desconecta a los usuarios inactivos (que no han enviado keep alive) por mas de maxTime minutos.
@@ -221,13 +193,14 @@ namespace Emsys.LogicLayer
         /// </summary>
         /// <param name="token">Token del usuario recurso</param>
         /// <param name="idExtension">Id de la extension del evento que atiende</param>
-        /// <returns></returns>
+        /// <returns>Si se realizo correctamente.</returns>
         bool reportarHoraArribo(string token, int idExtension);
 
         /// <summary>
-        /// Devuelve la informacin de zonas, sectores, categorias y departamentos necesaria para crear un evento.
+        /// Devuelve la informacion de zonas, sectores, categorias y departamentos necesaria para crear un evento.
         /// </summary>
-        /// <returns></returns>
+        /// <param name="token">Token del usuario que crea el evento.</param>
+        /// <returns>Devuelve la informacin de zonas, sectores, categorias y departamentos necesaria para crear un evento.</returns>
         DtoInfoCreacionEvento getInfoCreacionEvento(string token);
 
         /// <summary>
@@ -243,7 +216,7 @@ namespace Emsys.LogicLayer
         /// </summary>
         /// <param name="token">Token del usuario</param>
         /// <param name="idExtension">Id de la extension a despachar</param>
-        /// <returns></returns>
+        /// <returns>Si se realizo correctamente.</returns>
         bool tomarExtension(string token, int idExtension);
 
         /// <summary>
@@ -251,7 +224,7 @@ namespace Emsys.LogicLayer
         /// </summary>
         /// <param name="token">Token del usuario</param>
         /// <param name="idExtension">Id de la extension a liberar</param>
-        /// <returns></returns>
+        /// <returns>Si se realizo correctamente.</returns>
         bool liberarExtension(string token, int idExtension);
 
         /// <summary>
@@ -268,8 +241,14 @@ namespace Emsys.LogicLayer
         /// <param name="token">Token del despachador</param>
         /// <param name="recursos">El dto cuenta con el id de la extension a gestionar</param> 
         /// <param>En la lista "recursosAsignados" se indica los recursos a agregar y en la lista "recursosNoAsignados" se listan los recursos a eliminar de la extension</param>
-        /// <returns>Si se realizo correctamente</returns>
+        /// <returns>Si se realizo correctamente.</returns>
         bool gestionarRecursos(string token, DtoRecursosExtension recursos);
+
+        /// <summary>
+        /// Devuelve una lista con las categorias existentes.
+        /// </summary>
+        /// <returns>Lista con los dto de las categorias</returns>
+        ICollection<DtoCategoria> getCategorias();
 
         /// <summary>
         /// Permite a un despachador actualizar la segunda categoria de una extension.
@@ -283,9 +262,9 @@ namespace Emsys.LogicLayer
         /// <summary>
         /// Permite a un despachador cerrar una extension de un evento enviado.
         /// </summary>
-        /// <param name="token">Token del despachador</param>
-        /// <param name="idExtension">Id de la extension a cerrar</param>
-        /// <returns>Resultado</returns>
+        /// <param name="token">Token del despachador.</param>
+        /// <param name="idExtension">Id de la extension a cerrar.</param>
+        /// <returns>Si se realizo correctamente.</returns>
         bool cerrarExtension(string token, int idExtension);
 
         /// <summary>
@@ -310,8 +289,7 @@ namespace Emsys.LogicLayer
         /// </summary>
         /// <param name="token">Token del despachador</param>
         /// <param name="descr">Dto con el id de la extension y la descripcion a agregar</param>
-        /// <returns>Resultado</returns>
+        /// <returns>Si se realizo correctamente.</returns>
         bool actualizarDescripcionDespachador(string token, DtoActualizarDescripcion descr);
-
     }
 }

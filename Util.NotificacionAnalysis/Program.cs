@@ -1,9 +1,6 @@
-﻿using Emsys.DataAccesLayer.Core;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Emsys.DataAccesLayer.Core;
 using Emsys.DataAccesLayer.Model;
 
 namespace Util.NotificacionAnalysis
@@ -62,15 +59,16 @@ namespace Util.NotificacionAnalysis
                 {
                     if (item.Codigo == 906)
                     {
-                        //cuento cuantas hay para atras.
-                        DateTime tiempoFin = item.TimeStamp;
+                        //cuento cuantas hay para atras.                        
                         int nivel = 0;
+                        DateTime tiempoFin = item.TimeStamp;
                         DateTime timepoInicio = ObtenerInicio(item, ref nivel);
                         var diferencia = (tiempoFin - timepoInicio).TotalMilliseconds;
                         if (diferencia > tiempoMaximoEsperaNotificacion)
                         {
                             tiempoMaximoEsperaNotificacion = diferencia;
                         }
+
                         if (diferencia < tiempoMinimoEsperaNotificacion)
                         {
                             tiempoMinimoEsperaNotificacion = diferencia;
@@ -79,11 +77,13 @@ namespace Util.NotificacionAnalysis
                         {
                             nivelRecursion = nivel;
                         }
+
                         tiempoPromedioEnvioNotificacion = (tiempoPromedioEnvioNotificacion + diferencia) / 2;
                         if (tiempoMenor > item.TimeStamp)
                         {
                             tiempoMenor = item.TimeStamp;
                         }
+
                         if (tiempoMayor < item.TimeStamp)
                         {
                             tiempoMayor = item.TimeStamp;
@@ -108,15 +108,17 @@ namespace Util.NotificacionAnalysis
                 {
                     Console.WriteLine("--->  " + item.FirstOrDefault().Topic + " - " + item.Count());
                 }
+
                 Console.WriteLine("Cantidad codigos de notificaciones " + cantidadCodigosNotificaciones + ".");
                 Console.WriteLine("Taza de notificaciones por codigo de notificacion: ");
                 foreach (var item in codigosNotificacionesEnviados)
                 {
                     Console.WriteLine("--->  " + item.FirstOrDefault().CodigoNotificacion + " - " + item.Count());
                 }
+
                 Console.WriteLine();
 
-                using (Model.AnalysisContextContainer dbDatos= new Model.AnalysisContextContainer())
+                using (Model.AnalysisContextContainer dbDatos = new Model.AnalysisContextContainer())
                 {
                     Model.ScreenShotDatos datos = new Model.ScreenShotDatos()
                     {
@@ -151,7 +153,6 @@ namespace Util.NotificacionAnalysis
                     nivelRecursion++;
                     var logAnterior = db.LogNotification.Find(item.LogNotificationPrevio.Id);
                     return ObtenerInicio(logAnterior, ref nivelRecursion);
-
                 }
             }
         }

@@ -1,20 +1,19 @@
 ﻿namespace SqlDependecyProject
 {
     using System;
+    using System.Threading;
+    using DataTypeObject;
+    using Emsys.DataAccesLayer.Core;
+    using Emsys.DataAccesLayer.Model;
+    using Emsys.LogicLayer;
+    using TableDependency.Enums;
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
-    using TableDependency.Enums;
-    using Emsys.DataAccesLayer.Model;
-    using Emsys.DataAccesLayer.Core;
-    using DataTypeObject;
-    using Emsys.LogicLayer;
-    using System.Threading;
+    using System.Web.Configuration;
 
     public class ProcesoVideos
     {
-        private static bool llamo = true;
-
-        private static string proceso = "ProcesoMonitoreoVideos";
+        private static string _proceso = "ProcesoMonitoreoVideos";
 
         private static SqlTableDependency<Video> _dependency;
 
@@ -27,19 +26,24 @@
         {
             try
             {
-                Console.WriteLine(proceso + "- Observo la BD:\n");
+                Console.WriteLine(_proceso + "- Observo la BD:\n");
                 Listener();
 
                 while (true)
                 {
-                    Thread.Sleep(10000);
+                    //esta logica lo que hacer es reinciar la conexion a la base de datos.
+                    int _milisegundosDuermo = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaReiniciarConexionBdObservers"]);
+                    Thread.Sleep(_milisegundosDuermo);
+                    _dependency.Stop();
+                    Listener();
                 }
             }
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoVideos", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un Video en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoVideos", "ProcesoMonitoreoVideos", 0, "_dependency_OnChanged", "Error al intentar capturar un Video en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseVideo);
+                _dependency.Stop();
+                ProcesoMonitoreoVideos();
             }
         }
 
@@ -51,7 +55,7 @@
             var mapper = new ModelToTableMapper<Video>();
             mapper.AddMapping(model => model.Id, "Id");
             _dependency = new SqlTableDependency<Video>(_connectionString, "Videos", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
+            _dependency.OnChanged += DependencyOnChanged;
             _dependency.OnError += _dependency_OnError;
             _dependency.Start();
         }
@@ -63,7 +67,8 @@
         /// <param name="e">Excepcion generada por el sistema de error.</param>
         private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
-            throw e.Error;
+            IMetodos dbAL = new Metodos();
+            dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoVideos", "ProcesoMonitoreoVideos", 0, "_dependency_OnChanged", "Error al intentar capturar un Video en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseeVideoDependencyOnError);
         }
 
         /// <summary>
@@ -71,7 +76,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="videoEnBD">Evento Video generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Video> videoEnBD)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Video> videoEnBD)
         {
             try
             {
@@ -83,15 +88,13 @@
                         // El caso no es util por que si se crea un evento no tiene asignados recursos probablemente.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoVideos - Accion: Borro, Pk del evento: " + videoEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, videoEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoVideos - Accion Insert, Pk del evento: " + videoEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, videoEnBD, GestorNotificaciones);
+                            AtenderEvento(DataNotificacionesCodigos.AltaVideo, videoEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
                             Console.WriteLine("ProcesoMonitoreoVideos - Accion update, Pk del evento: " + videoEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, videoEnBD, GestorNotificaciones);
                             break;
                     }
                 }
@@ -100,7 +103,6 @@
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys._dependency_OnChangedVideos", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
             }
         }
 
@@ -117,30 +119,29 @@
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLog("vacio", "servidor", "Emsys.ObserverDataBase", "Video", video.Entity.Id, "_dependency_OnChanged", "Se captura una modificacion de la base de datos para la tabla video. Se inicia la secuencia de envio de notificaciones.", MensajesParaFE.LogCapturarCambioEventoCod);
                 var videoDEBD = db.Videos.Find(video.Entity.Id);
-                if (videoDEBD != null)
+                if (videoDEBD != null) 
                 {
-                    if (videoDEBD.Evento!=null) {
-                        // Para los recursos asociados a la extension genero una notificacion.
-                        foreach (var item in videoDEBD.Evento.ExtensionesEvento)
-                        {
-                            foreach (var recurso in item.Recursos)
-                            {
-                                GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + recurso.Id);
-                            }
-
-                            // Para la zona asociada a la extensen le envia una notificacion.
-                            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
-                        }
-                    }
-                    else
+                    if (videoDEBD.ExtensionEvento != null)
                     {
-                        foreach (var recurso in videoDEBD.ExtensionEvento.Recursos)
+                        int idEvento = videoDEBD.ExtensionEvento.Evento.Id;
+                        int idExtension = videoDEBD.ExtensionEvento.Id;
+                        int idZona = videoDEBD.ExtensionEvento.Zona.Id;
+                        string nombreZona = videoDEBD.ExtensionEvento.Zona.Nombre;
+                        // Para cada extension del evento modificado.
+                        foreach (var item in videoDEBD.ExtensionEvento.Evento.ExtensionesEvento)
                         {
-                            GestorNotificaciones.SendMessage(cod, videoDEBD.ExtensionEvento.Id.ToString(), "recurso-" + videoDEBD.ExtensionEvento.Id);
+                            // Para cada recurso de la extension.
+                            foreach (var asig in item.AsignacionesRecursos)
+                            {
+                                // Si hay un usuario conectado con ese recurso.
+                                if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
+                                {
+                                    GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
+                                }
+                            }
+                            // Para la zona asociada a la extensen le envia una notificacion.
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
                         }
-
-                        // Para la zona asociada a la extensen le envia una notificacion.
-                        GestorNotificaciones.SendMessage(cod, videoDEBD.ExtensionEvento.Id.ToString(), "zona-" + videoDEBD.ExtensionEvento.Zona.Id);
                     }
                 }
             }

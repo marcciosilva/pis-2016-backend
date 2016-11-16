@@ -1,20 +1,19 @@
 ﻿namespace SqlDependecyProject
 {
     using System;
+    using System.Threading;
+    using DataTypeObject;
+    using Emsys.DataAccesLayer.Core;
+    using Emsys.DataAccesLayer.Model;
+    using Emsys.LogicLayer;
+    using TableDependency.Enums;
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
-    using TableDependency.Enums;
-    using Emsys.DataAccesLayer.Model;
-    using Emsys.DataAccesLayer.Core;
-    using DataTypeObject;
-    using Emsys.LogicLayer;
-    using System.Threading;
+    using System.Web.Configuration;
 
     public class ProcesoAudios
     {
-        private static bool llamo = true;
-
-        private static string proceso = "ProcesoMonitoreoAudios";
+        private static string _proceso = "ProcesoMonitoreoAudios";
 
         private static SqlTableDependency<Audio> _dependency;
 
@@ -27,19 +26,24 @@
         {
             try
             {
-                Console.WriteLine(proceso + "- Observo la BD:\n");
+                Console.WriteLine(_proceso + "- Observo la BD:\n");
                 Listener();
 
                 while (true)
                 {
-                    Thread.Sleep(10000);
+                    //esta logica lo que hacer es reinciar la conexion a la base de datos.
+                    int _milisegundosDuermo = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaReiniciarConexionBdObservers"]);
+                    Thread.Sleep(_milisegundosDuermo);
+                    _dependency.Stop();
+                    Listener();
                 }
             }
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoAudios", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un Audios en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoAudios", "ProcesoMonitoreoAudios", 0, "_dependency_OnChanged", "Error al intentar capturar un Audios en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseAudio);
+                _dependency.Stop();
+                ProcesoMonitoreoAudios();
             }
         }
 
@@ -51,8 +55,8 @@
             var mapper = new ModelToTableMapper<Audio>();
             mapper.AddMapping(model => model.Id, "Id");
             _dependency = new SqlTableDependency<Audio>(_connectionString, "Audios", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
-            _dependency.OnError += _dependency_OnError;
+            _dependency.OnChanged += DependencyOnChanged;
+            _dependency.OnError += DependencyOnError;
             _dependency.Start();
         }
 
@@ -61,9 +65,10 @@
         /// </summary>
         /// <param name="sender">No se utiliza.</param>
         /// <param name="e">Excepcion generada por el sistema de error.</param>
-        private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
+        private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
-            throw e.Error;
+            IMetodos dbAL = new Metodos();
+            dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoAudios", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un Audios en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseAudionDependencyOnError);
         }
 
         /// <summary>
@@ -71,7 +76,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="AudioEnBD">Audios generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Audio> AudioEnBD)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Audio> AudioEnBD)
         {
             try
             {
@@ -80,18 +85,16 @@
                     Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
                     switch (AudioEnBD.ChangeType)
                     {
-                        // el caso no es util por que si se crea un Audios no tiene asignados recursos probablemte
+                        // El caso no es util por que si se crea un Audios no tiene asignados recursos probablemte.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoAudios - Accion: Borro, Pk del Audios: " + AudioEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AudioEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoAudios - Accion Insert, Pk del Audios: " + AudioEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AudioEnBD, GestorNotificaciones);
+                            AtenderEvento(DataNotificacionesCodigos.AltaAudio, AudioEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
                             Console.WriteLine("ProcesoMonitoreoAudios - Accion update, Pk del Audios: " + AudioEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, AudioEnBD, GestorNotificaciones);
                             break;
                     }
                 }
@@ -99,8 +102,7 @@
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys._dependency_OnChangedVideos", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys._dependency_OnChangedAudios", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
             }
         }
 
@@ -119,29 +121,26 @@
                 var audioEnDb = db.Audios.Find(audio.Entity.Id);
                 if (audioEnDb != null)
                 {
-                    if (audioEnDb.Evento != null)
+                    if (audioEnDb.ExtensionEvento != null)
                     {
-                        // Para los recursos asociados a la extension genero una notificacion.
-                        foreach (var item in audioEnDb.Evento.ExtensionesEvento)
+                        int idEvento = audioEnDb.ExtensionEvento.Evento.Id;
+                        int idExtension = audioEnDb.ExtensionEvento.Id;
+                        int idZona = audioEnDb.ExtensionEvento.Zona.Id;
+                        string nombreZona = audioEnDb.ExtensionEvento.Zona.Nombre;
+                        // Para cada extension del evento modificado.
+                        foreach (var item in audioEnDb.ExtensionEvento.Evento.ExtensionesEvento)
                         {
-                            foreach (var recurso in item.Recursos)
+                            // Para cada recurso de la extension.
+                            foreach (var asig in item.AsignacionesRecursos)
                             {
-                                GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + item.Id);
+                                if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
+                                {
+                                    GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
+                                }
                             }
-
                             // Para la zona asociada a la extensen le envia una notificacion.
-                            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
                         }
-                    }
-                    else
-                    {
-                        foreach (var recurso in audioEnDb.ExtensionEvento.Recursos)
-                        {
-                            GestorNotificaciones.SendMessage(cod, audioEnDb.ExtensionEvento.Id.ToString(), "recurso-" + audioEnDb.ExtensionEvento.Id);
-                        }
-
-                        // Para la zona asociada a la extensen le envia una notificacion.
-                        GestorNotificaciones.SendMessage(cod, audioEnDb.ExtensionEvento.Id.ToString(), "zona-" + audioEnDb.ExtensionEvento.Zona.Id);
                     }
                 }
             }

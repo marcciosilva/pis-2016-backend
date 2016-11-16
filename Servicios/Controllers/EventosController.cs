@@ -1,14 +1,10 @@
-﻿using DataTypeObject;
+﻿using System;
+using System.Collections.Generic;
+using System.Web.Http;
+using DataTypeObject;
 using Emsys.LogicLayer;
 using Emsys.LogicLayer.ApplicationExceptions;
-using Newtonsoft.Json;
 using Servicios.Filtros;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
 
 namespace Servicios.Controllers
 {
@@ -27,12 +23,12 @@ namespace Servicios.Controllers
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
             try
-            {                
+            {
                 if (token == null)
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
-                                
+
                 ICollection<DtoEvento> lista = dbAL.listarEventos(token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, lista);
             }
@@ -42,7 +38,7 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorListarEventosCod);
+                dbAL.AgregarLogError(token, string.Empty, "Emsys.ServiceLayer", "EventosController", 0, "ListarEventos", "Hubo un error al intentar listar eventos de un usuario, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorListarEventosCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorListarEventos));
             }
         }
@@ -56,7 +52,7 @@ namespace Servicios.Controllers
         [HttpGet]
         [LogFilter]
         [Route("eventos/obtener")]
-        public DtoRespuesta getEvento(int idEvento)
+        public DtoRespuesta GetEvento(int idEvento)
         {
             IMetodos dbAL = new Metodos();
             string token = ObtenerToken.GetToken(Request);
@@ -80,11 +76,10 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "getEvento", "Hubo un error al intentar obtener un evento, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorObtenerEventoCod);
+                dbAL.AgregarLogError(token, string.Empty, "Emsys.ServiceLayer", "EventosController", 0, "getEvento", "Hubo un error al intentar obtener un evento, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorObtenerEventoCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorObtenerEvento));
             }
         }
-
 
         /// <summary>
         /// Servicio para actualizar la descripcion de un recurso.
@@ -105,10 +100,12 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 if (dbAL.ActualizarDescripcionRecurso(descParam, token))
                 {
                     return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
                 }
+
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
             catch (TokenInvalidoException)
@@ -121,7 +118,47 @@ namespace Servicios.Controllers
             }
             catch (Exception e)
             {
-                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "ActualizarDescripcionRecurso", "Hubo un error al intentar actualizar la descripcion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorActualizarDescripcionCod);
+                dbAL.AgregarLogError(token, string.Empty, "Emsys.ServiceLayer", "EventosController", 0, "ActualizarDescripcionRecurso", "Hubo un error al intentar actualizar la descripcion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorActualizarDescripcionCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorActualizarDescripcion));
+            }
+        }
+
+
+        /// <summary>
+        /// Servicio para actualizar la descripcion de un recurso.
+        /// </summary>
+        /// <param name="descParam">Entension y descripcion a agregar.</param>
+        /// <returns>Respuesta definida en el documento de interfaz.</returns>
+        [HttpPost]
+        [Route("eventos/actualizardescripcionrecursooffline")]
+        [LogFilter]
+        public DtoRespuesta ActualizarDescripcionRecursoOffline([FromBody] DtoActualizarDescripcionOffline descParam)
+        {
+            IMetodos dbAL = new Metodos();
+            try
+            {
+                if (dbAL.ActualizarDescripcionRecursoOffline(descParam))
+                {
+                    return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
+                }
+
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+            }
+            catch (CredencialesInvalidasException)
+            {
+                return new DtoRespuesta(MensajesParaFE.UsuarioContraseñaInvalidosCod, new Mensaje(MensajesParaFE.UsuarioContraseñaInvalidos));
+            }
+            catch (ExtensionInvalidaException)
+            {
+                return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+            }
+            catch (RecursoInvalidoException)
+            {
+                return new DtoRespuesta(MensajesParaFE.RecursoInvalidoCod, new Mensaje(MensajesParaFE.RecursoInvalido));
+            }
+            catch (Exception e)
+            {
+                dbAL.AgregarLogError(descParam.userData.username, string.Empty, "Emsys.ServiceLayer", "EventosController", 0, "ActualizarDescripcionRecursoOffline", "Hubo un error al intentar actualizar la descripcion, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorActualizarDescripcionOfflineCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorActualizarDescripcion));
             }
         }
@@ -145,11 +182,17 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 if (dbAL.reportarHoraArribo(token, idExtension))
                 {
                     return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
                 }
+
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
+            }
+            catch (ArriboPrevioException)
+            {
+                return new DtoRespuesta(MensajesParaFE.ArriboPrevioCod, new Mensaje(MensajesParaFE.ArriboPrevio));
             }
             catch (ExtensionInvalidaException)
             {
@@ -170,7 +213,7 @@ namespace Servicios.Controllers
         /// Servicio para obtener informacion necesaria para crear un evento.
         /// </summary>
         /// <returns>Lista de zonas y sectores, categorias y departamentos</returns>
-        [CustomAuthorizeAttribute("infoCreacionEvento")]
+        [CustomAuthorizeAttribute("crearEvento")]
         [HttpGet]
         [Route("eventos/infocreacionevento")]
         [LogFilter]
@@ -184,6 +227,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 var info = dbAL.getInfoCreacionEvento(token);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, info);
             }
@@ -217,10 +261,12 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 if (dbAL.crearEvento(token, evento))
                 {
                     return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
                 }
+
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorCrearEvento));
             }
             catch (SeleccionZonasInvalidaException)
@@ -231,7 +277,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ArgumentoInvalidoException e)
+            catch (ArgumentoInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.ArgumentoInvalidoCod, new Mensaje(MensajesParaFE.ArgumentoInvalido));
             }
@@ -242,16 +288,15 @@ namespace Servicios.Controllers
             }
         }
 
-
         /// <summary>
         /// Servicio para despachar una extension.
         /// </summary>
         /// <param name="idExtension">Extension a despachar</param>
         /// <returns>Dto indicando si se realizo con exito</returns>
-        [CustomAuthorizeAttribute("despacharExtension")]        
+        [CustomAuthorizeAttribute("despacharExtension")]
         [HttpPost]
         [Route("eventos/tomarextension")]
-        [LogFilter]                
+        [LogFilter]
         public DtoRespuesta TomarExtension(int idExtension)
         {
             IMetodos dbAL = new Metodos();
@@ -262,6 +307,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 dbAL.tomarExtension(token, idExtension);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
@@ -269,11 +315,11 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (UsuarioNoAutorizadoException e)
+            catch (UsuarioNoAutorizadoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutorizadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutorizado));
             }
@@ -303,17 +349,19 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 if (dbAL.liberarExtension(token, idExtension))
                 {
                     return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
                 }
+
                 return new DtoRespuesta(MensajesParaFE.ErrorLiberarExtensionCod, new Mensaje(MensajesParaFE.ErrorLiberarExtension));
             }
             catch (TokenInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -324,7 +372,6 @@ namespace Servicios.Controllers
             }
         }
 
-        
         /// <summary>
         /// Servicio para obtener los recursos usados y disponibles para una extension.
         /// </summary>
@@ -344,6 +391,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 var resp = dbAL.getRecursosExtension(token, idExtension);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, resp);
             }
@@ -351,7 +399,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -381,6 +429,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 dbAL.gestionarRecursos(token, recursos);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
@@ -388,11 +437,11 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (ArgumentoInvalidoException e)
+            catch (ArgumentoInvalidoException)
             {
                 return new DtoRespuesta(MensajesParaFE.ArgumentoInvalidoCod, new Mensaje(MensajesParaFE.ArgumentoInvalido));
             }
@@ -400,6 +449,36 @@ namespace Servicios.Controllers
             {
                 dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "GestionarRecursos", "Hubo un error al intentar gestionar recursos de una extension, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorGestionarRecursosCod);
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorGestionarRecursos));
+            }
+        }
+
+
+        /// <summary>
+        /// Servicio para obtener informacion necesaria para crear un evento.
+        /// </summary>
+        /// <returns>Lista de zonas y sectores, categorias y departamentos</returns>
+        [CustomAuthorizeAttribute("actualizarSegundaCategoria")]
+        [HttpGet]
+        [Route("eventos/getcategorias")]
+        [LogFilter]
+        public DtoRespuesta GetCategorias()
+        {
+            IMetodos dbAL = new Metodos();
+            string token = ObtenerToken.GetToken(Request);
+            try
+            {
+                if (token == null)
+                {
+                    return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
+                }
+
+                var info = dbAL.getCategorias();
+                return new DtoRespuesta(MensajesParaFE.CorrectoCod, info);
+            }
+            catch (Exception e)
+            {
+                dbAL.AgregarLogError(token, "", "Emsys.ServiceLayer", "EventosController", 0, "GetInfoCreacionEvento", "Hubo un error al intentar obtener la informacion para crear un evento, se adjunta excepcion: " + e.Message, MensajesParaFE.ErrorInfoCreacionEventoCod);
+                return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorInfoCreacionEvento));
             }
         }
 
@@ -423,9 +502,10 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 dbAL.actualizarSegundaCategoria(token, idExtension, idCategoria);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
-            }            
+            }
             catch (CategoriaInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.CategoriaInvalidaCod, new Mensaje(MensajesParaFE.CategoriaInvalida));
@@ -434,7 +514,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -464,6 +544,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 var zonas = dbAL.getZonasLibresEvento(token, idExtension);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, zonas);
             }
@@ -471,7 +552,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -502,6 +583,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 dbAL.abrirExtension(token, idExtension, idZona);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
@@ -509,11 +591,11 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (ZonaInvalidaException e)
+            catch (ZonaInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ZonaInvalidaCod, new Mensaje(MensajesParaFE.ZonaInvalida));
             }
@@ -523,7 +605,6 @@ namespace Servicios.Controllers
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorAbrirExtension));
             }
         }
-
 
         /// <summary>
         /// Servicio para cerrar una extension de un evento.
@@ -544,6 +625,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 dbAL.cerrarExtension(token, idExtension);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
@@ -551,11 +633,11 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
-            catch (EventoNoEnviadoException e)
+            catch (EventoNoEnviadoException)
             {
                 return new DtoRespuesta(MensajesParaFE.EventoNoEnviadoCod, new Mensaje(MensajesParaFE.EventoNoEnviado));
             }
@@ -585,6 +667,7 @@ namespace Servicios.Controllers
                 {
                     return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
                 }
+
                 dbAL.actualizarDescripcionDespachador(token, descParam);
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, new Mensaje(MensajesParaFE.Correcto));
             }
@@ -592,7 +675,7 @@ namespace Servicios.Controllers
             {
                 return new DtoRespuesta(MensajesParaFE.UsuarioNoAutenticadoCod, new Mensaje(MensajesParaFE.UsuarioNoAutenticado));
             }
-            catch (ExtensionInvalidaException e)
+            catch (ExtensionInvalidaException)
             {
                 return new DtoRespuesta(MensajesParaFE.ExtensionInvalidaCod, new Mensaje(MensajesParaFE.ExtensionInvalida));
             }
@@ -602,7 +685,5 @@ namespace Servicios.Controllers
                 return new DtoRespuesta(MensajesParaFE.ErrorCod, new Mensaje(MensajesParaFE.ErrorActualizarDescripcionDespachador));
             }
         }
-
-
     }
 }

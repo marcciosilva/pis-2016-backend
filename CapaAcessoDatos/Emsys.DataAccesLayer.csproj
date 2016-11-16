@@ -108,6 +108,7 @@
     </Reference>
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Web.Cors, Version=5.2.3.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNet.Cors.5.2.3\lib\net45\System.Web.Cors.dll</HintPath>
       <Private>True</Private>
@@ -138,13 +139,9 @@
   <ItemGroup>
     <Compile Include="Core\Configuration.cs" />
     <Compile Include="Core\EmsysContext.cs" />
-    <Compile Include="Migrations\201611012349114_Inicio.cs" />
-    <Compile Include="Migrations\201611012349114_Inicio.Designer.cs">
-      <DependentUpon>201611012349114_Inicio.cs</DependentUpon>
-    </Compile>
-    <Compile Include="Migrations\201611020053057_AgregoCamposAlLog.cs" />
-    <Compile Include="Migrations\201611020053057_AgregoCamposAlLog.Designer.cs">
-      <DependentUpon>201611020053057_AgregoCamposAlLog.cs</DependentUpon>
+    <Compile Include="Migrations\201611132108439__Initial.cs" />
+    <Compile Include="Migrations\201611132108439__Initial.Designer.cs">
+      <DependentUpon>201611132108439__Initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Model\ApplicationFile.cs" />
     <Compile Include="Model\AsignacionRecursoDescripcion.cs" />
@@ -186,11 +183,8 @@
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201611012349114_Inicio.resx">
-      <DependentUpon>201611012349114_Inicio.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Migrations\201611020053057_AgregoCamposAlLog.resx">
-      <DependentUpon>201611020053057_AgregoCamposAlLog.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201611132108439__Initial.resx">
+      <DependentUpon>201611132108439__Initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

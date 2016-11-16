@@ -1,9 +1,9 @@
-﻿using DataTypeObject;
-using Emsys.LogicLayer;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using DataTypeObject;
+using Emsys.LogicLayer;
 
 namespace Servicios
 {
@@ -25,7 +25,6 @@ namespace Servicios
                     token = headerValues.FirstOrDefault();
                     return token;
                 }
-
                 return null;
             }
             catch (Exception e)

@@ -1,18 +1,19 @@
 ﻿namespace SqlDependecyProject
 {
     using System;
+    using System.Threading;
+    using DataTypeObject;
+    using Emsys.DataAccesLayer.Core;
+    using Emsys.DataAccesLayer.Model;
+    using Emsys.LogicLayer;
+    using TableDependency.Enums;
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
-    using TableDependency.Enums;
-    using Emsys.DataAccesLayer.Model;
-    using Emsys.DataAccesLayer.Core;
-    using DataTypeObject;
-    using Emsys.LogicLayer;
-    using System.Threading;
+    using System.Web.Configuration;
 
     public class ProcesoGeoUbicacion
     {
-        private static string proceso = "ProcesoMonitoreoGeoUbicacion";
+        private static string _proceso = "ProcesoMonitoreoGeoUbicacion";
 
         private static SqlTableDependency<GeoUbicacion> _dependency;
 
@@ -21,23 +22,28 @@
         /// <summary>
         /// Funcion que engloba el proceso de atender Videos de la BD para extensiones.
         /// </summary>
-        public static void ProcesoMonitoreoVideos()
+        public static void ProcesoMonitoreoGeoUbicaciones()
         {
             try
             {
-                Console.WriteLine(proceso + "- Observo la BD:\n");
+                Console.WriteLine(_proceso + "- Observo la BD:\n");
                 Listener();
 
                 while (true)
                 {
-                    Thread.Sleep(10000);
+                    //esta logica lo que hacer es reinciar la conexion a la base de datos.
+                    int _milisegundosDuermo = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaReiniciarConexionBdObservers"]);
+                    Thread.Sleep(_milisegundosDuermo);
+                    _dependency.Stop();
+                    Listener();
                 }
             }
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoGeoUbicacion", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar una GeoUbicacion en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoGeoUbicacion", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar una GeoUbicacion en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseGeoUbicaciones);
+                _dependency.Stop();
+                ProcesoMonitoreoGeoUbicaciones();
             }
         }
 
@@ -49,8 +55,8 @@
             var mapper = new ModelToTableMapper<GeoUbicacion>();
             mapper.AddMapping(model => model.Id, "Id");
             _dependency = new SqlTableDependency<GeoUbicacion>(_connectionString, "GeoUbicaciones", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
-            _dependency.OnError += _dependency_OnError;
+            _dependency.OnChanged += DependencyOnChanged;
+            _dependency.OnError += DependencyOnError;
             _dependency.Start();
         }
 
@@ -59,9 +65,10 @@
         /// </summary>
         /// <param name="sender">No se utiliza.</param>
         /// <param name="e">Excepcion generada por el sistema de error.</param>
-        private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
+        private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
-            throw e.Error;
+            IMetodos dbAL = new Metodos();
+            dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoGeoUbicacion", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar una GeoUbicacion en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseeGeoUbicacionesDependencyOnError);
         }
 
         /// <summary>
@@ -69,7 +76,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="geoubicacionesEnBD">Evento Video generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<GeoUbicacion> geoubicacionesEnBD)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<GeoUbicacion> geoubicacionesEnBD)
         {
             try
             {
@@ -81,15 +88,13 @@
                         // El caso no es util por que si se crea un evento no tiene asignados recursos probablemente.
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoVideos - Accion: Borro, Pk del evento: " + geoubicacionesEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, geoubicacionesEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoVideos - Accion Insert, Pk del evento: " + geoubicacionesEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, geoubicacionesEnBD, GestorNotificaciones);
+                            AtenderEvento(DataNotificacionesCodigos.AltaGeoubicacion, geoubicacionesEnBD, GestorNotificaciones);
                             break;
                         case ChangeType.Update:
                             Console.WriteLine("ProcesoMonitoreoVideos - Accion update, Pk del evento: " + geoubicacionesEnBD.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, geoubicacionesEnBD, GestorNotificaciones);
                             break;
                     }
                 }
@@ -98,7 +103,6 @@
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys._dependency_OnChangedGeoUbicacion", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
             }
         }
 
@@ -117,29 +121,27 @@
                 var GeoUbicacionDEBD = db.GeoUbicaciones.Find(GeoUbicacionEvento.Entity.Id);
                 if (GeoUbicacionDEBD != null)
                 {
-                    //if (GeoUbicacionDEBD.Evento!=null) {
-                    //    // Para los recursos asociados a la extension genero una notificacion.
-                    //    foreach (var item in GeoUbicacionDEBD.Evento.ExtensionesEvento)
-                    //    {
-                    //        foreach (var recurso in item.Recursos)
-                    //        {
-                    //            GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "recurso-" + recurso.Id);
-                    //        }
-
-                    //        // Para la zona asociada a la extensen le envia una notificacion.
-                    //        GestorNotificaciones.SendMessage(cod, item.Id.ToString(), "zona-" + item.Zona.Id);
-                    //    }
-                    //}
-                    //else
-                    //{
-                    //    foreach (var recurso in GeoUbicacionDEBD.ExtensionEvento.Recursos)
-                    //    {
-                    //        GestorNotificaciones.SendMessage(cod, GeoUbicacionDEBD.ExtensionEvento.Id.ToString(), "recurso-" + GeoUbicacionDEBD.ExtensionEvento.Id);
-                    //    }
-
-                    //    // Para la zona asociada a la extensen le envia una notificacion.
-                    //    GestorNotificaciones.SendMessage(cod, GeoUbicacionDEBD.ExtensionEvento.Id.ToString(), "zona-" + GeoUbicacionDEBD.ExtensionEvento.Zona.Id);
-                    //}
+                    if (GeoUbicacionDEBD.ExtensionEvento != null)
+                    {
+                        int idEvento = GeoUbicacionDEBD.ExtensionEvento.Evento.Id;
+                        int idExtension = GeoUbicacionDEBD.ExtensionEvento.Id;
+                        int idZona = GeoUbicacionDEBD.ExtensionEvento.Zona.Id;
+                        string nombreZona = GeoUbicacionDEBD.ExtensionEvento.Zona.Nombre;
+                        // Para cada extension del evento modificado.
+                        foreach (var item in GeoUbicacionDEBD.ExtensionEvento.Evento.ExtensionesEvento)
+                        {
+                            // Para cada recurso de la extension.
+                            foreach (var asig in item.AsignacionesRecursos)
+                            {
+                                if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
+                                {
+                                    GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
+                                }
+                            }
+                            // Para la zona asociada a la extension le envia una notificacion.
+                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
+                        }
+                    }
                 }
             }
         }

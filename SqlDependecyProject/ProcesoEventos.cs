@@ -1,24 +1,20 @@
 ﻿namespace SqlDependecyProject
 {
     using System;
+    using System.Threading;
+    using DataTypeObject;
+    using Emsys.DataAccesLayer.Core;
+    using Emsys.DataAccesLayer.Model;
+    using Emsys.LogicLayer;
+    using TableDependency.Enums;
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
-    using TableDependency.Enums;
-    using Emsys.DataAccesLayer.Model;
-    using Emsys.DataAccesLayer.Core;
-    using DataTypeObject;
-    using Emsys.LogicLayer;
-    using System.Threading;
+    using System.Web.Configuration;
 
     public class ProcesoEventos
     {
-        private enum TablaMonitorar
-        {
-            Eventos,
-            Extensiones
-        }
-
-        private static bool llamo = true;
+        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
+        private static SqlTableDependency<Evento> _dependency;
 
         /// <summary>
         /// Funcion que engloba el proceso de atender eventos de la BD para Eventos.
@@ -31,14 +27,19 @@
                 Listener();
                 while (true)
                 {
-                    Thread.Sleep(10000);
+                    //esta logica lo que hacer es reinciar la conexion a la base de datos.
+                    int _milisegundosDuermo = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaReiniciarConexionBdObservers"]);
+                    Thread.Sleep(_milisegundosDuermo);
+                    _dependency.Stop();
+                    Listener();
                 }
             }
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
-                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase.ProcesoMonitoreoEventos", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
+                dbAL.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase.ProcesoMonitoreoEventos", "ProcesoMonitoreoEventos", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseEvento);
+                _dependency.Stop();
+                ProcesoMonitoreoEventos();
             }
         }
 
@@ -50,24 +51,22 @@
             var mapper = new ModelToTableMapper<Evento>();
             mapper.AddMapping(model => model.NombreInformante, "NombreInformante");
             _dependency = new SqlTableDependency<Evento>(_connectionString, "Eventos", mapper);
-            _dependency.OnChanged += _dependency_OnChanged;
-            _dependency.OnError += _dependency_OnError;
+            _dependency.OnChanged += DependencyOnChanged;
+            _dependency.OnError += DependencyOnError;
             _dependency.Start();
         }
 
-        // private static IList<Model.Evento> _stocks;
-        private static readonly string _connectionString = System.Configuration.ConfigurationManager.ConnectionStrings["DefaultConnection"].ConnectionString;
-        // "data source=DESKTOP-T27K22L\\SQLExpressLocal;initial catalog=Prototipo1;integrated security=True";
-        private static SqlTableDependency<Evento> _dependency;
+        
 
         /// <summary>
         /// Metodo que se dispara cuando ocurre un error al detectar los cambios en la base de datos.
         /// </summary>
         /// <param name="sender">No se utiliza.</param>
         /// <param name="e">Excepcion generada por el sistema de error.</param>
-        private static void _dependency_OnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
+        private static void DependencyOnError(object sender, TableDependency.EventArgs.ErrorEventArgs e)
         {
-            throw e.Error;
+            IMetodos dbAL = new Metodos();
+            dbAL.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase.ProcesoMonitoreoEventos", "ProcesoMonitoreoEventos", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseEventoDependencyOnError);
         }
 
         /// <summary>
@@ -75,7 +74,7 @@
         /// </summary>
         /// <param name="sender">no se usa</param>
         /// <param name="evento">Evento generado desde la bd.</param>
-        private static void _dependency_OnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Evento> evento)
+        private static void DependencyOnChanged(object sender, TableDependency.EventArgs.RecordChangedEventArgs<Evento> evento)
         {
             try
             {
@@ -84,10 +83,8 @@
                     Utils.Notifications.INotifications GestorNotificaciones = Utils.Notifications.FactoryNotifications.GetInstance();
                     switch (evento.ChangeType)
                     {
-                        // el caso no es util por que si se crea un evento no tiene asignados recursos probablemente
                         case ChangeType.Delete:
                             Console.WriteLine("ProcesoMonitoreoEventos - Accion: Borro, Pk del evento: " + evento.Entity.NombreInformante);
-                            AtenderEvento(DataNotificacionesCodigos.CierreEvento, evento, GestorNotificaciones);
                             break;
                         case ChangeType.Insert:
                             Console.WriteLine("ProcesoMonitoreoEventos - Accion Insert, Pk del evento: " + evento.Entity.Id);
@@ -95,7 +92,6 @@
                             break;
                         case ChangeType.Update:
                             Console.WriteLine("ProcesoMonitoreoEventos - Accion update, Pk del evento: " + evento.Entity.Id);
-                            AtenderEvento(DataNotificacionesCodigos.ModificacionEvento, evento, GestorNotificaciones);
                             break;
                     }
                 }
@@ -104,7 +100,6 @@
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase.ProcesoMonitoreoEventos", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogCapturarCambioEventoCod);
-                throw e;
             }
         }
 
@@ -123,16 +118,23 @@
                 var eventoBD = db.Evento.Find(evento.Entity.Id);
                 if (eventoBD != null)
                 {
+                    int idEvento = eventoBD.Id;                    
+                    // Para cada extension del evento modificado.
                     foreach (var extension in eventoBD.ExtensionesEvento)
                     {
-                        // Para cada recurso de las extensiones del evento genero una notificacion.
-                        foreach (var recurso in extension.Recursos)
+                        int idExtension = extension.Id;
+                        int idZona = extension.Zona.Id;
+                        string nombreZona = extension.Zona.Nombre;
+                        // Para cada recurso de la extension.
+                        foreach (var asig in extension.AsignacionesRecursos)
                         {
-                            GestorNotificaciones.SendMessage(cod, evento.Entity.Id.ToString(), "recurso-" + recurso.Id.ToString());
+                            if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
+                            {
+                                GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id.ToString());
+                            }
                         }
-
                         // Para las zonas de las extensiones envio una notificacion.
-                        GestorNotificaciones.SendMessage(cod, evento.Entity.Id.ToString(), "zona-" + extension.Zona.Id);
+                        GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + extension.Zona.Id);
                     }
                 }
             }

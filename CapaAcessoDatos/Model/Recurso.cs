@@ -8,6 +8,7 @@
     {
         // Si no ha sido tomado por ningun usuario.
         Disponible,
+
         // Si ha sido tomado por ningun usuario.
         NoDisponible
     }
@@ -16,6 +17,7 @@
     {
         // Si es posible asignarlo a un evento.
         Libre,
+
         // Si ha sido asignado al maximo de eventos posible.
         Operativo
     }
@@ -35,10 +37,10 @@
 
         [Required]
         public EstadoAsignacionRecurso EstadoAsignacion { get; set; }
-
-        public virtual ICollection<ExtensionEvento> ExtensionesEventos { get; set; }
-
+        
         public virtual ICollection<GrupoRecurso> GruposRecursos { get; set; }
+
+        public virtual ICollection<AsignacionRecurso> AsignacionesRecurso { get; set; }
 
         public virtual Usuario Usuario { get; set; }
     }
