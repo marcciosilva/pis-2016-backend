@@ -44,7 +44,9 @@
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoGeoUbicacion", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar una GeoUbicacion en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseGeoUbicaciones);
                 _dependency.Stop();
-                ProcesoMonitoreoGeoUbicaciones();
+                Thread UserAdminThread = new Thread(new ThreadStart(ProcesoMonitoreoGeoUbicaciones));
+                UserAdminThread.IsBackground = true;
+                UserAdminThread.Start();
             }
         }
 

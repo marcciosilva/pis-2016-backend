@@ -44,7 +44,9 @@
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoAudios", "ProcesoMonitoreoAudios", 0, "_dependency_OnChanged", "Error al intentar capturar un Audios en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseAudio);
                 _dependency.Stop();
-                ProcesoMonitoreoAudios();
+                Thread UserAdminThread = new Thread(new ThreadStart(ProcesoMonitoreoAudios));
+                UserAdminThread.IsBackground = true;
+                UserAdminThread.Start();
             }
         }
 
