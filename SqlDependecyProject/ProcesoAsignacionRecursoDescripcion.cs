@@ -10,6 +10,7 @@
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
     using System.Collections.Generic;
+    using System.Web.Configuration;
 
     public class ProcesoAsignacionRecursoDescripcion
     {
