@@ -15,13 +15,15 @@ namespace Emsys.LogicLayer
             var maxTime = Convert.ToInt32(WebConfigurationManager.AppSettings["maxTime"]);
             // Tiempo cada el cual el servidor checkea por usuarios inactivos (cada "refreshTime" minutos).
             var refreshTime = Convert.ToInt32(WebConfigurationManager.AppSettings["refreshTime"]);
+            // Tiempo tras el cual se desconectan a usuarios del sistema (luego de "duracionTurno" horas).
+            var duracionTurno = Convert.ToInt32(WebConfigurationManager.AppSettings["duracionTurno"]);
             Console.WriteLine("Started...");
             IMetodos logica = new Metodos();
             while (true)
             {
                 try
                 {
-                    logica.desconectarAusentes(maxTime);
+                    logica.desconectarAusentes(maxTime, duracionTurno);
                     Console.WriteLine("Sleeping...");
                     Thread.Sleep(refreshTime * 60 * 1000);
                 }

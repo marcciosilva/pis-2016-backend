@@ -108,18 +108,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new TokenInvalidoException();
                 }
-
-                // Si el token ya expiro.
-                if ((user.FechaInicioSesion.Value.Year < DateTime.Now.Year) ||
-                    (user.FechaInicioSesion.Value.Month < DateTime.Now.Month) ||
-                    (user.FechaInicioSesion.Value.Day < DateTime.Now.Day) ||
-                    (user.FechaInicioSesion.Value.Hour < DateTime.Now.Hour - 8))
-                {
-                    // Libero recursos y expiro el token.
-                    cerrarSesion(token);
-                    throw new TokenInvalidoException();
-                }
-
+                
                 // Si no hay etiquetas.
                 if (!etiquetas.Any())
                 {
@@ -352,6 +341,10 @@ namespace Emsys.LogicLayer
                         if (user != null)
                         {
                             IdUsuario = user.NombreLogin;
+                        }
+                        else
+                        {
+                            IdUsuario = token;
                         }
                     }
 
@@ -1047,7 +1040,7 @@ namespace Emsys.LogicLayer
                 return true;
             }
         }
-        public void desconectarAusentes(int maxTime)
+        public void desconectarAusentes(int maxTime, int duracionTurno)
         {
             using (var context = new EmsysContext())
             {
@@ -1060,13 +1053,14 @@ namespace Emsys.LogicLayer
                         if ((user.Token != null) && (user.UltimoSignal != null))
                         {
                             // Si el usuario esta inactivo.
-                            if ((ahora.Subtract(user.UltimoSignal.Value)).TotalMinutes > maxTime)
+                            if (((ahora.Subtract(user.UltimoSignal.Value)).TotalMinutes > maxTime) || ((ahora.Subtract(user.FechaInicioSesion.Value)).TotalHours > duracionTurno))
                             {
                                 // Desconecto al usuario.
                                 cerrarSesion(user.Token);
                                 Console.WriteLine("Se desconecto al usuario <" + user.NombreLogin + ">");
-                                string hora = user.UltimoSignal.Value.ToString();
-                                AgregarLog(user.NombreLogin, "Servidor", "Emsys.LogicLayer", "Usuarios", user.Id, "Se desconecta al usuario indicado.", "Ultimo signal a las " + hora, MensajesParaFE.LogDesconectarUsuarioCod);  
+                                string horaS = user.UltimoSignal.Value.ToString();
+                                string horaL = user.FechaInicioSesion.Value.ToString();
+                                AgregarLog(user.NombreLogin, "Servidor", "Emsys.LogicLayer", "Usuarios", user.Id, "Se desconecta al usuario indicado.", "Ultimo signal a las " + horaS + " logueado a las " + horaL, MensajesParaFE.LogDesconectarUsuarioCod);  
                             }
                         }
                     }
