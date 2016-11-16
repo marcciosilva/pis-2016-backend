@@ -9,6 +9,7 @@
     using TableDependency.Enums;
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
+    using System.Web.Configuration;
 
     public class ProcesoEventos
     {
@@ -26,13 +27,19 @@
                 Listener();
                 while (true)
                 {
-                    Thread.Sleep(10000);
+                    //esta logica lo que hacer es reinciar la conexion a la base de datos.
+                    int _milisegundosDuermo = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaReiniciarConexionBdObservers"]);
+                    Thread.Sleep(_milisegundosDuermo);
+                    _dependency.Stop();
+                    Listener();
                 }
             }
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ObserverDataBase.ProcesoMonitoreoEventos", "ProcesoMonitoreoEventos", 0, "_dependency_OnChanged", "Error al intentar capturar un evento en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseEvento);
+                _dependency.Stop();
+                ProcesoMonitoreoEventos();
             }
         }
 

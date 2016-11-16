@@ -10,6 +10,7 @@
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
     using System.Collections.Generic;
+    using System.Web.Configuration;
 
     public class ProcesoGeoUbicacion
     {
@@ -31,13 +32,19 @@
 
                 while (true)
                 {
-                    Thread.Sleep(10000);
+                    //esta logica lo que hacer es reinciar la conexion a la base de datos.
+                    int _milisegundosDuermo = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaReiniciarConexionBdObservers"]);
+                    Thread.Sleep(_milisegundosDuermo);
+                    _dependency.Stop();
+                    Listener();
                 }
             }
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoGeoUbicacion", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar una GeoUbicacion en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseGeoUbicaciones);
+                _dependency.Stop();
+                ProcesoMonitoreoGeoUbicaciones();
             }
         }
 

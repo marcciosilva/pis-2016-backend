@@ -221,6 +221,7 @@
     <Content Include="Global.asax" />
     <Content Include="scripts\ai.0.22.19-build00125.js" />
     <Content Include="scripts\ai.0.22.19-build00125.min.js" />
+    <None Include="Properties\PublishProfiles\filesystem.pubxml" />
     <None Include="Properties\PublishProfiles\pis-Liberacion2-api - Web Deploy %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\pis-Liberacion2-api - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\pis-liberacion203-api - Web Deploy.pubxml" />

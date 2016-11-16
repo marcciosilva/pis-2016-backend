@@ -10,14 +10,14 @@
     using System.Collections.Generic;
 
     ////descomentar esto para correr el stress
-    ////[TestFixture]
+  //  [TestFixture]
     public class ObserverDataBaseUnitTestStress
     {
         private int _seconds = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaEnvioNotificaciones"]);
         /// <summary>
         /// prueba la logica de observer database
         /// </summary>
-        ////[Test]
+      // [Test]
         public void ObserverDataBaseTestStress()
         {
             try

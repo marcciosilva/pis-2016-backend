@@ -10,6 +10,7 @@
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
     using System.Collections.Generic;
+    using System.Web.Configuration;
 
     public class ProcesoImagenes
     {
@@ -30,13 +31,19 @@
                 Listener();
                 while (true)
                 {
-                    Thread.Sleep(10000);
+                    //esta logica lo que hacer es reinciar la conexion a la base de datos.
+                    int _milisegundosDuermo = Convert.ToInt32(WebConfigurationManager.AppSettings["TiempoEsperaReiniciarConexionBdObservers"]);
+                    Thread.Sleep(_milisegundosDuermo);
+                    _dependency.Stop();
+                    Listener();
                 }
             }
             catch (Exception e)
             {
                 IMetodos dbAL = new Metodos();
                 dbAL.AgregarLogError("vacio", "servidor", "Emsys.ProcesoMonitoreoImagenes", "Program", 0, "_dependency_OnChanged", "Error al intentar capturar un Imagenes en la bd. Excepcion: " + e.Message, MensajesParaFE.LogErrorObserverDataBaseImagenes);
+                _dependency.Stop();
+                ProcesoMonitoreoImagenes();
             }
         }
 
