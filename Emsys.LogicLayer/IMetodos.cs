@@ -183,10 +183,11 @@ namespace Emsys.LogicLayer
 
 
         /// <summary>
-        /// Desconecta a los usuarios inactivos (que no han enviado keep alive) por mas de maxTime minutos.
+        /// Desconecta a los usuarios inactivos (que no han enviado keep alive) por mas de maxTime minutos o que han estado logueados por mas de "duracionTurno" horas.
         /// </summary>
         /// <param name="maxTime">Tiempo en minutos minimo para considerar inactivo a un usuario</param>
-        void desconectarAusentes(int maxTime);
+        /// <param name="duracionTurno">Tiempo en horas tras el cual se desconecta a un usuario por haber terminado su tiempo de turno</param>
+        void desconectarAusentes(int maxTime, int duracionTurno);
 
         /// <summary>
         /// Indica al servidor que un recurso ha arribado a un evento.

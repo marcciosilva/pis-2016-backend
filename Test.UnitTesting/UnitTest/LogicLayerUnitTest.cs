@@ -1283,7 +1283,7 @@ namespace Test.UnitTesting
                 Assert.IsTrue(true);
             }
 
-            dbAL.desconectarAusentes(10);
+            dbAL.desconectarAusentes(10, 8);
             var result2 = dbAL.autenticarUsuario("A", "A", null);
             Assert.IsTrue(result2.accessToken != null);
 

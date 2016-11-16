@@ -20,5 +20,7 @@
         public virtual ICollection<ExtensionEvento> ExtensionesEvento { get; set; }
 
         public virtual ICollection<Sector> Sectores { get; set; }
+
+        public virtual ICollection<Usuario> Usuarios { get; set; }
     }
 }

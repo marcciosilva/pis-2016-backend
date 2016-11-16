@@ -9,6 +9,7 @@
     using TableDependency.Enums;
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
+    using System.Collections.Generic;
     using System.Web.Configuration;
 
     public class ProcesoVideos
@@ -125,6 +126,7 @@
                 {
                     if (videoDEBD.ExtensionEvento != null)
                     {
+                        List<int> recursosNotificados = new List<int>();
                         int idEvento = videoDEBD.ExtensionEvento.Evento.Id;
                         int idExtension = videoDEBD.ExtensionEvento.Id;
                         int idZona = videoDEBD.ExtensionEvento.Zona.Id;
@@ -136,13 +138,17 @@
                             foreach (var asig in item.AsignacionesRecursos)
                             {
                                 // Si hay un usuario conectado con ese recurso.
-                                if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
+                                if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible) && (!recursosNotificados.Contains(asig.Recurso.Id)))
                                 {
                                     GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
+                                    recursosNotificados.Add(asig.Recurso.Id);
                                 }
                             }
-                            // Para la zona asociada a la extensen le envia una notificacion.
-                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
+                            if (item.Zona.Usuarios.Count != 0)
+                            {
+                                // Para la zona asociada a la extensen le envia una notificacion.
+                                GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
+                            }
                         }
                     }
                 }

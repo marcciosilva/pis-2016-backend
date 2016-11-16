@@ -9,6 +9,7 @@ using Emsys.LogicLayer.ApplicationExceptions;
 using Emsys.LogicLayer.Utils;
 using Utils.Notifications;
 using System.Drawing;
+using System.Web.Configuration;
 
 namespace Emsys.LogicLayer
 {
@@ -107,23 +108,7 @@ namespace Emsys.LogicLayer
                 {
                     throw new TokenInvalidoException();
                 }
-
-                // Si el token ya expiro.
-                if ((user.FechaInicioSesion.Value.Year < DateTime.Now.Year) ||
-                    (user.FechaInicioSesion.Value.Month < DateTime.Now.Month) ||
-                    (user.FechaInicioSesion.Value.Day < DateTime.Now.Day) ||
-                    (user.FechaInicioSesion.Value.Hour < DateTime.Now.Hour - 8))
-                {
-                    // Libero recursos y expiro el token.
-                    user.Recurso.ToList().ForEach(x => x.Estado = EstadoRecurso.Disponible);
-                    user.Recurso.Clear();
-                    user.Zonas.Clear();
-                    user.Token = null;
-                    user.FechaInicioSesion = null;
-                    context.SaveChanges();
-                    return false;
-                }
-
+                
                 // Si no hay etiquetas.
                 if (!etiquetas.Any())
                 {
@@ -356,6 +341,10 @@ namespace Emsys.LogicLayer
                         if (user != null)
                         {
                             IdUsuario = user.NombreLogin;
+                        }
+                        else
+                        {
+                            IdUsuario = token;
                         }
                     }
 
@@ -1051,7 +1040,7 @@ namespace Emsys.LogicLayer
                 return true;
             }
         }
-        public void desconectarAusentes(int maxTime)
+        public void desconectarAusentes(int maxTime, int duracionTurno)
         {
             using (var context = new EmsysContext())
             {
@@ -1064,13 +1053,14 @@ namespace Emsys.LogicLayer
                         if ((user.Token != null) && (user.UltimoSignal != null))
                         {
                             // Si el usuario esta inactivo.
-                            if ((ahora.Subtract(user.UltimoSignal.Value)).TotalMinutes > maxTime)
+                            if (((ahora.Subtract(user.UltimoSignal.Value)).TotalMinutes > maxTime) || ((ahora.Subtract(user.FechaInicioSesion.Value)).TotalHours > duracionTurno))
                             {
                                 // Desconecto al usuario.
                                 cerrarSesion(user.Token);
                                 Console.WriteLine("Se desconecto al usuario <" + user.NombreLogin + ">");
-                                string hora = user.UltimoSignal.Value.ToString();
-                                AgregarLog(user.NombreLogin, "Servidor", "Emsys.LogicLayer", "Usuarios", user.Id, "Se desconecta al usuario indicado.", "Ultimo signal a las " + hora, MensajesParaFE.LogDesconectarUsuarioCod);  
+                                string horaS = user.UltimoSignal.Value.ToString();
+                                string horaL = user.FechaInicioSesion.Value.ToString();
+                                AgregarLog(user.NombreLogin, "Servidor", "Emsys.LogicLayer", "Usuarios", user.Id, "Se desconecta al usuario indicado.", "Ultimo signal a las " + horaS + " logueado a las " + horaL, MensajesParaFE.LogDesconectarUsuarioCod);  
                             }
                         }
                     }
@@ -1464,9 +1454,24 @@ namespace Emsys.LogicLayer
                 // Agrego los recursos asignados.
                 foreach (DtoRecurso r in recursos.recursosAsignados)
                 {
+                    var maxAsignaciones = Convert.ToInt32(WebConfigurationManager.AppSettings["maxAsignacionesPorRecurso"]);                    
                     Recurso rec = context.Recursos.FirstOrDefault(rb => rb.Id == r.id);
+                    if (rec == null)
+                    {
+                        throw new ArgumentoInvalidoException();
+                    }
+                    // Verifico la cantidad de asignaciones actuales del recurso.
+                    var cantActual = rec.AsignacionesRecurso.Where(a => (a.ActualmenteAsignado == true) && (a.Extension.Estado != EstadoExtension.Cerrado)).Count();
+                    if (cantActual < maxAsignaciones)
+                    {
+                        rec.EstadoAsignacion = EstadoAsignacionRecurso.Libre;
+                    }
+                    else
+                    {
+                        rec.EstadoAsignacion = EstadoAsignacionRecurso.Operativo;
+                    }
                     AsignacionRecurso ar = ext.AsignacionesRecursos.FirstOrDefault(a => a.Recurso.Id == rec.Id);
-                    if ((rec == null) || (rec.EstadoAsignacion == EstadoAsignacionRecurso.Operativo) || ((ar != null) && (ar.ActualmenteAsignado == true)))
+                    if ((rec.EstadoAsignacion == EstadoAsignacionRecurso.Operativo) || ((ar != null) && (ar.ActualmenteAsignado == true)))
                     {
                         throw new ArgumentoInvalidoException();
                     }
@@ -1492,7 +1497,18 @@ namespace Emsys.LogicLayer
                     if ((rec == null) || (ar == null))
                     {
                         throw new ArgumentoInvalidoException();
-                    }                    
+                    }
+                    var maxAsignaciones = Convert.ToInt32(WebConfigurationManager.AppSettings["maxAsignacionesPorRecurso"]);
+                    // Verifico la cantidad de asignaciones actuales del recurso.
+                    var cantActual = rec.AsignacionesRecurso.Where(a => (a.ActualmenteAsignado == true) && (a.Extension.Estado != EstadoExtension.Cerrado)).Count();
+                    if (cantActual < maxAsignaciones)
+                    {
+                        rec.EstadoAsignacion = EstadoAsignacionRecurso.Libre;
+                    }
+                    else
+                    {
+                        rec.EstadoAsignacion = EstadoAsignacionRecurso.Operativo;
+                    }
                     ar.ActualmenteAsignado = false;
                     ar.HoraArribo = null;
                 }
@@ -1669,12 +1685,21 @@ namespace Emsys.LogicLayer
                     throw new EventoNoEnviadoException();
                 }
 
-                // Libero recursos de extension.
+                var maxAsignaciones = Convert.ToInt32(WebConfigurationManager.AppSettings["maxAsignacionesPorRecurso"]);
+                // Verifica si los recursos de la extension pasan a estar Libres.
                 foreach (AsignacionRecurso ar in ext.AsignacionesRecursos)
                 {
-                    ar.ActualmenteAsignado = false;
-                    ar.Recurso.EstadoAsignacion = EstadoAsignacionRecurso.Libre;
-                }
+                    // Verifico la cantidad de asignaciones actuales del recurso.
+                    var cantActual = ar.Recurso.AsignacionesRecurso.Where(a => (a.ActualmenteAsignado == true) && (a.Extension.Estado != EstadoExtension.Cerrado)).Count();
+                    if (cantActual < maxAsignaciones)
+                    {
+                        ar.Recurso.EstadoAsignacion = EstadoAsignacionRecurso.Libre;
+                    }
+                    else
+                    {
+                        ar.Recurso.EstadoAsignacion = EstadoAsignacionRecurso.Operativo;
+                    }
+                }            
 
                 // Libero al despachador.
                 user.Despachando.Remove(ext);

@@ -9,6 +9,7 @@
     using TableDependency.Enums;
     using TableDependency.Mappers;
     using TableDependency.SqlClient;
+    using System.Collections.Generic;
     using System.Web.Configuration;
 
     public class ProcesoExtensiones
@@ -141,6 +142,7 @@
                 var extensionEnBD = db.ExtensionesEvento.Find(extension.Entity.Id);
                 if (extensionEnBD != null)
                 {
+                    List<int> recursosNotificados = new List<int>();
                     int idEvento = extensionEnBD.Evento.Id;
                     int idExtension = extensionEnBD.Id;
                     int idZona = extensionEnBD.Zona.Id;
@@ -172,13 +174,17 @@
                             // Para cada recurso de la extension.
                             foreach (var asig in item.AsignacionesRecursos)
                             {
-                                if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible))
+                                if ((asig.ActualmenteAsignado == true) && (asig.Recurso.Estado == EstadoRecurso.NoDisponible) && (!recursosNotificados.Contains(asig.Recurso.Id)))
                                 {
                                     GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "recurso-" + asig.Recurso.Id);
+                                    recursosNotificados.Add(asig.Recurso.Id);
                                 }
                             }
-                            // Para la zona asociada a la extensen le envia una notificacion.
-                            GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
+                            if (item.Zona.Usuarios.Count != 0)
+                            {
+                                // Para la zona asociada a la extensen le envia una notificacion.
+                                GestorNotificaciones.SendMessage(cod, idEvento, idExtension, idZona, nombreZona, "zona-" + item.Zona.Id);
+                            }
                         }
                     }                    
                 }
