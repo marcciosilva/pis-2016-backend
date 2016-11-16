@@ -2,7 +2,6 @@
 using System.Linq;
 using Emsys.DataAccesLayer.Core;
 using NUnit.Framework;
-using Utils.Notifications;
 using System.IO;
 using Emsys.LogicLayer;
 using Utils.Notifications;
