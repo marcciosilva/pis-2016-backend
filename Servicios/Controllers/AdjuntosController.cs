@@ -93,7 +93,7 @@ namespace Servicios.Controllers
             }
             catch (ImagenInvalidaException)
             {
-                return new DtoRespuesta(MensajesParaFE.ErrorAdjuntarImagenCod, new Mensaje(MensajesParaFE.ErrorAdjuntarImagen));
+                return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
             }
             catch (UsuarioNoAutorizadoException)
             {
@@ -143,7 +143,7 @@ namespace Servicios.Controllers
             }
             catch (AudioInvalidoException)
             {
-                return new DtoRespuesta(MensajesParaFE.ErrorAdjuntarAudioCod, new Mensaje(MensajesParaFE.ErrorAdjuntarAudio));
+                return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
             }
             catch (UsuarioNoAutorizadoException)
             {
@@ -192,7 +192,7 @@ namespace Servicios.Controllers
             }
             catch (VideoInvalidoException)
             {
-                return new DtoRespuesta(MensajesParaFE.ErrorAdjuntarVideoCod, new Mensaje(MensajesParaFE.ErrorAdjuntarVideo));
+                return new DtoRespuesta(MensajesParaFE.ErrorEnviarArchivoCod, new Mensaje(MensajesParaFE.ErrorEnviarArchivo));
             }
             catch (UsuarioNoAutorizadoException)
             {
