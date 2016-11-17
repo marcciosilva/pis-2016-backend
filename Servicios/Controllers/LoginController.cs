@@ -197,6 +197,7 @@ namespace Servicios.Controllers
         /// </summary>
         /// <param name="dtoToken">Token</param>
         /// <returns>Exito</returns>
+        [CustomAuthorizeAttribute("login")]
         [HttpPost]
         [LogFilter]
         [Route("users/SetRegistrationToken")]

@@ -37,7 +37,6 @@ namespace Servicios.Controllers
                         result.Add(itemResp);
                     }
                 }
-
                 return new DtoRespuesta(MensajesParaFE.CorrectoCod, result);
             }
             catch (SoapException e)
